@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+
+    "baseUrl": "./src",
+    "paths": {
+      "@entities/*": ["entities/*"],
+      "@usecases/*": ["useCases/*"],
+      "@controllers/*": ["interfaceAdapters/controllers/*"],
+      "@repos/*": ["interfaceAdapters/repositories/*"],
+      "@services/*": ["services/*"],
+      "@frameworks/*": ["frameworks/*"],
+      "@shared/*": ["shared/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/types.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}

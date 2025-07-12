@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sentOtpController = exports.verifyOtpController = exports.loginController = exports.registerController = void 0;
+const tsyringe_1 = require("tsyringe");
+const _1 = require(".");
+const register_controller_1 = require("interfaceAdpaters/controllers/auth/register-controller");
+const login_controller_1 = require("interfaceAdpaters/controllers/auth/login-controller");
+const verifyOtp_controller_1 = require("interfaceAdpaters/controllers/auth/verifyOtp-controller");
+const sent_otp_controller_1 = require("interfaceAdpaters/controllers/auth/sent-otp-controller");
+_1.DependencyInjection.registerAll();
+exports.registerController = tsyringe_1.container.resolve(register_controller_1.registerUserController);
+exports.loginController = tsyringe_1.container.resolve(login_controller_1.loginUserController);
+exports.verifyOtpController = tsyringe_1.container.resolve(verifyOtp_controller_1.VerifyOTPController);
+exports.sentOtpController = tsyringe_1.container.resolve(sent_otp_controller_1.SendOTPController);
