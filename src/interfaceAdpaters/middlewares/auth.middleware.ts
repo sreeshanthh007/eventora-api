@@ -22,15 +22,10 @@ export interface CustomRequest extends Request{
 
 const extractToken = (req: Request): { access_token: string; refresh_token: string } | null => {
 
-    console.log("cookie received",req.cookies)
-    const pathSegments = req.path.split("/");
-    
+     const basePath = req.baseUrl.split("/");
+  const userType = basePath[2]; 
 
-
-  
-  const userType = pathSegments[1]; 
-
-  if (userType) {
+  if (["client", "vendor", "admin"].includes(userType)) {
     return {
       access_token: req.cookies[`${userType}_access_token`] || null,
       refresh_token: req.cookies[`${userType}_refresh_token`] || null,
@@ -41,10 +36,10 @@ const extractToken = (req: Request): { access_token: string; refresh_token: stri
 };
 
 
-const isBlacklisted = async(token:string) :Promise<boolean> =>{
-    const result = await RedisClient.get(token)
-    return result!==null
-}
+// const isBlacklisted = async(token:string) :Promise<boolean> =>{
+//     const result = await RedisClient.get(token)
+//     return result!==null
+// }
 
 
 export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
@@ -58,9 +53,9 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
       return;
     }
 
-    if(await isBlacklisted(token.access_token)){
-        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:"Token is Blacklisted"})
-    }
+    // if(await isBlacklisted(token.access_token)){
+    //     res.status(HTTP_STATUS.UNAUTHORIZED).json({message:"Token is Blacklisted"})
+    // }
 
     const user = tokenService.verifyAccessToken(token.access_token) as CustomJWTPayload
 
@@ -101,12 +96,12 @@ export const decodeToken = async(req:Request , res:Response , next:NextFunction)
             return
         }
 
-        if(await isBlacklisted(token.access_token)){
-            console.log("token is blacklisted");
-            res.status(HTTP_STATUS.UNAUTHORIZED)
-            .json({message:"Token is blacklisted"})
-            return
-        };
+        // if(await isBlacklisted(token.access_token)){
+        //     console.log("token is blacklisted");
+        //     res.status(HTTP_STATUS.UNAUTHORIZED)
+        //     .json({message:"Token is blacklisted"})
+        //     return
+        // };
 
         const user =  tokenService.decodeAccessToken(token?.access_token);
 

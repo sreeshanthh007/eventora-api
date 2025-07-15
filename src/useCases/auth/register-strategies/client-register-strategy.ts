@@ -21,7 +21,10 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
         if(user.role=="client"){
             const existingCLient = await this.clientRepository.findByEmail(user.email);
             if(existingCLient){
-             
+             throw new CustomError(
+                 ERROR_MESSAGES.EMAIL_EXISTS,
+                HTTP_STATUS.CONFLICT,
+             )
             }
 
             const {name,email,phone,password} = user as ClientDTO

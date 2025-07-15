@@ -7,7 +7,7 @@ export interface IRefreshTokenRepository {
     token:string,
     userType:string,
     user:ObjectId,
-    expiresAt:number
+    expiresAt:Date
     }):Promise<void>
 
     revokeRefreshToken(token:string):Promise<void>

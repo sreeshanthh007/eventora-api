@@ -11,6 +11,7 @@
     import { CLientRegisterStrategy } from "@usecases/auth/register-strategies/client-register-strategy";
     import { VendorRegisterStrategy } from "@usecases/auth/register-strategies/vendor-register-strategy";
     import { VendorLoginStrategy } from "@usecases/auth/login-strategies/vendor-login-strategy";
+    import { AdminLoginStrategy } from "@usecases/auth/login-strategies/admin-login-strategy";
 
     import { ITokenService } from "@usecases/auth/interfaces/token-service-interface";
     import { jwtService } from "interfaceAdpaters/services/jwtService";
@@ -20,7 +21,9 @@
     import { OTPService } from "interfaceAdpaters/services/OTPService";
     import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
     import { UserExistService } from "interfaceAdpaters/services/user-existService";
-
+    import { IClientExistService } from "@entities/serviceInterfaces/client-exist.service.interface";
+    import { ClientExistService } from "interfaceAdpaters/services/client/clientExist-service";
+    import { sendForgotPasswordOtp } from "@usecases/sent-forgot.password-otp.usecase";
 
     import { IRegisterUseCase } from "@entities/useCaseInterfaces/auth/register-usecase.interface";
     import { RegisterUseCase } from "@usecases/register-user.usecase";
@@ -36,6 +39,9 @@
     import { refreshTokenUsesCase } from "@usecases/refresh-token.usecase";
 
 
+    import { IForgotUpdatePasswordUseCase } from "@entities/useCaseInterfaces/client/clientupdatePassword.usecase.interface";
+    import { ForgotClientUpdatePasswordUseCase } from "@usecases/client/clientUpdatePasswordSUseCase";
+
 
 
     // =====error====//
@@ -44,6 +50,18 @@
     import { WinstonLoggerAdapter } from "interfaceAdpaters/services/logger/winston-logger-adapter";
     import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
     import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
+import { ISendOtpUsecase } from "@entities/useCaseInterfaces/auth/sendOtp-usecase.interface";
+import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase";
+import { getAllUsersUseCase } from "@usecases/admin/get-all-users-usecase";
+import { IuserToggleStatusUseCase } from "@entities/useCaseInterfaces/admin/handle-user-toggle-status.usecase.interface";
+import { UserToggleStatusUseCase } from "@usecases/admin/handle-user-toggle-status.usecase";
+import { ForgotVendorUpdatePasswordUseCase } from "@usecases/vendor/forgotPasswordVendorUseCase";
+import { IGetAllVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-all-vendors.usecase";
+import { GetAllVendorUseCase } from "@usecases/admin/get-all-vendors.usecase";
+import { IHandleToggleVendorUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle.vendor.usecase";
+import { HandleToggleVendorStatusUseCase } from "@usecases/admin/handle-toggle-vendor.usecase";
+import { IVendorExistService } from "@entities/serviceInterfaces/vendor-exist.service.interface";
+import { VendorExistService } from "interfaceAdpaters/services/vendor/vendorExist-service";
 
     export class UseCaseRegistry {
         static registerUseCases():void{
@@ -94,13 +112,21 @@
                 useClass:VendorLoginStrategy
             });
 
+            container.register<ILoginStrategy>("AdminLoginStrategy",{
+                useClass:AdminLoginStrategy
+            });
+
             container.register<ITokenService>("ITokenService",{
                 useClass:jwtService
             }); 
 
             container.register<IOTPService>("IOTPService",{
                 useClass:OTPService
-            })
+            });
+
+            container.register<ISendOtpUsecase>("ISendOTPForPasswordUseCase",{
+                useClass:sendForgotPasswordOtp
+            });
 
             container.register<IEmailService>("IEmailService",{
                 useClass:EmailService
@@ -110,8 +136,39 @@
                 useClass:UserExistService
             })
 
+            container.register<IVendorExistService>("IVendorExistService",{
+                useClass:VendorExistService
+            });
+
+            container.register<IClientExistService>("IClientExistService",{
+                useClass:ClientExistService
+            })
+
+            container.register<IGetAllUsersUseCase>("IGetAllUsersUseCase",{
+                useClass:getAllUsersUseCase
+            });
+
+            container.register<IuserToggleStatusUseCase>("IUserToggleStatusUseCase",{
+                useClass: UserToggleStatusUseCase
+            });
+
+            container.register<IGetAllVendorsUseCase>("IGetAllVendorsUseCase",{
+                useClass:GetAllVendorUseCase
+            });
 
 
+            container.register<IHandleToggleVendorUseCase>("IHandleToggleVendorUseCase",{
+                useClass:HandleToggleVendorStatusUseCase
+            })
+
+
+            container.register<IForgotUpdatePasswordUseCase>("IForgotClientUpdatePasswordUseCase",{
+                useClass:ForgotClientUpdatePasswordUseCase
+            });
+
+            container.register<IForgotUpdatePasswordUseCase>("ForgotVendorUpdatePasswordUseCase",{
+                useClass:ForgotVendorUpdatePasswordUseCase
+            })
 
 
 

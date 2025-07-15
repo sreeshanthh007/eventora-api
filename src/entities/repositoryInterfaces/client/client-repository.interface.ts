@@ -17,5 +17,7 @@ export interface IClientRepository {
 
     findByIdAndUpdateStatus(id:any,status:string) : Promise<void>
 
+    findPaginatedClients(filter:any,skip:number,limit:number) : Promise<{user:IClientEntity[] | []; total:number}>
+
     
 }

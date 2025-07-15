@@ -11,5 +11,8 @@ export interface IVendorRepository{
     findByIdAndUpdatePassword(id:any,password:string) : Promise<void>
 
     findByIdAndUpdateStatus(id:any,status:string) : Promise<void>
+
+    findPaginatedClients(filter:any,skip:number,limit:number) : Promise<{user:IVendorEntity[] | []; total:number}>
+    
     
 }

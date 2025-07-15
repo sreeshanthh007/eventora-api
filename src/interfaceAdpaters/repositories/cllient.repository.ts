@@ -21,7 +21,7 @@ export class ClientRepository implements IClientRepository{
 
    async  findByIdAndUpdatePassword(id: any, password: string): Promise<void> {
          await ClientModel.findByIdAndUpdate(id,{
-            password
+            password:password
         })
     }
 
@@ -30,6 +30,19 @@ export class ClientRepository implements IClientRepository{
             $set:{
                 status:status
             }
+            
         })
     }
+
+        async findPaginatedClients(filter:any,skip:number,limit:number):Promise<{user:IClientEntity[] | []; total:number}> {
+            const [user,total] = await Promise.all([
+                ClientModel.find(filter).sort({createdAt:-1}).skip(skip).limit(limit),
+                ClientModel.countDocuments(filter)
+            ]);
+
+            return {
+                user,
+                total
+            }
+        }
 }

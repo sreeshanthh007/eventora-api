@@ -5,7 +5,7 @@ import { RefreshTokenModel } from "@frameworks/database/Mongodb/models/refresh-t
 
 
 export class refreshTokenRepository implements IRefreshTokenRepository {
-    async save(data: { token: string; userType: string; user: ObjectId; expiresAt: number; }): Promise<void> {
+    async save(data: { token: string; userType: string; user: ObjectId; expiresAt: Date; }): Promise<void> {
         await RefreshTokenModel.create({
             token:data.token,
             userType:data.userType,

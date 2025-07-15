@@ -22,7 +22,7 @@ export class loginUserController implements ILoginUserController {
     async handle(req: Request, res: Response): Promise<void> {
         const data = req.body as LoginUserDTO
 
-
+        
         const validatedData = loginSchema.parse(data)
 
         if(!validatedData){

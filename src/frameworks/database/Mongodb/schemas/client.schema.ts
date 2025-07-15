@@ -22,7 +22,7 @@ export const ClientSchema = new Schema<IClientModel>(
     },
 
     {
-     timestamps:true,
+     timestamps:true,   
     },
 );
 

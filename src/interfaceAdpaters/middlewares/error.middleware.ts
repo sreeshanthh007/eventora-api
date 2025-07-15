@@ -29,14 +29,14 @@ export class ErrorMiddleware {
       timestamp: new Date().toISOString(),
     });
 
-    // Zod validation error
+ 
     if (err instanceof ZodError) {
       statusCode = HTTP_STATUS.BAD_REQUEST;
       message = ERROR_MESSAGES.VALIDATION_ERROR;
       errors = err.errors.map((e) => ({ message: e.message }));
     }
 
-    // Custom-defined errors
+   
     else if (err instanceof CustomError) {
       statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
       message = err.message;
@@ -46,13 +46,18 @@ export class ErrorMiddleware {
       }
     }
 
-    // Generic fallback
+ 
     else {
       statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
       message = err.message || ERROR_MESSAGES.SERVER_ERROR;
     }
 
-    // Send JSON error response
+  
+      if (res.headersSent) {
+        return next(err);
+      }
+
+  
     res.status(statusCode).json({
       success: false,
       statusCode,

@@ -29,7 +29,8 @@ export const SUCCESS_MESSAGES = {
     LOGIN_SUCCESS:"Login Successfull.",
     REGISTERATION_SUCCESS:"Registeration completed successfully",
     OTP_SEND_SUCCESS:"OTP sent to your Email successfully",
-      VERIFICATION_SUCCESS: "Verification completed successfully.",
+     VERIFICATION_SUCCESS: "Verification completed successfully.",
+     UPDATE_SUCCESS: "Updated successfully.",
 }
 
 

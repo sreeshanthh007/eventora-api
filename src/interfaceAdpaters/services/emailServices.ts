@@ -20,6 +20,7 @@ export class EmailService implements IEmailService{
     }
 
     async sendEmail(to: string, subject: string, text: string): Promise<void> {
+      
         const mailOptions ={
             from :"EVENTORA",
             to,

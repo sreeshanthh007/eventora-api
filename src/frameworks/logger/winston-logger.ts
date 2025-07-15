@@ -22,4 +22,4 @@ export const logger = winston.createLogger({
   exceptionHandlers: [
     new winston.transports.File({ filename: "logs/exceptions.log" }),
   ],
-});
+}); 

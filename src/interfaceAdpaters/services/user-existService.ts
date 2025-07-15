@@ -17,7 +17,7 @@ export class UserExistService implements IUserExistenceService {
             this.clientRepo.findByEmail(email),
             this.vendorRepo.findByEmail(email)
         ]);
-
+        
         return Boolean(client || vendor)
     }
 }

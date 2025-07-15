@@ -18,8 +18,8 @@ export class   RefreshTokenController implements IRefreshtokencontroller {
    async handle(req: Request, res: Response): Promise<void> {
        try {
         const token = (req as CustomRequest).user.refresh_token
-      
-        const new_token = this.refreshTokenUseCase.execute(token)
+        
+        const new_token = await this.refreshTokenUseCase.execute(token)
 
         const access_token_name = `${new_token.role}_access_token`
 

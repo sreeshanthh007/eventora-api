@@ -4,6 +4,8 @@ import { IClientRepository } from "@entities/repositoryInterfaces/client/client-
 import { ClientRepository } from "interfaceAdpaters/repositories/cllient.repository";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { VendorRepository } from "interfaceAdpaters/repositories/vendor.repository";
+import { IAdminRepository } from "@entities/repositoryInterfaces/admin/admin-repository-interface";
+import { AdminRepository } from "interfaceAdpaters/repositories/admin.repository";
 
 import { IRefreshTokenRepository } from "@entities/repositoryInterfaces/auth/refresh-token-repository.interface";
 import { refreshTokenRepository } from "interfaceAdpaters/repositories/refresh-token.repository";
@@ -26,6 +28,10 @@ export class RepositoryRegistry {
 
         container.register<IOtpRepository>("IOTPRepository",{
             useClass:OTPRepository
-        })
+        });
+
+        container.register<IAdminRepository>("IAdminRepository",{
+            useClass:AdminRepository
+        });
     }
 }

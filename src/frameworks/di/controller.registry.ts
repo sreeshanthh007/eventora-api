@@ -4,7 +4,11 @@ import { registerUserController } from "interfaceAdpaters/controllers/auth/regis
 import { loginUserController } from "interfaceAdpaters/controllers/auth/login-controller";
 import { VerifyOTPController } from "interfaceAdpaters/controllers/auth/verifyOtp-controller";
 import { SendOTPController } from "interfaceAdpaters/controllers/auth/sent-otp-controller";
+import { ForgotOtpController } from "interfaceAdpaters/controllers/client/forgot-password.sentOTP-controller";
 import { RefreshTokenController } from "interfaceAdpaters/controllers/auth/refresh-token-controller";
+import { ForgotPasswordController } from "interfaceAdpaters/controllers/client/forgot-password-controller";
+import { forgotVendorPasswordController } from "./resolver";
+import { ForgotVendorOTPController } from "interfaceAdpaters/controllers/vendor/forgot-password.vendorController";
 
 export class ControllerRegistry {
     static registerControllers():void{
@@ -26,6 +30,21 @@ export class ControllerRegistry {
 
         container.register("RefreshTokenController",{
             useClass:RefreshTokenController
+        });
+
+        container.register("ForgototpController",{
+            useClass:ForgotOtpController
+        });
+
+        container.register("ForgotVendorOTPController",{
+            useClass:ForgotVendorOTPController
+        })
+
+        // container.register("ForgotPasswordController",{
+        //     useClass:ForgotPasswordController
+        // })
+        container.register("ForgotPasswordController",{
+            useClass:ForgotPasswordController
         })
     }
-}
+}   

@@ -9,6 +9,8 @@ import { ClientRoutes } from "@frameworks/routes/client/client.route";
 import { config } from "@shared/config";
 import { MongoConnect } from "@frameworks/database/Mongodb/mongoConnect";
 import { injectedLogger , injectedLoggerMiddleWare , errorMiddleware } from "@frameworks/di/resolver";
+import { AdminRotes } from "@frameworks/routes/admin/admin.route";
+import { VendorRoutes } from "@frameworks/routes/vendor/vendor.route";
 const connectDB = new MongoConnect()
 
 export class ExpressServer {
@@ -40,6 +42,7 @@ export class ExpressServer {
     );
 
     this._app.use(express.json());
+    this._app.use(express.urlencoded({extended:true}))
     this._app.use(cookieParser())
   }
 
@@ -47,7 +50,11 @@ export class ExpressServer {
     console.log("✅ Mounting /api/auth route...");
     this._app.use("/api/auth", new AuthRoutes().router);
     console.log("✅ Mounting /api/client route...");
-    this._app.use("/api/client",new ClientRoutes().router)
+    this._app.use("/api/client",new ClientRoutes().router);
+    
+    this._app.use("/api/admin",new AdminRotes().router);
+
+    this._app.use("/api/provider",new VendorRoutes().router)
   }
 
   public configureErrorHandlingMiddleware ():void{

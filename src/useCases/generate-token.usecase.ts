@@ -21,9 +21,9 @@ export class GenerataTokenUseCase implements IGenerateTokenUseCase {
        
         await this.refreshTokenRepository.save({
             token:refreshToken,
-            userType: role as TRole,
+            userType: role as TRole, 
             user : id as unknown as ObjectId,
-            expiresAt:98
+              expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
 
         return {

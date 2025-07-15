@@ -22,4 +22,4 @@ export class SendOTPController implements ISendOtpController{
             message:SUCCESS_MESSAGES.OTP_SEND_SUCCESS
         })
     }
-}       
+}
