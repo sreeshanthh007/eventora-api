@@ -31,6 +31,7 @@ export const SUCCESS_MESSAGES = {
     OTP_SEND_SUCCESS:"OTP sent to your Email successfully",
      VERIFICATION_SUCCESS: "Verification completed successfully.",
      UPDATE_SUCCESS: "Updated successfully.",
+     USER_LOGOUT_SUCCESS:"Logged out successfully"
 }
 
 
@@ -49,6 +50,8 @@ NO_TOKEN:"Authentication error : No token Provided",
   FORBIDDEN:"Access denied. You do not have permission to access this resource.",
     SERVER_ERROR: "An error occurred, please try again later.",
       VALIDATION_ERROR: "Validation error occurred.",
+        UNAUTH_NO_USER_FOUND: "Unauthorized: No user found in request",
+          INVALID_ROLE: "Invalid user role",
 
 
 };

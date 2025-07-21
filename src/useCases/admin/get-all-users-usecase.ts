@@ -1,10 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
-import { CustomError } from "@entities/utils/custom.error";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase";
-import { IClientEntity } from "@entities/models/client.entity";
-import { response } from "express";
 import { PaginatedUsers } from "@entities/models/paginatedUsers.entity";
 @injectable()
 export class getAllUsersUseCase implements IGetAllUsersUseCase{

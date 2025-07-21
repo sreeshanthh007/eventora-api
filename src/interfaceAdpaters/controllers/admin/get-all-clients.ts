@@ -1,5 +1,4 @@
 import { IGetAllUsers } from "@entities/controllerInterfaces/admin/get-all-users.interface";
-import { CustomError } from "@entities/utils/custom.error";
 import { HTTP_STATUS } from "@shared/constants";
 import { getAllUsersUseCase } from "@usecases/admin/get-all-users-usecase";
 import { Request, Response } from "express";

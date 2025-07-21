@@ -9,6 +9,7 @@ import { RefreshTokenController } from "interfaceAdpaters/controllers/auth/refre
 import { ForgotPasswordController } from "interfaceAdpaters/controllers/client/forgot-password-controller";
 import { forgotVendorPasswordController } from "./resolver";
 import { ForgotVendorOTPController } from "interfaceAdpaters/controllers/vendor/forgot-password.vendorController";
+import { LogoutController } from "interfaceAdpaters/controllers/auth/logout-controller";
 
 export class ControllerRegistry {
     static registerControllers():void{
@@ -19,6 +20,10 @@ export class ControllerRegistry {
         container.register("loginUserController",{
             useClass:loginUserController
         });
+
+        container.register("logoutController",{
+            useClass:LogoutController
+        })
 
         container.register("VerifyOTPController",{
             useClass:VerifyOTPController

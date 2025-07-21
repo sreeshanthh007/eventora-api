@@ -53,7 +53,8 @@ export class ExpressServer {
     this._app.use("/api/client",new ClientRoutes().router);
     
     this._app.use("/api/admin",new AdminRotes().router);
-
+    console.log("provider route mounted");
+    
     this._app.use("/api/provider",new VendorRoutes().router)
   }
 

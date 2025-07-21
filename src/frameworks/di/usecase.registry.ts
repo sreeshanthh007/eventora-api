@@ -46,7 +46,7 @@
 
     // =====error====//
     import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
-    import { logger } from "@frameworks/logger/winston-logger";
+    // import { logger } from "@frameworks/logger/winston-logger";
     import { WinstonLoggerAdapter } from "interfaceAdpaters/services/logger/winston-logger-adapter";
     import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
     import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
@@ -62,6 +62,10 @@ import { IHandleToggleVendorUseCase } from "@entities/useCaseInterfaces/admin/ha
 import { HandleToggleVendorStatusUseCase } from "@usecases/admin/handle-toggle-vendor.usecase";
 import { IVendorExistService } from "@entities/serviceInterfaces/vendor-exist.service.interface";
 import { VendorExistService } from "interfaceAdpaters/services/vendor/vendorExist-service";
+import { IRevokeRefreshTokenUseCase } from "@entities/useCaseInterfaces/auth/revoke-refresh-token-usecase";
+import { RevokeRefreshTokenUseCase } from "@usecases/revoke-refresh-token.usecase";
+import { IBlacklistTokenUseCase } from "@entities/useCaseInterfaces/auth/blackList-token-interface";
+import { BlacklistTokenUseCase } from "@usecases/auth/blacklist-token.usecase";
 
     export class UseCaseRegistry {
         static registerUseCases():void{
@@ -81,6 +85,10 @@ import { VendorExistService } from "interfaceAdpaters/services/vendor/vendorExis
                 useClass:LoginUseCase
             });
 
+            container.register<IRevokeRefreshTokenUseCase>("IRevokeRefreshTokenUseCase",{
+                useClass:RevokeRefreshTokenUseCase
+            })
+
             container.register<ISendEmailUseCase>("ISendEmailUseCase",{
                 useClass:SendEmailUseCase
             });
@@ -95,6 +103,10 @@ import { VendorExistService } from "interfaceAdpaters/services/vendor/vendorExis
             container.register<IRefreshTokenUseCase>("IRefreshTokenUseCase",{
                 useClass:refreshTokenUsesCase
             });
+
+            container.register<IBlacklistTokenUseCase>("IBlacklistTokenUseCase",{
+                useClass:BlacklistTokenUseCase
+            })  
 
             container.register<IRegisterStrategy>("clientRegisterStrategy",{
                 useClass:CLientRegisterStrategy

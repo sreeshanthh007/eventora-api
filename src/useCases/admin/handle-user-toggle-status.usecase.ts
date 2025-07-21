@@ -3,7 +3,7 @@ import { IuserToggleStatusUseCase } from "@entities/useCaseInterfaces/admin/hand
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
-
+import { RedisClient  } from "@frameworks/cache/redis.client";
 
 
 @injectable()
@@ -12,7 +12,7 @@ export class UserToggleStatusUseCase implements IuserToggleStatusUseCase{
         @inject("IClientRepository") private clientRepository : IClientRepository
     ){} 
 
-    async execute(userId: string, status: string): Promise<void> {
+    async execute(userId: string): Promise<void> {
         console.log(userId)
         if(!userId){
             throw new CustomError(
@@ -20,9 +20,26 @@ export class UserToggleStatusUseCase implements IuserToggleStatusUseCase{
                 HTTP_STATUS.NOT_FOUND
             )
         }
-
-        await this.clientRepository.findByIdAndUpdateStatus(userId,status);
         
+        const client = await this.clientRepository.findById(userId)
 
+        if(!client){
+            throw new CustomError(
+                ERROR_MESSAGES.USER_NOT_FOUND,
+                HTTP_STATUS.NOT_FOUND
+            )
+        }
+
+        const newsStatus = client.status=="active" ? "blocked" : "active"
+
+        await this.clientRepository.findByIdAndUpdateStatus(userId,newsStatus);
+
+        if(newsStatus=="blocked"){
+            await RedisClient.set(`user_status:client${userId}`,newsStatus,{
+                EX:3600
+            });
+        }else if(newsStatus=="active"){
+           await RedisClient.del(`user_status:client:${userId}`)
+        }
     }
 }

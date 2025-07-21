@@ -4,8 +4,8 @@
 
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
-import { getAlluserscontroller, getAllVendorsController, refreshTokenController, toggleUsercontroller, toggleVendorController } from "@frameworks/di/resolver";
+import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
+import { getAlluserscontroller, getAllVendorsController, logoutController, refreshTokenController, toggleUsercontroller, toggleVendorController } from "@frameworks/di/resolver";
 
 export class AdminRotes extends BaseRouter{
      constructor() {
@@ -41,6 +41,13 @@ export class AdminRotes extends BaseRouter{
             "/refresh-token",
             decodeToken,
             asyncHandler(refreshTokenController.handle.bind(refreshTokenController))
+        )
+
+        this.router.post(
+            "/logout",
+            verifyAuth,
+            authorizeRole(["admin"]),
+            logoutController.handle.bind(logoutController)
         )
     }
 

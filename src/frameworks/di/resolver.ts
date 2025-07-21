@@ -23,13 +23,18 @@ import { VendorForgotPassword } from "interfaceAdpaters/controllers/vendor/Vendo
 import { GetAllVendorsController } from "interfaceAdpaters/controllers/admin/get-all-vendors.controllers";
 import { HandleToggleVendorStatus } from "interfaceAdpaters/controllers/admin/handleToggleVendorController";
 import { ForgotVendorOTPController } from "interfaceAdpaters/controllers/vendor/forgot-password.vendorController";
+import { LogoutController } from "interfaceAdpaters/controllers/auth/logout-controller";
+import { BlockedStatusMiddleware } from "interfaceAdpaters/middlewares/block-status.middleware";
 
 
 DependencyInjection.registerAll()
+export const blockstatusMiddleware = container.resolve(BlockedStatusMiddleware)
 
 export const registerController = container.resolve(registerUserController);
 
 export const loginController = container.resolve(loginUserController);
+
+export const logoutController = container.resolve(LogoutController)
 
 export const verifyOtpController = container.resolve(VerifyOTPController)
 

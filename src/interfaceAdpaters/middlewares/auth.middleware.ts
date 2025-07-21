@@ -36,15 +36,17 @@ const extractToken = (req: Request): { access_token: string; refresh_token: stri
 };
 
 
-// const isBlacklisted = async(token:string) :Promise<boolean> =>{
-//     const result = await RedisClient.get(token)
-//     return result!==null
-// }
+const isBlacklisted = async(token:string) :Promise<boolean> =>{
+    const result = await RedisClient.get(token)
+    return result!==null
+}
 
 
 export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     try {
         const token = extractToken(req)
+
+       
 
      if (!token) {
       res
@@ -53,9 +55,9 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
       return;
     }
 
-    // if(await isBlacklisted(token.access_token)){
-    //     res.status(HTTP_STATUS.UNAUTHORIZED).json({message:"Token is Blacklisted"})
-    // }
+    if(await isBlacklisted(token.access_token)){
+        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:"Token is Blacklisted"})
+    }
 
     const user = tokenService.verifyAccessToken(token.access_token) as CustomJWTPayload
 
@@ -74,7 +76,7 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
 
     } catch (error) {
      
-    console.log("token is invalid is worked");
+    console.log("token is invalid is worked",error);
     res
       .status(HTTP_STATUS.UNAUTHORIZED)
       .json({ message: ERROR_MESSAGES.INVALID_TOKEN });
@@ -96,12 +98,12 @@ export const decodeToken = async(req:Request , res:Response , next:NextFunction)
             return
         }
 
-        // if(await isBlacklisted(token.access_token)){
-        //     console.log("token is blacklisted");
-        //     res.status(HTTP_STATUS.UNAUTHORIZED)
-        //     .json({message:"Token is blacklisted"})
-        //     return
-        // };
+        if(await isBlacklisted(token.access_token)){
+            console.log("token is blacklisted");
+            res.status(HTTP_STATUS.UNAUTHORIZED)
+            .json({message:"Token is blacklisted"})
+            return
+        };
 
         const user =  tokenService.decodeAccessToken(token?.access_token);
 
