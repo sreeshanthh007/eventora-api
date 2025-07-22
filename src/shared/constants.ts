@@ -52,6 +52,8 @@ NO_TOKEN:"Authentication error : No token Provided",
       VALIDATION_ERROR: "Validation error occurred.",
         UNAUTH_NO_USER_FOUND: "Unauthorized: No user found in request",
           INVALID_ROLE: "Invalid user role",
+            ROUTE_NOT_FOUND: "Route not found.",
+
 
 
 };

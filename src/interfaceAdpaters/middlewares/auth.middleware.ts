@@ -37,7 +37,11 @@ const extractToken = (req: Request): { access_token: string; refresh_token: stri
 
 
 const isBlacklisted = async(token:string) :Promise<boolean> =>{
+    console.log("token in isblack",token);
+    
     const result = await RedisClient.get(token)
+    
+    
     return result!==null
 }
 
@@ -90,23 +94,24 @@ export const decodeToken = async(req:Request , res:Response , next:NextFunction)
         const token = extractToken(req)
         console.log("this si the toke to decode",token)
 
-        if(!token){
+        if(!token?.refresh_token){
             console.log("no token for decode")
             res
             .status(HTTP_STATUS.UNAUTHORIZED)
             .json({message:ERROR_MESSAGES.UNAUTHORIZED_ACCESS})
             return
         }
-
+        
         if(await isBlacklisted(token.access_token)){
             console.log("token is blacklisted");
             res.status(HTTP_STATUS.UNAUTHORIZED)
             .json({message:"Token is blacklisted"})
             return
         };
-
+        console.log("hey boiiii")
         const user =  tokenService.decodeAccessToken(token?.access_token);
-
+        console.log("user from decode access token",user);
+        
 
         (req as CustomRequest).user ={
             id:user?.id,

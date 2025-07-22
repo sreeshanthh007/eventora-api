@@ -3,6 +3,7 @@ import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser"
+import morgan from "morgan"
 import express, { Application, NextFunction, Request, Response } from "express";
 import { AuthRoutes } from "../../frameworks/routes/auth/auth.route";
 import { ClientRoutes } from "@frameworks/routes/client/client.route";
@@ -44,6 +45,7 @@ export class ExpressServer {
     this._app.use(express.json());
     this._app.use(express.urlencoded({extended:true}))
     this._app.use(cookieParser())
+    this._app.use(morgan("dev"))
   }
 
   private configureRoutes(): void {
