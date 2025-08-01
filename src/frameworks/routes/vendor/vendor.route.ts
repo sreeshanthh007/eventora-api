@@ -27,10 +27,11 @@ export class VendorRoutes extends BaseRouter{
         this.router.post(
             "/logout",
             verifyAuth,
+            authorizeRole(["vendor"]),
             logoutController.handle.bind(logoutController)
         );
 
-        this.router.post("/v_/refresh-token",decodeToken,asyncHandler(refreshTokenController.handle.bind(refreshTokenController)))
+        this.router.post("/refresh-token",decodeToken,asyncHandler(refreshTokenController.handle.bind(refreshTokenController)))
         
     }
 }   

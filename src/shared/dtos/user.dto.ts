@@ -36,6 +36,6 @@ export type UserDTO = AdminDTO | ClientDTO | VendorDTO
 
 export interface LoginUserDTO{
     email:string,
-    password:string,
+    password?:string,
     role:TRole
 }

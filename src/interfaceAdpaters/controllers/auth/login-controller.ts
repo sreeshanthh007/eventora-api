@@ -22,7 +22,7 @@ export class loginUserController implements ILoginUserController {
     async handle(req: Request, res: Response): Promise<void> {
         const data = req.body as LoginUserDTO
 
-        
+        console.log("user in login",req.body)
         const validatedData = loginSchema.parse(data)
 
         if(!validatedData){
@@ -44,7 +44,7 @@ export class loginUserController implements ILoginUserController {
         const token =  await this.generateTokenUseCase.execute(userId,user.email,user.role)
 
         const accessTokenName = `${user.role}_access_token`
-        console.log("this is the ")
+       
         const refreshTokenName = `${user.role}_refresh_token`
 
         setAuthCookies(
@@ -69,6 +69,6 @@ export class loginUserController implements ILoginUserController {
             },
             accessToken:token.accessToken,
             refreshToken:token.refreshToken
-        });
+        }); 
     }
 }

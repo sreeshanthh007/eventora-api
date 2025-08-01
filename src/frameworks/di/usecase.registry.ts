@@ -8,6 +8,8 @@
     import { IRegisterStrategy } from "@usecases/auth/register-strategies/register-strategy.interface";
     import { ILoginStrategy } from "@usecases/auth/login-strategies/login-strategy.interface";
     import { ClientLoginStrategy } from "@usecases/auth/login-strategies/client-login-strategy";
+    import { ClientGoogleLoginStrategy } from "@usecases/auth/login-strategies/client-google-login.strategy";
+    import { VendorGoogleLoginStrategy } from "@usecases/auth/login-strategies/vendor-google-login.strategy";
     import { CLientRegisterStrategy } from "@usecases/auth/register-strategies/client-register-strategy";
     import { VendorRegisterStrategy } from "@usecases/auth/register-strategies/vendor-register-strategy";
     import { VendorLoginStrategy } from "@usecases/auth/login-strategies/vendor-login-strategy";
@@ -66,6 +68,8 @@ import { IRevokeRefreshTokenUseCase } from "@entities/useCaseInterfaces/auth/rev
 import { RevokeRefreshTokenUseCase } from "@usecases/revoke-refresh-token.usecase";
 import { IBlacklistTokenUseCase } from "@entities/useCaseInterfaces/auth/blackList-token-interface";
 import { BlacklistTokenUseCase } from "@usecases/auth/blacklist-token.usecase";
+import { IGoogleUseCase } from "@entities/useCaseInterfaces/auth/google-login-usecase.interface";
+import { GoogleuseCase } from "@usecases/auth/google-login-usecase";
 
     export class UseCaseRegistry {
         static registerUseCases():void{
@@ -116,12 +120,20 @@ import { BlacklistTokenUseCase } from "@usecases/auth/blacklist-token.usecase";
                 useClass:ClientLoginStrategy
             });
 
+            container.register<ILoginStrategy>("ClientGoogleLoginStrategy",{
+                useClass:ClientGoogleLoginStrategy
+            })
+
             container.register<IRegisterStrategy>("VendorRegisterStrategy",{
                 useClass:VendorRegisterStrategy
             })
 
             container.register<ILoginStrategy>("VendorLoginStrategy",{
                 useClass:VendorLoginStrategy
+            });
+
+            container.register<ILoginStrategy>("VendorGoogleLoginStrategy",{
+                useClass:VendorGoogleLoginStrategy
             });
 
             container.register<ILoginStrategy>("AdminLoginStrategy",{
@@ -169,19 +181,27 @@ import { BlacklistTokenUseCase } from "@usecases/auth/blacklist-token.usecase";
             });
 
 
-            container.register<IHandleToggleVendorUseCase>("IHandleToggleVendorUseCase",{
-                useClass:HandleToggleVendorStatusUseCase
-            })
+                container.register<IHandleToggleVendorUseCase>("IHandleToggleVendorUseCase",{
+                    useClass:HandleToggleVendorStatusUseCase
+                })
 
 
-            container.register<IForgotUpdatePasswordUseCase>("IForgotClientUpdatePasswordUseCase",{
-                useClass:ForgotClientUpdatePasswordUseCase
-            });
+                container.register<IForgotUpdatePasswordUseCase>("IForgotClientUpdatePasswordUseCase",{
+                    useClass:ForgotClientUpdatePasswordUseCase
+                });
 
-            container.register<IForgotUpdatePasswordUseCase>("ForgotVendorUpdatePasswordUseCase",{
-                useClass:ForgotVendorUpdatePasswordUseCase
-            })
+                container.register<IForgotUpdatePasswordUseCase>("ForgotVendorUpdatePasswordUseCase",{
+                    useClass:ForgotVendorUpdatePasswordUseCase
+                });
 
+                container.register<IGoogleUseCase>("IGoogleUseCase",{
+                    useClass:GoogleuseCase
+                });  
+
+
+
+
+                
 
 
 

@@ -9,6 +9,8 @@ export interface IUserEntity{
     phone:string,
     role?:TRole,
     password:string,
+    googleId:string,
+    profileImage:string,
     status?:string,
     createdAt:Date,
     updatedAt:Date

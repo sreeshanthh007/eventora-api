@@ -16,4 +16,4 @@ export class ClientRoutes extends BaseRouter{
 
         this.router.post("/logout",verifyAuth,logoutController.handle.bind(logoutController))
     }
-}
+}   

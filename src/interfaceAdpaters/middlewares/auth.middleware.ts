@@ -23,7 +23,9 @@ export interface CustomRequest extends Request{
 const extractToken = (req: Request): { access_token: string; refresh_token: string } | null => {
 
      const basePath = req.baseUrl.split("/");
-  const userType = basePath[2]; 
+ 
+    const userType = basePath[2]; 
+
 
   if (["client", "vendor", "admin"].includes(userType)) {
     return {
@@ -37,10 +39,10 @@ const extractToken = (req: Request): { access_token: string; refresh_token: stri
 
 
 const isBlacklisted = async(token:string) :Promise<boolean> =>{
-    console.log("token in isblack",token);
+  
     
     const result = await RedisClient.get(token)
-    
+    console.log("is token blacklisted",result)
     
     return result!==null
 }
@@ -49,8 +51,6 @@ const isBlacklisted = async(token:string) :Promise<boolean> =>{
 export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     try {
         const token = extractToken(req)
-
-       
 
      if (!token) {
       res
@@ -62,6 +62,7 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     if(await isBlacklisted(token.access_token)){
         res.status(HTTP_STATUS.UNAUTHORIZED).json({message:"Token is Blacklisted"})
     }
+ 
 
     const user = tokenService.verifyAccessToken(token.access_token) as CustomJWTPayload
 
@@ -108,7 +109,7 @@ export const decodeToken = async(req:Request , res:Response , next:NextFunction)
             .json({message:"Token is blacklisted"})
             return
         };
-        console.log("hey boiiii")
+     
         const user =  tokenService.decodeAccessToken(token?.access_token);
         console.log("user from decode access token",user);
         

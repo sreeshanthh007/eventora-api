@@ -2,7 +2,8 @@
   import { asyncHandler } from "@shared/async-handler";
   import { BaseRouter } from "../base.route";
   import { loginController , registerController ,verifyOtpController , sentOtpController , 
-    forgotOtpController
+    forgotOtpController,
+    googleController
   } from "@frameworks/di/resolver";
 
   export class AuthRoutes extends BaseRouter{
@@ -19,5 +20,7 @@
       this.router.post("/sent-otp", asyncHandler(sentOtpController.handle.bind(sentOtpController)));
       this.router.post("/forgot-password/sent-otp",asyncHandler(forgotOtpController.handle.bind(forgotOtpController)))
       this.router.post("/verify-otp", asyncHandler(verifyOtpController.handle.bind(verifyOtpController)));
+
+      this.router.post("/google-auth",asyncHandler(googleController.handle.bind(googleController)))
     }
   }

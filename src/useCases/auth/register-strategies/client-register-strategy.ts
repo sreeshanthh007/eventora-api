@@ -39,7 +39,7 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
             const clientId = generateRandomUUID()
 
             const client = await this.clientRepository.save({
-                name,
+                name:name,
                 email,
                 phone,
                 password:hashedPassword || "",

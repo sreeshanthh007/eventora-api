@@ -25,6 +25,7 @@ import { HandleToggleVendorStatus } from "interfaceAdpaters/controllers/admin/ha
 import { ForgotVendorOTPController } from "interfaceAdpaters/controllers/vendor/forgot-password.vendorController";
 import { LogoutController } from "interfaceAdpaters/controllers/auth/logout-controller";
 import { BlockedStatusMiddleware } from "interfaceAdpaters/middlewares/block-status.middleware";
+import { GoogleController } from "interfaceAdpaters/controllers/auth/google-login-controller";
 
 
 DependencyInjection.registerAll()
@@ -33,6 +34,8 @@ export const blockstatusMiddleware = container.resolve(BlockedStatusMiddleware)
 export const registerController = container.resolve(registerUserController);
 
 export const loginController = container.resolve(loginUserController);
+
+export const googleController = container.resolve(GoogleController)
 
 export const logoutController = container.resolve(LogoutController)
 

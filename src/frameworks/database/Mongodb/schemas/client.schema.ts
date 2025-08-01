@@ -16,7 +16,9 @@ export const ClientSchema = new Schema<IClientModel>(
 
         role:{type:String,enum:ROLES,required:true},
 
-        // profileImage:{type:String},
+        profileImage:{type:String},
+
+        googleId:{type:String},
 
         status:{type:String,default:"active"},
     },

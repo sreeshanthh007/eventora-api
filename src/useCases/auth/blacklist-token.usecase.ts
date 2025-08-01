@@ -16,7 +16,7 @@ export class BlacklistTokenUseCase implements IBlacklistTokenUseCase{
 
           const decoded = this.tokenService.verifyAccessToken(token) as JwtPayload | null;
 
-        console.log("decoded",decoded)
+        
        
             if (!decoded || typeof decoded !== 'object' || !('exp' in decoded)) {
             throw new Error("Invalid token: Missing or malformed payload");

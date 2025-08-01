@@ -16,13 +16,13 @@ export class LogoutController implements ILogoutUserController{
     ){}
 
     async handle(req: Request, res: Response): Promise<void> {
-        console.log((req as CustomRequest).user)
+        (req as CustomRequest).user
         await this.blackListTokenUseCase.execute((req as CustomRequest).user.access_token)
 
         await this.revokeRefreshTokenUseCase.execute((req as CustomRequest).user.refresh_token);
 
         const user = (req as CustomRequest).user
-
+        console.log("user is",user)
         const accessTokenName = `${user.role}_access_token`
         const refreshTokenName = `${user.role}_refresh_token`
 

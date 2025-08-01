@@ -1,9 +1,10 @@
-import mongoose, { Schema } from "mongoose";
+import  { Schema } from "mongoose";
 import { IVendorVerificationModel } from "../models/vendor-verification.model";
 
 export const vendorVerificationSchema = new Schema<IVendorVerificationModel>(
     {
         vendorId:{type:Schema.Types.ObjectId , ref:"Vendor",required:true},
+
         businessName:{type:String},
 
         name:{type:String,required:true},
@@ -16,7 +17,7 @@ export const vendorVerificationSchema = new Schema<IVendorVerificationModel>(
 
         idProof:{type:String,required:true},
 
-        status:{type:String,enum:["pending","rejected","approved"], default:"pending"},
+        status:{type:String,enum:["pending","rejected","approved"], default:null},
 
         rejectionReason:{type:String,required:true},
 

@@ -10,6 +10,7 @@ import { ForgotPasswordController } from "interfaceAdpaters/controllers/client/f
 import { forgotVendorPasswordController } from "./resolver";
 import { ForgotVendorOTPController } from "interfaceAdpaters/controllers/vendor/forgot-password.vendorController";
 import { LogoutController } from "interfaceAdpaters/controllers/auth/logout-controller";
+import { GoogleController } from "interfaceAdpaters/controllers/auth/google-login-controller";
 
 export class ControllerRegistry {
     static registerControllers():void{
@@ -50,6 +51,10 @@ export class ControllerRegistry {
         // })
         container.register("ForgotPasswordController",{
             useClass:ForgotPasswordController
+        })
+
+        container.register("GoogleLoginController",{
+            useClass:GoogleController
         })
     }
 }   
