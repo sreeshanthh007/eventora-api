@@ -9,6 +9,7 @@ import { IBcrypt } from "@frameworks/security/bcrypt.interface";
 
 
 @injectable()
+
 export class SendEmailUseCase implements ISendEmailUseCase {
     constructor(
         @inject("IEmailService") private emailService : IEmailService,
@@ -32,7 +33,8 @@ export class SendEmailUseCase implements ISendEmailUseCase {
         
         const hashedOTP = await this.otpBcrypt.hash(otp);
 
-        await this.OTPService.storeOTP(email,hashedOTP)
+        await this.OTPService.storeOTP(email,hashedOTP,300)
+        
         await this.emailService.sendEmail(
             email,
             "EVENTORA - verify your Email",

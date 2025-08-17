@@ -1,6 +1,5 @@
 
 import { ObjectId } from "mongoose";
-import { TRole } from "@shared/constants";
 
 export interface IRefreshTokenRepository {
     save(data:{

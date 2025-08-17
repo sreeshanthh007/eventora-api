@@ -27,21 +27,19 @@ export const setAuthCookies =(
 
 
 export const updateCookieWithAccessToken = (
-    res:Response,
-    accessToken:string,
-    accessTokenName:string
-) =>{
+    res: Response,
+    accessToken: string,
+    accessTokenName: string
+) => {
+    const isProduction = process.env.NODE_ENV === "production";
 
-    const isProduction = process.env.NODE_ENV =="production"
-
-
-    res.cookie(accessTokenName,accessToken,{
-        httpOnly:true,
-        secure:isProduction,
-        sameSite:isProduction ? "none" : "strict"
+    res.cookie(accessTokenName, accessToken, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "strict",
+        maxAge: 15 * 60 * 1000, // 15 minutes
     });
 };
-
 
 export const clearAuthCookie = (
     res:Response,

@@ -4,14 +4,15 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application} from "express";
 import { AuthRoutes } from "../../frameworks/routes/auth/auth.route";
 import { ClientRoutes } from "@frameworks/routes/client/client.route";
 import { config } from "@shared/config";
 import { MongoConnect } from "@frameworks/database/Mongodb/mongoConnect";
-import { injectedLogger , injectedLoggerMiddleWare , errorMiddleware } from "@frameworks/di/resolver";
+import {  errorMiddleware } from "@frameworks/di/resolver";
 import { AdminRotes } from "@frameworks/routes/admin/admin.route";
 import { VendorRoutes } from "@frameworks/routes/vendor/vendor.route";
+import { CloudinaryRoutes } from "@frameworks/routes/common/cloudinaryRoutes";
 const connectDB = new MongoConnect()
 
 export class ExpressServer {
@@ -42,6 +43,10 @@ export class ExpressServer {
       })
     );
 
+   
+
+ 
+
     this._app.use(express.json());
     this._app.use(express.urlencoded({extended:true}))
     this._app.use(cookieParser())
@@ -50,14 +55,15 @@ export class ExpressServer {
 
   private configureRoutes(): void {
     console.log("✅ Mounting /api/auth route...");
-    this._app.use("/api/auth", new AuthRoutes().router);
+    this._app.use("/api_v1/auth", new AuthRoutes().router);
     console.log("✅ Mounting /api/client route...");
-    this._app.use("/api/client",new ClientRoutes().router);
+    this._app.use("/api_v1/client",new ClientRoutes().router);
     
-    this._app.use("/api/admin",new AdminRotes().router);
+    this._app.use("/api_v1/admin",new AdminRotes().router);
 
   
-    this._app.use("/api/vendor",new VendorRoutes().router)
+    this._app.use("/api_v1/vendor",new VendorRoutes().router)
+    this._app.use("/api/cloudinary",new CloudinaryRoutes().router)
     console.log("provider mounted successfully")
   }
 
@@ -66,7 +72,7 @@ export class ExpressServer {
   }
 
   public getApp(): Application {
-    // console.log('jashdfjaslkdf')
+  
     return this._app;
   }
   public listen(){

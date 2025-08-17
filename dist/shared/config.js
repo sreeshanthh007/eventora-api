@@ -25,7 +25,7 @@ exports.config = {
         REDIS_USERNAME: process.env.REDIS_USERNAME || 'default',
         REDIS_PASS: process.env.REDIS_PASSWORD,
         REDIS_PORT: process.env.REDIS_PORT || "10195",
-        REDIS_HOST: process.env.REDIS_HOST
+        REDIS_HOST: process.env.REDIS_HOST,
     },
     jwt: {
         JWT_SECRECT_KEY: process.env.JWT_SECRECT_KEY || "your-secrect-key",
@@ -33,5 +33,11 @@ exports.config = {
         REFRESH_EXPIRES_IN: process.env.REFRESH_EXPIRES_IN || ""
     },
     otpExpiry: process.env.OTP_EXPIRY_IN_MINUTES || "2",
-    bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || 10
+    bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || 10,
+    OTP_PREFIX: "otp:",
+    cloudinary: {
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+        apiKey: process.env.CLOUDINARY_API_KEY,
+        apiSecret: process.env.CLOUDINARY_API_SECRET
+    }
 };

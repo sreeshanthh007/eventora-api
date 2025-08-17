@@ -30,14 +30,9 @@ let GetAllVendorsController = class GetAllVendorsController {
     }
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { limit = "10", currentPage = "1", searchTerm = "" } = req.query;
-                const response = yield this.getAllVendors.execute(Number(limit), searchTerm, Number(currentPage));
-                res.status(constants_1.HTTP_STATUS.OK).json({ success: true, message: "Vendor fetched successfullly", vendors: response.user, totalPages: response.total });
-            }
-            catch (error) {
-                console.log(error);
-            }
+            const { limit = "10", page = "1", search = "" } = req.query;
+            const response = yield this.getAllVendors.execute(Number(limit), search, Number(page));
+            res.status(constants_1.HTTP_STATUS.OK).json({ success: true, message: "Vendor fetched successfullly", vendors: response.user, totalPages: response.total });
         });
     }
 };

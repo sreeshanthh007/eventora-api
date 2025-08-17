@@ -22,7 +22,7 @@ export class sendForgotPasswordOtp implements ISendOtpUsecase {
 
         const hashedOTP = await this.otpBcrypt.hash(otp)
 
-        await this.otpService.storeOTP(email,hashedOTP)
+        await this.otpService.storeOTP(email,hashedOTP,300)
 
         await this.emailService.sendEmail(
             email,

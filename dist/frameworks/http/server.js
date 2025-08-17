@@ -8,10 +8,17 @@ require("reflect-metadata");
 const helmet_1 = __importDefault(require("helmet"));
 const cors_1 = __importDefault(require("cors"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const morgan_1 = __importDefault(require("morgan"));
 const express_1 = __importDefault(require("express"));
 const auth_route_1 = require("../../frameworks/routes/auth/auth.route");
+const client_route_1 = require("@frameworks/routes/client/client.route");
 const config_1 = require("@shared/config");
 const mongoConnect_1 = require("@frameworks/database/Mongodb/mongoConnect");
+const resolver_1 = require("@frameworks/di/resolver");
+const admin_route_1 = require("@frameworks/routes/admin/admin.route");
+const vendor_route_1 = require("@frameworks/routes/vendor/vendor.route");
+const cloudinaryRoutes_1 = require("@frameworks/routes/common/cloudinaryRoutes");
 const connectDB = new mongoConnect_1.MongoConnect();
 class ExpressServer {
     constructor() {
@@ -32,18 +39,30 @@ class ExpressServer {
             credentials: true,
         }));
         this._app.use(express_1.default.json());
+        this._app.use(express_1.default.urlencoded({ extended: true }));
+        this._app.use((0, cookie_parser_1.default)());
+        this._app.use((0, morgan_1.default)("dev"));
     }
     configureRoutes() {
         console.log("✅ Mounting /api/auth route...");
         this._app.use("/api/auth", new auth_route_1.AuthRoutes().router);
+        console.log("✅ Mounting /api/client route...");
+        this._app.use("/api/client", new client_route_1.ClientRoutes().router);
+        this._app.use("/api/admin", new admin_route_1.AdminRotes().router);
+        this._app.use("/api/vendor", new vendor_route_1.VendorRoutes().router);
+        this._app.use("/api/cloudinary", new cloudinaryRoutes_1.CloudinaryRoutes().router);
+        console.log("provider mounted successfully");
+    }
+    configureErrorHandlingMiddleware() {
+        this._app.use(resolver_1.errorMiddleware.handleError.bind(resolver_1.errorMiddleware));
     }
     getApp() {
-        // console.log('jashdfjaslkdf')
         return this._app;
     }
     listen() {
         this._app.listen(3000, () => console.log('server listening'));
         connectDB.connectDB();
+        this.configureErrorHandlingMiddleware();
     }
 }
 exports.ExpressServer = ExpressServer;

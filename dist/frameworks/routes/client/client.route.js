@@ -13,6 +13,8 @@ class ClientRoutes extends base_route_1.BaseRouter {
     initializeRoutes() {
         this.router.post("/refresh-token", auth_middleware_1.decodeToken, (0, async_handler_1.asyncHandler)(resolver_1.refreshTokenController.handle.bind(resolver_1.refreshTokenController)));
         this.router.put("/forgot-password", (0, async_handler_1.asyncHandler)(resolver_2.forgotPasswordController.handle.bind(resolver_2.forgotPasswordController)));
+        this.router.get("/all-categories", (0, async_handler_1.asyncHandler)(resolver_1.getAllCategoryForClientsController.handle.bind(resolver_1.getAllCategoryForClientsController)));
+        this.router.post("/logout", auth_middleware_1.verifyAuth, resolver_1.logoutController.handle.bind(resolver_1.logoutController));
     }
 }
 exports.ClientRoutes = ClientRoutes;

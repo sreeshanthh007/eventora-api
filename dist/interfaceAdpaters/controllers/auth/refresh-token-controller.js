@@ -39,7 +39,6 @@ let RefreshTokenController = class RefreshTokenController {
                 res.status(constants_1.HTTP_STATUS.OK).json({ success: true, message: "Token refreshed successfully", token: new_token.accessToken });
             }
             catch (error) {
-                console.log(error);
                 (0, cookie_helper_1.clearAuthCookie)(res, `${req.user.role}_access_token`, `${req.user.role}_refresh_token`);
                 res.status(constants_1.HTTP_STATUS.UNAUTHORIZED).json({ message: "Invalid token" });
             }

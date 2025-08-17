@@ -37,6 +37,7 @@ let RegisterUseCase = class RegisterUseCase {
     execute(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const strategies = this.strategies[user.role];
+            console.log("user in register", user);
             if (!strategies) {
                 throw new custom_error_1.CustomError("Invalid user role", constants_1.HTTP_STATUS.FORBIDDEN);
             }

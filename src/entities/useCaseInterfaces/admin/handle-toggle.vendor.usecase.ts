@@ -1,4 +1,4 @@
 export interface IHandleToggleVendorUseCase{
-    execute(vendorid:string,status:string) : Promise<void
+    execute(vendorId:string,status:string) : Promise<void>
 }
 

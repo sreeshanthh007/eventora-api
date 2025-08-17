@@ -30,36 +30,26 @@ let HandleToggleStatus = class HandleToggleStatus {
     }
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { userId, status } = req.body;
-                if (!userId || !status) {
-                    res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
-                        success: false,
-                        message: "userId and status are required"
-                    });
-                    return;
-                }
-                if (!['active', 'blocked'].includes(status)) {
-                    res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
-                        success: false,
-                        message: "Status must be either 'active' or 'blocked'"
-                    });
-                    return;
-                }
-                yield this.ToggleStatusUseCase.execute(userId, status);
-                res.status(constants_1.HTTP_STATUS.OK).json({
-                    success: true,
-                    message: `User status updated to ${status}`,
-                    data: { userId, status }
-                });
-            }
-            catch (error) {
-                console.error("Error in HandleToggleStatus:", error);
-                res.status(constants_1.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+            const { userId, status } = req.body;
+            if (!userId || !status) {
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
                     success: false,
-                    message: "Failed to update user status"
+                    message: "userId and status are required"
                 });
+                return;
             }
+            if (!['active', 'blocked'].includes(status)) {
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
+                    success: false,
+                    message: "Status must be either 'active' or 'blocked'"
+                });
+                return;
+            }
+            yield this.ToggleStatusUseCase.execute(userId, status);
+            res.status(constants_1.HTTP_STATUS.OK).json({
+                success: true,
+                message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS
+            });
         });
     }
 };

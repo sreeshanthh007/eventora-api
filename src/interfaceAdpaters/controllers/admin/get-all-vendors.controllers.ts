@@ -11,24 +11,20 @@ export class GetAllVendorsController implements IGetAllVendorsController {
         @inject("IGetAllVendorsUseCase") private getAllVendors : IGetAllVendorsUseCase
     ){}
 
-
     async handle(req: Request, res: Response): Promise<void> {
-        try {
+   
              const {
             limit = "10",
-            currentPage = "1",
-            searchTerm = ""
+            page = "1",
+            search = ""
             } = req.query as {
             limit?: string
-            currentPage?: string
-            searchTerm?: string
+            page?: string
+            search?: string
             }
 
-            const response = await this.getAllVendors.execute(Number(limit),searchTerm,Number(currentPage))
+            const response = await this.getAllVendors.execute(Number(limit),search,Number(page))
             
             res.status(HTTP_STATUS.OK).json({success:true,message:"Vendor fetched successfullly",vendors:response.user,totalPages:response.total})
-        } catch (error) {
-            console.log(error)
-        }
     }
 }

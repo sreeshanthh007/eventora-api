@@ -8,12 +8,15 @@ exports.VendorSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String },
-    role: { type: String, enum: constants_1.ROLES, required: true },
-    // profileImage:{type:String},
+    role: { type: String, enum: constants_1.ROLES, required: true, default: "vendor" },
+    profilePicture: { type: String },
     phone: { type: String },
-    bio: { type: String },
+    about: { type: String },
+    idProof: { type: String, required: true },
     place: { type: String },
+    rejectionReason: { type: String, required: false },
     status: { type: String, default: "active" },
+    vendorStatus: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
 }, {
     timestamps: true
 });

@@ -27,8 +27,9 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
                 )
             }
 
-            const {name,email,phone,password,} = user as VendorDTO
-
+            const {name,email,phone,password,idProof} = user as VendorDTO
+       
+            
             let hashedPassword = null
 
             if(password){
@@ -44,6 +45,7 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
                 phone,
                 password:hashedPassword ?? "",
                 vendorId,
+                idProof:idProof,
                 role:"vendor" 
             });
 

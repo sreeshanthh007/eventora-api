@@ -33,7 +33,9 @@ const vendorSchema = z.object({
     .regex(emailRegex,{message:"Invalid email address"}),
     phone:phoneSchema,
     password:passwordSchema,
-    role:z.literal("vendor")
+    role:z.literal("vendor"),
+    idProof:z
+    .string()
 });
 
 

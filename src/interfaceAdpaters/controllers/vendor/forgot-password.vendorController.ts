@@ -1,5 +1,5 @@
 import { IForgotPasswordController } from "@entities/controllerInterfaces/auth/forgotPassword-controller.interface";
-import { sendForgotPasswordOtp } from "@usecases/sent-forgot.password-otp.usecase";
+import { sendForgotPasswordOtp } from "@usecases/auth/sent-forgot.password-otp.usecase";
 import { IVendorExistService } from "@entities/serviceInterfaces/vendor-exist.service.interface";
 import { inject, injectable } from "tsyringe";
 import { Request, Response } from "express";

@@ -24,6 +24,8 @@ export class VendorForgotPassword implements IForgotPasswordController{
         
         } catch (error) {
          res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message:ERROR_MESSAGES.SERVER_ERROR})
+         console.log(error);
+         
 
         }
         

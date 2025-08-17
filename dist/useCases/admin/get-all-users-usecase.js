@@ -23,6 +23,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllUsersUseCase = void 0;
 const tsyringe_1 = require("tsyringe");
+const ClientMapper_1 = require("interfaceAdpaters/mappers/ClientMapper");
 let getAllUsersUseCase = class getAllUsersUseCase {
     constructor(clientRepository) {
         this.clientRepository = clientRepository;
@@ -39,8 +40,9 @@ let getAllUsersUseCase = class getAllUsersUseCase {
             const validPageNumber = Math.max(1, current || 1);
             const skip = (validPageNumber - 1) * limit;
             const { user, total } = yield this.clientRepository.findPaginatedClients(filter, skip, limit);
+            const mappedUsers = user.map(ClientMapper_1.mapClientAndVendorEntityToTableRow);
             const response = {
-                user,
+                user: mappedUsers,
                 total: Math.ceil(total / limit),
             };
             return response;

@@ -41,7 +41,7 @@ let SendEmailUseCase = class SendEmailUseCase {
             const otp = this.OTPService.generateOTP();
             console.log("otp sent", otp);
             const hashedOTP = yield this.otpBcrypt.hash(otp);
-            yield this.OTPService.storeOTP(email, hashedOTP);
+            yield this.OTPService.storeOTP(email, hashedOTP, 300);
             yield this.emailService.sendEmail(email, "EVENTORA - verify your Email", otp);
         });
     }

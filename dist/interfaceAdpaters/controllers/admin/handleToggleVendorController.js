@@ -31,6 +31,7 @@ let HandleToggleVendorStatus = class HandleToggleVendorStatus {
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { vendorId, status } = req.body;
+            console.log("vendor id", vendorId, status);
             if (!vendorId || !status) {
                 res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
                     success: false,
@@ -43,9 +44,10 @@ let HandleToggleVendorStatus = class HandleToggleVendorStatus {
                     success: false,
                     message: "Status must be either 'active' or 'blocked'"
                 });
-                return;
             }
             yield this.vendorUseCase.execute(vendorId, status);
+            res.status(constants_1.HTTP_STATUS.OK).json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
+            return;
         });
     }
 };

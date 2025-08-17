@@ -29,4 +29,13 @@ export class EmailService implements IEmailService{
         };
         await this.transporter.sendMail(mailOptions)
     }
+
+    // async sentResetEmail(to: string, subject: string, text: string): Promise<void> {
+    //     const mailOptions = {
+    //         from:"EVENTORA",
+    //         to,
+    //         subject,
+    //         html:
+    //     }
+    // }
 }

@@ -29,7 +29,9 @@ const vendorSchema = zod_1.z.object({
         .regex(email_validation_1.emailRegex, { message: "Invalid email address" }),
     phone: phone_validation_1.phoneSchema,
     password: password_validation_1.passwordSchema,
-    role: zod_1.z.literal("vendor")
+    role: zod_1.z.literal("vendor"),
+    idProof: zod_1.z
+        .string()
 });
 exports.userSchema = {
     admin: adminSchema,

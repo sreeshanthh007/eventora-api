@@ -1,15 +1,8 @@
-
 import { container } from "tsyringe";
 
 import { DependencyInjection } from ".";
-
-import { registerUserController } from "interfaceAdpaters/controllers/auth/register-controller";
-import { loginUserController } from "interfaceAdpaters/controllers/auth/login-controller";
-import { VerifyOTPController } from "interfaceAdpaters/controllers/auth/verifyOtp-controller";
-import { SendOTPController } from "interfaceAdpaters/controllers/auth/sent-otp-controller";
 import { ForgotOtpController } from "interfaceAdpaters/controllers/client/forgot-password.sentOTP-controller";
 import { ForgotPasswordController } from "interfaceAdpaters/controllers/client/forgot-password-controller";
-import { RefreshTokenController } from "interfaceAdpaters/controllers/auth/refresh-token-controller";
 
 
 // ======logger=========//
@@ -18,51 +11,86 @@ import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
 import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
 import { GetAllUserController } from "interfaceAdpaters/controllers/admin/get-all-clients";
 import { HandleToggleStatus } from "interfaceAdpaters/controllers/admin/handleToggleClientStatus";
-// import { ForgotVendorUpdatePasswordUseCase } from "@usecases/vendor/forgotPasswordVendorUseCase";
 import { VendorForgotPassword } from "interfaceAdpaters/controllers/vendor/VendorforgotPasswordController";
 import { GetAllVendorsController } from "interfaceAdpaters/controllers/admin/get-all-vendors.controllers";
 import { HandleToggleVendorStatus } from "interfaceAdpaters/controllers/admin/handleToggleVendorController";
 import { ForgotVendorOTPController } from "interfaceAdpaters/controllers/vendor/forgot-password.vendorController";
-import { LogoutController } from "interfaceAdpaters/controllers/auth/logout-controller";
 import { BlockedStatusMiddleware } from "interfaceAdpaters/middlewares/block-status.middleware";
-import { GoogleController } from "interfaceAdpaters/controllers/auth/google-login-controller";
+import { GetRequestedVendorsController } from "interfaceAdpaters/controllers/admin/get-requested-vendor-controller";
+import { ApproveVendorController } from "interfaceAdpaters/controllers/admin/approve-vendor-controller";
+import { RejectVendorController } from "interfaceAdpaters/controllers/admin/reject-vendor-controller";
+import { EditVendorProfileController } from "interfaceAdpaters/controllers/vendor/edit-profile-controller";
+import { HostNewEventController } from "interfaceAdpaters/controllers/vendor/event/host-new-event-controller";
+import { GetAllCategoryForClientsController } from "interfaceAdpaters/controllers/client/get-all-category-controller";
+import { AuthController } from "interfaceAdpaters/controllers/auth/auth-controller";
+import { IAuthController } from "@entities/controllerInterfaces/auth/auth.controller.interface";
+import { ICategoryController } from "@entities/controllerInterfaces/category/category.interface";
+import { CategoryController } from "interfaceAdpaters/controllers/category-controller";
+
+DependencyInjection.registerAll();
+export const blockstatusMiddleware = container.resolve(BlockedStatusMiddleware);
+
+export const authController = container.resolve<IAuthController>(AuthController)
+
+export const categoryController = container.resolve<ICategoryController>(CategoryController)
+export const forgotOtpController = container.resolve(ForgotOtpController);
+
+export const forgotPasswordController = container.resolve(
+  ForgotPasswordController
+);
+
+export const forgotVendorOTPController = container.resolve(
+  ForgotVendorOTPController
+);
+
+export const forgotVendorPasswordController =
+  container.resolve(VendorForgotPassword);
 
 
-DependencyInjection.registerAll()
-export const blockstatusMiddleware = container.resolve(BlockedStatusMiddleware)
+export const getAlluserscontroller = container.resolve(GetAllUserController);
 
-export const registerController = container.resolve(registerUserController);
 
-export const loginController = container.resolve(loginUserController);
+export const toggleUsercontroller = container.resolve(HandleToggleStatus);
 
-export const googleController = container.resolve(GoogleController)
+export const toggleVendorController = container.resolve(
+  HandleToggleVendorStatus
+);
 
-export const logoutController = container.resolve(LogoutController)
+export const getAllVendorsController = container.resolve(
+  GetAllVendorsController
+);
 
-export const verifyOtpController = container.resolve(VerifyOTPController)
+export const getAllRequestedVendorsController = container.resolve(
+  GetRequestedVendorsController
+)
+export const approveVendorController = container.resolve(
+  ApproveVendorController
+);
 
-export const sentOtpController = container.resolve(SendOTPController)
-export const refreshTokenController = container.resolve(RefreshTokenController);
+export const rejectVendorController = container.resolve(
+  RejectVendorController
+);
 
- export const forgotOtpController  = container.resolve(ForgotOtpController)
-    
- export const forgotPasswordController = container.resolve(ForgotPasswordController);
 
- export const forgotVendorOTPController = container.resolve(ForgotVendorOTPController)
- 
-export const forgotVendorPasswordController = container.resolve(VendorForgotPassword)
 
- export const getAlluserscontroller = container.resolve(GetAllUserController)
+export const editVendorProfileController = container.resolve(
+  EditVendorProfileController
+);
 
- export const toggleUsercontroller = container.resolve(HandleToggleStatus);
- 
-export const toggleVendorController = container.resolve(HandleToggleVendorStatus)
+export const hostNewEventController = container.resolve(
+  HostNewEventController
+);
 
- export const getAllVendorsController = container.resolve(GetAllVendorsController)
+
+export const getAllCategoryForClientsController = container.resolve(
+  GetAllCategoryForClientsController
+)
+
 // logger  middleware//
-export const injectedLoggerMiddleWare  = container.resolve<LoggerMiddleWare>(LoggerMiddleWare)
-export const injectedLogger = container.resolve<ILogger>("ILogger")
-
+export const injectedLoggerMiddleWare =
+  container.resolve<LoggerMiddleWare>(LoggerMiddleWare);
+export const injectedLogger = container.resolve<ILogger>("ILogger");
 
 // =========error handling middleware=========//
-export const errorMiddleware = container.resolve<ErrorMiddleware>("ErrorMiddleware")
+export const errorMiddleware =
+  container.resolve<ErrorMiddleware>("ErrorMiddleware");

@@ -23,18 +23,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HandleToggleVendorStatusUseCase = void 0;
 const custom_error_1 = require("@entities/utils/custom.error");
+const redis_client_1 = require("@frameworks/cache/redis.client");
 const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
 let HandleToggleVendorStatusUseCase = class HandleToggleVendorStatusUseCase {
     constructor(vendorRepository) {
         this.vendorRepository = vendorRepository;
     }
-    execute(vendorid, status) {
+    execute(vendorId) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!vendorid) {
+            if (!vendorId) {
                 throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.USER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
             }
-            yield this.vendorRepository.findByIdAndUpdateStatus(vendorid, status);
+            const vendor = yield this.vendorRepository.findById(vendorId);
+            if (!vendor) {
+                throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.USER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
+            }
+            const newStatus = vendor.status == "active" ? "blocked" : "active";
+            yield this.vendorRepository.findByIdAndUpdateStatus(vendorId, newStatus);
+            if (newStatus == "blocked") {
+                yield redis_client_1.RedisClient.set(`vendor_status:vendor${vendorId}`, newStatus, {
+                    EX: 3600
+                });
+            }
+            else if (newStatus == "active") {
+                yield redis_client_1.RedisClient.del(`vendor_status:vendor${vendorId}`);
+            }
         });
     }
 };

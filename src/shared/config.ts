@@ -36,6 +36,12 @@ export const config = {
 
     otpExpiry:process.env.OTP_EXPIRY_IN_MINUTES || "2",
     bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || 10,
-     OTP_PREFIX:"otp:"
+     OTP_PREFIX:"otp:",
+
+     cloudinary:{
+        cloudName:process.env.CLOUDINARY_CLOUD_NAME,
+        apiKey:process.env.CLOUDINARY_API_KEY,
+        apiSecret:process.env.CLOUDINARY_API_SECRET
+     }
 
 }

@@ -47,7 +47,7 @@ export class GoogleuseCase implements IGoogleUseCase {
             audience:client_id
         })
 
-        const payload = ticket.getPayload()
+        const payload = ticket.getPayload() 
 
         if(!payload){
             throw new CustomError(ERROR_MESSAGES.PAYLAOD_NOT_FOUND,HTTP_STATUS.UNAUTHORIZED)

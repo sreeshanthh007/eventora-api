@@ -20,35 +20,34 @@
     import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
     import { EmailService } from "interfaceAdpaters/services/emailServices";
     import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
-    import { OTPService } from "interfaceAdpaters/services/OTPService";
+    // import { OTPService } from "interfaceAdpaters/services/OTPService";
     import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
     import { UserExistService } from "interfaceAdpaters/services/user-existService";
     import { IClientExistService } from "@entities/serviceInterfaces/client-exist.service.interface";
     import { ClientExistService } from "interfaceAdpaters/services/client/clientExist-service";
-    import { sendForgotPasswordOtp } from "@usecases/sent-forgot.password-otp.usecase";
+    import { sendForgotPasswordOtp } from "@usecases/auth/sent-forgot.password-otp.usecase";
 
     import { IRegisterUseCase } from "@entities/useCaseInterfaces/auth/register-usecase.interface";
-    import { RegisterUseCase } from "@usecases/register-user.usecase";
+    import { RegisterUseCase } from "@usecases/auth/register-user.usecase";
     import { ILoginUserCase } from "@entities/useCaseInterfaces/auth/login-usecase.interface";
-    import { LoginUseCase } from "@usecases/login-user.usecase";
+   import { LoginUseCase } from "@usecases/auth/login-user.usecase";
     import { ISendEmailUseCase } from "@entities/useCaseInterfaces/auth/send-email-usercase.interface";
-    import { SendEmailUseCase } from "@usecases/send-email.usecase";
+   import { SendEmailUseCase } from "@usecases/auth/send-email.usecase";
     import { IVerifyOtpUsecase } from "@entities/useCaseInterfaces/auth/verifyOtp-usecase.interface";
-    import { VerifyOTPUseCase } from "@usecases/verify-otp.usecase";
+  import { VerifyOTPUseCase } from "@usecases/auth/verify-otp.usecase";
     import { IGenerateTokenUseCase } from "@entities/useCaseInterfaces/auth/generate-token.interface";
-    import { GenerataTokenUseCase } from "@usecases/generate-token.usecase";
+    import { GenerataTokenUseCase } from "@usecases/auth/generate-token.usecase";
     import { IRefreshTokenUseCase } from "@entities/useCaseInterfaces/auth/generate-refresh-token.interface";
-    import { refreshTokenUsesCase } from "@usecases/refresh-token.usecase";
+    import { refreshTokenUsesCase } from "@usecases/auth/refresh-token.usecase";
 
 
     import { IForgotUpdatePasswordUseCase } from "@entities/useCaseInterfaces/client/clientupdatePassword.usecase.interface";
-    import { ForgotClientUpdatePasswordUseCase } from "@usecases/client/clientUpdatePasswordSUseCase";
+    import { ForgotClientUpdatePasswordUseCase } from "@usecases/auth/update-password/clientUpdatePasswordSUseCase";
 
 
 
     // =====error====//
     import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
-    // import { logger } from "@frameworks/logger/winston-logger";
     import { WinstonLoggerAdapter } from "interfaceAdpaters/services/logger/winston-logger-adapter";
     import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
     import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
@@ -65,11 +64,32 @@ import { HandleToggleVendorStatusUseCase } from "@usecases/admin/handle-toggle-v
 import { IVendorExistService } from "@entities/serviceInterfaces/vendor-exist.service.interface";
 import { VendorExistService } from "interfaceAdpaters/services/vendor/vendorExist-service";
 import { IRevokeRefreshTokenUseCase } from "@entities/useCaseInterfaces/auth/revoke-refresh-token-usecase";
-import { RevokeRefreshTokenUseCase } from "@usecases/revoke-refresh-token.usecase";
+import { RevokeRefreshTokenUseCase } from "@usecases/auth/revoke-refresh-token.usecase";
 import { IBlacklistTokenUseCase } from "@entities/useCaseInterfaces/auth/blackList-token-interface";
 import { BlacklistTokenUseCase } from "@usecases/auth/blacklist-token.usecase";
 import { IGoogleUseCase } from "@entities/useCaseInterfaces/auth/google-login-usecase.interface";
 import { GoogleuseCase } from "@usecases/auth/google-login-usecase";
+import { ICloudinarySignatureService } from "@entities/serviceInterfaces/cloudinary-service.interface";
+import { CloudinarySignatureService } from "@frameworks/cloudinary/cloudinarySignatureService";
+import { IAddCategoryUseCase } from "@entities/useCaseInterfaces/admin/add-category.usecase";
+import { AddCategoryUseCase } from "@usecases/admin/add-category.usecase";
+import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase";
+import { GetAllCategoryUseCase } from "@usecases/admin/get-all-category.usecase";
+import { IGetRequestedVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-requested-vendors.usecase";
+import { GetRequestedVendorsUseCase } from "@usecases/admin/get-requested-vendors.usecase";
+import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve-vendor.usecase";
+import { ApproveVendorUseCase } from "@usecases/admin/approve-vendor.usecase";
+import { IRejectVendorUseCase } from "@entities/useCaseInterfaces/admin/reject-vendor.usecase";
+import { RejectVendorUseCase } from "@usecases/admin/reject-vendor.usecase";
+import { IEditVendorProfileUseCase } from "@entities/useCaseInterfaces/vendor/edit-profile.usecase.interface";
+import { UpdateVendorProfileUseCase } from "@usecases/vendor/update-vendor-profile.usecase";
+import { IHostNewEventUseCase } from "@entities/useCaseInterfaces/vendor/event/host-new-event.usecase";
+import { HostNewEventUseCase } from "@usecases/vendor/event/host-new-event.usecase";
+import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-category.usecase";
+import { GetAllCategoryForClientUseCase } from "@usecases/client/get-all-category.usecase";
+import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase";
+import { HandleToggleCategoryUseCase } from "@usecases/admin/handle-toggle-category.usecase";
+import { OtpCacheService } from "interfaceAdpaters/services/OtpCacheService";
 
     export class UseCaseRegistry {
         static registerUseCases():void{
@@ -145,7 +165,7 @@ import { GoogleuseCase } from "@usecases/auth/google-login-usecase";
             }); 
 
             container.register<IOTPService>("IOTPService",{
-                useClass:OTPService
+                useClass:OtpCacheService
             });
 
             container.register<ISendOtpUsecase>("ISendOTPForPasswordUseCase",{
@@ -168,6 +188,10 @@ import { GoogleuseCase } from "@usecases/auth/google-login-usecase";
                 useClass:ClientExistService
             })
 
+            container.register<ICloudinarySignatureService>("ICloudinarySignatureService",{
+                useClass:CloudinarySignatureService
+            });
+
             container.register<IGetAllUsersUseCase>("IGetAllUsersUseCase",{
                 useClass:getAllUsersUseCase
             });
@@ -180,10 +204,30 @@ import { GoogleuseCase } from "@usecases/auth/google-login-usecase";
                 useClass:GetAllVendorUseCase
             });
 
+            container.register<IGetAllCatgoryUseCase>("IGetAllCategoryUseCase",{
+                useClass:GetAllCategoryUseCase
+            });
+
+
+            container.register<IGetRequestedVendorsUseCase>("IGetRequestedVendorUseCase",{
+                useClass:GetRequestedVendorsUseCase
+            })
+
+            container.register<IApproveVendorUseCase>("IApproveVendorUseCase",{
+                useClass:ApproveVendorUseCase
+            });
+
+            container.register<IRejectVendorUseCase>("IRejectVendorUseCase",{
+                useClass:RejectVendorUseCase
+            });
 
                 container.register<IHandleToggleVendorUseCase>("IHandleToggleVendorUseCase",{
                     useClass:HandleToggleVendorStatusUseCase
                 })
+
+                container.register<IHandleToggleCategoryUseCase>("IHandleToggleCategoryUseCase",{
+                    useClass:HandleToggleCategoryUseCase
+                });
 
 
                 container.register<IForgotUpdatePasswordUseCase>("IForgotClientUpdatePasswordUseCase",{
@@ -194,18 +238,28 @@ import { GoogleuseCase } from "@usecases/auth/google-login-usecase";
                     useClass:ForgotVendorUpdatePasswordUseCase
                 });
 
+
+                container.register<IEditVendorProfileUseCase>("IEditVendorProfileUseCase",{
+                    useClass:UpdateVendorProfileUseCase
+                })
+
                 container.register<IGoogleUseCase>("IGoogleUseCase",{
                     useClass:GoogleuseCase
                 });  
-
-
-
-
                 
+                container.register<IAddCategoryUseCase>("IAddCategoryUseCase",{
+                    useClass:AddCategoryUseCase
+                });
+
+                container.register<IGetAllCategoryForClientsUseCase>("IGetAllCategoryForClientsUseCase",{
+                    useClass:GetAllCategoryForClientUseCase
+                });
 
 
-
-
+                container.register<IHostNewEventUseCase>("IHostNewEventUseCase",{
+                    useClass:HostNewEventUseCase
+                })
+                
             // ======logger==========//
 
             container.register<ILogger>("ILogger",{
@@ -220,7 +274,6 @@ import { GoogleuseCase } from "@usecases/auth/google-login-usecase";
             container.register<ErrorMiddleware>("ErrorMiddleware",{
                 useClass:ErrorMiddleware
             });
-
             
 
 

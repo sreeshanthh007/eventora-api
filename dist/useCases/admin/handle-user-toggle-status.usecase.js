@@ -25,17 +25,30 @@ exports.UserToggleStatusUseCase = void 0;
 const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
+const redis_client_1 = require("@frameworks/cache/redis.client");
 let UserToggleStatusUseCase = class UserToggleStatusUseCase {
     constructor(clientRepository) {
         this.clientRepository = clientRepository;
     }
-    execute(userId, status) {
+    execute(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(userId);
             if (!userId) {
                 throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.USER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
             }
-            yield this.clientRepository.findByIdAndUpdateStatus(userId, status);
+            const client = yield this.clientRepository.findById(userId);
+            if (!client) {
+                throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.USER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
+            }
+            const newsStatus = client.status == "active" ? "blocked" : "active";
+            yield this.clientRepository.findByIdAndUpdateStatus(userId, newsStatus);
+            if (newsStatus == "blocked") {
+                yield redis_client_1.RedisClient.set(`user_status:client${userId}`, newsStatus, {
+                    EX: 3600
+                });
+            }
+            else if (newsStatus == "active") {
+                yield redis_client_1.RedisClient.del(`user_status:client:${userId}`);
+            }
         });
     }
 };

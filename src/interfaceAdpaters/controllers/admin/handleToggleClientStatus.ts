@@ -1,7 +1,7 @@
 // HandleToggleStatus.ts - Fixed version
 import { IToggleUserStatus } from "@entities/controllerInterfaces/admin/handle-toggleusersStatus.interface";
 import { IuserToggleStatusUseCase } from "@entities/useCaseInterfaces/admin/handle-user-toggle-status.usecase.interface";
-import { HTTP_STATUS } from "@shared/constants";
+import { HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
 
@@ -12,8 +12,9 @@ export class HandleToggleStatus implements IToggleUserStatus {
     ) {}
 
     async handle(req: Request, res: Response): Promise<void> {
-        try {
+       
             const { userId, status } = req.body as { userId: string, status: string };
+          
             
             if (!userId || !status) {
                 res.status(HTTP_STATUS.BAD_REQUEST).json({
@@ -36,16 +37,7 @@ export class HandleToggleStatus implements IToggleUserStatus {
 
             res.status(HTTP_STATUS.OK).json({
                 success: true,
-                message: `User status updated to ${status}`,
-                data: { userId, status }
+                message: SUCCESS_MESSAGES.UPDATE_SUCCESS
             });
-        } catch (error) {
-            console.error("Error in HandleToggleStatus:", error);
-            
-            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-                success: false,
-                message: "Failed to update user status"
-            });
-        }
     }
 }

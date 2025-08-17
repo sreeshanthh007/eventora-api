@@ -12,7 +12,6 @@ interface JwtPayloadData {
 }
 
 @injectable()
-
 export class jwtService implements ITokenService{
     private jwtSecrect : Secret;
     private accessExpiresIn:string;
@@ -29,7 +28,7 @@ export class jwtService implements ITokenService{
             expiresIn:this.accessExpiresIn as ms.StringValue
         });
     }
-
+    
     generateRefreshToken(payload: JwtPayloadData): string {
         return Jwt.sign(payload,this.jwtSecrect,{
             expiresIn:this.refreshExpirenIn as ms.StringValue

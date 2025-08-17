@@ -8,10 +8,14 @@ export interface IUserEntity{
     email:string,
     phone:string,
     role?:TRole,
+    idProof?:string,
     password:string,
-    googleId:string,
-    profileImage:string,
+    googleId?:string,
+    profileImage?:string,
+    about?:string,
+    place?:string,
     status?:string,
-    createdAt:Date,
-    updatedAt:Date
+    vendorStatus?:string,
+    createdAt?:Date,
+    updatedAt?:Date
 }

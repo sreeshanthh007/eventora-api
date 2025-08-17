@@ -17,7 +17,7 @@ export interface CustomJWTPayload extends JwtPayload {
 
 
 export interface CustomRequest extends Request{
-    user:CustomJWTPayload
+    user:CustomJWTPayload   
 }
 
 const extractToken = (req: Request): { access_token: string; refresh_token: string } | null => {
@@ -84,7 +84,7 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     console.log("token is invalid is worked",error);
     res
       .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: ERROR_MESSAGES.INVALID_TOKEN });
+      .json({ message: ERROR_MESSAGES.INVALID_TOKEN,statuscode:HTTP_STATUS.UNAUTHORIZED });
     return;
     }
 }
@@ -103,24 +103,26 @@ export const decodeToken = async(req:Request , res:Response , next:NextFunction)
             return
         }
         
-        if(await isBlacklisted(token.access_token)){
-            console.log("token is blacklisted");
-            res.status(HTTP_STATUS.UNAUTHORIZED)
-            .json({message:"Token is blacklisted"})
-            return
-        };
+   
      
-        const user =  tokenService.decodeAccessToken(token?.access_token);
-        console.log("user from decode access token",user);
+        const user =  tokenService.verifyRefreshToken(token?.refresh_token) as CustomJWTPayload;
+      
         
+            const newAccessToken = tokenService.generateAccessToken({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            });
+
 
         (req as CustomRequest).user ={
             id:user?.id,
             email:user?.email,
             role:user?.role,
-            access_token:token.access_token,
+            access_token: newAccessToken,
             refresh_token:token.refresh_token
         };
+ 
 
         next()
 

@@ -1,6 +1,5 @@
-import { ObjectId } from "mongoose";
+import { FilterQuery, ObjectId } from "mongoose";
 import { IClientEntity } from "@entities/models/client.entity";
-import { IClientModel } from "@frameworks/database/Mongodb/models/client.model";
 
 
 
@@ -10,14 +9,14 @@ export interface IClientRepository {
     findByEmail(email:string) : Promise<IClientEntity | null>
 
 
-    findById(id:any) : Promise<IClientEntity | null>
+    findById(id:string) : Promise<IClientEntity | null>
 
 
-    findByIdAndUpdatePassword(id:any,password:string) : Promise<void>
+    findByIdAndUpdatePassword(id:ObjectId,password:string) : Promise<void>
 
-    findByIdAndUpdateStatus(id:any,status:string) : Promise<void>
+    findByIdAndUpdateStatus(id:string,status:string) : Promise<void>
 
-    findPaginatedClients(filter:any,skip:number,limit:number) : Promise<{user:IClientEntity[] | []; total:number}>
+    findPaginatedClients(filter:FilterQuery<IClientEntity>,skip:number,limit:number) : Promise<{user:IClientEntity[] | []; total:number}>
 
     
-}
+}   
