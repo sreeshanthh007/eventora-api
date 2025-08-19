@@ -15,7 +15,7 @@ class RedisTokenRepository {
     blackListToken(token, expiresIn) {
         return __awaiter(this, void 0, void 0, function* () {
             yield redis_client_1.RedisClient.set(token, "blacklisted", {
-                EX: expiresIn, // in seconds
+                EX: expiresIn,
             });
         });
     }

@@ -26,6 +26,8 @@ import { IVendorModel } from "../models/vendor.model";
 
             place:{type:String},
 
+            fcmToken:{type:String},
+            
             rejectionReason:{type:String,required:false},
 
             status:{type:String,default:"active"},

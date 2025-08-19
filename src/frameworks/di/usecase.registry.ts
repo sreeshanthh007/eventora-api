@@ -90,6 +90,14 @@ import { GetAllCategoryForClientUseCase } from "@usecases/client/get-all-categor
 import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase";
 import { HandleToggleCategoryUseCase } from "@usecases/admin/handle-toggle-category.usecase";
 import { OtpCacheService } from "interfaceAdpaters/services/OtpCacheService";
+import { IFirebaseService } from "@entities/serviceInterfaces/firebase.service.interface";
+import { FirebaseService } from "@frameworks/firebase/firebaseService";
+import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
+import { NotificationService } from "interfaceAdpaters/services/notification.service";
+import { IFcmTokenUseCase } from "@entities/useCaseInterfaces/auth/fcmtoken.interface";
+import { FcmTokenUseCase } from "@usecases/fcmtoken.usecase";
+
+
 
     export class UseCaseRegistry {
         static registerUseCases():void{
@@ -186,11 +194,21 @@ import { OtpCacheService } from "interfaceAdpaters/services/OtpCacheService";
 
             container.register<IClientExistService>("IClientExistService",{
                 useClass:ClientExistService
-            })
+            });
+
+            container.register<IFirebaseService>("IFirebaseService",{
+                useClass:FirebaseService
+            });
+
+            container.register<INotificationService>("INotificationService",{
+                useClass:NotificationService
+            });
 
             container.register<ICloudinarySignatureService>("ICloudinarySignatureService",{
                 useClass:CloudinarySignatureService
             });
+
+           
 
             container.register<IGetAllUsersUseCase>("IGetAllUsersUseCase",{
                 useClass:getAllUsersUseCase
@@ -220,6 +238,8 @@ import { OtpCacheService } from "interfaceAdpaters/services/OtpCacheService";
             container.register<IRejectVendorUseCase>("IRejectVendorUseCase",{
                 useClass:RejectVendorUseCase
             });
+
+
 
                 container.register<IHandleToggleVendorUseCase>("IHandleToggleVendorUseCase",{
                     useClass:HandleToggleVendorStatusUseCase
@@ -251,6 +271,10 @@ import { OtpCacheService } from "interfaceAdpaters/services/OtpCacheService";
                     useClass:AddCategoryUseCase
                 });
 
+
+
+                
+
                 container.register<IGetAllCategoryForClientsUseCase>("IGetAllCategoryForClientsUseCase",{
                     useClass:GetAllCategoryForClientUseCase
                 });
@@ -258,6 +282,10 @@ import { OtpCacheService } from "interfaceAdpaters/services/OtpCacheService";
 
                 container.register<IHostNewEventUseCase>("IHostNewEventUseCase",{
                     useClass:HostNewEventUseCase
+                })
+
+                container.register<IFcmTokenUseCase>("IFcmTokenUseCase",{
+                    useClass:FcmTokenUseCase
                 })
                 
             // ======logger==========//

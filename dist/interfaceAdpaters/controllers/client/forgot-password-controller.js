@@ -30,17 +30,11 @@ let ForgotPasswordController = class ForgotPasswordController {
     }
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { email, password } = req.body;
-                yield this.forgotUpdatePasswordUseCase.update(email, password);
-                res.status(constants_1.HTTP_STATUS.OK).json({
-                    message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS,
-                });
-            }
-            catch (error) {
-                console.log("error in client forgot password", error);
-                res.status(constants_1.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: constants_1.ERROR_MESSAGES.SERVER_ERROR });
-            }
+            const { email, password, role } = req.body;
+            yield this.forgotUpdatePasswordUseCase.update(email, password, role);
+            res.status(constants_1.HTTP_STATUS.OK).json({
+                message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS,
+            });
         });
     }
 };

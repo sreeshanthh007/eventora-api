@@ -53,6 +53,7 @@ var ERROR_MESSAGES;
     ERROR_MESSAGES["FOLDER_NOT_FOUND"] = "Folder not Found";
     ERROR_MESSAGES["CATEGORY_ALREADY_EXISTS"] = "Category already exist";
     ERROR_MESSAGES["ID_NOT_FOUND"] = "ID not found";
+    ERROR_MESSAGES["MISSING_PARAMETERS"] = "Some details are missing";
 })(ERROR_MESSAGES || (exports.ERROR_MESSAGES = ERROR_MESSAGES = {}));
 ;
 const VERIFICATION_MAIL_CONTENT = (otp) => `

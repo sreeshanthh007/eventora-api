@@ -4,7 +4,7 @@
   import { 
     forgotOtpController,
     forgotPasswordController,
-    authController
+    authController,
   } from "@frameworks/di/resolver";
 
   export class AuthRoutes extends BaseRouter{
@@ -22,6 +22,7 @@
       this.router.put("/forgot-password",asyncHandler(forgotPasswordController.handle.bind(forgotPasswordController)))
       this.router.post("/forgot-password/sent-otp",asyncHandler(forgotOtpController.handle.bind(forgotOtpController)))
       this.router.post("/verify-otp",asyncHandler(authController.verifyOtp.bind(authController)));
-      this.router.post("/google-auth",asyncHandler(authController.authenticatedWithGoogle.bind(authController)))
+      this.router.post("/google-auth",asyncHandler(authController.authenticatedWithGoogle.bind(authController)));
+      this.router.post("/save-fcm",asyncHandler(authController.saveFcmToken.bind(authController)))
     }
   }

@@ -2,7 +2,8 @@
 export interface INotificationEntity {
     notificationId:string,
     userId:string,
+    title:string,
     message:string,
-    isRead:string,
+    isRead:boolean,
     createdAt:string
 }

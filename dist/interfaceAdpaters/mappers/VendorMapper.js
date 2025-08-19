@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toRequestedVendorTableDTO = exports.toVendorResponse = void 0;
 const toVendorResponse = (vendor) => {
+    var _a;
     return {
         _id: vendor._id,
         name: vendor.name,
@@ -10,7 +11,8 @@ const toVendorResponse = (vendor) => {
         phone: vendor.phone,
         place: vendor.place,
         about: vendor.about,
-        vendorStatus: vendor.vendorStatus
+        vendorStatus: vendor.vendorStatus,
+        submissionDate: (_a = vendor.createdAt) === null || _a === void 0 ? void 0 : _a.toLocaleDateString()
     };
 };
 exports.toVendorResponse = toVendorResponse;

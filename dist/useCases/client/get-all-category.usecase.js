@@ -32,7 +32,6 @@ let GetAllCategoryForClientUseCase = class GetAllCategoryForClientUseCase {
         return __awaiter(this, void 0, void 0, function* () {
             const allCategories = yield this.categoryRepo.findCategoryForClients();
             const mappedCategories = (0, CategoryMapper_1.toCategoryListResponse)(allCategories);
-            console.log("maped categories", mappedCategories);
             return mappedCategories;
         });
     }

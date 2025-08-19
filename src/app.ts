@@ -1,66 +1,46 @@
 import "reflect-metadata";
-import "module-alias/register"
-
+import "module-alias/register";
 import chalk from "chalk";
+import { createServer } from "http";
 import { config } from "@shared/config";
 import { ExpressServer } from "@frameworks/http/server";
 import { MongoConnect } from "@frameworks/database/Mongodb/mongoConnect";
-import { createServer } from "http";
+import { SocketServer } from "interfaceAdpaters/websockets/socket-server";
 
 
- // frameworks/http/server.ts
-const expressServer = new ExpressServer()
-const mongoConnect = new MongoConnect()
+const mongoConnect = new MongoConnect();
 
 
-mongoConnect.connectDB()
-
-const httpServer = createServer(expressServer.getApp())
-
-httpServer.listen(config.server.PORT, () => {
-	console.log(chalk.cyanBright.bold("\n🚀 Server Status"));
-	console.log(chalk.greenBright("--------------------------------------------------"));
-	console.log(
-		chalk.yellowBright.bold(
-			`✅ Server is running at ${chalk.blueBright(
-				`http://localhost:${config.server.PORT}`
-			)}`
-		)
-	)
-
-
-	console.log(chalk.greenBright("--------------------------------------------------\n"));
-});
+const expressServer = new ExpressServer();
 
 
 
+const httpServer = createServer(expressServer.getApp());
 
-// import chalk from "chalk";
-// import { config } from "@shared/config";
-// import { ExpressServer } from "@frameworks/http/server";
-// import { MongoConnect } from "@frameworks/database/Mongodb/mongoConnect";
+const socketServer = new SocketServer(httpServer)
 
-// // ✅ Create server & DB connection
-// const expressServer = new ExpressServer();
-// const mongoConnect = new MongoConnect();
+async function startServer() {
+  try {
+   
+    await mongoConnect.connectDB();
+    
+   
+    httpServer.listen(config.server.PORT, () => {
+      console.log(chalk.cyanBright.bold("\n🚀 Server Status"));
+      console.log(chalk.greenBright("--------------------------------------------------"));
+      console.log(
+        chalk.yellowBright.bold(
+          `✅ Server is running at ${chalk.blueBright(
+            `http://localhost:${config.server.PORT}`
+          )}`
+        )
+      );
+      console.log(chalk.greenBright("--------------------------------------------------\n"));
+    });
+  } catch (error) {
+    console.error(chalk.redBright("❌ Failed to start server:"), error);
+    process.exit(1);
+  }
+}
 
-// mongoConnect.connectDB();
-
-// // ✅ Use the already-created server
-// const httpServer = 
-// expressServer.getApp().listen(3000,()=>console.log('sdjfhs'))
-
-// httpServer.listen(3000,()=>console.log('server ruasdfasjfnning'))
-
-// httpServer.listen(config.server.PORT, () => {
-//   console.log(chalk.cyanBright.bold("\n🚀 Server Status"));
-//   console.log(chalk.greenBright("--------------------------------------------------"));
-//   console.log(
-//     chalk.yellowBright.bold(
-//       `✅ Server is running at ${chalk.blueBright(
-//         `http://localhost:${config.server.PORT}`
-//       )}`
-//     )
-//   );
-//   console.log(chalk.greenBright("--------------------------------------------------\n"));
-// });
+startServer();

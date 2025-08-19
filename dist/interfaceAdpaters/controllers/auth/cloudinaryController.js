@@ -1,49 +1,22 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CloudinaryController = void 0;
-const tsyringe_1 = require("tsyringe");
-const custom_error_1 = require("@entities/utils/custom.error");
-const constants_1 = require("@shared/constants");
-let CloudinaryController = class CloudinaryController {
-    constructor(cloudinaryService) {
-        this.cloudinaryService = cloudinaryService;
-    }
-    getUploadSignature(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const folder = req.query.folder;
-            if (!folder) {
-                throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.FOLDER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
-            }
-            const data = this.cloudinaryService.generateSignature(folder);
-            console.log("the data from folder", data);
-            res.json(data);
-        });
-    }
-};
-exports.CloudinaryController = CloudinaryController;
-exports.CloudinaryController = CloudinaryController = __decorate([
-    (0, tsyringe_1.injectable)(),
-    __param(0, (0, tsyringe_1.inject)("ICloudinarySignatureService")),
-    __metadata("design:paramtypes", [Object])
-], CloudinaryController);
+// import { ICloudinarySignatureService } from "@entities/serviceInterfaces/cloudinary-service.interface";
+// import { ICloudinaryController } from "@entities/controllerInterfaces/auth/cloudinary-controller";
+// import { inject, injectable } from "tsyringe";
+// import { Request, Response } from "express";
+// import { CustomError } from "@entities/utils/custom.error";
+// import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+// @injectable()
+// export class CloudinaryController implements ICloudinaryController{
+//     constructor(
+//         @inject("ICloudinarySignatureService") private cloudinaryService : ICloudinarySignatureService
+//     ){}
+//     async getUploadSignature(req: Request, res: Response): Promise<void> {
+//         const folder  = req.query.folder
+//         if(!folder){
+//             throw new CustomError(ERROR_MESSAGES.FOLDER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
+//         }
+//         const data =  this.cloudinaryService.generateSignature(folder as string)
+//         console.log("the data from folder",data)
+//         res.json(data)
+//     }
+// }

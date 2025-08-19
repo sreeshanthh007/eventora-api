@@ -12,7 +12,8 @@ export const toVendorResponse = (vendor:IUserEntity)=>{
         phone:vendor.phone,
         place:vendor.place,
         about:vendor.about,
-        vendorStatus:vendor.vendorStatus
+        vendorStatus:vendor.vendorStatus,
+        submissionDate:vendor.createdAt?.toLocaleDateString()
     }
 }
 

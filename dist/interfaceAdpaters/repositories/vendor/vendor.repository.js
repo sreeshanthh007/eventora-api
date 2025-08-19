@@ -43,6 +43,13 @@ let VendorRepository = class VendorRepository {
             });
         });
     }
+    findByIdandSaveFcmToken(id, fcmtoken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield vendor_model_1.VendorModel.findByIdAndUpdate(id, {
+                fcmToken: fcmtoken
+            });
+        });
+    }
     findByIdAndUpdatePassword(id, password) {
         return __awaiter(this, void 0, void 0, function* () {
             yield vendor_model_1.VendorModel.findByIdAndUpdate(id, {

@@ -17,7 +17,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientRepository = void 0;
 const tsyringe_1 = require("tsyringe");
-4;
 const client_model_1 = require("@frameworks/database/Mongodb/models/client.model");
 let ClientRepository = class ClientRepository {
     save(data) {

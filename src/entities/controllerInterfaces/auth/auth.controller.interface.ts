@@ -10,4 +10,5 @@ export interface IAuthController {
     sentOtpEmail(req:Request,res:Response) : Promise<void>
     verifyOtp(req:Request,res:Response) : Promise<void>
     getUploadSignature(req:Request,res:Response) : Promise<void>
+    saveFcmToken(req:Request,res:Response) : Promise<void>
 }

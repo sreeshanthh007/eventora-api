@@ -27,10 +27,12 @@ const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
 const sent_forgot_password_otp_usecase_1 = require("@usecases/auth/sent-forgot.password-otp.usecase");
 const clientExist_service_1 = require("interfaceAdpaters/services/client/clientExist-service");
+const vendorExist_service_1 = require("interfaceAdpaters/services/vendor/vendorExist-service");
 let ForgotOtpController = class ForgotOtpController {
-    constructor(sendOTPForPassword, clientExistService) {
+    constructor(sendOTPForPassword, clientExistService, vendorExistService) {
         this.sendOTPForPassword = sendOTPForPassword;
         this.clientExistService = clientExistService;
+        this.vendorExistService = vendorExistService;
     }
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -49,6 +51,8 @@ exports.ForgotOtpController = ForgotOtpController = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("ISendOTPForPasswordUseCase")),
     __param(1, (0, tsyringe_1.inject)("IClientExistService")),
+    __param(2, (0, tsyringe_1.inject)("IVendorExistService")),
     __metadata("design:paramtypes", [sent_forgot_password_otp_usecase_1.sendForgotPasswordOtp,
-        clientExist_service_1.ClientExistService])
+        clientExist_service_1.ClientExistService,
+        vendorExist_service_1.VendorExistService])
 ], ForgotOtpController);

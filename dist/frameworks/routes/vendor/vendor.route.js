@@ -10,12 +10,10 @@ class VendorRoutes extends base_route_1.BaseRouter {
         super();
     }
     initializeRoutes() {
-        this.router.put("/forgot-vendor_password", (0, async_handler_1.asyncHandler)(resolver_1.forgotVendorPasswordController.handle.bind(resolver_1.forgotVendorPasswordController)));
         this.router.post("/vendorForgot/sent-otp", (0, async_handler_1.asyncHandler)(resolver_1.forgotVendorOTPController.handle.bind(resolver_1.forgotVendorOTPController)));
         this.router.put("/update-profile", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["vendor"]), (0, async_handler_1.asyncHandler)(resolver_1.editVendorProfileController.handle.bind(resolver_1.editVendorProfileController)));
-        this.router.post("/add-event", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.hostNewEventController.handle.bind(resolver_1.hostNewEventController)));
-        this.router.post("/logout", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["vendor"]), resolver_1.logoutController.handle.bind(resolver_1.logoutController));
-        this.router.post("/refresh-token", auth_middleware_1.decodeToken, (0, async_handler_1.asyncHandler)(resolver_1.refreshTokenController.handle.bind(resolver_1.refreshTokenController)));
+        this.router.post("/logout", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["vendor"]), (0, async_handler_1.asyncHandler)(resolver_1.authController.logout.bind(resolver_1.authController)));
+        this.router.post("/refresh-token", auth_middleware_1.decodeToken, (0, async_handler_1.asyncHandler)(resolver_1.authController.handleTokenRefresh.bind(resolver_1.authController)));
     }
 }
 exports.VendorRoutes = VendorRoutes;

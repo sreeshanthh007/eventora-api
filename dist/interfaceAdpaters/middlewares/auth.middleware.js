@@ -53,7 +53,7 @@ const verifyAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         console.log("token is invalid is worked", error);
         res
             .status(constants_1.HTTP_STATUS.UNAUTHORIZED)
-            .json({ message: constants_1.ERROR_MESSAGES.INVALID_TOKEN });
+            .json({ message: constants_1.ERROR_MESSAGES.INVALID_TOKEN, statuscode: constants_1.HTTP_STATUS.UNAUTHORIZED });
         return;
     }
 });
@@ -69,12 +69,6 @@ const decodeToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                 .json({ message: constants_1.ERROR_MESSAGES.UNAUTHORIZED_ACCESS });
             return;
         }
-        // if(await isBlacklisted(token?.refresh_token)){
-        //     console.log("token is blacklisted");
-        //     res.status(HTTP_STATUS.UNAUTHORIZED)
-        //     .json({message:"Token is blacklisted"})
-        //     return
-        // };
         const user = tokenService.verifyRefreshToken(token === null || token === void 0 ? void 0 : token.refresh_token);
         const newAccessToken = tokenService.generateAccessToken({
             id: user.id,

@@ -1,4 +1,4 @@
-import { IVendorModel } from "@frameworks/database/Mongodb/models/vendor.model";
+
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import { FilterQuery, ObjectId } from "mongoose";
 
@@ -15,6 +15,8 @@ export interface IVendorRepository{
     findByIdAndUpdateStatus(id:string,status:string) : Promise<void>
 
     findByIdAndUpdateVendorStatus(id:string,status:string) : Promise<void> 
+
+     findByIdandSaveFcmToken(id:string,fcmtoken:string) :Promise<void>
 
     findPaginatedClients(filter:FilterQuery<IVendorEntity>,skip:number,limit:number) : Promise<{user:IVendorEntity[] | []; total:number}>
     

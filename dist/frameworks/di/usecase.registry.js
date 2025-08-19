@@ -22,7 +22,7 @@ const send_email_usecase_1 = require("@usecases/auth/send-email.usecase");
 const verify_otp_usecase_1 = require("@usecases/auth/verify-otp.usecase");
 const generate_token_usecase_1 = require("@usecases/auth/generate-token.usecase");
 const refresh_token_usecase_1 = require("@usecases/auth/refresh-token.usecase");
-const clientUpdatePasswordSUseCase_1 = require("@usecases/client/clientUpdatePasswordSUseCase");
+const clientUpdatePasswordSUseCase_1 = require("@usecases/auth/update-password/clientUpdatePasswordSUseCase");
 const winston_logger_adapter_1 = require("interfaceAdpaters/services/logger/winston-logger-adapter");
 const logger_middleware_1 = require("interfaceAdpaters/middlewares/logger.middleware");
 const error_middleware_1 = require("interfaceAdpaters/middlewares/error.middleware");
@@ -46,6 +46,9 @@ const host_new_event_usecase_1 = require("@usecases/vendor/event/host-new-event.
 const get_all_category_usecase_2 = require("@usecases/client/get-all-category.usecase");
 const handle_toggle_category_usecase_1 = require("@usecases/admin/handle-toggle-category.usecase");
 const OtpCacheService_1 = require("interfaceAdpaters/services/OtpCacheService");
+const firebaseService_1 = require("@frameworks/firebase/firebaseService");
+const notification_service_1 = require("interfaceAdpaters/services/notification.service");
+const fcmtoken_usecase_1 = require("@usecases/fcmtoken.usecase");
 class UseCaseRegistry {
     static registerUseCases() {
         tsyringe_1.container.register("IRegisterUseCase", {
@@ -120,6 +123,12 @@ class UseCaseRegistry {
         tsyringe_1.container.register("IClientExistService", {
             useClass: clientExist_service_1.ClientExistService
         });
+        tsyringe_1.container.register("IFirebaseService", {
+            useClass: firebaseService_1.FirebaseService
+        });
+        tsyringe_1.container.register("INotificationService", {
+            useClass: notification_service_1.NotificationService
+        });
         tsyringe_1.container.register("ICloudinarySignatureService", {
             useClass: cloudinarySignatureService_1.CloudinarySignatureService
         });
@@ -170,6 +179,9 @@ class UseCaseRegistry {
         });
         tsyringe_1.container.register("IHostNewEventUseCase", {
             useClass: host_new_event_usecase_1.HostNewEventUseCase
+        });
+        tsyringe_1.container.register("IFcmTokenUseCase", {
+            useClass: fcmtoken_usecase_1.FcmTokenUseCase
         });
         // ======logger==========//
         tsyringe_1.container.register("ILogger", {

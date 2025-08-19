@@ -39,6 +39,7 @@ let VendorForgotPassword = class VendorForgotPassword {
             }
             catch (error) {
                 res.status(constants_1.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: constants_1.ERROR_MESSAGES.SERVER_ERROR });
+                console.log(error);
             }
         });
     }

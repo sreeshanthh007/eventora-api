@@ -24,7 +24,7 @@ class refreshTokenRepository {
     }
     revokeRefreshToken(token) {
         return __awaiter(this, void 0, void 0, function* () {
-            let ans = yield refresh_token_model_1.RefreshTokenModel.deleteOne({ token });
+            yield refresh_token_model_1.RefreshTokenModel.deleteOne({ token });
         });
     }
 }

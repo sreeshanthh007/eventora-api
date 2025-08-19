@@ -27,6 +27,7 @@ import { IAuthController } from "@entities/controllerInterfaces/auth/auth.contro
 import { ICategoryController } from "@entities/controllerInterfaces/category/category.interface";
 import { CategoryController } from "interfaceAdpaters/controllers/category-controller";
 
+
 DependencyInjection.registerAll();
 export const blockstatusMiddleware = container.resolve(BlockedStatusMiddleware);
 
@@ -70,6 +71,7 @@ export const approveVendorController = container.resolve(
 export const rejectVendorController = container.resolve(
   RejectVendorController
 );
+
 
 
 

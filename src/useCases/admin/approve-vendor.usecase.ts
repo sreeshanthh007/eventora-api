@@ -1,4 +1,5 @@
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
+// import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve-vendor.usecase";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
@@ -9,7 +10,8 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class ApproveVendorUseCase implements IApproveVendorUseCase{
     constructor(
-        @inject("IVendorRepository") private vendorRepo : IVendorRepository
+        @inject("IVendorRepository") private vendorRepo : IVendorRepository,
+        // @inject("INotificationService") private notificationService : INotificationService
      ){}
 
      async execute(vendorId: string): Promise<void> {

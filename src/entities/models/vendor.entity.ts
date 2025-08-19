@@ -11,5 +11,6 @@ export interface IVendorEntity extends IUserEntity{
     vendorStatus:"pending" | "approved" | "rejected",
     profilePicture:string,
     idProof:string,
+    fcmToken?:string
     // businessName:string
 }

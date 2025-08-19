@@ -14,6 +14,7 @@ exports.VendorSchema = new mongoose_1.Schema({
     about: { type: String },
     idProof: { type: String, required: true },
     place: { type: String },
+    fcmToken: { type: String },
     rejectionReason: { type: String, required: false },
     status: { type: String, default: "active" },
     vendorStatus: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },

@@ -18,6 +18,8 @@ import { emailVerifySchema } from "./validations/email.validation.schema";
 import { IVerifyOtpUsecase } from "@entities/useCaseInterfaces/auth/verifyOtp-usecase.interface";
 import { ISendEmailUseCase } from "@entities/useCaseInterfaces/auth/send-email-usercase.interface";
 import { ICloudinarySignatureService } from "@entities/serviceInterfaces/cloudinary-service.interface";
+import { IFcmTokenUseCase } from "@entities/useCaseInterfaces/auth/fcmtoken.interface";
+
 
 
 
@@ -33,6 +35,7 @@ export class AuthController implements IAuthController{
         @inject("IRevokeRefreshTokenUseCase") private _revokeRefreshTokenUseCase : IRevokeRefreshTokenUseCase,
         @inject("IBlacklistTokenUseCase") private _blackListTokenUseCase : IBlacklistTokenUseCase,
         @inject("IVerifyOTPUseCase") private _verifyOtpUseCase : IVerifyOtpUsecase,
+        @inject("IFcmTokenUseCase")  private _fcmTokenUseCase : IFcmTokenUseCase,
         @inject("ISendEmailUseCase") private _sendEmailUseCase : ISendEmailUseCase,
         @inject("ICloudinarySignatureService") private _cloudinaryService : ICloudinarySignatureService
     ){}
@@ -221,4 +224,22 @@ export class AuthController implements IAuthController{
 
         res.json(data)
      }
+
+
+     async saveFcmToken(req: Request, res: Response): Promise<void> {
+        console.log("backnd",req.body)
+         const {userId,fcmToken} = req.body
+        console.log("user id and token",userId,fcmToken)
+         if(!userId || !fcmToken){
+            res.status(HTTP_STATUS.NOT_FOUND)
+            .json({success:false,message:"user id or fcm token is missing"})
+            return;
+         }
+
+         await this._fcmTokenUseCase.execute(userId,fcmToken);
+
+         res.status(HTTP_STATUS.OK)
+         .json({success:true,message:"token saved successfully"})
+     }
+    
 }

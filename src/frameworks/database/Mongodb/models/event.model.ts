@@ -8,4 +8,4 @@ export interface IEventModel extends Omit<IEventEntity,"_id">,Document{
     _id:ObjectId;
 }
 
-export const EventModel = model<IEventModel>("Event",EventSchema)
+export const EventModel = model<IEventModel>("Event",EventSchema)       

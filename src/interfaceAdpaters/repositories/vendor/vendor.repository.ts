@@ -6,6 +6,7 @@ import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import { FilterQuery, ObjectId } from "mongoose";
 
+
 @injectable()
 export class VendorRepository implements IVendorRepository {
   async save(data: Partial<IVendorEntity>): Promise<IVendorEntity> {
@@ -26,6 +27,15 @@ export class VendorRepository implements IVendorRepository {
         status: status,
       },
     });
+  }
+
+
+  async findByIdandSaveFcmToken(id: string, fcmtoken: string): Promise<void> {
+      await VendorModel.findByIdAndUpdate(id,
+        {
+          fcmToken:fcmtoken
+        }
+      )
   }
 
   async findByIdAndUpdatePassword(id: ObjectId, password: string): Promise<void> {

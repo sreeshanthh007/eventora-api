@@ -1,9 +1,7 @@
 import { FilterQuery, ObjectId } from "mongoose";
 import { IClientEntity } from "@entities/models/client.entity";
 
-
-
-export interface IClientRepository {
+export interface IClientRepository  {
     save(data:Partial<IClientEntity>) : Promise<IClientEntity>
 
     findByEmail(email:string) : Promise<IClientEntity | null>
@@ -17,6 +15,4 @@ export interface IClientRepository {
     findByIdAndUpdateStatus(id:string,status:string) : Promise<void>
 
     findPaginatedClients(filter:FilterQuery<IClientEntity>,skip:number,limit:number) : Promise<{user:IClientEntity[] | []; total:number}>
-
-    
 }   

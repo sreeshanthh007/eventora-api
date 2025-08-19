@@ -43,7 +43,7 @@ let GetRequestedVendorsUseCase = class GetRequestedVendorsUseCase {
             const { vendors, total } = yield this.vendorRepo.findPaginatedVendorByStatus(filter, skip, limit);
             const response = {
                 vendors: vendors.map(VendorMapper_1.toRequestedVendorTableDTO),
-                total
+                total: Math.ceil(total / limit)
             };
             return response;
         });

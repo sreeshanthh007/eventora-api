@@ -42,7 +42,7 @@ let GetAllCategoryUseCase = class GetAllCategoryUseCase {
             const { categories, total } = yield this.categoryRepo.findPaginatedCategory(filter, skip, limit);
             const response = {
                 categories: (0, CategoryMapper_1.toCategoryListResponse)(categories),
-                total
+                total: Math.ceil(total / limit),
             };
             return response;
         });

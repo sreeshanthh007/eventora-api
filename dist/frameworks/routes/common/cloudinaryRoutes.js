@@ -8,7 +8,7 @@ class CloudinaryRoutes extends base_route_1.BaseRouter {
         super();
     }
     initializeRoutes() {
-        this.router.get("/signature", resolver_1.cloudinaryController.getUploadSignature.bind(resolver_1.cloudinaryController));
+        this.router.get("/signature", resolver_1.authController.getUploadSignature.bind(resolver_1.authController));
     }
 }
 exports.CloudinaryRoutes = CloudinaryRoutes;
