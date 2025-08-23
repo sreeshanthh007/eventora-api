@@ -24,18 +24,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RejectVendorUseCase = void 0;
 const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
+const socket_service_1 = require("interfaceAdpaters/services/socket.service");
 const tsyringe_1 = require("tsyringe");
 let RejectVendorUseCase = class RejectVendorUseCase {
-    constructor(vendorRepo) {
+    constructor(vendorRepo, notificationService) {
         this.vendorRepo = vendorRepo;
+        this.notificationService = notificationService;
     }
-    execute(vendorId) {
+    execute(vendorId, rejectReason) {
         return __awaiter(this, void 0, void 0, function* () {
             const isVendorExist = yield this.vendorRepo.findById(vendorId);
             if (!isVendorExist) {
                 throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.USER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
             }
-            yield this.vendorRepo.findByIdAndUpdateVendorStatus(vendorId, "rejected");
+            yield this.vendorRepo.findByIdAndUpdateVendorStatus(vendorId, "rejected", rejectReason);
+            const io = socket_service_1.SocketService.getIO();
+            io.to(`vendor_${vendorId}`).emit("vendorRejected", { _id: vendorId, status: "rejected" });
+            if (isVendorExist.fcmToken) {
+                yield this.notificationService.sendNotification(vendorId, isVendorExist.fcmToken, { title: "Account Rejected", body: "Your account has been rejected" });
+            }
         });
     }
 };
@@ -43,5 +50,6 @@ exports.RejectVendorUseCase = RejectVendorUseCase;
 exports.RejectVendorUseCase = RejectVendorUseCase = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("IVendorRepository")),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, tsyringe_1.inject)("INotificationService")),
+    __metadata("design:paramtypes", [Object, Object])
 ], RejectVendorUseCase);

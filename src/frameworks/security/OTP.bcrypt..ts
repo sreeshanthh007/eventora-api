@@ -2,7 +2,6 @@
 import bcrypt from "bcrypt"
 import { IBcrypt } from "./bcrypt.interface"
 import { injectable } from "tsyringe"
-import { config } from "@shared/config"
 
 
 @injectable()

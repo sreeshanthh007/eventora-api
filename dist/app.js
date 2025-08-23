@@ -23,7 +23,7 @@ const socket_server_1 = require("interfaceAdpaters/websockets/socket-server");
 const mongoConnect = new mongoConnect_1.MongoConnect();
 const expressServer = new server_1.ExpressServer();
 const httpServer = (0, http_1.createServer)(expressServer.getApp());
-const socketServer = new socket_server_1.SocketServer(httpServer);
+new socket_server_1.SocketServer(httpServer);
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         try {

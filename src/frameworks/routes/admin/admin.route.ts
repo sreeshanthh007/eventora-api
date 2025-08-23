@@ -6,17 +6,10 @@ import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
 import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
 import { 
-    getAlluserscontroller, 
     categoryController,
-    getAllVendorsController, 
-    toggleUsercontroller,
-     toggleVendorController,
-    getAllRequestedVendorsController,
-     approveVendorController,
-     rejectVendorController,
-     hostNewEventController,
-     authController
-
+     authController,
+     vendorController,
+     adminClientController
  } from "@frameworks/di/resolver";
 
 export class AdminRotes extends BaseRouter{
@@ -28,46 +21,46 @@ export class AdminRotes extends BaseRouter{
        this.router.get(
       "/users",
       verifyAuth,
-      asyncHandler(getAlluserscontroller.handle.bind(getAlluserscontroller))
+      asyncHandler(adminClientController.getAllClients.bind(adminClientController))
     );
 
     this.router.get(
             "/vendors",
             verifyAuth,
-            asyncHandler(getAllVendorsController.handle.bind(getAllVendorsController))
+            asyncHandler(vendorController.getAllVendors.bind(vendorController))
         )
 
         this.router.get(
             "/requested-vendors",
             verifyAuth,
             authorizeRole(["admin"]),
-            asyncHandler(getAllRequestedVendorsController.handle.bind(getAllRequestedVendorsController))
+            asyncHandler(vendorController.getRequestedVendors.bind(vendorController))
         )
 
         this.router.patch(
-            "/approve-vendors",
+            "/:vendorId/approve-vendors",
             verifyAuth,
             authorizeRole(["admin"]),
-            asyncHandler(approveVendorController.handle.bind(approveVendorController))
+            asyncHandler(vendorController.approveVendor.bind(vendorController))
         );
 
         this.router.patch(
-            "/reject-vendors",
+            "/:vendorId/reject-vendors",
             verifyAuth,
             authorizeRole(["admin"]),
-            asyncHandler(rejectVendorController.handle.bind(rejectVendorController))
+            asyncHandler(vendorController.rejectVendor.bind(vendorController))
         )
         
     this.router.patch(
         "/user-status",
         verifyAuth,
-        asyncHandler(toggleUsercontroller.handle.bind(toggleUsercontroller))
+            asyncHandler(adminClientController.updateClientAccountStatus.bind(adminClientController))
     );
 
     this.router.patch(
         "/vendor-status",
         verifyAuth,
-        asyncHandler(toggleVendorController.handle.bind(toggleVendorController))
+        asyncHandler(vendorController.udpateVendorAccountStatus.bind(vendorController))
     );
 
     this.router.patch(
@@ -97,14 +90,6 @@ export class AdminRotes extends BaseRouter{
             asyncHandler(categoryController.addCategory.bind(categoryController))
         );
 
-
-        this.router.post(
-            "/add-event",
-            verifyAuth,
-            authorizeRole(["admin"]),
-            asyncHandler(hostNewEventController.handle.bind(hostNewEventController))
-        );
-
         this.router.post(
             "/logout",
             verifyAuth,
@@ -112,6 +97,4 @@ export class AdminRotes extends BaseRouter{
             asyncHandler(authController.logout.bind(authController))
         )
     }
-
-
 }

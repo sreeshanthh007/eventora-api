@@ -41,14 +41,7 @@ let HandleToggleVendorStatusUseCase = class HandleToggleVendorStatusUseCase {
             }
             const newStatus = vendor.status == "active" ? "blocked" : "active";
             yield this.vendorRepository.findByIdAndUpdateStatus(vendorId, newStatus);
-            if (newStatus == "blocked") {
-                yield redis_client_1.RedisClient.set(`vendor_status:vendor${vendorId}`, newStatus, {
-                    EX: 3600
-                });
-            }
-            else if (newStatus == "active") {
-                yield redis_client_1.RedisClient.del(`vendor_status:vendor${vendorId}`);
-            }
+            yield redis_client_1.RedisClient.set(`user_status:vendor:${vendorId}`, newStatus);
         });
     }
 };

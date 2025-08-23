@@ -18,7 +18,7 @@ class SocketServer {
     }
     initializeConnection() {
         this._io.on("connection", (socket) => {
-            console.log("client connected", socket.id);
+            console.log("client connected");
             const notificationEvents = new notification_events_1.NotificationEvents(socket, this._io);
             notificationEvents.register();
         });

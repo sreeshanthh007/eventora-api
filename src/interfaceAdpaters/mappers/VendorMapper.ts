@@ -13,7 +13,9 @@ export const toVendorResponse = (vendor:IUserEntity)=>{
         place:vendor.place,
         about:vendor.about,
         vendorStatus:vendor.vendorStatus,
-        submissionDate:vendor.createdAt?.toLocaleDateString()
+        vendorId:vendor.vendorId,
+        submissionDate:vendor.createdAt?.toLocaleDateString(),
+        rejectReason:vendor.rejectionReason
     }
 }
 

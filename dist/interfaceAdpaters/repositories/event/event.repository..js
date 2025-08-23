@@ -17,5 +17,24 @@ class EventRepository {
             yield event_model_1.EventModel.create(data);
         });
     }
+    findPaginatedEvents(filter, skip, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [events, total] = yield Promise.all([
+                yield event_model_1.EventModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+                yield event_model_1.EventModel.countDocuments(filter)
+            ]);
+            return { events, total };
+        });
+    }
+    findById(eventId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield event_model_1.EventModel.findById(eventId);
+        });
+    }
+    findByIdAndToggleStatus(evendId, isActive) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield event_model_1.EventModel.findByIdAndUpdate(evendId, { isActive }, { new: true });
+        });
+    }
 }
 exports.EventRepository = EventRepository;

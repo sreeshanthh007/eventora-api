@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 
-export interface IClientController {
-    
-
+export interface IClientController{
+    refreshSession(req:Request,res:Response) : Promise<void>
+    updateProfileImage(req:Request,res:Response) : Promise<void>
 }

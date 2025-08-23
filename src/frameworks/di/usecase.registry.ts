@@ -95,7 +95,17 @@ import { FirebaseService } from "@frameworks/firebase/firebaseService";
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { NotificationService } from "interfaceAdpaters/services/notification.service";
 import { IFcmTokenUseCase } from "@entities/useCaseInterfaces/auth/fcmtoken.interface";
-import { FcmTokenUseCase } from "@usecases/fcmtoken.usecase";
+import { FcmTokenUseCase } from "@usecases/fcmToken/fcmtoken.usecase";
+import { IResendVerificationUseCase } from "@entities/useCaseInterfaces/admin/resend-verification.usecase";
+import { resendVerificationUseCase } from "@usecases/vendor/resend-verification.usecase";
+import { IGetAllEventsUseCase } from "@entities/useCaseInterfaces/vendor/event/get-all-events.usecase.interface";
+import { GetAllEventsUseCase } from "@usecases/vendor/event/get-all-events.usecase";
+import { IToggleStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/toggleStatus.usecase.interface";
+import { ToggleStatusUseCase } from "@usecases/vendor/event/toggle-status.usecase";
+import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
+import { GetAllUsersDetailsUseCase } from "@usecases/common/get-all-users.usecase";
+import { IUpdateProfileImageUseCase } from "@entities/useCaseInterfaces/client/updateProfileImage.usecase.interface";
+import { UpdateProfileImageUseCase } from "@usecases/common/update-profileImage.usecase";
 
 
 
@@ -214,6 +224,10 @@ import { FcmTokenUseCase } from "@usecases/fcmtoken.usecase";
                 useClass:getAllUsersUseCase
             });
 
+            container.register<IGetAllUsersDetailsUseCase>("IGetAllUsersDetailsUseCase",{
+                useClass:GetAllUsersDetailsUseCase
+            });
+
             container.register<IuserToggleStatusUseCase>("IUserToggleStatusUseCase",{
                 useClass: UserToggleStatusUseCase
             });
@@ -226,6 +240,9 @@ import { FcmTokenUseCase } from "@usecases/fcmtoken.usecase";
                 useClass:GetAllCategoryUseCase
             });
 
+            container.register<IToggleStatusUseCase>("IToggleStatusUseCase",{
+                useClass:ToggleStatusUseCase
+            })
 
             container.register<IGetRequestedVendorsUseCase>("IGetRequestedVendorUseCase",{
                 useClass:GetRequestedVendorsUseCase
@@ -239,7 +256,13 @@ import { FcmTokenUseCase } from "@usecases/fcmtoken.usecase";
                 useClass:RejectVendorUseCase
             });
 
+            container.register<IResendVerificationUseCase>("IResendVerificationUseCase",{
+                useClass:resendVerificationUseCase
+            });
 
+            container.register<IGetAllEventsUseCase>("IGetAllEventsUseCase",{
+                useClass:GetAllEventsUseCase
+            });
 
                 container.register<IHandleToggleVendorUseCase>("IHandleToggleVendorUseCase",{
                     useClass:HandleToggleVendorStatusUseCase
@@ -261,6 +284,10 @@ import { FcmTokenUseCase } from "@usecases/fcmtoken.usecase";
 
                 container.register<IEditVendorProfileUseCase>("IEditVendorProfileUseCase",{
                     useClass:UpdateVendorProfileUseCase
+                });
+
+                container.register<IUpdateProfileImageUseCase>("IUpdateProfileImageUseCase",{
+                    useClass:UpdateProfileImageUseCase
                 })
 
                 container.register<IGoogleUseCase>("IGoogleUseCase",{

@@ -10,7 +10,7 @@ import { LoginUserDTO, UserDTO } from "@shared/dtos/user.dto";
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { userSchema } from "./validations/user-signup-validation.schema";
-import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES, TRole } from "@shared/constants";
 import { loginSchema } from "./validations/user-login-validation.schema";
 import { clearAuthCookie, setAuthCookies, updateCookieWithAccessToken } from "@shared/utils/cookie-helper";
 import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
@@ -19,6 +19,7 @@ import { IVerifyOtpUsecase } from "@entities/useCaseInterfaces/auth/verifyOtp-us
 import { ISendEmailUseCase } from "@entities/useCaseInterfaces/auth/send-email-usercase.interface";
 import { ICloudinarySignatureService } from "@entities/serviceInterfaces/cloudinary-service.interface";
 import { IFcmTokenUseCase } from "@entities/useCaseInterfaces/auth/fcmtoken.interface";
+import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
 
 
 
@@ -35,6 +36,7 @@ export class AuthController implements IAuthController{
         @inject("IRevokeRefreshTokenUseCase") private _revokeRefreshTokenUseCase : IRevokeRefreshTokenUseCase,
         @inject("IBlacklistTokenUseCase") private _blackListTokenUseCase : IBlacklistTokenUseCase,
         @inject("IVerifyOTPUseCase") private _verifyOtpUseCase : IVerifyOtpUsecase,
+        @inject("IGetAllUsersDetailsUseCase") private _getAllUsersDetailsUseCase : IGetAllUsersDetailsUseCase,
         @inject("IFcmTokenUseCase")  private _fcmTokenUseCase : IFcmTokenUseCase,
         @inject("ISendEmailUseCase") private _sendEmailUseCase : ISendEmailUseCase,
         @inject("ICloudinarySignatureService") private _cloudinaryService : ICloudinarySignatureService
@@ -223,6 +225,22 @@ export class AuthController implements IAuthController{
         const data =  this._cloudinaryService.generateSignature(folder as string)
 
         res.json(data)
+     }
+
+
+     async refreshSession(req: Request, res: Response): Promise<void> {
+         const {id,role} = (req as CustomRequest).user
+
+         if(!id || !role){
+            res.status(HTTP_STATUS.NOT_FOUND)
+            .json({success:false,message:ERROR_MESSAGES.INVALID_TOKEN})
+         }
+
+
+         const user = await this._getAllUsersDetailsUseCase.execute(id,role as TRole)
+        
+         res.status(HTTP_STATUS.OK)
+         .json({success:true,user:user})
      }
 
 

@@ -57,7 +57,7 @@ exports.EventSchema = new mongoose_1.Schema({
             required: true,
         },
     },
-    posterImage: [{
+    Images: [{
             type: String,
             required: true
         }],

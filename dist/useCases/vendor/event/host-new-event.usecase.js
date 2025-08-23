@@ -23,6 +23,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HostNewEventUseCase = void 0;
 const tsyringe_1 = require("tsyringe");
+console.log("hostneweventusecase");
 let HostNewEventUseCase = class HostNewEventUseCase {
     constructor(eventRepo) {
         this.eventRepo = eventRepo;

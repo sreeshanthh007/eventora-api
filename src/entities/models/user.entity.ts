@@ -16,6 +16,8 @@ export interface IUserEntity{
     place?:string,
     status?:string,
     vendorStatus?:string,
+    rejectionReason?:string
+    vendorId?:string
     createdAt?:Date,
     updatedAt?:Date
 }

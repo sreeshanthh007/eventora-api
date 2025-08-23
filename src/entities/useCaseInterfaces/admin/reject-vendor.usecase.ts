@@ -1,5 +1,5 @@
 
 
 export interface IRejectVendorUseCase {
-    execute(vendorId:string) : Promise<void>
+ execute(vendorId:string,rejectReason:string) : Promise<void>
 }

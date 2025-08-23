@@ -76,6 +76,15 @@ export class VendorRepository implements IVendorRepository {
       }
   }
 
+
+  async findByIdAndUpdateProfileImage(userId: string, profileImage: string): Promise<void> {
+      await VendorModel.findByIdAndUpdate(userId,
+        {
+          $set:{profilePicture : profileImage}
+        }
+      )
+  }
+
   async updateVendorProfileById(id: string, data: Partial<IVendorEntity>): Promise<void> {
       await VendorModel.findByIdAndUpdate(id,{
         $set:{...data}
@@ -83,10 +92,11 @@ export class VendorRepository implements IVendorRepository {
 
   }
 
-  async findByIdAndUpdateVendorStatus(id: string, status: string): Promise<void> {
+  async findByIdAndUpdateVendorStatus(id: string, status: string,rejectReason?:string): Promise<void> {
       await VendorModel.findByIdAndUpdate(id,{
         $set:{
-          vendorStatus:status
+          vendorStatus:status,
+          rejectionReason:rejectReason
         }
       });
   }

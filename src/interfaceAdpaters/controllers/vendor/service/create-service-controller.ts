@@ -16,7 +16,7 @@ export class CreateServiceController implements ICreateServiceController{
 
 
     async handle(req: Request, res: Response): Promise<void> {
-        const vendorId = (req as CustomRequest).user.id
+         (req as CustomRequest).user.id
 
         const servieData = req.body as IServiceEntity
 

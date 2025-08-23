@@ -43,7 +43,9 @@ let BlockedStatusMiddleware = class BlockedStatusMiddleware {
                 }
                 const { id, role } = req.user;
                 const cacheKey = `user_status:${role}:${id}`;
+                console.log("cache key is", cacheKey);
                 let status = yield redis_client_1.RedisClient.get(cacheKey);
+                console.log("their current stats", status);
                 if (!status) {
                     if (role == "client") {
                         const client = yield this.clientRepository.findById(id);

@@ -4,9 +4,8 @@ import { IHostNewEventUseCase } from "@entities/useCaseInterfaces/vendor/event/h
 import { inject, injectable } from "tsyringe";
 
 
-
+console.log("hostneweventusecase")
 @injectable()
-
 export class HostNewEventUseCase implements IHostNewEventUseCase{
     constructor(
         @inject("IEventRepository") private eventRepo : IEventRepository

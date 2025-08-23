@@ -48,7 +48,12 @@ const handle_toggle_category_usecase_1 = require("@usecases/admin/handle-toggle-
 const OtpCacheService_1 = require("interfaceAdpaters/services/OtpCacheService");
 const firebaseService_1 = require("@frameworks/firebase/firebaseService");
 const notification_service_1 = require("interfaceAdpaters/services/notification.service");
-const fcmtoken_usecase_1 = require("@usecases/fcmtoken.usecase");
+const fcmtoken_usecase_1 = require("@usecases/fcmToken/fcmtoken.usecase");
+const resend_verification_usecase_1 = require("@usecases/vendor/resend-verification.usecase");
+const get_all_events_usecase_1 = require("@usecases/vendor/event/get-all-events.usecase");
+const toggle_status_usecase_1 = require("@usecases/vendor/event/toggle-status.usecase");
+const get_all_users_usecase_2 = require("@usecases/common/get-all-users.usecase");
+const update_profileImage_usecase_1 = require("@usecases/common/update-profileImage.usecase");
 class UseCaseRegistry {
     static registerUseCases() {
         tsyringe_1.container.register("IRegisterUseCase", {
@@ -135,6 +140,9 @@ class UseCaseRegistry {
         tsyringe_1.container.register("IGetAllUsersUseCase", {
             useClass: get_all_users_usecase_1.getAllUsersUseCase
         });
+        tsyringe_1.container.register("IGetAllUsersDetailsUseCase", {
+            useClass: get_all_users_usecase_2.GetAllUsersDetailsUseCase
+        });
         tsyringe_1.container.register("IUserToggleStatusUseCase", {
             useClass: handle_user_toggle_status_usecase_1.UserToggleStatusUseCase
         });
@@ -144,6 +152,9 @@ class UseCaseRegistry {
         tsyringe_1.container.register("IGetAllCategoryUseCase", {
             useClass: get_all_category_usecase_1.GetAllCategoryUseCase
         });
+        tsyringe_1.container.register("IToggleStatusUseCase", {
+            useClass: toggle_status_usecase_1.ToggleStatusUseCase
+        });
         tsyringe_1.container.register("IGetRequestedVendorUseCase", {
             useClass: get_requested_vendors_usecase_1.GetRequestedVendorsUseCase
         });
@@ -152,6 +163,12 @@ class UseCaseRegistry {
         });
         tsyringe_1.container.register("IRejectVendorUseCase", {
             useClass: reject_vendor_usecase_1.RejectVendorUseCase
+        });
+        tsyringe_1.container.register("IResendVerificationUseCase", {
+            useClass: resend_verification_usecase_1.resendVerificationUseCase
+        });
+        tsyringe_1.container.register("IGetAllEventsUseCase", {
+            useClass: get_all_events_usecase_1.GetAllEventsUseCase
         });
         tsyringe_1.container.register("IHandleToggleVendorUseCase", {
             useClass: handle_toggle_vendor_usecase_1.HandleToggleVendorStatusUseCase
@@ -167,6 +184,9 @@ class UseCaseRegistry {
         });
         tsyringe_1.container.register("IEditVendorProfileUseCase", {
             useClass: update_vendor_profile_usecase_1.UpdateVendorProfileUseCase
+        });
+        tsyringe_1.container.register("IUpdateProfileImageUseCase", {
+            useClass: update_profileImage_usecase_1.UpdateProfileImageUseCase
         });
         tsyringe_1.container.register("IGoogleUseCase", {
             useClass: google_login_usecase_1.GoogleuseCase

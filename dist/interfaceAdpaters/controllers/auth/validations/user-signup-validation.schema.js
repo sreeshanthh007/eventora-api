@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userSchema = void 0;
 const zod_1 = require("zod");
-const email_validation_1 = require("@shared/validations/email-validation");
-const password_validation_1 = require("@shared/validations/password-validation");
-const name_validation_1 = require("@shared/validations/name-validation");
-const phone_validation_1 = require("@shared/validations/phone-validation");
+const email_validation_1 = require("interfaceAdpaters/validations/email-validation");
+const password_validation_1 = require("interfaceAdpaters/validations/password-validation");
+const name_validation_1 = require("interfaceAdpaters/validations/name-validation");
+const phone_validation_1 = require("interfaceAdpaters/validations/phone-validation");
 const adminSchema = zod_1.z.object({
     email: zod_1.z
         .string()

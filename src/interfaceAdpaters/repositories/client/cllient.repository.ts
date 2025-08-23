@@ -35,6 +35,16 @@ export class ClientRepository implements IClientRepository{
         })
     }
 
+    async findByIdAndUpdateProfileImage(userId: string, profileImage: string): Promise<void> {
+        await ClientModel.findByIdAndUpdate(userId,
+            {
+                $set:{profileImage:profileImage},
+                
+            },
+            {new:true}
+        )
+    }
+
         async findPaginatedClients(filter:FilterQuery<IClientEntity>,skip:number,limit:number):Promise<{user:IClientEntity[] | []; total:number}> {
             const [user,total] = await Promise.all([
                 ClientModel.find(filter).sort({createdAt:-1}).skip(skip).limit(limit),

@@ -86,6 +86,13 @@ let VendorRepository = class VendorRepository {
             };
         });
     }
+    findByIdAndUpdateProfileImage(userId, profileImage) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield vendor_model_1.VendorModel.findByIdAndUpdate(userId, {
+                $set: { profilePicture: profileImage }
+            });
+        });
+    }
     updateVendorProfileById(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
             yield vendor_model_1.VendorModel.findByIdAndUpdate(id, {
@@ -93,11 +100,12 @@ let VendorRepository = class VendorRepository {
             });
         });
     }
-    findByIdAndUpdateVendorStatus(id, status) {
+    findByIdAndUpdateVendorStatus(id, status, rejectReason) {
         return __awaiter(this, void 0, void 0, function* () {
             yield vendor_model_1.VendorModel.findByIdAndUpdate(id, {
                 $set: {
-                    vendorStatus: status
+                    vendorStatus: status,
+                    rejectionReason: rejectReason
                 }
             });
         });

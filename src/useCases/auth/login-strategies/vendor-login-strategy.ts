@@ -18,7 +18,7 @@ import { toVendorResponse } from "interfaceAdpaters/mappers/VendorMapper";
 
         async login(user: LoginUserDTO): Promise<Partial<IUserEntity>> {
             const vendor = await this.vendorRepository.findByEmail(user.email)
-
+            
             if(!vendor){
                 throw new CustomError(
                   ERROR_MESSAGES.EMAIL_NOT_FOUND,

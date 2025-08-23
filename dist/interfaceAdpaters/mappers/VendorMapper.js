@@ -12,7 +12,9 @@ const toVendorResponse = (vendor) => {
         place: vendor.place,
         about: vendor.about,
         vendorStatus: vendor.vendorStatus,
-        submissionDate: (_a = vendor.createdAt) === null || _a === void 0 ? void 0 : _a.toLocaleDateString()
+        vendorId: vendor.vendorId,
+        submissionDate: (_a = vendor.createdAt) === null || _a === void 0 ? void 0 : _a.toLocaleDateString(),
+        rejectReason: vendor.rejectionReason
     };
 };
 exports.toVendorResponse = toVendorResponse;

@@ -29,7 +29,7 @@ const user_login_validation_schema_1 = require("./validations/user-login-validat
 const cookie_helper_1 = require("@shared/utils/cookie-helper");
 const email_validation_schema_1 = require("./validations/email.validation.schema");
 let AuthController = class AuthController {
-    constructor(_registerUseCase, _loginUserUseCase, _generateTokenUseCase, _googleLoginUseCase, _refreshTokenUseCase, _revokeRefreshTokenUseCase, _blackListTokenUseCase, _verifyOtpUseCase, _fcmTokenUseCase, _sendEmailUseCase, _cloudinaryService) {
+    constructor(_registerUseCase, _loginUserUseCase, _generateTokenUseCase, _googleLoginUseCase, _refreshTokenUseCase, _revokeRefreshTokenUseCase, _blackListTokenUseCase, _verifyOtpUseCase, _getAllUsersDetailsUseCase, _fcmTokenUseCase, _sendEmailUseCase, _cloudinaryService) {
         this._registerUseCase = _registerUseCase;
         this._loginUserUseCase = _loginUserUseCase;
         this._generateTokenUseCase = _generateTokenUseCase;
@@ -38,6 +38,7 @@ let AuthController = class AuthController {
         this._revokeRefreshTokenUseCase = _revokeRefreshTokenUseCase;
         this._blackListTokenUseCase = _blackListTokenUseCase;
         this._verifyOtpUseCase = _verifyOtpUseCase;
+        this._getAllUsersDetailsUseCase = _getAllUsersDetailsUseCase;
         this._fcmTokenUseCase = _fcmTokenUseCase;
         this._sendEmailUseCase = _sendEmailUseCase;
         this._cloudinaryService = _cloudinaryService;
@@ -160,6 +161,18 @@ let AuthController = class AuthController {
             res.json(data);
         });
     }
+    refreshSession(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id, role } = req.user;
+            if (!id || !role) {
+                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.INVALID_TOKEN });
+            }
+            const user = yield this._getAllUsersDetailsUseCase.execute(id, role);
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, user: user });
+        });
+    }
     saveFcmToken(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("backnd", req.body);
@@ -168,6 +181,7 @@ let AuthController = class AuthController {
             if (!userId || !fcmToken) {
                 res.status(constants_1.HTTP_STATUS.NOT_FOUND)
                     .json({ success: false, message: "user id or fcm token is missing" });
+                return;
             }
             yield this._fcmTokenUseCase.execute(userId, fcmToken);
             res.status(constants_1.HTTP_STATUS.OK)
@@ -186,8 +200,9 @@ exports.AuthController = AuthController = __decorate([
     __param(5, (0, tsyringe_1.inject)("IRevokeRefreshTokenUseCase")),
     __param(6, (0, tsyringe_1.inject)("IBlacklistTokenUseCase")),
     __param(7, (0, tsyringe_1.inject)("IVerifyOTPUseCase")),
-    __param(8, (0, tsyringe_1.inject)("IFcmTokenUseCase")),
-    __param(9, (0, tsyringe_1.inject)("ISendEmailUseCase")),
-    __param(10, (0, tsyringe_1.inject)("ICloudinarySignatureService")),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
+    __param(8, (0, tsyringe_1.inject)("IGetAllUsersDetailsUseCase")),
+    __param(9, (0, tsyringe_1.inject)("IFcmTokenUseCase")),
+    __param(10, (0, tsyringe_1.inject)("ISendEmailUseCase")),
+    __param(11, (0, tsyringe_1.inject)("ICloudinarySignatureService")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], AuthController);

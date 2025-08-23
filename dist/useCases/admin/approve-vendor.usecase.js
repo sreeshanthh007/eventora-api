@@ -24,10 +24,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApproveVendorUseCase = void 0;
 const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
+const socket_service_1 = require("interfaceAdpaters/services/socket.service");
 const tsyringe_1 = require("tsyringe");
 let ApproveVendorUseCase = class ApproveVendorUseCase {
-    constructor(vendorRepo) {
+    constructor(vendorRepo, notificationService) {
         this.vendorRepo = vendorRepo;
+        this.notificationService = notificationService;
     }
     execute(vendorId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36,6 +38,14 @@ let ApproveVendorUseCase = class ApproveVendorUseCase {
                 throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.USER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
             }
             yield this.vendorRepo.findByIdAndUpdateVendorStatus(vendorId, "approved");
+            const io = socket_service_1.SocketService.getIO();
+            io.to(`vendor_${vendorId}`).emit("vendorApproved", { _id: vendorId, status: "approved" });
+            if (vendorExist.fcmToken) {
+                yield this.notificationService.sendNotification(vendorId, vendorExist.fcmToken, {
+                    title: "Account Approved",
+                    body: "Your vendor account has been approved by admin 🎉"
+                });
+            }
         });
     }
 };
@@ -43,5 +53,6 @@ exports.ApproveVendorUseCase = ApproveVendorUseCase;
 exports.ApproveVendorUseCase = ApproveVendorUseCase = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("IVendorRepository")),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, tsyringe_1.inject)("INotificationService")),
+    __metadata("design:paramtypes", [Object, Object])
 ], ApproveVendorUseCase);

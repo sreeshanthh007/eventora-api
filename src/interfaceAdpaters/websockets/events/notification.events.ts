@@ -9,8 +9,8 @@ export class NotificationEvents {
 
     register(){
         this._socket.on("joinVendorRoom",(vendorId:string)=>{
-        this._socket.join(`Vendor ${vendorId}`)
-        console.log(`Vendor ${vendorId} joined their room`);
+        this._socket.join(`vendor_${vendorId}`)
+        console.log(`Vendor_${vendorId} joined their room`);
       });
     }
 }

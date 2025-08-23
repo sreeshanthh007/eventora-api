@@ -30,7 +30,7 @@ let CreateServiceController = class CreateServiceController {
     }
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const vendorId = req.user.id;
+            req.user.id;
             const servieData = req.body;
             yield this.createService.execute(servieData);
             res

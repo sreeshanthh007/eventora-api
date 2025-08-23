@@ -50,6 +50,13 @@ let ClientRepository = class ClientRepository {
             });
         });
     }
+    findByIdAndUpdateProfileImage(userId, profileImage) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield client_model_1.ClientModel.findByIdAndUpdate(userId, {
+                $set: { profileImage: profileImage },
+            }, { new: true });
+        });
+    }
     findPaginatedClients(filter, skip, limit) {
         return __awaiter(this, void 0, void 0, function* () {
             const [user, total] = yield Promise.all([

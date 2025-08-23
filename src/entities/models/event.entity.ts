@@ -12,14 +12,14 @@ export interface IEventEntity {
     endTime:string,
     pricePerTicket:number,
     totalTicket : number,
-    isActive:boolean;
+    isActive?:boolean;
     ticketLimit:number,
     eventLocation:string;
     coordinates : {
         type:"Point";
         coordinates:number[]
     };
-    posterImage?:string;
+    Images:string[];
     hostId:string | ObjectId;
     createdAt?:Date,
     updatedAt?:Date

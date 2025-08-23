@@ -67,7 +67,7 @@ export const EventSchema : Schema = new Schema<IEventModel>(
       },
     },
 
-    posterImage:[{
+    Images:[{
         type:String,
         required:true
     }],

@@ -17,7 +17,7 @@ const expressServer = new ExpressServer();
 
 const httpServer = createServer(expressServer.getApp());
 
-const socketServer = new SocketServer(httpServer)
+ new SocketServer(httpServer)
 
 async function startServer() {
   try {

@@ -9,31 +9,36 @@ import { ForgotPasswordController } from "interfaceAdpaters/controllers/client/f
 import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
 import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
 import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
-import { GetAllUserController } from "interfaceAdpaters/controllers/admin/get-all-clients";
-import { HandleToggleStatus } from "interfaceAdpaters/controllers/admin/handleToggleClientStatus";
 import { VendorForgotPassword } from "interfaceAdpaters/controllers/vendor/VendorforgotPasswordController";
-import { GetAllVendorsController } from "interfaceAdpaters/controllers/admin/get-all-vendors.controllers";
-import { HandleToggleVendorStatus } from "interfaceAdpaters/controllers/admin/handleToggleVendorController";
 import { ForgotVendorOTPController } from "interfaceAdpaters/controllers/vendor/forgot-password.vendorController";
 import { BlockedStatusMiddleware } from "interfaceAdpaters/middlewares/block-status.middleware";
-import { GetRequestedVendorsController } from "interfaceAdpaters/controllers/admin/get-requested-vendor-controller";
-import { ApproveVendorController } from "interfaceAdpaters/controllers/admin/approve-vendor-controller";
-import { RejectVendorController } from "interfaceAdpaters/controllers/admin/reject-vendor-controller";
 import { EditVendorProfileController } from "interfaceAdpaters/controllers/vendor/edit-profile-controller";
-import { HostNewEventController } from "interfaceAdpaters/controllers/vendor/event/host-new-event-controller";
-import { GetAllCategoryForClientsController } from "interfaceAdpaters/controllers/client/get-all-category-controller";
 import { AuthController } from "interfaceAdpaters/controllers/auth/auth-controller";
 import { IAuthController } from "@entities/controllerInterfaces/auth/auth.controller.interface";
 import { ICategoryController } from "@entities/controllerInterfaces/category/category.interface";
 import { CategoryController } from "interfaceAdpaters/controllers/category-controller";
+import { IVendorController } from "@entities/controllerInterfaces/admin/admin.vendor.controller.interface";
+import { VendorController } from "interfaceAdpaters/controllers/admin/vendor-controller";
+import { IAdminClientController } from "@entities/controllerInterfaces/admin/client.controller.interface";
+import { AdminClientController } from "interfaceAdpaters/controllers/admin/admin.client-controller";
+import { IFetchCategoryController } from "@entities/controllerInterfaces/client/get-all-categories.interface";
+import { FetchCategoryController } from "interfaceAdpaters/controllers/client/category-controller";
+import { IEventController } from "@entities/controllerInterfaces/vendor/event/event-controller.interface";
+import { EventController } from "interfaceAdpaters/controllers/vendor/event/event-controller";
+import { IClientController } from "@entities/controllerInterfaces/client/client-controller.interface";
+import { ClientController } from "interfaceAdpaters/controllers/client-controller";
 
 
 DependencyInjection.registerAll();
 export const blockstatusMiddleware = container.resolve(BlockedStatusMiddleware);
 
 export const authController = container.resolve<IAuthController>(AuthController)
-
+export const vendorController = container.resolve<IVendorController>(VendorController)
+export const adminClientController = container.resolve<IAdminClientController>(AdminClientController)
+export const clientController = container.resolve<IClientController>(ClientController)
 export const categoryController = container.resolve<ICategoryController>(CategoryController)
+export const eventController = container.resolve<IEventController>(EventController)
+export const fetchCategoryController = container.resolve<IFetchCategoryController>(FetchCategoryController)
 export const forgotOtpController = container.resolve(ForgotOtpController);
 
 export const forgotPasswordController = container.resolve(
@@ -48,45 +53,12 @@ export const forgotVendorPasswordController =
   container.resolve(VendorForgotPassword);
 
 
-export const getAlluserscontroller = container.resolve(GetAllUserController);
-
-
-export const toggleUsercontroller = container.resolve(HandleToggleStatus);
-
-export const toggleVendorController = container.resolve(
-  HandleToggleVendorStatus
-);
-
-export const getAllVendorsController = container.resolve(
-  GetAllVendorsController
-);
-
-export const getAllRequestedVendorsController = container.resolve(
-  GetRequestedVendorsController
-)
-export const approveVendorController = container.resolve(
-  ApproveVendorController
-);
-
-export const rejectVendorController = container.resolve(
-  RejectVendorController
-);
-
-
-
-
 export const editVendorProfileController = container.resolve(
   EditVendorProfileController
 );
 
-export const hostNewEventController = container.resolve(
-  HostNewEventController
-);
 
 
-export const getAllCategoryForClientsController = container.resolve(
-  GetAllCategoryForClientsController
-)
 
 // logger  middleware//
 export const injectedLoggerMiddleWare =
