@@ -26,10 +26,11 @@ const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
 let CategoryController = class CategoryController {
-    constructor(_addCategoryUseCase, _getAllCategoryUseCase, _toggleCategoryUseCase) {
+    constructor(_addCategoryUseCase, _getAllCategoryUseCase, _toggleCategoryUseCase, _getCategoryForServiceUseCase) {
         this._addCategoryUseCase = _addCategoryUseCase;
         this._getAllCategoryUseCase = _getAllCategoryUseCase;
         this._toggleCategoryUseCase = _toggleCategoryUseCase;
+        this._getCategoryForServiceUseCase = _getCategoryForServiceUseCase;
     }
     addCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -54,6 +55,13 @@ let CategoryController = class CategoryController {
                 category: response.categories,
                 totalPages: response.total
             });
+        });
+    }
+    getCategoryForService(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const categories = yield this._getCategoryForServiceUseCase.execute();
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, categories: categories });
         });
     }
     toogleCategory(req, res) {
@@ -89,5 +97,6 @@ exports.CategoryController = CategoryController = __decorate([
     __param(0, (0, tsyringe_1.inject)("IAddCategoryUseCase")),
     __param(1, (0, tsyringe_1.inject)("IGetAllCategoryUseCase")),
     __param(2, (0, tsyringe_1.inject)("IHandleToggleCategoryUseCase")),
-    __metadata("design:paramtypes", [Object, Object, Object])
+    __param(3, (0, tsyringe_1.inject)("IGetCategoriesForServiceUseCase")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], CategoryController);

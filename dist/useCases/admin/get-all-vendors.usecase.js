@@ -30,7 +30,7 @@ let GetAllVendorUseCase = class GetAllVendorUseCase {
     }
     execute(limit, searchTerm, current) {
         return __awaiter(this, void 0, void 0, function* () {
-            let filter = {};
+            const filter = {};
             if (searchTerm) {
                 filter.$or = [
                     { name: { $regex: searchTerm, $options: "i" } },

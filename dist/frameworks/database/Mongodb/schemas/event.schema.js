@@ -35,13 +35,13 @@ exports.EventSchema = new mongoose_1.Schema({
     },
     totalTicket: {
         type: Number,
-        required: true
-    },
-    ticketLimit: {
-        type: Number,
         required: true,
-        min: 1
     },
+    // ticketLimit:{
+    //     type:Number,
+    //     required:true,
+    //     min:1
+    // },
     eventLocation: {
         type: String,
         required: false
@@ -72,4 +72,4 @@ exports.EventSchema = new mongoose_1.Schema({
 }, {
     timestamps: true
 });
-exports.EventSchema.index({ location: "2dsphere" });
+exports.EventSchema.index({ coordinates: "2dsphere" });

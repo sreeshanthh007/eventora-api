@@ -1,4 +1,4 @@
-import { IVendorController } from "@entities/controllerInterfaces/admin/admin.vendor.controller.interface";
+import { IAdminVendorController } from "@entities/controllerInterfaces/admin/admin.vendor.controller.interface";
 import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve-vendor.usecase";
 import { IGetAllVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-all-vendors.usecase";
 import { IGetRequestedVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-requested-vendors.usecase";
@@ -15,7 +15,7 @@ import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class VendorController implements IVendorController {
+export class AdminVendorController implements IAdminVendorController {
   constructor(
     @inject("IApproveVendorUseCase")
     private _approveVendorUseCase: IApproveVendorUseCase,

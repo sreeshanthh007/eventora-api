@@ -3,6 +3,7 @@ import { ICategoryEnity } from "@entities/models/category.entity";
 import { IAddCategoryUseCase } from "@entities/useCaseInterfaces/admin/add-category.usecase";
 import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase";
 import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase";
+// import { IGetAllCategoryForServiceUseCase } from "@entities/useCaseInterfaces/get-category-for-service.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
 import { Request, Response } from "express";
@@ -17,6 +18,7 @@ export class CategoryController  implements ICategoryController{
         @inject("IAddCategoryUseCase") private _addCategoryUseCase : IAddCategoryUseCase,
         @inject("IGetAllCategoryUseCase") private _getAllCategoryUseCase : IGetAllCatgoryUseCase,
         @inject("IHandleToggleCategoryUseCase") private _toggleCategoryUseCase : IHandleToggleCategoryUseCase,
+        // @inject("IGetCategoriesForServiceUseCase") private _getCategoryForServiceUseCase : IGetAllCategoryForServiceUseCase,
     ){}
 
     async addCategory(req: Request, res: Response): Promise<void> {
@@ -57,6 +59,15 @@ export class CategoryController  implements ICategoryController{
         totalPages:response.total
         });
     }
+
+
+    // async getCategoryForService(req: Request, res: Response): Promise<void> {
+        
+    //     const categories = await this._getCategoryForServiceUseCase.execute()
+
+    //     res.status(HTTP_STATUS.OK)
+    //     .json({success:true,categories:categories})
+    // }
 
 
     async toogleCategory(req: Request, res: Response): Promise<void> {

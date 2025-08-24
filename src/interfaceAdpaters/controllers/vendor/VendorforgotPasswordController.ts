@@ -16,7 +16,7 @@ export class VendorForgotPassword implements IForgotPasswordController{
 
     async handle(req: Request, res: Response): Promise<void> {
         const {email,password} = req.body
-        console.log("email adn pass",email,password)
+      
         try {
             await this.vendorUseCase.update(email,password)
 

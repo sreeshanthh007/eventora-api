@@ -29,7 +29,7 @@ export class EventController implements IEventController{
             hostId:vendorId
         }
 
-        await this._addEventUseCase.execute(roundedData)
+        await this._addEventUseCase.execute(roundedData,vendorId)
 
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.CREATED})

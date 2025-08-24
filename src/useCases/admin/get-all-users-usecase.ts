@@ -13,7 +13,7 @@ export class getAllUsersUseCase implements IGetAllUsersUseCase{
 
     async  execute(limit: number, searchTerm: string, current: number): Promise<PaginatedUsers>  {
 
-         let filter: FilterQuery<IClientEntity> = {};
+         const filter: FilterQuery<IClientEntity> = {};
       
             if (searchTerm) {
       filter.$or = [

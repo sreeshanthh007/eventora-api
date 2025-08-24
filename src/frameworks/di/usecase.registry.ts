@@ -1,56 +1,51 @@
+import { container } from "tsyringe";
+import { IBcrypt } from "@frameworks/security/bcrypt.interface";
+import { OTPBcrypt } from "@frameworks/security/OTP.bcrypt.";
+import { passwordBcrypt } from "@frameworks/security/password.bcrypt";
 
-    import { container } from "tsyringe";
-    import { IBcrypt } from "@frameworks/security/bcrypt.interface";
-    import { OTPBcrypt } from "@frameworks/security/OTP.bcrypt.";
-    import { passwordBcrypt } from "@frameworks/security/password.bcrypt";
+import { IRegisterStrategy } from "@usecases/auth/register-strategies/register-strategy.interface";
+import { ILoginStrategy } from "@usecases/auth/login-strategies/login-strategy.interface";
+import { ClientLoginStrategy } from "@usecases/auth/login-strategies/client-login-strategy";
+import { ClientGoogleLoginStrategy } from "@usecases/auth/login-strategies/client-google-login.strategy";
+import { VendorGoogleLoginStrategy } from "@usecases/auth/login-strategies/vendor-google-login.strategy";
+import { CLientRegisterStrategy } from "@usecases/auth/register-strategies/client-register-strategy";
+import { VendorRegisterStrategy } from "@usecases/auth/register-strategies/vendor-register-strategy";
+import { VendorLoginStrategy } from "@usecases/auth/login-strategies/vendor-login-strategy";
+import { AdminLoginStrategy } from "@usecases/auth/login-strategies/admin-login-strategy";
 
+import { ITokenService } from "@usecases/auth/interfaces/token-service-interface";
+import { jwtService } from "interfaceAdpaters/services/jwtService";
+import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
+import { EmailService } from "interfaceAdpaters/services/emailServices";
+import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
+// import { OTPService } from "interfaceAdpaters/services/OTPService";
+import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
+import { UserExistService } from "interfaceAdpaters/services/user-existService";
+import { IClientExistService } from "@entities/serviceInterfaces/client-exist.service.interface";
+import { ClientExistService } from "interfaceAdpaters/services/client/clientExist-service";
+import { sendForgotPasswordOtp } from "@usecases/auth/sent-forgot.password-otp.usecase";
 
-    import { IRegisterStrategy } from "@usecases/auth/register-strategies/register-strategy.interface";
-    import { ILoginStrategy } from "@usecases/auth/login-strategies/login-strategy.interface";
-    import { ClientLoginStrategy } from "@usecases/auth/login-strategies/client-login-strategy";
-    import { ClientGoogleLoginStrategy } from "@usecases/auth/login-strategies/client-google-login.strategy";
-    import { VendorGoogleLoginStrategy } from "@usecases/auth/login-strategies/vendor-google-login.strategy";
-    import { CLientRegisterStrategy } from "@usecases/auth/register-strategies/client-register-strategy";
-    import { VendorRegisterStrategy } from "@usecases/auth/register-strategies/vendor-register-strategy";
-    import { VendorLoginStrategy } from "@usecases/auth/login-strategies/vendor-login-strategy";
-    import { AdminLoginStrategy } from "@usecases/auth/login-strategies/admin-login-strategy";
+import { IRegisterUseCase } from "@entities/useCaseInterfaces/auth/register-usecase.interface";
+import { RegisterUseCase } from "@usecases/auth/register-user.usecase";
+import { ILoginUserCase } from "@entities/useCaseInterfaces/auth/login-usecase.interface";
+import { LoginUseCase } from "@usecases/auth/login-user.usecase";
+import { ISendEmailUseCase } from "@entities/useCaseInterfaces/auth/send-email-usercase.interface";
+import { SendEmailUseCase } from "@usecases/auth/send-email.usecase";
+import { IVerifyOtpUsecase } from "@entities/useCaseInterfaces/auth/verifyOtp-usecase.interface";
+import { VerifyOTPUseCase } from "@usecases/auth/verify-otp.usecase";
+import { IGenerateTokenUseCase } from "@entities/useCaseInterfaces/auth/generate-token.interface";
+import { GenerataTokenUseCase } from "@usecases/auth/generate-token.usecase";
+import { IRefreshTokenUseCase } from "@entities/useCaseInterfaces/auth/generate-refresh-token.interface";
+import { refreshTokenUsesCase } from "@usecases/auth/refresh-token.usecase";
 
-    import { ITokenService } from "@usecases/auth/interfaces/token-service-interface";
-    import { jwtService } from "interfaceAdpaters/services/jwtService";
-    import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
-    import { EmailService } from "interfaceAdpaters/services/emailServices";
-    import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
-    // import { OTPService } from "interfaceAdpaters/services/OTPService";
-    import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
-    import { UserExistService } from "interfaceAdpaters/services/user-existService";
-    import { IClientExistService } from "@entities/serviceInterfaces/client-exist.service.interface";
-    import { ClientExistService } from "interfaceAdpaters/services/client/clientExist-service";
-    import { sendForgotPasswordOtp } from "@usecases/auth/sent-forgot.password-otp.usecase";
+import { IForgotUpdatePasswordUseCase } from "@entities/useCaseInterfaces/client/clientupdatePassword.usecase.interface";
+import { ForgotClientUpdatePasswordUseCase } from "@usecases/auth/update-password/clientUpdatePasswordSUseCase";
 
-    import { IRegisterUseCase } from "@entities/useCaseInterfaces/auth/register-usecase.interface";
-    import { RegisterUseCase } from "@usecases/auth/register-user.usecase";
-    import { ILoginUserCase } from "@entities/useCaseInterfaces/auth/login-usecase.interface";
-   import { LoginUseCase } from "@usecases/auth/login-user.usecase";
-    import { ISendEmailUseCase } from "@entities/useCaseInterfaces/auth/send-email-usercase.interface";
-   import { SendEmailUseCase } from "@usecases/auth/send-email.usecase";
-    import { IVerifyOtpUsecase } from "@entities/useCaseInterfaces/auth/verifyOtp-usecase.interface";
-  import { VerifyOTPUseCase } from "@usecases/auth/verify-otp.usecase";
-    import { IGenerateTokenUseCase } from "@entities/useCaseInterfaces/auth/generate-token.interface";
-    import { GenerataTokenUseCase } from "@usecases/auth/generate-token.usecase";
-    import { IRefreshTokenUseCase } from "@entities/useCaseInterfaces/auth/generate-refresh-token.interface";
-    import { refreshTokenUsesCase } from "@usecases/auth/refresh-token.usecase";
-
-
-    import { IForgotUpdatePasswordUseCase } from "@entities/useCaseInterfaces/client/clientupdatePassword.usecase.interface";
-    import { ForgotClientUpdatePasswordUseCase } from "@usecases/auth/update-password/clientUpdatePasswordSUseCase";
-
-
-
-    // =====error====//
-    import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
-    import { WinstonLoggerAdapter } from "interfaceAdpaters/services/logger/winston-logger-adapter";
-    import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
-    import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
+// =====error====//
+import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
+import { WinstonLoggerAdapter } from "interfaceAdpaters/services/logger/winston-logger-adapter";
+import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
+import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
 import { ISendOtpUsecase } from "@entities/useCaseInterfaces/auth/sendOtp-usecase.interface";
 import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase";
 import { getAllUsersUseCase } from "@usecases/admin/get-all-users-usecase";
@@ -81,8 +76,6 @@ import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve
 import { ApproveVendorUseCase } from "@usecases/admin/approve-vendor.usecase";
 import { IRejectVendorUseCase } from "@entities/useCaseInterfaces/admin/reject-vendor.usecase";
 import { RejectVendorUseCase } from "@usecases/admin/reject-vendor.usecase";
-import { IEditVendorProfileUseCase } from "@entities/useCaseInterfaces/vendor/edit-profile.usecase.interface";
-import { UpdateVendorProfileUseCase } from "@usecases/vendor/update-vendor-profile.usecase";
 import { IHostNewEventUseCase } from "@entities/useCaseInterfaces/vendor/event/host-new-event.usecase";
 import { HostNewEventUseCase } from "@usecases/vendor/event/host-new-event.usecase";
 import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-category.usecase";
@@ -106,231 +99,276 @@ import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-
 import { GetAllUsersDetailsUseCase } from "@usecases/common/get-all-users.usecase";
 import { IUpdateProfileImageUseCase } from "@entities/useCaseInterfaces/client/updateProfileImage.usecase.interface";
 import { UpdateProfileImageUseCase } from "@usecases/common/update-profileImage.usecase";
+import { IUpdatePersonalInformationUseCase } from "@entities/useCaseInterfaces/client/update-personal-information.interface.usecase";
+import { ClientUpdatePersonalInformationUseCase } from "@usecases/client/update-personal-information.usecase";
+import { IUpdateVendorPersonalInformationUseCase } from "@entities/useCaseInterfaces/vendor/update-vendor-personal.usecase.interface";
+import { UpdateVendorPersonalInformationUseCase } from "@usecases/vendor/update-vendor-personal-information.usecase";
+import { IEditCategoryUseCase } from "@entities/useCaseInterfaces/admin/edit-category.usecase.interface";
+import { EditCategoryUseCase } from "@usecases/admin/edit-category.usecase";
+import { IAddServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/add-service.interface.usecase";
+import { AddServiceUseCase } from "@usecases/vendor/service/add-service.usecase";
 
+export class UseCaseRegistry {
+  static registerUseCases(): void {
+    container.register<IRegisterUseCase>("IRegisterUseCase", {
+      useClass: RegisterUseCase,
+    });
 
+    container.register<IBcrypt>("IPasswordBcrypt", {
+      useClass: passwordBcrypt,
+    });
 
-    export class UseCaseRegistry {
-        static registerUseCases():void{
-            container.register<IRegisterUseCase>("IRegisterUseCase",{
-                useClass:RegisterUseCase
-            });
+    container.register<IBcrypt>("IOTPBcrypt", {
+      useClass: OTPBcrypt,
+    });
 
-            container.register<IBcrypt>("IPasswordBcrypt",{
-                useClass:passwordBcrypt
-            });
+    container.register<ILoginUserCase>("ILoginUserUseCase", {
+      useClass: LoginUseCase,
+    });
 
-            container.register<IBcrypt>("IOTPBcrypt",{
-                useClass:OTPBcrypt
-            });
+    container.register<IRevokeRefreshTokenUseCase>(
+      "IRevokeRefreshTokenUseCase",
+      {
+        useClass: RevokeRefreshTokenUseCase,
+      }
+    );
 
-            container.register<ILoginUserCase>("ILoginUserUseCase",{
-                useClass:LoginUseCase
-            });
+    container.register<ISendEmailUseCase>("ISendEmailUseCase", {
+      useClass: SendEmailUseCase,
+    });
 
-            container.register<IRevokeRefreshTokenUseCase>("IRevokeRefreshTokenUseCase",{
-                useClass:RevokeRefreshTokenUseCase
-            })
+    container.register<IVerifyOtpUsecase>("IVerifyOTPUseCase", {
+      useClass: VerifyOTPUseCase,
+    });
+    container.register<IGenerateTokenUseCase>("IGenerateTokenUseCase", {
+      useClass: GenerataTokenUseCase,
+    });
 
-            container.register<ISendEmailUseCase>("ISendEmailUseCase",{
-                useClass:SendEmailUseCase
-            });
+    container.register<IRefreshTokenUseCase>("IRefreshTokenUseCase", {
+      useClass: refreshTokenUsesCase,
+    });
 
-            container.register<IVerifyOtpUsecase>("IVerifyOTPUseCase",{
-                useClass:VerifyOTPUseCase
-            });
-            container.register<IGenerateTokenUseCase>("IGenerateTokenUseCase",{
-                useClass:GenerataTokenUseCase
-            });
+    container.register<IBlacklistTokenUseCase>("IBlacklistTokenUseCase", {
+      useClass: BlacklistTokenUseCase,
+    });
 
-            container.register<IRefreshTokenUseCase>("IRefreshTokenUseCase",{
-                useClass:refreshTokenUsesCase
-            });
+    container.register<IRegisterStrategy>("clientRegisterStrategy", {
+      useClass: CLientRegisterStrategy,
+    });
 
-            container.register<IBlacklistTokenUseCase>("IBlacklistTokenUseCase",{
-                useClass:BlacklistTokenUseCase
-            })  
+    container.register<ILoginStrategy>("ClientLoginStrategy", {
+      useClass: ClientLoginStrategy,
+    });
 
-            container.register<IRegisterStrategy>("clientRegisterStrategy",{
-                useClass:CLientRegisterStrategy
-            });
+    container.register<ILoginStrategy>("ClientGoogleLoginStrategy", {
+      useClass: ClientGoogleLoginStrategy,
+    });
 
-            container.register<ILoginStrategy>("ClientLoginStrategy",{
-                useClass:ClientLoginStrategy
-            });
+    container.register<IRegisterStrategy>("VendorRegisterStrategy", {
+      useClass: VendorRegisterStrategy,
+    });
 
-            container.register<ILoginStrategy>("ClientGoogleLoginStrategy",{
-                useClass:ClientGoogleLoginStrategy
-            })
+    container.register<ILoginStrategy>("VendorLoginStrategy", {
+      useClass: VendorLoginStrategy,
+    });
 
-            container.register<IRegisterStrategy>("VendorRegisterStrategy",{
-                useClass:VendorRegisterStrategy
-            })
+    container.register<ILoginStrategy>("VendorGoogleLoginStrategy", {
+      useClass: VendorGoogleLoginStrategy,
+    });
 
-            container.register<ILoginStrategy>("VendorLoginStrategy",{
-                useClass:VendorLoginStrategy
-            });
+    container.register<ILoginStrategy>("AdminLoginStrategy", {
+      useClass: AdminLoginStrategy,
+    });
 
-            container.register<ILoginStrategy>("VendorGoogleLoginStrategy",{
-                useClass:VendorGoogleLoginStrategy
-            });
+    container.register<ITokenService>("ITokenService", {
+      useClass: jwtService,
+    });
 
-            container.register<ILoginStrategy>("AdminLoginStrategy",{
-                useClass:AdminLoginStrategy
-            });
+    container.register<IOTPService>("IOTPService", {
+      useClass: OtpCacheService,
+    });
 
-            container.register<ITokenService>("ITokenService",{
-                useClass:jwtService
-            }); 
+    container.register<ISendOtpUsecase>("ISendOTPForPasswordUseCase", {
+      useClass: sendForgotPasswordOtp,
+    });
 
-            container.register<IOTPService>("IOTPService",{
-                useClass:OtpCacheService
-            });
+    container.register<IEmailService>("IEmailService", {
+      useClass: EmailService,
+    });
 
-            container.register<ISendOtpUsecase>("ISendOTPForPasswordUseCase",{
-                useClass:sendForgotPasswordOtp
-            });
+    container.register<IUserExistenceService>("IUserExistenceService", {
+      useClass: UserExistService,
+    });
 
-            container.register<IEmailService>("IEmailService",{
-                useClass:EmailService
-            })
-            
-            container.register<IUserExistenceService>("IUserExistenceService",{
-                useClass:UserExistService
-            })
+    container.register<IVendorExistService>("IVendorExistService", {
+      useClass: VendorExistService,
+    });
 
-            container.register<IVendorExistService>("IVendorExistService",{
-                useClass:VendorExistService
-            });
+    container.register<IClientExistService>("IClientExistService", {
+      useClass: ClientExistService,
+    });
 
-            container.register<IClientExistService>("IClientExistService",{
-                useClass:ClientExistService
-            });
+    container.register<IFirebaseService>("IFirebaseService", {
+      useClass: FirebaseService,
+    });
 
-            container.register<IFirebaseService>("IFirebaseService",{
-                useClass:FirebaseService
-            });
+    container.register<INotificationService>("INotificationService", {
+      useClass: NotificationService,
+    });
 
-            container.register<INotificationService>("INotificationService",{
-                useClass:NotificationService
-            });
+    container.register<ICloudinarySignatureService>(
+      "ICloudinarySignatureService",
+      {
+        useClass: CloudinarySignatureService,
+      }
+    );
 
-            container.register<ICloudinarySignatureService>("ICloudinarySignatureService",{
-                useClass:CloudinarySignatureService
-            });
+    container.register<IGetAllUsersUseCase>("IGetAllUsersUseCase", {
+      useClass: getAllUsersUseCase,
+    });
 
-           
+    container.register<IGetAllUsersDetailsUseCase>(
+      "IGetAllUsersDetailsUseCase",
+      {
+        useClass: GetAllUsersDetailsUseCase,
+      }
+    );
 
-            container.register<IGetAllUsersUseCase>("IGetAllUsersUseCase",{
-                useClass:getAllUsersUseCase
-            });
+    container.register<IuserToggleStatusUseCase>("IUserToggleStatusUseCase", {
+      useClass: UserToggleStatusUseCase,
+    });
 
-            container.register<IGetAllUsersDetailsUseCase>("IGetAllUsersDetailsUseCase",{
-                useClass:GetAllUsersDetailsUseCase
-            });
+    container.register<IGetAllVendorsUseCase>("IGetAllVendorsUseCase", {
+      useClass: GetAllVendorUseCase,
+    });
 
-            container.register<IuserToggleStatusUseCase>("IUserToggleStatusUseCase",{
-                useClass: UserToggleStatusUseCase
-            });
+    container.register<IGetAllCatgoryUseCase>("IGetAllCategoryUseCase", {
+      useClass: GetAllCategoryUseCase,
+    });
 
-            container.register<IGetAllVendorsUseCase>("IGetAllVendorsUseCase",{
-                useClass:GetAllVendorUseCase
-            });
+    container.register<IToggleStatusUseCase>("IToggleStatusUseCase", {
+      useClass: ToggleStatusUseCase,
+    });
 
-            container.register<IGetAllCatgoryUseCase>("IGetAllCategoryUseCase",{
-                useClass:GetAllCategoryUseCase
-            });
+    container.register<IGetRequestedVendorsUseCase>(
+      "IGetRequestedVendorUseCase",
+      {
+        useClass: GetRequestedVendorsUseCase,
+      }
+    );
 
-            container.register<IToggleStatusUseCase>("IToggleStatusUseCase",{
-                useClass:ToggleStatusUseCase
-            })
+    container.register<IApproveVendorUseCase>("IApproveVendorUseCase", {
+      useClass: ApproveVendorUseCase,
+    });
 
-            container.register<IGetRequestedVendorsUseCase>("IGetRequestedVendorUseCase",{
-                useClass:GetRequestedVendorsUseCase
-            })
+    container.register<IRejectVendorUseCase>("IRejectVendorUseCase", {
+      useClass: RejectVendorUseCase,
+    });
 
-            container.register<IApproveVendorUseCase>("IApproveVendorUseCase",{
-                useClass:ApproveVendorUseCase
-            });
+    container.register<IResendVerificationUseCase>(
+      "IResendVerificationUseCase",
+      {
+        useClass: resendVerificationUseCase,
+      }
+    );
 
-            container.register<IRejectVendorUseCase>("IRejectVendorUseCase",{
-                useClass:RejectVendorUseCase
-            });
+    container.register<IGetAllEventsUseCase>("IGetAllEventsUseCase", {
+      useClass: GetAllEventsUseCase,
+    });
 
-            container.register<IResendVerificationUseCase>("IResendVerificationUseCase",{
-                useClass:resendVerificationUseCase
-            });
+    container.register<IHandleToggleVendorUseCase>(
+      "IHandleToggleVendorUseCase",
+      {
+        useClass: HandleToggleVendorStatusUseCase,
+      }
+    );
 
-            container.register<IGetAllEventsUseCase>("IGetAllEventsUseCase",{
-                useClass:GetAllEventsUseCase
-            });
+    container.register<IHandleToggleCategoryUseCase>(
+      "IHandleToggleCategoryUseCase",
+      {
+        useClass: HandleToggleCategoryUseCase,
+      }
+    );
 
-                container.register<IHandleToggleVendorUseCase>("IHandleToggleVendorUseCase",{
-                    useClass:HandleToggleVendorStatusUseCase
-                })
+    container.register<IForgotUpdatePasswordUseCase>(
+      "IForgotClientUpdatePasswordUseCase",
+      {
+        useClass: ForgotClientUpdatePasswordUseCase,
+      }
+    );
 
-                container.register<IHandleToggleCategoryUseCase>("IHandleToggleCategoryUseCase",{
-                    useClass:HandleToggleCategoryUseCase
-                });
+    container.register<IForgotUpdatePasswordUseCase>(
+      "ForgotVendorUpdatePasswordUseCase",
+      {
+        useClass: ForgotVendorUpdatePasswordUseCase,
+      }
+    );
 
+    container.register<IUpdateProfileImageUseCase>(
+      "IUpdateProfileImageUseCase",
+      {
+        useClass: UpdateProfileImageUseCase,
+      }
+    );
 
-                container.register<IForgotUpdatePasswordUseCase>("IForgotClientUpdatePasswordUseCase",{
-                    useClass:ForgotClientUpdatePasswordUseCase
-                });
+    container.register<IUpdatePersonalInformationUseCase>(
+      "IUpdatePersonalInformationUseCase",
+      {
+        useClass: ClientUpdatePersonalInformationUseCase,
+      }
+    );
 
-                container.register<IForgotUpdatePasswordUseCase>("ForgotVendorUpdatePasswordUseCase",{
-                    useClass:ForgotVendorUpdatePasswordUseCase
-                });
+    container.register<IGoogleUseCase>("IGoogleUseCase", {
+      useClass: GoogleuseCase,
+    });
 
+    container.register<IAddCategoryUseCase>("IAddCategoryUseCase", {
+      useClass: AddCategoryUseCase,
+    });
 
-                container.register<IEditVendorProfileUseCase>("IEditVendorProfileUseCase",{
-                    useClass:UpdateVendorProfileUseCase
-                });
+    container.register<IEditCategoryUseCase>("IEditCategoryUseCase", {
+      useClass: EditCategoryUseCase,
+    });
 
-                container.register<IUpdateProfileImageUseCase>("IUpdateProfileImageUseCase",{
-                    useClass:UpdateProfileImageUseCase
-                })
+    container.register<IUpdateVendorPersonalInformationUseCase>(
+      "IUpdateVendorPersonalInformationUseCase",
+      {
+        useClass: UpdateVendorPersonalInformationUseCase,
+      }
+    );
 
-                container.register<IGoogleUseCase>("IGoogleUseCase",{
-                    useClass:GoogleuseCase
-                });  
-                
-                container.register<IAddCategoryUseCase>("IAddCategoryUseCase",{
-                    useClass:AddCategoryUseCase
-                });
+    container.register<IGetAllCategoryForClientsUseCase>(
+      "IGetAllCategoryForClientsUseCase",
+      {
+        useClass: GetAllCategoryForClientUseCase,
+      }
+    );
 
+    container.register<IHostNewEventUseCase>("IHostNewEventUseCase", {
+      useClass: HostNewEventUseCase,
+    });
 
+    container.register<IAddServiceUseCase>("IAddServiceUseCase", {
+      useClass: AddServiceUseCase,
+    });
 
-                
+    container.register<IFcmTokenUseCase>("IFcmTokenUseCase", {
+      useClass: FcmTokenUseCase,
+    });
 
-                container.register<IGetAllCategoryForClientsUseCase>("IGetAllCategoryForClientsUseCase",{
-                    useClass:GetAllCategoryForClientUseCase
-                });
+    // ======logger==========//
 
+    container.register<ILogger>("ILogger", {
+      useClass: WinstonLoggerAdapter,
+    });
 
-                container.register<IHostNewEventUseCase>("IHostNewEventUseCase",{
-                    useClass:HostNewEventUseCase
-                })
+    container.register<LoggerMiddleWare>("LoggerMiddleware", {
+      useClass: LoggerMiddleWare,
+    });
 
-                container.register<IFcmTokenUseCase>("IFcmTokenUseCase",{
-                    useClass:FcmTokenUseCase
-                })
-                
-            // ======logger==========//
-
-            container.register<ILogger>("ILogger",{
-                useClass:WinstonLoggerAdapter
-            });
-
-            container.register<LoggerMiddleWare>("LoggerMiddleware",{
-                useClass:LoggerMiddleWare
-            });
-
-            // ======error handler========//
-            container.register<ErrorMiddleware>("ErrorMiddleware",{
-                useClass:ErrorMiddleware
-            });
-            
-
-
-        }
-    }
+    // ======error handler========//
+    container.register<ErrorMiddleware>("ErrorMiddleware", {
+      useClass: ErrorMiddleware,
+    });
+  }
+}

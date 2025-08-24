@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 
 
-export interface IVendorController {
+export interface IAdminVendorController {
     approveVendor(req:Request,res:Response) : Promise<void>
     rejectVendor(req:Request,res:Response) : Promise<void>
     udpateVendorAccountStatus(req:Request,res:Response) : Promise<void>

@@ -93,10 +93,10 @@ let VendorRepository = class VendorRepository {
             });
         });
     }
-    updateVendorProfileById(id, data) {
+    updatePersonalInformation(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield vendor_model_1.VendorModel.findByIdAndUpdate(id, {
-                $set: Object.assign({}, data)
+            yield vendor_model_1.VendorModel.findByIdAndUpdate(id, data, {
+                new: true
             });
         });
     }

@@ -19,6 +19,8 @@ import { OtpCacheRepository } from "interfaceAdpaters/repositories/redis/OtpCach
 import { IOtpCacheRepository } from "@entities/repositoryInterfaces/redis/redis-otp-cache-repository";
 import { INotificationRepository } from "@entities/repositoryInterfaces/notification/notification.repository.interface";
 import { NotificationRepository } from "interfaceAdpaters/repositories/notification/notification.repository";
+import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
+import { ServiceRepository } from "interfaceAdpaters/repositories/common/service.repository";
 
 export class RepositoryRegistry {
     static registerRepositories():void {
@@ -54,6 +56,10 @@ export class RepositoryRegistry {
         container.register<IEventRepository>("IEventRepository",{
             useClass:EventRepository
         });
+
+        container.register<IServiceRepository>("IServiceRepository",{
+            useClass:ServiceRepository
+        })
 
         container.register<INotificationRepository>("INotificationRepository",{
             useClass:NotificationRepository

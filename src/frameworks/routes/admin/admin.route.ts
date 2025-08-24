@@ -8,8 +8,9 @@ import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middle
 import { 
     categoryController,
      authController,
-     vendorController,
-     adminClientController
+     adminVendorController,
+     adminClientController,
+     adminController
  } from "@frameworks/di/resolver";
 
 export class AdminRotes extends BaseRouter{
@@ -27,28 +28,28 @@ export class AdminRotes extends BaseRouter{
     this.router.get(
             "/vendors",
             verifyAuth,
-            asyncHandler(vendorController.getAllVendors.bind(vendorController))
+            asyncHandler(adminVendorController.getAllVendors.bind(adminVendorController))
         )
 
         this.router.get(
             "/requested-vendors",
             verifyAuth,
             authorizeRole(["admin"]),
-            asyncHandler(vendorController.getRequestedVendors.bind(vendorController))
+            asyncHandler(adminVendorController.getRequestedVendors.bind(adminVendorController))
         )
 
         this.router.patch(
             "/:vendorId/approve-vendors",
             verifyAuth,
             authorizeRole(["admin"]),
-            asyncHandler(vendorController.approveVendor.bind(vendorController))
+            asyncHandler(adminVendorController.approveVendor.bind(adminVendorController))
         );
 
         this.router.patch(
             "/:vendorId/reject-vendors",
             verifyAuth,
             authorizeRole(["admin"]),
-            asyncHandler(vendorController.rejectVendor.bind(vendorController))
+            asyncHandler(adminVendorController.rejectVendor.bind(adminVendorController))
         )
         
     this.router.patch(
@@ -60,7 +61,7 @@ export class AdminRotes extends BaseRouter{
     this.router.patch(
         "/vendor-status",
         verifyAuth,
-        asyncHandler(vendorController.udpateVendorAccountStatus.bind(vendorController))
+        asyncHandler(adminVendorController.udpateVendorAccountStatus.bind(adminVendorController))
     );
 
     this.router.patch(
@@ -88,6 +89,13 @@ export class AdminRotes extends BaseRouter{
             verifyAuth,
             authorizeRole(["admin"]),
             asyncHandler(categoryController.addCategory.bind(categoryController))
+        );
+
+        this.router.patch(
+            "/edit-category/:categoryId",
+            verifyAuth,
+            authorizeRole(["admin"]),
+            asyncHandler(adminController.editCategory.bind(adminController))
         );
 
         this.router.post(

@@ -22,15 +22,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HostNewEventUseCase = void 0;
+const custom_error_1 = require("@entities/utils/custom.error");
+const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
-console.log("hostneweventusecase");
 let HostNewEventUseCase = class HostNewEventUseCase {
-    constructor(eventRepo) {
-        this.eventRepo = eventRepo;
+    constructor(_eventRepo, _vendorRepo) {
+        this._eventRepo = _eventRepo;
+        this._vendorRepo = _vendorRepo;
     }
-    execute(data) {
+    execute(data, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.eventRepo.save(data);
+            const vendor = yield this._vendorRepo.findById(userId);
+            if ((vendor === null || vendor === void 0 ? void 0 : vendor.vendorStatus) == "pending" || (vendor === null || vendor === void 0 ? void 0 : vendor.vendorStatus) == "rejected") {
+                throw new custom_error_1.CustomError(`cannot add event due to vendor status : ${vendor.vendorStatus}`, constants_1.HTTP_STATUS.BAD_REQUEST);
+            }
+            yield this._eventRepo.save(data);
         });
     }
 };
@@ -38,5 +44,6 @@ exports.HostNewEventUseCase = HostNewEventUseCase;
 exports.HostNewEventUseCase = HostNewEventUseCase = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("IEventRepository")),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, tsyringe_1.inject)("IVendorRepository")),
+    __metadata("design:paramtypes", [Object, Object])
 ], HostNewEventUseCase);

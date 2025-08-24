@@ -2,7 +2,7 @@
 
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { authController, blockstatusMiddleware, editVendorProfileController,eventController, forgotVendorOTPController, vendorController } from "@frameworks/di/resolver";
+import { authController, blockstatusMiddleware, clientController,eventController, forgotVendorOTPController, adminVendorController, vendoController, serviceController, categoryController } from "@frameworks/di/resolver";
 import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
 import { RequestHandler } from "express";
  
@@ -25,25 +25,26 @@ export class VendorRoutes extends BaseRouter{
             "/vendorForgot/sent-otp",
             asyncHandler(forgotVendorOTPController.handle.bind(forgotVendorOTPController))
         );
+        
+        this.router.post(
+            "/update-profileImage",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            clientController.updateProfileImage.bind(clientController)
+        );
 
-
-        this.router.put(
+        this.router.patch(
             "/update-profile",
             verifyAuth,
             authorizeRole(["vendor"]),
-            asyncHandler(editVendorProfileController.handle.bind(editVendorProfileController))
-        );
-
-
+            vendoController.updatePersonalInformation.bind(vendoController)
+        )
         this.router.patch(
             "/:vendorId/resend-verification",
             verifyAuth,
             authorizeRole(["vendor"]),
-            asyncHandler(vendorController.resendVerification.bind(vendorController))
+            asyncHandler(adminVendorController.resendVerification.bind(adminVendorController))
         );
-
-
-
 
         this.router.post(
             "/add-event",
@@ -51,6 +52,20 @@ export class VendorRoutes extends BaseRouter{
             authorizeRole(["vendor"]),
             asyncHandler(eventController.addEvent.bind(eventController))
         );
+
+        this.router.post(
+            "/add-service",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(serviceController.addService.bind(serviceController))
+        );
+
+        // this.router.get(
+        //     "/get-category-service",
+        //     verifyAuth,
+        //     authorizeRole(["vendor"]),
+        //     asyncHandler(categoryController.getCategoryForService.bind(categoryController))
+        // );
 
         this.router.post(
             "/get-all-events",

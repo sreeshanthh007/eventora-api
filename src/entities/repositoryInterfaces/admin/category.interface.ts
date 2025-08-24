@@ -6,6 +6,7 @@ export interface ICategoryRepository {
     findById(id:string) : Promise<ICategoryEnity | null>
     findByIDAndUpdateStatus(id:string,status:string) : Promise<void>
     save(category:ICategoryEnity) : Promise<ICategoryEnity>
+    findByIdAndEditCategory(categoryId:string,data:Partial<ICategoryEnity>) : Promise<void>
     findPaginatedCategory(filter:FilterQuery<ICategoryEnity>,skip:number,limit:number) :  Promise<{categories:ICategoryEnity[] | [];total:number}>
     findCategoryForClients() : Promise<ICategoryEnity[]>
 }

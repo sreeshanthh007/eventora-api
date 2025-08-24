@@ -14,7 +14,6 @@ export function mapAddEventDTOToEntity(
     endTime: dto.endTime,
     pricePerTicket: dto.pricePerTicket,
     totalTicket: dto.totalTicket,
-    ticketLimit: dto.ticketLimit,
     eventLocation: dto.eventLocation,
     coordinates: {
       type: "Point",

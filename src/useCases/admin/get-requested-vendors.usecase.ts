@@ -16,7 +16,7 @@ export class GetRequestedVendorsUseCase implements IGetRequestedVendorsUseCase{
 
     async execute(limit: number, searchTerm: string, current: number): Promise<PaginatedVendors> {
         
-        let filter : FilterQuery<IVendorEntity>={}
+        const filter : FilterQuery<IVendorEntity>={}
         
         if(searchTerm){
             filter.$or=[

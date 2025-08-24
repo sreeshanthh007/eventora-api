@@ -11,6 +11,7 @@ const category_repository_1 = require("interfaceAdpaters/repositories/common/cat
 const event_repository_1 = require("interfaceAdpaters/repositories/event/event.repository.");
 const OtpCacheRepository_1 = require("interfaceAdpaters/repositories/redis/OtpCacheRepository");
 const notification_repository_1 = require("interfaceAdpaters/repositories/notification/notification.repository");
+const service_repository_1 = require("interfaceAdpaters/repositories/common/service.repository");
 class RepositoryRegistry {
     static registerRepositories() {
         tsyringe_1.container.register("IClientRepository", {
@@ -36,6 +37,9 @@ class RepositoryRegistry {
         });
         tsyringe_1.container.register("IEventRepository", {
             useClass: event_repository_1.EventRepository
+        });
+        tsyringe_1.container.register("IServiceRepository", {
+            useClass: service_repository_1.ServiceRepository
         });
         tsyringe_1.container.register("INotificationRepository", {
             useClass: notification_repository_1.NotificationRepository

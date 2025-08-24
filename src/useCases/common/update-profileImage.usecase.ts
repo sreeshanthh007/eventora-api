@@ -27,8 +27,7 @@ export class UpdateProfileImageUseCase implements IUpdateProfileImageUseCase{
         }
         
 
-        await repository.findByIdAndUpdateProfileImage(userId,imgUrl)
-        
+        await repository.findByIdAndUpdateProfileImage(userId,imgUrl)    
         
     }
 }

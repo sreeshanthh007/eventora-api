@@ -46,7 +46,6 @@ let GetAllUsersDetailsUseCase = class GetAllUsersDetailsUseCase {
             if (!user) {
                 throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.USER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
             }
-            console.log("the user in refreshsession usecase", user);
             return user;
         });
     }

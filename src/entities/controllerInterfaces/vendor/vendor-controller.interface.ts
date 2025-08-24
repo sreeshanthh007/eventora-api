@@ -1,6 +1,7 @@
-// import { Request, Response } from "express";
+import { Request, Response } from "express";
 
 
-// export interface IVendorController { 
-//     refreshSession(req:Request,res:Response) : Promise<void>
-// }
+export interface IVendorController { 
+    updatePersonalInformation(req:Request,res:Response) : Promise<void>
+   
+}

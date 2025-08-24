@@ -10,7 +10,7 @@ exports.ServiceSchema = new mongoose_1.Schema({
     serviceDuration: { type: Number, required: true },
     servicePrice: { type: Number, required: true },
     additionalHourPrice: { type: Number, required: true },
-    cancellationPolies: { type: [String], required: true },
+    cancellationPolicies: { type: [String], required: true },
     categoryId: { type: mongoose_1.Schema.Types.ObjectId, required: true },
     termsAndConditions: { type: [String], required: true },
     status: { type: String, enum: ["active", "blocked"], default: "active" }

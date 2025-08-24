@@ -43,6 +43,17 @@ export class ClientRepository implements IClientRepository{
             },
             {new:true}
         )
+    };
+
+
+    async findByIdAndUpdateProfileInformation(userId: string,updateData:Partial<IClientEntity>): Promise<void> {
+        
+        await ClientModel.findByIdAndUpdate(userId,
+            updateData,
+            {
+                new : true
+            }
+        )
     }
 
         async findPaginatedClients(filter:FilterQuery<IClientEntity>,skip:number,limit:number):Promise<{user:IClientEntity[] | []; total:number}> {

@@ -35,6 +35,12 @@ export class ClientRoutes extends BaseRouter{
             asyncHandler(clientController.updateProfileImage.bind(clientController))
         );
 
+        this.router.patch(
+            "/update-profile",
+            verifyAuth,
+            authorizeRole(["client"]),
+            asyncHandler(clientController.updateProfileInformation.bind(clientController))
+        )
         this.router.post("/logout",verifyAuth,asyncHandler(authController.logout.bind(authController)))
     }
 }   

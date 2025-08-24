@@ -18,9 +18,8 @@ export class GoogleuseCase implements IGoogleUseCase {
 
     constructor(
         @inject("clientRegisterStrategy") private clientRegister : IRegisterStrategy,
-        // @inject("VendorRegisterStrategy") private vendorRegister : IRegisterStrategy,
+
         @inject("ClientGoogleLoginStrategy") private clientLogin : ILoginStrategy,
-        // @inject("VendorGoogleLoginStrategy") private vendorLogin : ILoginStrategy,
         @inject("IEmailService") private emailService : IEmailService
     ){
         this.registerStrategies = { 

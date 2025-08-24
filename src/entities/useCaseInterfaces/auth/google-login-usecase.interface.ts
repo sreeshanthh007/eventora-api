@@ -6,6 +6,6 @@ export interface IGoogleUseCase{
     execute(
         credential:string,
         client_id:string,
-        role:string
+        role:any
     ) : Promise<Partial<IUserEntity>>
 }

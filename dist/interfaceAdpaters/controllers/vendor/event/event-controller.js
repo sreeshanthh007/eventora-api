@@ -35,7 +35,7 @@ let EventController = class EventController {
             const eventData = req.body;
             const vendorId = req.user.id;
             const roundedData = Object.assign(Object.assign({}, eventData), { hostId: vendorId });
-            yield this._addEventUseCase.execute(roundedData);
+            yield this._addEventUseCase.execute(roundedData, vendorId);
             res.status(constants_1.HTTP_STATUS.OK)
                 .json({ success: true, message: constants_1.SUCCESS_MESSAGES.CREATED });
         });

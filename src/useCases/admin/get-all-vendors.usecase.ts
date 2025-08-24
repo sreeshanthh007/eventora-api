@@ -15,7 +15,7 @@ export class GetAllVendorUseCase implements IGetAllVendorsUseCase{
 
     async  execute(limit: number, searchTerm: string, current: number): Promise<PaginatedUsers>  {
 
-         let filter : FilterQuery<IVendorEntity> = {};
+         const filter : FilterQuery<IVendorEntity> = {};
          
             if (searchTerm) {
 

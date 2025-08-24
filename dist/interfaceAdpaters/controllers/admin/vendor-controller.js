@@ -21,11 +21,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VendorController = void 0;
+exports.AdminVendorController = void 0;
 const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
-let VendorController = class VendorController {
+let AdminVendorController = class AdminVendorController {
     constructor(_approveVendorUseCase, _getAllVendorsUseCase, _requestedVendorUseCase, _updateVendorAccountStatusUseCase, _rejectVendorUseCase, _resendVerificationUseCase) {
         this._approveVendorUseCase = _approveVendorUseCase;
         this._getAllVendorsUseCase = _getAllVendorsUseCase;
@@ -121,8 +121,8 @@ let VendorController = class VendorController {
         });
     }
 };
-exports.VendorController = VendorController;
-exports.VendorController = VendorController = __decorate([
+exports.AdminVendorController = AdminVendorController;
+exports.AdminVendorController = AdminVendorController = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("IApproveVendorUseCase")),
     __param(1, (0, tsyringe_1.inject)("IGetAllVendorsUseCase")),
@@ -131,4 +131,4 @@ exports.VendorController = VendorController = __decorate([
     __param(4, (0, tsyringe_1.inject)("IRejectVendorUseCase")),
     __param(5, (0, tsyringe_1.inject)("IResendVerificationUseCase")),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object])
-], VendorController);
+], AdminVendorController);

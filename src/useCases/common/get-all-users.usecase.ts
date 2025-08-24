@@ -38,9 +38,7 @@ export class GetAllUsersDetailsUseCase implements IGetAllUsersDetailsUseCase{
                 HTTP_STATUS.NOT_FOUND
             )
         }
-
         return user
-
 
     }
    

@@ -13,7 +13,7 @@ export interface IEventEntity {
     pricePerTicket:number,
     totalTicket : number,
     isActive?:boolean;
-    ticketLimit:number,
+    // ticketLimit:number,
     eventLocation:string;
     coordinates : {
         type:"Point";

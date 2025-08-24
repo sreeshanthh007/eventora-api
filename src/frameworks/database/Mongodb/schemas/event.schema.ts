@@ -42,13 +42,13 @@ export const EventSchema : Schema = new Schema<IEventModel>(
         },
         totalTicket:{
             type:Number,
-            required:true
+            required:true,  
         },
-        ticketLimit:{
-            type:Number,
-            required:true,
-            min:1
-        },
+        // ticketLimit:{
+        //     type:Number,
+        //     required:true,
+        //     min:1
+        // },
 
         eventLocation:{
             type:String,
@@ -90,4 +90,4 @@ export const EventSchema : Schema = new Schema<IEventModel>(
 )
 
 
-EventSchema.index({location:"2dsphere"})
+EventSchema.index({coordinates:"2dsphere"})

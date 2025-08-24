@@ -1,10 +1,10 @@
 import { IClientController } from "@entities/controllerInterfaces/client/client-controller.interface";
+import { IUpdatePersonalInformationUseCase } from "@entities/useCaseInterfaces/client/update-personal-information.interface.usecase";
 import { IUpdateProfileImageUseCase } from "@entities/useCaseInterfaces/client/updateProfileImage.usecase.interface";
 import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES, TRole } from "@shared/constants";
 import { Request, Response } from "express";
 import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
-import { updateProfileImageSchema } from "interfaceAdpaters/validations/client-validation";
 import { inject, injectable } from "tsyringe";
 
 
@@ -14,7 +14,8 @@ export class ClientController implements IClientController{
     
     constructor(
         @inject("IGetAllUsersDetailsUseCase") private _getAllUsersDetailsUseCase : IGetAllUsersDetailsUseCase,
-        @inject("IUpdateProfileImageUseCase") private _updateProfileImageUseCase : IUpdateProfileImageUseCase
+        @inject("IUpdateProfileImageUseCase") private _updateProfileImageUseCase : IUpdateProfileImageUseCase,
+        @inject("IUpdatePersonalInformationUseCase") private _updatePersonalInformationUseCase : IUpdatePersonalInformationUseCase
     ){}
 
     async refreshSession(req: Request, res: Response): Promise<void> {
@@ -45,6 +46,28 @@ export class ClientController implements IClientController{
         }
 
         await this._updateProfileImageUseCase.execute(id,image,role as TRole)
+
+        res.status(HTTP_STATUS.OK)
+        .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
+    }
+
+
+    async updateProfileInformation(req: Request, res: Response): Promise<void> {
+        
+        const {id} = (req as CustomRequest).user
+        const data = req.body
+
+        if(!id){
+            res.status(HTTP_STATUS.NOT_FOUND)
+            .json({success:false,message:ERROR_MESSAGES.INVALID_TOKEN})
+        }
+
+        if(!data){
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+        }
+        
+        await this._updatePersonalInformationUseCase.execute(id,data)
 
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})

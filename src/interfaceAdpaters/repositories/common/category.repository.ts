@@ -36,6 +36,14 @@ export class CategoryRepository implements ICategoryRepository{
         }
     }
 
+    async findByIdAndEditCategory(categoryId: string, data: Partial<ICategoryEnity>): Promise<void> {
+        await categoryModel.findByIdAndUpdate(categoryId,data,
+            {
+                new:true
+            }
+        )
+    }
+
     async findCategoryForClients(): Promise<ICategoryEnity[]> {
         return await categoryModel.find({status:"active"})
     }

@@ -1,6 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toCategoryListResponse = exports.toCategoryResponse = void 0;
+exports.mapCategoryForFrontend = mapCategoryForFrontend;
+exports.mapCategoriesForFrontend = mapCategoriesForFrontend;
+//  interface CategoryListItem {
+//   categoryId: string;
+//   title: string;
+//   image: string;
+//   status: string;
+// }
 const toCategoryResponse = (category) => {
     return {
         _id: category._id,
@@ -15,3 +23,12 @@ const toCategoryListResponse = (categories) => {
     return categories.map(exports.toCategoryResponse);
 };
 exports.toCategoryListResponse = toCategoryListResponse;
+function mapCategoryForFrontend(category) {
+    return {
+        categoryId: category.categoryId,
+        title: category.title
+    };
+}
+function mapCategoriesForFrontend(categories) {
+    return categories.map(mapCategoryForFrontend);
+}

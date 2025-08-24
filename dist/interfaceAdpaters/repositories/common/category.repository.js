@@ -51,6 +51,13 @@ let CategoryRepository = class CategoryRepository {
             };
         });
     }
+    findByIdAndEditCategory(categoryId, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield category_model_1.categoryModel.findByIdAndUpdate(categoryId, data, {
+                new: true
+            });
+        });
+    }
     findCategoryForClients() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield category_model_1.categoryModel.find({ status: "active" });

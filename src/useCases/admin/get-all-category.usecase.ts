@@ -16,7 +16,7 @@ export class GetAllCategoryUseCase implements IGetAllCatgoryUseCase{
     ){}
 
    async execute(limit: number, searchTerm: string, current: number): Promise<PaginatedCategory> {
-    let filter: FilterQuery<ICategoryEnity> = {};
+    const filter: FilterQuery<ICategoryEnity> = {};
 
     if (searchTerm) {
         filter.$or = [

@@ -19,10 +19,10 @@ export const ServiceSchema = new Schema<IServiceModel>(
 
         additionalHourPrice:{type:Number,required:true},
 
-        cancellationPolies:{type:[String],required:true},
+        cancellationPolicies:{type:[String],required:true},
 
         categoryId:{type:Schema.Types.ObjectId,required:true},
-
+        
         termsAndConditions:{type:[String],required:true},
 
         status:{type:String,enum:["active","blocked"],default:"active"}
