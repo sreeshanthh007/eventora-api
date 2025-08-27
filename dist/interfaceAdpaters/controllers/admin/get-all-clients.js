@@ -31,15 +31,14 @@ let GetAllUserController = class GetAllUserController {
     }
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { limit = "10", currentPage = "1", searchTerm = "" } = req.query;
-                const response = yield this.getAllUsers.execute(Number(limit), searchTerm, Number(currentPage));
-                res.status(constants_1.HTTP_STATUS.OK).json({ success: true, message: "users , fetched successfully", clients: response.user, totalPages: response.total });
-            }
-            catch (error) {
-                console.log(error);
-                res.status(500).json({ message: "server error" });
-            }
+            const { limit = "10", page = "1", search = "" } = req.query;
+            const response = yield this.getAllUsers.execute(Number(limit), search, Number(page));
+            res.status(constants_1.HTTP_STATUS.OK).json({
+                success: true,
+                message: "users fetched successfully",
+                clients: response.user,
+                totalPages: response.total
+            });
         });
     }
 };

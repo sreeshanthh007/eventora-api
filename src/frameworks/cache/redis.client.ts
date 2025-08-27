@@ -4,8 +4,6 @@ import {config} from "@shared/config"
 import chalk from 'chalk';
 
 dotenv.config()
-
-
 export const RedisClient = createClient({
     username: config.redis.REDIS_USERNAME,
     password: config.redis.REDIS_PASS,

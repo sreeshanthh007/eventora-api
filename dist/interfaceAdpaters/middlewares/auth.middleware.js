@@ -12,11 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authorizeRole = exports.decodeToken = exports.verifyAuth = void 0;
 const jwtService_1 = require("interfaceAdpaters/services/jwtService");
 const constants_1 = require("@shared/constants");
-// import { RedisClient } from "@frameworks/cache/redis.client";
+const redis_client_1 = require("@frameworks/cache/redis.client");
 const tokenService = new jwtService_1.jwtService();
+const roleMap = {
+    "_cl": "client",
+    "_ad": "admin",
+    "_ve": "vendor"
+};
 const extractToken = (req) => {
     const basePath = req.baseUrl.split("/");
-    const userType = basePath[2];
+    console.log('the base path is', basePath);
+    const userType = roleMap[basePath[2]];
+    console.log("the user type is", userType);
     if (["client", "vendor", "admin"].includes(userType)) {
         return {
             access_token: req.cookies[`${userType}_access_token`] || null,
@@ -25,22 +32,24 @@ const extractToken = (req) => {
     }
     return null;
 };
-// const isBlacklisted = async(token:string) :Promise<boolean> =>{
-//     const result = await RedisClient.get(token)
-//     return result!==null
-// }
+const isBlacklisted = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield redis_client_1.RedisClient.get(token);
+    console.log("is token blacklisted", result);
+    return result !== null;
+});
 const verifyAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = extractToken(req);
+        console.log("htis is the token in verfy auth", token);
         if (!token) {
             res
                 .status(constants_1.HTTP_STATUS.UNAUTHORIZED)
                 .json({ message: constants_1.ERROR_MESSAGES.UNAUTHORIZED_ACCESS });
             return;
         }
-        // if(await isBlacklisted(token.access_token)){
-        //     res.status(HTTP_STATUS.UNAUTHORIZED).json({message:"Token is Blacklisted"})
-        // }
+        if (yield isBlacklisted(token.access_token)) {
+            res.status(constants_1.HTTP_STATUS.UNAUTHORIZED).json({ message: "Token is Blacklisted" });
+        }
         const user = tokenService.verifyAccessToken(token.access_token);
         if (!user || !user.id) {
             res.status(constants_1.HTTP_STATUS.UNAUTHORIZED).json({ message: constants_1.ERROR_MESSAGES.UNAUTHORIZED_ACCESS });
@@ -52,7 +61,7 @@ const verifyAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         console.log("token is invalid is worked", error);
         res
             .status(constants_1.HTTP_STATUS.UNAUTHORIZED)
-            .json({ message: constants_1.ERROR_MESSAGES.INVALID_TOKEN });
+            .json({ message: constants_1.ERROR_MESSAGES.INVALID_TOKEN, statuscode: constants_1.HTTP_STATUS.UNAUTHORIZED });
         return;
     }
 });
@@ -61,25 +70,24 @@ const decodeToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         const token = extractToken(req);
         console.log("this si the toke to decode", token);
-        if (!token) {
+        if (!(token === null || token === void 0 ? void 0 : token.refresh_token)) {
             console.log("no token for decode");
             res
                 .status(constants_1.HTTP_STATUS.UNAUTHORIZED)
                 .json({ message: constants_1.ERROR_MESSAGES.UNAUTHORIZED_ACCESS });
             return;
         }
-        // if(await isBlacklisted(token.access_token)){
-        //     console.log("token is blacklisted");
-        //     res.status(HTTP_STATUS.UNAUTHORIZED)
-        //     .json({message:"Token is blacklisted"})
-        //     return
-        // };
-        const user = tokenService.decodeAccessToken(token === null || token === void 0 ? void 0 : token.access_token);
+        const user = tokenService.verifyRefreshToken(token === null || token === void 0 ? void 0 : token.refresh_token);
+        const newAccessToken = tokenService.generateAccessToken({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+        });
         req.user = {
             id: user === null || user === void 0 ? void 0 : user.id,
             email: user === null || user === void 0 ? void 0 : user.email,
             role: user === null || user === void 0 ? void 0 : user.role,
-            access_token: token.access_token,
+            access_token: newAccessToken,
             refresh_token: token.refresh_token
         };
         next();

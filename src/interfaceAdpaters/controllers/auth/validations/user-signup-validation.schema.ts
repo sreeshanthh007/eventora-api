@@ -1,9 +1,9 @@
 
 import {z} from "zod"
-import { emailRegex } from "@shared/validations/email-validation"
-import { passwordSchema } from "@shared/validations/password-validation"
-import { nameSchema } from "@shared/validations/name-validation";
-import { phoneSchema } from "@shared/validations/phone-validation";
+import { emailRegex } from "interfaceAdpaters/validations/email-validation"
+import { passwordSchema } from "interfaceAdpaters/validations/password-validation"
+import { nameSchema } from "interfaceAdpaters/validations/name-validation";
+import { phoneSchema } from "interfaceAdpaters/validations/phone-validation";
 
 
 const adminSchema = z.object({
@@ -33,7 +33,9 @@ const vendorSchema = z.object({
     .regex(emailRegex,{message:"Invalid email address"}),
     phone:phoneSchema,
     password:passwordSchema,
-    role:z.literal("vendor")
+    role:z.literal("vendor"),
+    idProof:z
+    .string()
 });
 
 

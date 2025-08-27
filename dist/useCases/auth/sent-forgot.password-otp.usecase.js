@@ -34,7 +34,7 @@ let sendForgotPasswordOtp = class sendForgotPasswordOtp {
             const otp = this.otpService.generateOTP();
             console.log("otp sent for forgot password", otp);
             const hashedOTP = yield this.otpBcrypt.hash(otp);
-            yield this.otpService.storeOTP(email, hashedOTP);
+            yield this.otpService.storeOTP(email, hashedOTP, 300);
             yield this.emailService.sendEmail(email, 'EVENTORA - Verification for changing password', otp);
         });
     }

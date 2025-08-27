@@ -6,10 +6,10 @@
     import { HTTP_STATUS , ERROR_MESSAGES } from "@shared/constants";
     import { LoginUserDTO } from "@shared/dtos/user.dto";
     import { IUserEntity } from "@entities/models/user.entity";
+import { toVendorResponse } from "interfaceAdpaters/mappers/VendorMapper";
 
 
     @injectable()
-
     export class VendorLoginStrategy implements ILoginStrategy{
         constructor(
             @inject("IPasswordBcrypt") private passwordBcrypt : IBcrypt,
@@ -18,13 +18,15 @@
 
         async login(user: LoginUserDTO): Promise<Partial<IUserEntity>> {
             const vendor = await this.vendorRepository.findByEmail(user.email)
-
+            
             if(!vendor){
                 throw new CustomError(
-                    ERROR_MESSAGES.EMAIL_NOT_FOUND,
+                  ERROR_MESSAGES.EMAIL_NOT_FOUND,
                     HTTP_STATUS.NOT_FOUND
                 );
             }
+
+        
 
             if(vendor.status!=="active"){
                 throw new CustomError(ERROR_MESSAGES.BLOCKED,HTTP_STATUS.FORBIDDEN)
@@ -37,6 +39,10 @@
                     throw new CustomError(ERROR_MESSAGES.INVALID_CREDENTIALS,HTTP_STATUS.BAD_REQUEST)
                 }
             }
-            return vendor
+
+            
+
+            return toVendorResponse(vendor)
+            
         }
     }

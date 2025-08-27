@@ -9,7 +9,7 @@ export class VendorExistService implements IVendorExistService{
     ){}
 
 
-    async emailExist(email: string): Promise<Boolean | null> {
+    async emailExist(email: string): Promise<boolean | null> {
        const exist =  await this.vendorRepository.findByEmail(email)
     
        return Boolean(exist)

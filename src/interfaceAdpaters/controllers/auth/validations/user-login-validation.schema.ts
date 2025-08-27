@@ -1,6 +1,6 @@
 import {z} from "zod"
-import { emailRegex } from "@shared/validations/email-validation"
-import { passwordSchema } from "@shared/validations/password-validation"
+import { emailRegex } from "interfaceAdpaters/validations/email-validation"
+import { passwordSchema } from "interfaceAdpaters/validations/password-validation"
 
 
 export const loginSchema  = z.object({

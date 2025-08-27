@@ -1,5 +1,5 @@
 export interface IOTPService {
     generateOTP():string
-    storeOTP(email:string,otp:string) : Promise<void>
-    verifyOTP({email,otp}:{email:string,otp:string}):Promise<boolean>
+    storeOTP(key:string,otp:string,ttlSec:number) : Promise<void>
+    verifyOTP(key:string,enteredOtp:string):Promise<boolean>
 }

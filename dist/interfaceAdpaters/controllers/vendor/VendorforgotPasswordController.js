@@ -32,14 +32,13 @@ let VendorForgotPassword = class VendorForgotPassword {
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
-            console.log("email adn pass", email, password);
             try {
                 yield this.vendorUseCase.update(email, password);
                 res.status(constants_1.HTTP_STATUS.OK).json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
             }
             catch (error) {
-                console.log(error);
                 res.status(constants_1.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: constants_1.ERROR_MESSAGES.SERVER_ERROR });
+                console.log(error);
             }
         });
     }

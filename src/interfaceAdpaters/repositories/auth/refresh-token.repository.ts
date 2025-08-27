@@ -15,7 +15,7 @@ export class refreshTokenRepository implements IRefreshTokenRepository {
 
 
     async revokeRefreshToken(token: string): Promise<void> {
-        let ans = await RefreshTokenModel.deleteOne({token})
+       await RefreshTokenModel.deleteOne({token})
 
       
 

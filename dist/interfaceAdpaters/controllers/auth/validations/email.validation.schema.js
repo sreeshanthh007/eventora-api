@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.emailVerifySchema = void 0;
 const zod_1 = require("zod");
-const email_validation_1 = require("@shared/validations/email-validation");
+const email_validation_1 = require("interfaceAdpaters/validations/email-validation");
 exports.emailVerifySchema = zod_1.z.object({
     email: zod_1.z
         .string()

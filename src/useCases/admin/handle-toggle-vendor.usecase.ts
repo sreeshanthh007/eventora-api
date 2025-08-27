@@ -13,16 +13,16 @@ export class HandleToggleVendorStatusUseCase implements IHandleToggleVendorUseCa
     ){}
 
 
-    async execute(vendorid: string): Promise<void> {
+    async execute(vendorId: string): Promise<void> {
         
-        if(!vendorid){
+        if(!vendorId){
             throw new CustomError(
                 ERROR_MESSAGES.USER_NOT_FOUND,
                 HTTP_STATUS.NOT_FOUND
             )
         }
 
-        const vendor = await this.vendorRepository.findById(vendorid)
+        const vendor = await this.vendorRepository.findById(vendorId)
 
         if(!vendor){
             throw new CustomError(
@@ -33,15 +33,9 @@ export class HandleToggleVendorStatusUseCase implements IHandleToggleVendorUseCa
 
         const newStatus = vendor.status=="active" ? "blocked" : "active"
 
-        await this.vendorRepository.findByIdAndUpdateStatus(vendorid,newStatus)
+        await this.vendorRepository.findByIdAndUpdateStatus(vendorId,newStatus)
 
-        if(newStatus=="blocked"){
-            await RedisClient.set(`vendor_status:vendor${vendorid}`,newStatus,{
-                EX:3600
-            });
-        }else if(newStatus=="active"){
-            await RedisClient.del(`vendor_status:vendor${vendorid}`)
-        }
+         await RedisClient.set(`user_status:vendor:${vendorId}`, newStatus,{EX:3600});
 
     }
 }

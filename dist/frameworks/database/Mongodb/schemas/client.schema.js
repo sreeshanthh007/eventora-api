@@ -10,7 +10,8 @@ exports.ClientSchema = new mongoose_1.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String },
     role: { type: String, enum: constants_1.ROLES, required: true },
-    // profileImage:{type:String},
+    profileImage: { type: String },
+    googleId: { type: String },
     status: { type: String, default: "active" },
 }, {
     timestamps: true,

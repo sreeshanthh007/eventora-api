@@ -29,10 +29,10 @@ let VerifyOTPUseCase = class VerifyOTPUseCase {
     constructor(otpService) {
         this.otpService = otpService;
     }
-    execute(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ email, otp }) {
-            const isOTPValid = yield this.otpService.verifyOTP({ email, otp });
-            console.log(isOTPValid);
+    execute(key, otp) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const isOTPValid = yield this.otpService.verifyOTP(key, otp);
+            console.log("is valid", isOTPValid);
             if (!isOTPValid) {
                 throw new custom_error_1.CustomError("Invalid OTP", constants_1.HTTP_STATUS.BAD_REQUEST);
             }

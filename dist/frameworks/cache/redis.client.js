@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RedisClient = void 0;
 const redis_1 = require("redis");
 const dotenv_1 = __importDefault(require("dotenv"));
 const config_1 = require("@shared/config");
 const chalk_1 = __importDefault(require("chalk"));
 dotenv_1.default.config();
-const client = (0, redis_1.createClient)({
+exports.RedisClient = (0, redis_1.createClient)({
     username: config_1.config.redis.REDIS_USERNAME,
     password: config_1.config.redis.REDIS_PASS,
     socket: {
@@ -25,11 +26,10 @@ const client = (0, redis_1.createClient)({
         port: parseInt(config_1.config.redis.REDIS_PORT)
     }
 });
-client.on('error', err => console.log('Redis Client Error', err));
+exports.RedisClient.on('error', err => console.log('Redis Client Error', err));
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    yield client.connect();
+    yield exports.RedisClient.connect();
     console.log(chalk_1.default.yellowBright.bold("\t|         " +
         chalk_1.default.blueBright.bold("📦 Redis connected successfully!") +
         "            |"));
 }))();
-exports.default = client;

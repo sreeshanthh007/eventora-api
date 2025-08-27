@@ -1,7 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { IGetAllVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-all-vendors.usecase";
-import { PaginatedUsers } from "@entities/models/paginatedUsers.entity";
+import { PaginatedUsers } from "interfaceAdpaters/models/paginatedUsers";
+import { mapClientAndVendorEntityToTableRow } from "interfaceAdpaters/mappers/ClientMapper";
+import { FilterQuery } from "mongoose";
+import { IVendorEntity } from "@entities/models/vendor.entity";
 
 
 @injectable()
@@ -12,11 +15,12 @@ export class GetAllVendorUseCase implements IGetAllVendorsUseCase{
 
     async  execute(limit: number, searchTerm: string, current: number): Promise<PaginatedUsers>  {
 
-         let filter: any = {};
+         const filter : FilterQuery<IVendorEntity> = {};
+         
             if (searchTerm) {
 
             filter.$or = [
-        { firstName: { $regex: searchTerm, $options: "i" } },
+        { name: { $regex: searchTerm, $options: "i" } },
         { email: { $regex: searchTerm, $options: "i" } },
       ];
     }
@@ -31,9 +35,11 @@ export class GetAllVendorUseCase implements IGetAllVendorsUseCase{
         limit
       );
 
+      const mappedUsers = user.map(mapClientAndVendorEntityToTableRow)
+
       const response: PaginatedUsers = {
-        user,
-        total: Math.ceil(total / limit),
+        user:mappedUsers,
+        total: Math.ceil(total / limit), 
       };
 
     return response

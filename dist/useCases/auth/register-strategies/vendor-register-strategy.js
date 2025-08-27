@@ -38,7 +38,7 @@ let VendorRegisterStrategy = class VendorRegisterStrategy {
                 if (existingVendor) {
                     throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.EMAIL_EXISTS, constants_1.HTTP_STATUS.CONFLICT);
                 }
-                const { name, email, phone, password, } = user;
+                const { name, email, phone, password, idProof } = user;
                 let hashedPassword = null;
                 if (password) {
                     hashedPassword = yield this.passwordBcrypt.hash(password);
@@ -50,6 +50,7 @@ let VendorRegisterStrategy = class VendorRegisterStrategy {
                     phone,
                     password: hashedPassword !== null && hashedPassword !== void 0 ? hashedPassword : "",
                     vendorId,
+                    idProof: idProof,
                     role: "vendor"
                 });
                 return vendor;

@@ -5,10 +5,11 @@ import { Schema } from "mongoose";
         {
             categoryId:{type:String,required:true,unique:true},
             
-            status:{type:Boolean,default:true},
+            status:{type:String,default:"active"},
 
-            title:{type:String,required:true}
+            title:{type:String,required:true},
 
+            image:{type:String,required:true}
         },
         {
             timestamps:true

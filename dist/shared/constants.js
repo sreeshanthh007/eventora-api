@@ -1,40 +1,62 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VERIFICATION_MAIL_CONTENT = exports.ERROR_MESSAGES = exports.SUCCESS_MESSAGES = exports.HTTP_STATUS = exports.ROLES = void 0;
+exports.GOOGLE_LOGIN_SUCCESS_MESSAGE = exports.VERIFICATION_MAIL_CONTENT = exports.ERROR_MESSAGES = exports.SUCCESS_MESSAGES = exports.HTTP_STATUS = exports.ROLES = void 0;
 exports.ROLES = {
     ADMIN: "admin",
     CLIENT: "client",
-    VENDOR: "vendor"
+    VENDOR: "vendor",
 };
-exports.HTTP_STATUS = {
-    OK: 200,
-    CREATED: 201,
-    BAD_REQUEST: 400,
-    UNAUTHORIZED: 401,
-    FORBIDDEN: 403,
-    NOT_FOUND: 404,
-    CONFLICT: 409,
-    INTERNAL_SERVER_ERROR: 500
-};
-exports.SUCCESS_MESSAGES = {
-    CREATED: "Created Successfully",
-    LOGIN_SUCCESS: "Login Successfull.",
-    REGISTERATION_SUCCESS: "Registeration completed successfully",
-    OTP_SEND_SUCCESS: "OTP setn successfully",
-    VERIFICATION_SUCCESS: "Verification completed successfully.",
-};
-exports.ERROR_MESSAGES = {
-    NO_TOKEN: "Authentication error : No token Provided",
-    TOKEN_EXPIRED: "Token Expired",
-    EMAIL_NOT_FOUND: "Email Not Found",
-    BLOCKED: "Your account has been blocked.",
-    NOT_ALLOWED: "You are not allowed",
-    EMAIL_EXISTS: "Email Already Exists",
-    REQUEST_NOT_FOUND: "Request Not Found",
-    INVALID_TOKEN: "Authentication error: Invalid token",
-    INVALID_CREDENTIALS: "Invalid credentials provided.",
-    USER_NOT_FOUND: "User not found.",
-};
+var HTTP_STATUS;
+(function (HTTP_STATUS) {
+    HTTP_STATUS[HTTP_STATUS["OK"] = 200] = "OK";
+    HTTP_STATUS[HTTP_STATUS["CREATED"] = 201] = "CREATED";
+    HTTP_STATUS[HTTP_STATUS["BAD_REQUEST"] = 400] = "BAD_REQUEST";
+    HTTP_STATUS[HTTP_STATUS["UNAUTHORIZED"] = 401] = "UNAUTHORIZED";
+    HTTP_STATUS[HTTP_STATUS["FORBIDDEN"] = 403] = "FORBIDDEN";
+    HTTP_STATUS[HTTP_STATUS["NOT_FOUND"] = 404] = "NOT_FOUND";
+    HTTP_STATUS[HTTP_STATUS["CONFLICT"] = 409] = "CONFLICT";
+    HTTP_STATUS[HTTP_STATUS["INTERNAL_SERVER_ERROR"] = 500] = "INTERNAL_SERVER_ERROR";
+})(HTTP_STATUS || (exports.HTTP_STATUS = HTTP_STATUS = {}));
+;
+var SUCCESS_MESSAGES;
+(function (SUCCESS_MESSAGES) {
+    SUCCESS_MESSAGES["CREATED"] = "Created Successfully";
+    SUCCESS_MESSAGES["LOGIN_SUCCESS"] = "Login Successfull.";
+    SUCCESS_MESSAGES["REGISTERATION_SUCCESS"] = "Registeration completed successfully";
+    SUCCESS_MESSAGES["OTP_SEND_SUCCESS"] = "OTP sent to your Email successfully";
+    SUCCESS_MESSAGES["VERIFICATION_SUCCESS"] = "Verification completed successfully.";
+    SUCCESS_MESSAGES["UPDATE_SUCCESS"] = "Updated successfully.";
+    SUCCESS_MESSAGES["USER_LOGOUT_SUCCESS"] = "Logged out successfully";
+})(SUCCESS_MESSAGES || (exports.SUCCESS_MESSAGES = SUCCESS_MESSAGES = {}));
+;
+var ERROR_MESSAGES;
+(function (ERROR_MESSAGES) {
+    ERROR_MESSAGES["NOT_FOUND"] = "item not found";
+    ERROR_MESSAGES["NO_TOKEN"] = "Authentication error : No token Provided";
+    ERROR_MESSAGES["TOKEN_EXPIRED"] = "Token Expired";
+    ERROR_MESSAGES["EMAIL_NOT_FOUND"] = "Email Not Found";
+    ERROR_MESSAGES["BLOCKED"] = "Your account has been blocked.";
+    ERROR_MESSAGES["NOT_ALLOWED"] = "You are not allowed";
+    ERROR_MESSAGES["EMAIL_EXISTS"] = "Email Already Exists";
+    ERROR_MESSAGES["REQUEST_NOT_FOUND"] = "Request Not Found";
+    ERROR_MESSAGES["INVALID_TOKEN"] = "Authentication error: Invalid token";
+    ERROR_MESSAGES["INVALID_CREDENTIALS"] = "Invalid credentials provided.";
+    ERROR_MESSAGES["USER_NOT_FOUND"] = "User not found.";
+    ERROR_MESSAGES["UNAUTHORIZED_ACCESS"] = "Unauthorized access";
+    ERROR_MESSAGES["FORBIDDEN"] = "Access denied. You do not have permission to access this resource.";
+    ERROR_MESSAGES["SERVER_ERROR"] = "An error occurred, please try again later.";
+    ERROR_MESSAGES["VALIDATION_ERROR"] = "Validation error occurred.";
+    ERROR_MESSAGES["UNAUTH_NO_USER_FOUND"] = "Unauthorized: No user found in request";
+    ERROR_MESSAGES["INVALID_ROLE"] = "Invalid user role";
+    ERROR_MESSAGES["ROUTE_NOT_FOUND"] = "Route not found.";
+    ERROR_MESSAGES["PAYLAOD_NOT_FOUND"] = "Invalid or empty Payload";
+    ERROR_MESSAGES["EMAIL_REQUIRED"] = "Email is Required";
+    ERROR_MESSAGES["FOLDER_NOT_FOUND"] = "Folder not Found";
+    ERROR_MESSAGES["CATEGORY_ALREADY_EXISTS"] = "Category already exist";
+    ERROR_MESSAGES["ID_NOT_FOUND"] = "ID not found";
+    ERROR_MESSAGES["MISSING_PARAMETERS"] = "Some details are missing";
+})(ERROR_MESSAGES || (exports.ERROR_MESSAGES = ERROR_MESSAGES = {}));
+;
 const VERIFICATION_MAIL_CONTENT = (otp) => `
   <div style="font-family: Arial, sans-serif; color: #333;">
     <h2 style="color: #0a74da;">Welcome to Eventora!</h2>
@@ -52,3 +74,14 @@ const VERIFICATION_MAIL_CONTENT = (otp) => `
   </div>
 `;
 exports.VERIFICATION_MAIL_CONTENT = VERIFICATION_MAIL_CONTENT;
+const GOOGLE_LOGIN_SUCCESS_MESSAGE = (name) => `
+  <div style="font-family: Arial, sans-serif; color: #333;">
+    <h2>Welcome to Eventora, ${name}!</h2>
+    <p>🎉 We're excited to have you on board.</p>
+    <p>You've successfully signed in using your Google account.</p>
+    <p>From planning events to booking the perfect vendors, <strong>Eventora</strong> is here to make every moment unforgettable.</p>
+    <p style="margin-top: 20px;">If you have any questions, our support team is always here to help.</p>
+    <p style="margin-top: 40px;">Cheers,<br>The Eventora Team</p>
+  </div>
+`;
+exports.GOOGLE_LOGIN_SUCCESS_MESSAGE = GOOGLE_LOGIN_SUCCESS_MESSAGE;

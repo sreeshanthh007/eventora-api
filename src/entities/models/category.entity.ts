@@ -4,7 +4,8 @@ export interface ICategoryEnity {
     _id?:ObjectId,
     categoryId:string,
     title:string,
-    status:boolean,
+    status:string,
+    image:string,
     createdAt?:Date,
     updatedAt?:Date
 }

@@ -1,4 +1,10 @@
 import { TRole } from "@shared/constants";
+import { ObjectId } from "mongoose";
+
+
+
+
+export type clientStatus = "active" | "blocked"
 
 export interface AdminDTO {
     email:string,
@@ -18,6 +24,24 @@ export interface ClientDTO{
     role:"client"
 }
 
+export interface ClientTableDTO {
+    _id:string,
+    clientId?:string,
+    name:string,
+    email:string,
+    phone:string,
+    profileImage?:string,
+    status:clientStatus
+}
+
+
+export interface RequestedVendorTableDTO{
+    _id:string,
+    name:string,
+    email:string,
+    vendorStatus:string,
+    idProof:string
+}
 
 export interface VendorDTO{
     vendorId?:string,
@@ -25,11 +49,28 @@ export interface VendorDTO{
     email:string,
     phone?:string,
     profileImage?:string,
-    googleId?:string,
     password?:string,
-    role:"vendor"
+    idProof:string,
+    role:"vendor",
+   
 }
 
+
+export interface CategoryDTO{
+    _id?:string | ObjectId
+    categoryId?:string
+    title:string,
+    image:string,
+    status?:string,
+}
+
+export interface EventDTO{
+    title:string;
+    pricePerTicket:number;
+    date:Date;
+    eventLocation:string;
+    images:string
+}
 
 export type UserDTO = AdminDTO | ClientDTO | VendorDTO
 
@@ -37,5 +78,12 @@ export type UserDTO = AdminDTO | ClientDTO | VendorDTO
 export interface LoginUserDTO{
     email:string,
     password?:string,
-    role:TRole
+    role:TRole,
+}
+
+export interface LoginVendorDTO{
+    VendorId:string,
+    vendorStatus: "pending" | "approved" | "rejected" | "verifying"
+    rejectReason?:string
+    bio?:string
 }

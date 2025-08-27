@@ -9,10 +9,10 @@ export class VerifyOTPUseCase implements IVerifyOtpUsecase{
     constructor(
         @inject("IOTPService") private otpService:IOTPService
     ){}
-    async execute({ email, otp }: { email: string; otp: string; }): Promise<void> {
-        const isOTPValid = await this.otpService.verifyOTP({email,otp})
+    async execute(key:string,otp:string): Promise<void> {
+        const isOTPValid = await this.otpService.verifyOTP(key,otp)
 
-        console.log(isOTPValid)
+        console.log("is valid",isOTPValid)
 
         if(!isOTPValid){
             throw new CustomError("Invalid OTP",HTTP_STATUS.BAD_REQUEST)
