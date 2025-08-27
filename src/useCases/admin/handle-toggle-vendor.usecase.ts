@@ -35,7 +35,7 @@ export class HandleToggleVendorStatusUseCase implements IHandleToggleVendorUseCa
 
         await this.vendorRepository.findByIdAndUpdateStatus(vendorId,newStatus)
 
-         await RedisClient.set(`user_status:vendor:${vendorId}`, newStatus);
+         await RedisClient.set(`user_status:vendor:${vendorId}`, newStatus,{EX:3600});
 
     }
 }

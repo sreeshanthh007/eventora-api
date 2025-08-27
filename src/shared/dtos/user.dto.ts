@@ -64,6 +64,14 @@ export interface CategoryDTO{
     status?:string,
 }
 
+export interface EventDTO{
+    title:string;
+    pricePerTicket:number;
+    date:Date;
+    eventLocation:string;
+    images:string
+}
+
 export type UserDTO = AdminDTO | ClientDTO | VendorDTO
 
 

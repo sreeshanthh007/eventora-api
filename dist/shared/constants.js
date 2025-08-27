@@ -31,6 +31,7 @@ var SUCCESS_MESSAGES;
 ;
 var ERROR_MESSAGES;
 (function (ERROR_MESSAGES) {
+    ERROR_MESSAGES["NOT_FOUND"] = "item not found";
     ERROR_MESSAGES["NO_TOKEN"] = "Authentication error : No token Provided";
     ERROR_MESSAGES["TOKEN_EXPIRED"] = "Token Expired";
     ERROR_MESSAGES["EMAIL_NOT_FOUND"] = "Email Not Found";

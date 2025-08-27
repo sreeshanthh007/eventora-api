@@ -57,6 +57,14 @@ const update_personal_information_usecase_1 = require("@usecases/client/update-p
 const update_vendor_personal_information_usecase_1 = require("@usecases/vendor/update-vendor-personal-information.usecase");
 const edit_category_usecase_1 = require("@usecases/admin/edit-category.usecase");
 const add_service_usecase_1 = require("@usecases/vendor/service/add-service.usecase");
+const get_category_for_service_usecase_1 = require("@usecases/get-category-for-service.usecase");
+const edit_service_usecase_1 = require("@usecases/vendor/service/edit-service.usecase");
+const get_all_service_usecase_1 = require("@usecases/vendor/service/get-all-service.usecase");
+const get_service_by_id_usecase_1 = require("@usecases/vendor/service/get-service-by-id.usecase");
+const toggle_service_status_usecase_1 = require("@usecases/vendor/service/toggle-service-status.usecase");
+const update_event_usecase_1 = require("@usecases/vendor/event/update-event-usecase");
+const get_events_by_id_usecase_1 = require("@usecases/vendor/event/get-events-by-id.usecase");
+const get_all_events_usecase_2 = require("@usecases/client/get-all-events.usecase");
 class UseCaseRegistry {
     static registerUseCases() {
         tsyringe_1.container.register("IRegisterUseCase", {
@@ -206,11 +214,35 @@ class UseCaseRegistry {
         tsyringe_1.container.register("IGetAllCategoryForClientsUseCase", {
             useClass: get_all_category_usecase_2.GetAllCategoryForClientUseCase,
         });
+        tsyringe_1.container.register("IGetCategoriesForServiceUseCase", {
+            useClass: get_category_for_service_usecase_1.GetCategoriesForServiceUseCase
+        });
         tsyringe_1.container.register("IHostNewEventUseCase", {
             useClass: host_new_event_usecase_1.HostNewEventUseCase,
         });
+        tsyringe_1.container.register("IUpdateEventUseCase", {
+            useClass: update_event_usecase_1.UpdateEventUseCase
+        });
+        tsyringe_1.container.register("IGetEventsByIdUseCase", {
+            useClass: get_events_by_id_usecase_1.GetEventsByIdUseCase
+        });
+        tsyringe_1.container.register("IGetAllEventsForClientsUseCase", {
+            useClass: get_all_events_usecase_2.GetAllEventsForClientsUseCase
+        });
         tsyringe_1.container.register("IAddServiceUseCase", {
             useClass: add_service_usecase_1.AddServiceUseCase,
+        });
+        tsyringe_1.container.register("IEditServiceUseCase", {
+            useClass: edit_service_usecase_1.EditServiceUseCase
+        });
+        tsyringe_1.container.register("IGetAllServiceUsecase", {
+            useClass: get_all_service_usecase_1.GetAllServiceUseCase
+        });
+        tsyringe_1.container.register("IGetServiceByIdUseCase", {
+            useClass: get_service_by_id_usecase_1.GetServiceByIdUseCase
+        });
+        tsyringe_1.container.register("IToggleServiceStatusUseCase", {
+            useClass: toggle_service_status_usecase_1.toggleServiceStatusUseCase
         });
         tsyringe_1.container.register("IFcmTokenUseCase", {
             useClass: fcmtoken_usecase_1.FcmTokenUseCase,

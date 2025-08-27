@@ -35,7 +35,7 @@ import { RedisClient  } from "@frameworks/cache/redis.client";
             await this.clientRepository.findByIdAndUpdateStatus(userId,newsStatus);
 
             if(newsStatus=="blocked"){
-                await RedisClient.set(`user_status:client${userId}`,newsStatus,{
+                await RedisClient.set(`user_status:client:${userId}`,newsStatus,{
                     EX:3600
                 });
             }else if(newsStatus=="active"){

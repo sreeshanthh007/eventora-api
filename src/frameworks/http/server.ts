@@ -50,10 +50,10 @@ export class ExpressServer {
     console.log("✅ Mounting /api/auth route...");
       this._app.use("/api_v1/auth", new AuthRoutes().router);
     console.log("✅ Mounting /api/client route...");
-    this._app.use("/api_v1/client",new ClientRoutes().router);
+    this._app.use("/api_v1/_cl", new ClientRoutes().router);
     
-    this._app.use("/api_v1/admin",new AdminRotes().router);
-    this._app.use("/api_v1/vendor",new VendorRoutes().router)
+    this._app.use("/api_v1/_ad", new AdminRotes().router);
+    this._app.use("/api_v1/_ve", new VendorRoutes().router);
     this._app.use("/api/cloudinary",new CloudinaryRoutes().router)
     console.log("Routes mounted successfully")
   }

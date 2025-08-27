@@ -49,3 +49,17 @@ cancellationPolicies: z
     .string()
     .nonempty({ message: "Service category is required" }),
 });
+
+
+
+
+export const EditServiceValidationSchema = z.object({
+  serviceTitle: z.string().min(3).max(100).optional(),
+  serviceDescription: z.string().min(20).max(1000).optional(),
+  servicePrice: z.number().min(1).optional(),
+  additionalHourPrice: z.number().min(0).optional(),
+  cancellationPolicies: z.array(z.string().min(20).max(2000)).optional(),
+  termsAndConditions: z.array(z.string().min(20).max(2000)).optional(),
+  serviceDuration: z.number().optional(),
+  categoryId: z.string().optional(),
+});

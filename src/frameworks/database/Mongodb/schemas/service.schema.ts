@@ -21,7 +21,7 @@ export const ServiceSchema = new Schema<IServiceModel>(
 
         cancellationPolicies:{type:[String],required:true},
 
-        categoryId:{type:Schema.Types.ObjectId,required:true},
+        categoryId:{type:String,required:true},
         
         termsAndConditions:{type:[String],required:true},
 

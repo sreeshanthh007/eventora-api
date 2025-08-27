@@ -1,30 +1,17 @@
 import { IServiceEntity } from "@entities/models/service.entity";
+import { type EditableServiceFields } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
+import { FilterQuery } from "mongoose";
+
 
 export interface IServiceRepository {
   save(data: IServiceEntity): Promise<void>;
 
-//   saveCount(
-//     serviceId: any,
-//     dateString: string,
-//     startTime: string,
-//     endTime: string
-//   ): Promise<void>;
 
-//   findByVendorId(
-//     id: any,
-//     skip: number,
-//     limit: number
-//   ): Promise<PaginatedServices>;
+  findById(id: string): Promise<IServiceEntity | null>;
 
-//   findByVendorIdForVendorProfileInClient(
-//     id: any,
-//     skip: number,
-//     limit: number
-//   ): Promise<PaginatedVendorServices>;
+  findByIdAndUpdate(id: string, data: EditableServiceFields): Promise<void>;
 
-//   findById(id: any): Promise<IServiceEntity | null>;
+  getAllServices(filter:FilterQuery<IServiceEntity>,skip:number,limit:number) : Promise<{services:IServiceEntity[] | [];  total:number}>
 
-//   findByIdAndUpdate(id: any, data: IServiceEntity): Promise<void>;
-
-//   findAllServiceByVendorId(id: any): Promise<IServiceEntity[] | []>;
+  findByIdAndUpdateStatus(serviceId:string,status:string) : Promise<void>
 }

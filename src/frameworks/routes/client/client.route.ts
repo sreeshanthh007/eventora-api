@@ -20,6 +20,11 @@ export class ClientRoutes extends BaseRouter{
         );
 
         this.router.get(
+            "/all-events",
+            asyncHandler(clientController.getAllEvents.bind(clientController))
+        );
+
+        this.router.get(
             "/refresh-session",
             verifyAuth,
             authorizeRole(["client"]),
@@ -31,6 +36,7 @@ export class ClientRoutes extends BaseRouter{
         this.router.post(
             "/update-profileImage",
             verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             authorizeRole(["client"]),
             asyncHandler(clientController.updateProfileImage.bind(clientController))
         );
@@ -38,6 +44,7 @@ export class ClientRoutes extends BaseRouter{
         this.router.patch(
             "/update-profile",
             verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             authorizeRole(["client"]),
             asyncHandler(clientController.updateProfileInformation.bind(clientController))
         )

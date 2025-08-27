@@ -17,5 +17,34 @@ class ServiceRepository {
             yield service_model_1.serviceModel.create(data);
         });
     }
+    findById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield service_model_1.serviceModel.findById(id);
+        });
+    }
+    findByIdAndUpdate(id, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield service_model_1.serviceModel.findByIdAndUpdate(id, data, {
+                new: true
+            });
+        });
+    }
+    findByIdAndUpdateStatus(serviceId, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield service_model_1.serviceModel.findByIdAndUpdate(serviceId, { $set: { status: status } }, { new: true });
+        });
+    }
+    getAllServices(filter, skip, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [services, total] = yield Promise.all([
+                service_model_1.serviceModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+                service_model_1.serviceModel.countDocuments(filter)
+            ]);
+            return {
+                services,
+                total
+            };
+        });
+    }
 }
 exports.ServiceRepository = ServiceRepository;

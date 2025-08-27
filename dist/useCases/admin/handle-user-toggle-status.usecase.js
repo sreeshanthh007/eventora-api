@@ -42,7 +42,7 @@ let UserToggleStatusUseCase = class UserToggleStatusUseCase {
             const newsStatus = client.status == "active" ? "blocked" : "active";
             yield this.clientRepository.findByIdAndUpdateStatus(userId, newsStatus);
             if (newsStatus == "blocked") {
-                yield redis_client_1.RedisClient.set(`user_status:client${userId}`, newsStatus, {
+                yield redis_client_1.RedisClient.set(`user_status:client:${userId}`, newsStatus, {
                     EX: 3600
                 });
             }

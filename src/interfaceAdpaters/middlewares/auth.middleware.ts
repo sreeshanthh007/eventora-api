@@ -20,12 +20,22 @@ export interface CustomRequest extends Request{
     user:CustomJWTPayload   
 }
 
+
+
+const roleMap: Record<string, string> = {
+  "_cl": "client",
+  "_ad": "admin",
+  "_ve": "vendor"
+};
+
 const extractToken = (req: Request): { access_token: string; refresh_token: string } | null => {
 
      const basePath = req.baseUrl.split("/");
- 
-    const userType = basePath[2]; 
+    console.log('the base path is',basePath)
+    const userType = roleMap[basePath[2]]
 
+    console.log("the user type is",userType)
+   
 
   if (["client", "vendor", "admin"].includes(userType)) {
     return {
@@ -51,7 +61,8 @@ const isBlacklisted = async(token:string) :Promise<boolean> =>{
 export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     try {
         const token = extractToken(req)
-
+        console.log("htis is the token in verfy auth",token)
+        
      if (!token) {
       res
         .status(HTTP_STATUS.UNAUTHORIZED)
@@ -136,7 +147,7 @@ export const authorizeRole = (allowedRoles:string[])=>{
     return (req:Request , res : Response , next:NextFunction)=>{
         
         const user = (req as CustomRequest).user
-
+      
         if(!user || !allowedRoles.includes(user.role)){
             console.log("this role is not allowed")
             res.status(HTTP_STATUS.FORBIDDEN).json({message:ERROR_MESSAGES.NOT_ALLOWED,user:user ? user.role : ""})

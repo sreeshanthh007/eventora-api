@@ -35,9 +35,9 @@ export class  BlockedStatusMiddleware {
             
 
             const cacheKey = `user_status:${role}:${id}`
-            console.log("cache key is",cacheKey)
             let status : string | null | undefined  = await RedisClient.get(cacheKey)
-            console.log("their current stats",status)
+            console.log("what user tate",status);
+            
             if(!status){
                 if(role=="client"){
                     const client = await this.clientRepository.findById(id)

@@ -107,6 +107,22 @@ import { IEditCategoryUseCase } from "@entities/useCaseInterfaces/admin/edit-cat
 import { EditCategoryUseCase } from "@usecases/admin/edit-category.usecase";
 import { IAddServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/add-service.interface.usecase";
 import { AddServiceUseCase } from "@usecases/vendor/service/add-service.usecase";
+import { IGetAllCategoryForServiceUseCase } from "@entities/useCaseInterfaces/get-category-for-service.interface.usecase";
+import { GetCategoriesForServiceUseCase } from "@usecases/get-category-for-service.usecase";
+import { IEditServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
+import { EditServiceUseCase } from "@usecases/vendor/service/edit-service.usecase";
+import { IGetAllServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/get-all-service.interface.usecase";
+import { GetAllServiceUseCase } from "@usecases/vendor/service/get-all-service.usecase";
+import { IGetServiceByIdUseCase } from "@entities/useCaseInterfaces/vendor/service/get-service-by-id.interface.usecase";
+import { GetServiceByIdUseCase } from "@usecases/vendor/service/get-service-by-id.usecase";
+import { IToggleServiceStatusUseCase } from "@entities/useCaseInterfaces/vendor/service/toggle-service.interface.usecase";
+import { toggleServiceStatusUseCase } from "@usecases/vendor/service/toggle-service-status.usecase";
+import { IUpdateEventUseCase } from "@entities/useCaseInterfaces/vendor/event/update-event.usecase.interface";
+import { UpdateEventUseCase } from "@usecases/vendor/event/update-event-usecase";
+import { IGetEventByIdUseCase } from "@entities/useCaseInterfaces/vendor/event/get-event-by-id..usecase.interface";
+import { GetEventsByIdUseCase } from "@usecases/vendor/event/get-events-by-id.usecase";
+import { IGetAllEventsForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-events.usecase.interface";
+import { GetAllEventsForClientsUseCase } from "@usecases/client/get-all-events.usecase";
 
 export class UseCaseRegistry {
   static registerUseCases(): void {
@@ -344,12 +360,46 @@ export class UseCaseRegistry {
       }
     );
 
+    container.register<IGetAllCategoryForServiceUseCase>("IGetCategoriesForServiceUseCase",{
+
+      useClass:GetCategoriesForServiceUseCase
+    })
+
     container.register<IHostNewEventUseCase>("IHostNewEventUseCase", {
       useClass: HostNewEventUseCase,
     });
 
+
+    container.register<IUpdateEventUseCase>("IUpdateEventUseCase",{
+      useClass:UpdateEventUseCase
+    });
+    
+    container.register<IGetEventByIdUseCase>("IGetEventsByIdUseCase",{
+      useClass:GetEventsByIdUseCase
+    });
+
+    container.register<IGetAllEventsForClientsUseCase>("IGetAllEventsForClientsUseCase",{
+      useClass:GetAllEventsForClientsUseCase
+    });
+    
     container.register<IAddServiceUseCase>("IAddServiceUseCase", {
       useClass: AddServiceUseCase,
+    });
+
+    container.register<IEditServiceUseCase>("IEditServiceUseCase",{
+      useClass:EditServiceUseCase
+    });
+
+    container.register<IGetAllServiceUseCase>("IGetAllServiceUsecase",{
+      useClass:GetAllServiceUseCase
+    });
+
+    container.register<IGetServiceByIdUseCase>("IGetServiceByIdUseCase",{
+      useClass:GetServiceByIdUseCase
+    });
+   
+    container.register<IToggleServiceStatusUseCase>("IToggleServiceStatusUseCase",{
+      useClass:toggleServiceStatusUseCase
     });
 
     container.register<IFcmTokenUseCase>("IFcmTokenUseCase", {

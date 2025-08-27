@@ -17,6 +17,11 @@ class EventRepository {
             yield event_model_1.EventModel.create(data);
         });
     }
+    findEvents() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield event_model_1.EventModel.find({ isActive: true });
+        });
+    }
     findPaginatedEvents(filter, skip, limit) {
         return __awaiter(this, void 0, void 0, function* () {
             const [events, total] = yield Promise.all([
@@ -34,6 +39,11 @@ class EventRepository {
     findByIdAndToggleStatus(evendId, isActive) {
         return __awaiter(this, void 0, void 0, function* () {
             yield event_model_1.EventModel.findByIdAndUpdate(evendId, { isActive }, { new: true });
+        });
+    }
+    updateEvent(eventId, updateData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield event_model_1.EventModel.findByIdAndUpdate(eventId, { $set: updateData }, { new: true });
         });
     }
 }

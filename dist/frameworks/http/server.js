@@ -46,9 +46,9 @@ class ExpressServer {
         console.log("✅ Mounting /api/auth route...");
         this._app.use("/api_v1/auth", new auth_route_1.AuthRoutes().router);
         console.log("✅ Mounting /api/client route...");
-        this._app.use("/api_v1/client", new client_route_1.ClientRoutes().router);
-        this._app.use("/api_v1/admin", new admin_route_1.AdminRotes().router);
-        this._app.use("/api_v1/vendor", new vendor_route_1.VendorRoutes().router);
+        this._app.use("/api_v1/_cl", new client_route_1.ClientRoutes().router);
+        this._app.use("/api_v1/_ad", new admin_route_1.AdminRotes().router);
+        this._app.use("/api_v1/_ve", new vendor_route_1.VendorRoutes().router);
         this._app.use("/api/cloudinary", new cloudinaryRoutes_1.CloudinaryRoutes().router);
         console.log("Routes mounted successfully");
     }

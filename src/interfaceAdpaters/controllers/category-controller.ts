@@ -1,9 +1,8 @@
 import { ICategoryController } from "@entities/controllerInterfaces/category/category.interface";
-import { ICategoryEnity } from "@entities/models/category.entity";
 import { IAddCategoryUseCase } from "@entities/useCaseInterfaces/admin/add-category.usecase";
 import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase";
 import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase";
-// import { IGetAllCategoryForServiceUseCase } from "@entities/useCaseInterfaces/get-category-for-service.interface.usecase";
+import { IGetAllCategoryForServiceUseCase } from "@entities/useCaseInterfaces/get-category-for-service.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
 import { Request, Response } from "express";
@@ -18,7 +17,7 @@ export class CategoryController  implements ICategoryController{
         @inject("IAddCategoryUseCase") private _addCategoryUseCase : IAddCategoryUseCase,
         @inject("IGetAllCategoryUseCase") private _getAllCategoryUseCase : IGetAllCatgoryUseCase,
         @inject("IHandleToggleCategoryUseCase") private _toggleCategoryUseCase : IHandleToggleCategoryUseCase,
-        // @inject("IGetCategoriesForServiceUseCase") private _getCategoryForServiceUseCase : IGetAllCategoryForServiceUseCase,
+        @inject("IGetCategoriesForServiceUseCase") private _getCategoryForServiceUseCase : IGetAllCategoryForServiceUseCase,
     ){}
 
     async addCategory(req: Request, res: Response): Promise<void> {
@@ -61,13 +60,14 @@ export class CategoryController  implements ICategoryController{
     }
 
 
-    // async getCategoryForService(req: Request, res: Response): Promise<void> {
+    async getCategoryForService(req: Request, res: Response): Promise<void> {
         
-    //     const categories = await this._getCategoryForServiceUseCase.execute()
+        const categories = await this._getCategoryForServiceUseCase.execute()
 
-    //     res.status(HTTP_STATUS.OK)
-    //     .json({success:true,categories:categories})
-    // }
+        res.status(HTTP_STATUS.OK)
+        .json({success:true,message:"category for services fetched",data:categories})
+
+    }
 
 
     async toogleCategory(req: Request, res: Response): Promise<void> {
@@ -93,16 +93,5 @@ export class CategoryController  implements ICategoryController{
 
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
-    }
-
-    async editCategory(req: Request, res: Response): Promise<void> {
-
-        const data :Partial<ICategoryEnity> = req.body
-
-        if(!data){
-            res.status(HTTP_STATUS.NOT_FOUND)
-            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
-        }
-
     }
 } 

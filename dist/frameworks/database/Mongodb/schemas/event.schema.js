@@ -46,7 +46,7 @@ exports.EventSchema = new mongoose_1.Schema({
         type: String,
         required: false
     },
-    coordinates: {
+    location: {
         type: {
             type: String,
             enum: ["Point"],
@@ -72,4 +72,4 @@ exports.EventSchema = new mongoose_1.Schema({
 }, {
     timestamps: true
 });
-exports.EventSchema.index({ coordinates: "2dsphere" });
+exports.EventSchema.index({ location: "2dsphere" });

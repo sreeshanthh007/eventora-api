@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServiceValidationSchema = void 0;
+exports.EditServiceValidationSchema = exports.ServiceValidationSchema = void 0;
 const zod_1 = require("zod");
 exports.ServiceValidationSchema = zod_1.z.object({
     serviceTitle: zod_1.z
@@ -41,4 +41,14 @@ exports.ServiceValidationSchema = zod_1.z.object({
     categoryId: zod_1.z
         .string()
         .nonempty({ message: "Service category is required" }),
+});
+exports.EditServiceValidationSchema = zod_1.z.object({
+    serviceTitle: zod_1.z.string().min(3).max(100).optional(),
+    serviceDescription: zod_1.z.string().min(20).max(1000).optional(),
+    servicePrice: zod_1.z.number().min(1).optional(),
+    additionalHourPrice: zod_1.z.number().min(0).optional(),
+    cancellationPolicies: zod_1.z.array(zod_1.z.string().min(20).max(2000)).optional(),
+    termsAndConditions: zod_1.z.array(zod_1.z.string().min(20).max(2000)).optional(),
+    serviceDuration: zod_1.z.number().optional(),
+    categoryId: zod_1.z.string().optional(),
 });

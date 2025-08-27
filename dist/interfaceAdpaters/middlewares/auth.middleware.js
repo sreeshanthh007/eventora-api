@@ -14,9 +14,16 @@ const jwtService_1 = require("interfaceAdpaters/services/jwtService");
 const constants_1 = require("@shared/constants");
 const redis_client_1 = require("@frameworks/cache/redis.client");
 const tokenService = new jwtService_1.jwtService();
+const roleMap = {
+    "_cl": "client",
+    "_ad": "admin",
+    "_ve": "vendor"
+};
 const extractToken = (req) => {
     const basePath = req.baseUrl.split("/");
-    const userType = basePath[2];
+    console.log('the base path is', basePath);
+    const userType = roleMap[basePath[2]];
+    console.log("the user type is", userType);
     if (["client", "vendor", "admin"].includes(userType)) {
         return {
             access_token: req.cookies[`${userType}_access_token`] || null,
@@ -33,6 +40,7 @@ const isBlacklisted = (token) => __awaiter(void 0, void 0, void 0, function* () 
 const verifyAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = extractToken(req);
+        console.log("htis is the token in verfy auth", token);
         if (!token) {
             res
                 .status(constants_1.HTTP_STATUS.UNAUTHORIZED)

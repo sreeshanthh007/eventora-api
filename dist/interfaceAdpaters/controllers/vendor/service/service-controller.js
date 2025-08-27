@@ -22,11 +22,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ServiceController = void 0;
+const constants_1 = require("@shared/constants");
 const service_validation_1 = require("interfaceAdpaters/validations/service.validation");
 const tsyringe_1 = require("tsyringe");
+console.log("service controllr");
 let ServiceController = class ServiceController {
-    constructor(_addServiceUseCase) {
+    constructor(_addServiceUseCase, _editServiceUseCase, _getServiceUseCase, _getServiceByIdUseCase, _toggleServiceUseCase) {
         this._addServiceUseCase = _addServiceUseCase;
+        this._editServiceUseCase = _editServiceUseCase;
+        this._getServiceUseCase = _getServiceUseCase;
+        this._getServiceByIdUseCase = _getServiceByIdUseCase;
+        this._toggleServiceUseCase = _toggleServiceUseCase;
     }
     addService(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35,6 +41,58 @@ let ServiceController = class ServiceController {
             const validatedData = service_validation_1.ServiceValidationSchema.parse(serviceData);
             const mappedData = Object.assign({ vendorId: id }, validatedData);
             yield this._addServiceUseCase.execute(id, mappedData);
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.CREATED });
+        });
+    }
+    editService(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.user;
+            const data = req.body;
+            const { serviceId } = req.params;
+            const validatedData = service_validation_1.EditServiceValidationSchema.parse(data);
+            yield this._editServiceUseCase.execute(id, serviceId, validatedData);
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
+        });
+    }
+    getAllService(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { page = "1", limit = "6", search = "" } = req.query;
+            const response = yield this._getServiceUseCase.execute(Number(limit), search, Number(page));
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, message: "services fetched successfully", services: response.services, total: response.total });
+        });
+    }
+    getServiceById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { serviceId } = req.params;
+            console.log("service id", serviceId);
+            if (!serviceId) {
+                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.NOT_FOUND });
+            }
+            const service = yield this._getServiceByIdUseCase.execute(serviceId);
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, service });
+        });
+    }
+    toggleServiceStatus(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { serviceId } = req.params;
+            const { status } = req.body;
+            const { id } = req.user;
+            if (!serviceId || !id) {
+                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                    .json({ success: false, message: `service id or user id not found` });
+            }
+            if (!["active", "blocked"].includes(status)) {
+                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                    .json({ success: false, message: "status must be active or blocked" });
+            }
+            yield this._toggleServiceUseCase.execute(serviceId);
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
         });
     }
 };
@@ -42,5 +100,9 @@ exports.ServiceController = ServiceController;
 exports.ServiceController = ServiceController = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("IAddServiceUseCase")),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, tsyringe_1.inject)("IEditServiceUseCase")),
+    __param(2, (0, tsyringe_1.inject)("IGetAllServiceUsecase")),
+    __param(3, (0, tsyringe_1.inject)("IGetServiceByIdUseCase")),
+    __param(4, (0, tsyringe_1.inject)("IToggleServiceStatusUseCase")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], ServiceController);

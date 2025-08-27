@@ -61,7 +61,7 @@ let CategoryController = class CategoryController {
         return __awaiter(this, void 0, void 0, function* () {
             const categories = yield this._getCategoryForServiceUseCase.execute();
             res.status(constants_1.HTTP_STATUS.OK)
-                .json({ success: true, categories: categories });
+                .json({ success: true, message: "category for services fetched", data: categories });
         });
     }
     toogleCategory(req, res) {
@@ -79,15 +79,6 @@ let CategoryController = class CategoryController {
             yield this._toggleCategoryUseCase.execute(categoryId);
             res.status(constants_1.HTTP_STATUS.OK)
                 .json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
-        });
-    }
-    editCategory(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = req.body;
-            if (!data) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
-                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
-            }
         });
     }
 };

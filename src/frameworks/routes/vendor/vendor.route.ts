@@ -29,6 +29,7 @@ export class VendorRoutes extends BaseRouter{
         this.router.post(
             "/update-profileImage",
             verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             authorizeRole(["vendor"]),
             clientController.updateProfileImage.bind(clientController)
         );
@@ -36,6 +37,7 @@ export class VendorRoutes extends BaseRouter{
         this.router.patch(
             "/update-profile",
             verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             authorizeRole(["vendor"]),
             vendoController.updatePersonalInformation.bind(vendoController)
         )
@@ -60,23 +62,65 @@ export class VendorRoutes extends BaseRouter{
             asyncHandler(serviceController.addService.bind(serviceController))
         );
 
-        // this.router.get(
-        //     "/get-category-service",
-        //     verifyAuth,
-        //     authorizeRole(["vendor"]),
-        //     asyncHandler(categoryController.getCategoryForService.bind(categoryController))
-        // );
+        this.router.get(
+            "/get-category-service",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(categoryController.getCategoryForService.bind(categoryController))
+        );
 
-        this.router.post(
+        this.router.patch(
+            "/edit-service/:serviceId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(serviceController.editService.bind(serviceController))
+        );
+
+
+        this.router.get(
+            "/get-services",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(serviceController.getAllService.bind(serviceController))
+        );
+        
+        this.router.get(
+            "/service-by-id/:serviceId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(serviceController.getServiceById.bind(serviceController))
+        );
+        
+        this.router.patch(
+            "/toggle-service/:serviceId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(serviceController.toggleServiceStatus.bind(serviceController))
+        );
+        
+        this.router.get(
             "/get-all-events",
             verifyAuth,
             authorizeRole(["vendor"]),
             asyncHandler(eventController.getAllEvents.bind(eventController))
         );
 
+        this.router.patch(
+            "/edit-events/:eventId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(eventController.updateEvent.bind(eventController))
+        );
+
+        this.router.get(
+            "/get-events-by-id/:eventId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(eventController.getEventById.bind(eventController))
+        )
 
         this.router.patch(
-            "/toggle-status",
+            "/toggle-status/:eventId",
             verifyAuth,
             authorizeRole(["vendor"]),
             asyncHandler(eventController.toggeleStatus.bind(eventController))

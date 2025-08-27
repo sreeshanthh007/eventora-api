@@ -23,7 +23,7 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
             if(existingVendor){
                 throw new CustomError(
                     ERROR_MESSAGES.EMAIL_EXISTS,
-                    HTTP_STATUS.CONFLICT
+                    HTTP_STATUS.CONFLICT    
                 )
             }
 

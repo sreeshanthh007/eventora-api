@@ -28,6 +28,7 @@ export enum SUCCESS_MESSAGES  {
 };
 
 export enum ERROR_MESSAGES  {
+  NOT_FOUND="item not found",
   NO_TOKEN= "Authentication error : No token Provided",
   TOKEN_EXPIRED= "Token Expired",
   EMAIL_NOT_FOUND="Email Not Found",

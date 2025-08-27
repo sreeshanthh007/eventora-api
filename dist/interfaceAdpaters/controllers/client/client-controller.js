@@ -25,10 +25,11 @@ exports.ClientController = void 0;
 const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
 let ClientController = class ClientController {
-    constructor(_getAllUsersDetailsUseCase, _updateProfileImageUseCase, _updatePersonalInformationUseCase) {
+    constructor(_getAllUsersDetailsUseCase, _updateProfileImageUseCase, _updatePersonalInformationUseCase, _getAllEventsForClientsUseCase) {
         this._getAllUsersDetailsUseCase = _getAllUsersDetailsUseCase;
         this._updateProfileImageUseCase = _updateProfileImageUseCase;
         this._updatePersonalInformationUseCase = _updatePersonalInformationUseCase;
+        this._getAllEventsForClientsUseCase = _getAllEventsForClientsUseCase;
     }
     refreshSession(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -72,6 +73,13 @@ let ClientController = class ClientController {
                 .json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
         });
     }
+    getAllEvents(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const events = yield this._getAllEventsForClientsUseCase.execute();
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, message: "events fetched successfully", events: events });
+        });
+    }
 };
 exports.ClientController = ClientController;
 exports.ClientController = ClientController = __decorate([
@@ -79,5 +87,6 @@ exports.ClientController = ClientController = __decorate([
     __param(0, (0, tsyringe_1.inject)("IGetAllUsersDetailsUseCase")),
     __param(1, (0, tsyringe_1.inject)("IUpdateProfileImageUseCase")),
     __param(2, (0, tsyringe_1.inject)("IUpdatePersonalInformationUseCase")),
-    __metadata("design:paramtypes", [Object, Object, Object])
+    __param(3, (0, tsyringe_1.inject)("IGetAllEventsForClientsUseCase")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], ClientController);

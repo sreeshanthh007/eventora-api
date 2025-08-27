@@ -1,4 +1,5 @@
 import { IClientController } from "@entities/controllerInterfaces/client/client-controller.interface";
+import { IGetAllEventsForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-events.usecase.interface";
 import { IUpdatePersonalInformationUseCase } from "@entities/useCaseInterfaces/client/update-personal-information.interface.usecase";
 import { IUpdateProfileImageUseCase } from "@entities/useCaseInterfaces/client/updateProfileImage.usecase.interface";
 import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
@@ -15,7 +16,8 @@ export class ClientController implements IClientController{
     constructor(
         @inject("IGetAllUsersDetailsUseCase") private _getAllUsersDetailsUseCase : IGetAllUsersDetailsUseCase,
         @inject("IUpdateProfileImageUseCase") private _updateProfileImageUseCase : IUpdateProfileImageUseCase,
-        @inject("IUpdatePersonalInformationUseCase") private _updatePersonalInformationUseCase : IUpdatePersonalInformationUseCase
+        @inject("IUpdatePersonalInformationUseCase") private _updatePersonalInformationUseCase : IUpdatePersonalInformationUseCase,
+        @inject("IGetAllEventsForClientsUseCase") private _getAllEventsForClientsUseCase : IGetAllEventsForClientsUseCase
     ){}
 
     async refreshSession(req: Request, res: Response): Promise<void> {
@@ -57,6 +59,8 @@ export class ClientController implements IClientController{
         const {id} = (req as CustomRequest).user
         const data = req.body
 
+       
+
         if(!id){
             res.status(HTTP_STATUS.NOT_FOUND)
             .json({success:false,message:ERROR_MESSAGES.INVALID_TOKEN})
@@ -71,5 +75,14 @@ export class ClientController implements IClientController{
 
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
+    }
+
+
+    async getAllEvents(req: Request, res: Response): Promise<void> {
+        
+        const events = await this._getAllEventsForClientsUseCase.execute()
+
+        res.status(HTTP_STATUS.OK)
+        .json({success:true,message:"events fetched successfully",events:events})
     }
 }

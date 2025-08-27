@@ -12,7 +12,7 @@ export interface IAddEventDTO {
     totalTicket : number,
     ticketLimit:number,
     eventLocation:string;
-    coordinates : {
+    location : {
         type:"Point";
         coordinates:number[]
     };
@@ -22,6 +22,24 @@ export interface IAddEventDTO {
 }
 
 
+type EditableFields = Pick<
+  IAddEventDTO,
+  | "title"
+  | "description"
+  | "date"
+  | "startTime"
+  | "endTime"
+  | "pricePerTicket"
+  | "totalTicket"
+  | "ticketLimit"
+  | "eventLocation"
+  | "location"
+  | "Images"
+>;
+
+
+export type IUpdateEventDTO = Partial<EditableFields>;
+
 export interface EventTableDTO{
     _id?:string,
     title:string,
@@ -29,11 +47,14 @@ export interface EventTableDTO{
     status:string,
     isActive?:boolean
     pricePerTicket:number
-    totalTicket:number
+    totalTicket:number,
+    startTime:string;
+    endTime:string;
+    date:Date
 }
 
 
-export interface IUpdateEventStatusDTO {
-    eventId: string;
-    isActive: boolean;
-}   
+// export interface IUpdateEventStatusDTO {
+//     eventId: string;
+//     isActive: boolean;
+// }   
