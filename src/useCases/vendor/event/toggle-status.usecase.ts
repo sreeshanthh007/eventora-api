@@ -4,8 +4,6 @@ import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 
-
-console.log("toglestatus usecase")
 @injectable()
 export class ToggleStatusUseCase implements IToggleStatusUseCase{
     constructor(
