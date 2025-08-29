@@ -4,7 +4,7 @@ import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-u
 import { IuserToggleStatusUseCase } from "@entities/useCaseInterfaces/admin/handle-user-toggle-status.usecase.interface";
 import { inject, injectable } from "tsyringe";
 import { Request, Response } from "express";
-import { HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
 
 @injectable()
 export class AdminClientController implements IAdminClientController {
@@ -34,7 +34,7 @@ export class AdminClientController implements IAdminClientController {
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: "users fetched successfully",
+      message: SUCCESS_MESSAGES.USERS_FETCHED_SUCCESS,
       clients: response.user,
       totalPages: response.total,
     });
@@ -46,7 +46,7 @@ export class AdminClientController implements IAdminClientController {
     if (!userId || !status) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        message: "userId and status are required",
+        message: ERROR_MESSAGES.USER_ID_AND_STATUS_REQUIRED
       });
       return;
     }
@@ -54,7 +54,7 @@ export class AdminClientController implements IAdminClientController {
     if (!["active", "blocked"].includes(status)) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        message: "Status must be either 'active' or 'blocked'",
+        message: ERROR_MESSAGES.INVALID_STATUS
       });
       return;
     }
