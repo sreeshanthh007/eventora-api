@@ -5,120 +5,128 @@ import { IEditServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/
 import { IGetAllServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/get-all-service.interface.usecase";
 import { IGetServiceByIdUseCase } from "@entities/useCaseInterfaces/vendor/service/get-service-by-id.interface.usecase";
 import { IToggleServiceStatusUseCase } from "@entities/useCaseInterfaces/vendor/service/toggle-service.interface.usecase";
-import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
+import {
+  ERROR_MESSAGES,
+  HTTP_STATUS,
+  SUCCESS_MESSAGES,
+} from "@shared/constants";
 import { Request, Response } from "express";
 import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
-import { EditServiceValidationSchema, ServiceValidationSchema } from "interfaceAdpaters/validations/service.validation";
+import {
+  EditServiceValidationSchema,
+  ServiceValidationSchema,
+} from "interfaceAdpaters/validations/service.validation";
 import { inject, injectable } from "tsyringe";
 
 
-
-
-
-
-console.log("service controllr")
 @injectable()
-export class ServiceController implements IServiceController{
+export class ServiceController implements IServiceController {
   constructor(
-    @inject("IAddServiceUseCase") private _addServiceUseCase : IAddServiceUseCase,
-    @inject("IEditServiceUseCase") private _editServiceUseCase : IEditServiceUseCase,
-    @inject("IGetAllServiceUsecase") private _getServiceUseCase : IGetAllServiceUseCase,
-    @inject("IGetServiceByIdUseCase") private _getServiceByIdUseCase :IGetServiceByIdUseCase,
-    @inject("IToggleServiceStatusUseCase") private _toggleServiceUseCase : IToggleServiceStatusUseCase
-  ){}
+    @inject("IAddServiceUseCase")
+    private _addServiceUseCase: IAddServiceUseCase,
+    @inject("IEditServiceUseCase")
+    private _editServiceUseCase: IEditServiceUseCase,
+    @inject("IGetAllServiceUsecase")
+    private _getServiceUseCase: IGetAllServiceUseCase,
+    @inject("IGetServiceByIdUseCase")
+    private _getServiceByIdUseCase: IGetServiceByIdUseCase,
+    @inject("IToggleServiceStatusUseCase")
+    private _toggleServiceUseCase: IToggleServiceStatusUseCase
+  ) {}
 
   async addService(req: Request, res: Response): Promise<void> {
-      
-    const serviceData = req.body
-    const {id} = (req as CustomRequest).user
-    const validatedData =   ServiceValidationSchema.parse(serviceData)
+    const serviceData = req.body;
+    const { id } = (req as CustomRequest).user;
+    const validatedData = ServiceValidationSchema.parse(serviceData);
 
-    const mappedData :IServiceEntity  = {
-      vendorId:id,
+    const mappedData: IServiceEntity = {
+      vendorId: id,
       ...validatedData,
-    }
+    };
 
-    await this._addServiceUseCase.execute(id,mappedData);
+    await this._addServiceUseCase.execute(id, mappedData);
 
-
-    res.status(HTTP_STATUS.OK)
-    .json({success:true,message:SUCCESS_MESSAGES.CREATED})
+    res
+      .status(HTTP_STATUS.OK)
+      .json({ success: true, message: SUCCESS_MESSAGES.CREATED });
   }
 
-
   async editService(req: Request, res: Response): Promise<void> {
-    const {id} = (req as CustomRequest).user
-    const data = req.body
-    const {serviceId} = req.params
-  
-    const validatedData = EditServiceValidationSchema.parse(data)
+    const { id } = (req as CustomRequest).user;
+    const data = req.body;
+    const { serviceId } = req.params;
 
-    await this._editServiceUseCase.execute(id,serviceId,validatedData)
+    const validatedData = EditServiceValidationSchema.parse(data);
 
-    res.status(HTTP_STATUS.OK)
-    .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
+    await this._editServiceUseCase.execute(id, serviceId, validatedData);
+
+    res
+      .status(HTTP_STATUS.OK)
+      .json({ success: true, message: SUCCESS_MESSAGES.UPDATE_SUCCESS });
   }
 
   async getAllService(req: Request, res: Response): Promise<void> {
+    const {
+      page = "1",
+      limit = "2",
+      search = "",
+    } = req.query as {
+      page?: string;
+      limit?: string;
+      search?: string;
+    };
 
-      const {
-        page="1",
-        limit="2",
-        search=""
-      } = req.query as {
-        page?:string,
-        limit?:string,
-        search?:string
-      }
+    const response = await this._getServiceUseCase.execute(
+      Number(limit),
+      search,
+      Number(page)
+    );
 
-    
-
-      const response = await this._getServiceUseCase.execute(Number(limit),search,Number(page))
-
-      res.status(HTTP_STATUS.OK)
-      .json({success:true,message:"services fetched successfully",services:response.services,total:response.total})
+    res
+      .status(HTTP_STATUS.OK)
+      .json({
+        success: true,
+        message: SUCCESS_MESSAGES.SERVICE_FETCHED_SUCCESS,
+        services: response.services,
+        total: response.total,
+      });
   }
 
   async getServiceById(req: Request, res: Response): Promise<void> {
-     
-      const {serviceId} = req.params
-    console.log("service id",serviceId)
-      if(!serviceId){
-        res.status(HTTP_STATUS.NOT_FOUND)
-        .json({success:false,message:ERROR_MESSAGES.NOT_FOUND})
-      }
+    const { serviceId } = req.params;
 
-      const service = await this._getServiceByIdUseCase.execute(serviceId)
+    if (!serviceId) {
+      res
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ success: false, message: ERROR_MESSAGES.MISSING_PARAMETERS});
+    }
 
-      res.status(HTTP_STATUS.OK)
-      .json({success:true,service})
+    const service = await this._getServiceByIdUseCase.execute(serviceId);
+
+    res.status(HTTP_STATUS.OK).json({ success: true, service });
   }
-
 
   async toggleServiceStatus(req: Request, res: Response): Promise<void> {
-      
-      const {serviceId} = req.params
-      const {status} = req.body
-      const {id} = (req as CustomRequest).user
+    const { serviceId } = req.params;
+    const { status } = req.body;
+    const { id } = (req as CustomRequest).user;
 
+    if (!serviceId || !id) {
+      res
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ success: false, message: ERROR_MESSAGES.MISSING_PARAMETERS });
+    }
 
+    if (!["active", "blocked"].includes(status)) {
+      res
+        .status(HTTP_STATUS.BAD_REQUEST)
+        .json({ success: false, message: ERROR_MESSAGES.MISSING_PARAMETERS });
+    }
 
-      if(!serviceId ||  !id){
-        res.status(HTTP_STATUS.NOT_FOUND)
-        .json({success:false,message:`service id or user id not found`})
-      }
+    await this._toggleServiceUseCase.execute(serviceId);
 
-
-      if(!["active","blocked"].includes(status)){
-        res.status(HTTP_STATUS.NOT_FOUND)
-        .json({success:false,message:"status must be active or blocked"})
-      }
-      
-      await this._toggleServiceUseCase.execute(serviceId)
-
-      res.status(HTTP_STATUS.OK)
-      .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
+    res
+      .status(HTTP_STATUS.OK)
+      .json({ success: true, message: SUCCESS_MESSAGES.UPDATE_SUCCESS });
   }
-
-
 }

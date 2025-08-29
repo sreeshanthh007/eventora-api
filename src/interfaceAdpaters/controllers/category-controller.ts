@@ -3,7 +3,6 @@ import { IAddCategoryUseCase } from "@entities/useCaseInterfaces/admin/add-categ
 import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase";
 import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase";
 import { IGetAllCategoryForServiceUseCase } from "@entities/useCaseInterfaces/get-category-for-service.interface.usecase";
-import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
@@ -24,7 +23,7 @@ export class CategoryController  implements ICategoryController{
         const {title,image} = req.body
 
         if(!title || !image){
-            res.status(HTTP_STATUS.NOT_FOUND)
+            res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
         }
 
@@ -53,7 +52,7 @@ export class CategoryController  implements ICategoryController{
         res.status(HTTP_STATUS.OK)
         .json({
         success:true,
-        message:"categpry fetched successfully",
+        message:SUCCESS_MESSAGES.CATEGORY_FETCHED_SUCCESS,
         category:response.categories,
         totalPages:response.total
         });
@@ -65,7 +64,7 @@ export class CategoryController  implements ICategoryController{
         const categories = await this._getCategoryForServiceUseCase.execute()
 
         res.status(HTTP_STATUS.OK)
-        .json({success:true,message:"category for services fetched",data:categories})
+        .json({success:true,message:SUCCESS_MESSAGES.CATEGORY_FETCHED_SUCCESS,data:categories})
 
     }
 
@@ -73,19 +72,18 @@ export class CategoryController  implements ICategoryController{
     async toogleCategory(req: Request, res: Response): Promise<void> {
         
         const {categoryId,status} = req.body
-        console.log("id and stats",categoryId,status)
+        
         
         if(!categoryId || !status){
-             throw new CustomError(
-             ERROR_MESSAGES.ID_NOT_FOUND,
-            HTTP_STATUS.NOT_FOUND
-            )
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+            return
         }
 
 
         if(!["active","blocked"].includes(status)){
-            res.status(HTTP_STATUS.NOT_FOUND)
-            .json({success:false,message:"status must be active or blocked"})
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.INVALID_STATUS})
             return
         }
 

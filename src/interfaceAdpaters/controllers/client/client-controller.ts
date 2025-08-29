@@ -25,7 +25,7 @@ export class ClientController implements IClientController{
         const {id,role} = (req as CustomRequest).user
 
         if(!id || !role){
-            res.status(HTTP_STATUS.NOT_FOUND)
+            res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.INVALID_TOKEN})
         }
 
@@ -43,7 +43,7 @@ export class ClientController implements IClientController{
         const {id,role} = (req as CustomRequest).user
 
         if(!id || !role){
-            res.status(HTTP_STATUS.NOT_FOUND)
+            res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.INVALID_TOKEN})
         }
 
@@ -62,7 +62,7 @@ export class ClientController implements IClientController{
        
 
         if(!id){
-            res.status(HTTP_STATUS.NOT_FOUND)
+            res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.INVALID_TOKEN})
         }
 
@@ -83,6 +83,6 @@ export class ClientController implements IClientController{
         const events = await this._getAllEventsForClientsUseCase.execute()
 
         res.status(HTTP_STATUS.OK)
-        .json({success:true,message:"events fetched successfully",events:events})
+        .json({success:true,message:SUCCESS_MESSAGES.EVENT_FETCHED_SUCCESS,events:events})
     }
 }

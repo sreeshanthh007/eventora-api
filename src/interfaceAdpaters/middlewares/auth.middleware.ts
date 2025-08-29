@@ -61,7 +61,7 @@ const isBlacklisted = async(token:string) :Promise<boolean> =>{
 export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     try {
         const token = extractToken(req)
-        console.log("htis is the token in verfy auth",token)
+      
         
      if (!token) {
       res
@@ -71,7 +71,7 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     }
 
     if(await isBlacklisted(token.access_token)){
-        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:"Token is Blacklisted"})
+        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:ERROR_MESSAGES.TOKEN_BLACKLISTED})
     }
  
 

@@ -25,7 +25,7 @@ export class EventController implements IEventController{
     async addEvent(req: Request, res: Response): Promise<void> {
 
         const eventData = req.body as IAddEventDTO
-        console.log("eeven dta",eventData)
+  
         const vendorId = (req as CustomRequest).user.id
 
         const roundedData : IEventEntity ={
@@ -48,7 +48,7 @@ export class EventController implements IEventController{
             const response = await this._getAllEventsUseCase.execute(Number(limit),search,Number(page))
 
             res.status(HTTP_STATUS.OK)
-            .json({success:true,message:"events fetched successfully",events:response.events,total:response.total})
+            .json({success:true,message:SUCCESS_MESSAGES.EVENT_FETCHED_SUCCESS,events:response.events,total:response.total})
     }
 
 
@@ -60,8 +60,8 @@ export class EventController implements IEventController{
         const {eventId} = req.params
 
         if(!eventId){
-            res.status(HTTP_STATUS.NOT_FOUND)
-            .json({success:false,message:ERROR_MESSAGES.ID_NOT_FOUND})
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
         }
 
         await this._toggleStatusUseCase.execute(eventId,isActive)
@@ -75,15 +75,15 @@ export class EventController implements IEventController{
 
         const {eventId} = req.params
         const data = req.body
-        console.log("datat",data)
+    
         if(!eventId){
-            res.status(HTTP_STATUS.NOT_FOUND)
-            .json({success:false,message:ERROR_MESSAGES.ID_NOT_FOUND})
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
         }
 
         if(!data){
-            res.status(HTTP_STATUS.NOT_FOUND)
-            .json({success:false,message:ERROR_MESSAGES.NOT_FOUND})
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
         }
 
         
@@ -98,8 +98,8 @@ export class EventController implements IEventController{
         const {eventId} = req.params
 
         if(!eventId){
-            res.status(HTTP_STATUS.NOT_FOUND)
-            .json({success:false,message:"event id not found"})
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
         }
 
         const events = await this._getEventsByIdUseCase.execute(eventId)

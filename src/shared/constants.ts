@@ -25,6 +25,18 @@ export enum SUCCESS_MESSAGES  {
   VERIFICATION_SUCCESS= "Verification completed successfully.",
   UPDATE_SUCCESS= "Updated successfully.",
   USER_LOGOUT_SUCCESS= "Logged out successfully",
+  CATEGORY_FETCHED_SUCCESS="Category Fetched Successfully",
+  EVENT_FETCHED_SUCCESS="Events Fetched Sucessfully",
+  SERVICE_FETCHED_SUCCESS="Services Fetched Successfully",
+  USERS_FETCHED_SUCCESS="Clients Fetched Successfully",
+  VENDOR_REJECT_SUCCESS="Rejected Successfully",
+  VENDOR_FETCHED_SUCCESS="Vendors Fetched Successfully",
+  VERIFICATION_RESEND_SUCCESS="Verification Resend Successfully",
+  REQUESTED_VENDOR_FETCHED_SUCCESS="Requested Vendors Fetched Successfully",
+  FCM_TOKEN_SAVE_SUCCESS="Token Refreshed Successfully",
+  REFRESH_TOKEN_REFRESHED_SUCCESS='Refresh Token Refreshed Successfully',
+
+
 };
 
 export enum ERROR_MESSAGES  {
@@ -53,6 +65,10 @@ export enum ERROR_MESSAGES  {
   CATEGORY_ALREADY_EXISTS="Category already exist",
   ID_NOT_FOUND="ID not found",
   MISSING_PARAMETERS="Some details are missing",
+   USER_ID_AND_STATUS_REQUIRED="UserId and status are required",
+  INVALID_STATUS="Status must be either 'active' or 'blocked",
+  TOKEN_BLACKLISTED="Token is Blacklisted"
+
 };
 
 export const VERIFICATION_MAIL_CONTENT = (otp: string) => `

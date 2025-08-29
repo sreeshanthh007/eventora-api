@@ -58,7 +58,7 @@ export class AdminVendorController implements IAdminVendorController {
     await this._rejectVendorUseCase.execute(vendorId, rejectReason);
     res
       .status(HTTP_STATUS.OK)
-      .json({ success: true, message: "rejected successfully" });
+      .json({ success: true, message: SUCCESS_MESSAGES.VENDOR_REJECT_SUCCESS});
   }
 
   async getAllVendors(req: Request, res: Response): Promise<void> {
@@ -80,7 +80,7 @@ export class AdminVendorController implements IAdminVendorController {
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: "vendors fetched successfully",
+      message: SUCCESS_MESSAGES.VENDOR_FETCHED_SUCCESS,
       vendors: response.user,
       totalPages: response.total,
     });
@@ -97,7 +97,7 @@ export class AdminVendorController implements IAdminVendorController {
       await this._resendVerificationUseCase.execute(vendorId)
 
       res.status(HTTP_STATUS.OK)
-      .json({success:true,message:"verification resend successfully"})
+      .json({success:true,message:SUCCESS_MESSAGES.VERIFICATION_RESEND_SUCCESS})
   }
 
   async getRequestedVendors(req: Request, res: Response): Promise<void> {
@@ -119,7 +119,7 @@ export class AdminVendorController implements IAdminVendorController {
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: "requested vendors fetched successfully",
+      message: SUCCESS_MESSAGES.REQUESTED_VENDOR_FETCHED_SUCCESS,
       vendors: response.vendors,
       totalPages: response.total,
     });
@@ -134,7 +134,7 @@ export class AdminVendorController implements IAdminVendorController {
     if (!vendorId || !status) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        message: "userId and status are required",
+        message: ERROR_MESSAGES.USER_ID_AND_STATUS_REQUIRED
       });
       return;
     }
@@ -142,7 +142,7 @@ export class AdminVendorController implements IAdminVendorController {
     if (!["active", "blocked"].includes(status)) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        message: "Status must be either 'active' or 'blocked'",
+        message: ERROR_MESSAGES.INVALID_STATUS
       });
     }
 

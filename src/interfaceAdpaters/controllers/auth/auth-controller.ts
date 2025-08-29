@@ -76,7 +76,9 @@ export class AuthController implements IAuthController{
        const user =  await this._loginUserUseCase.execute(validatedData)
 
         if(!user._id || !user.email || !user.role){
-            throw new Error("user id , email or role is missing")
+           res.status(HTTP_STATUS.BAD_REQUEST)
+           .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+           return
         }
 
         const userId = user._id.toString()
@@ -112,9 +114,9 @@ export class AuthController implements IAuthController{
         const user = await this._googleLoginUseCase.execute(credential,client_id,role)
 
         if(!user._id ||!user.role || !user.email){
-            throw new Error(
-                "role,client_id or email is missing"
-            )
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+            return
         }
 
         const userId = user._id.toString()
@@ -181,7 +183,7 @@ export class AuthController implements IAuthController{
             access_token_name
          );
          res.status(HTTP_STATUS.OK)
-         .json({success:true,message:"Token Refreshed Successfully",token:newToken.accessToken})
+         .json({success:true,message:SUCCESS_MESSAGES.REFRESH_TOKEN_REFRESHED_SUCCESS,token:newToken.accessToken})
      }
 
 
@@ -201,7 +203,7 @@ export class AuthController implements IAuthController{
          const {email} =  req.body
 
          if(!email){
-            res.status(HTTP_STATUS.NOT_FOUND)
+            res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.EMAIL_NOT_FOUND})
          }
 
@@ -217,7 +219,7 @@ export class AuthController implements IAuthController{
         const folder = req.query.folder
 
         if(!folder){
-            res.status(HTTP_STATUS.NOT_FOUND)
+            res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.FOLDER_NOT_FOUND})
         }
 
@@ -232,7 +234,7 @@ export class AuthController implements IAuthController{
          const {id,role} = (req as CustomRequest).user
 
          if(!id || !role){
-            res.status(HTTP_STATUS.NOT_FOUND)
+            res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.INVALID_TOKEN})
          }
 
@@ -245,19 +247,19 @@ export class AuthController implements IAuthController{
 
 
      async saveFcmToken(req: Request, res: Response): Promise<void> {
-        console.log("backnd",req.body)
+     
          const {userId,fcmToken} = req.body
-        console.log("user id and token",userId,fcmToken)
+    
          if(!userId || !fcmToken){
-            res.status(HTTP_STATUS.NOT_FOUND)
-            .json({success:false,message:"user id or fcm token is missing"})
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
             return;
          }
 
          await this._fcmTokenUseCase.execute(userId,fcmToken);
 
          res.status(HTTP_STATUS.OK)
-         .json({success:true,message:"token saved successfully"})
+         .json({success:true,message:SUCCESS_MESSAGES.FCM_TOKEN_SAVE_SUCCESS})
      }
     
 }
