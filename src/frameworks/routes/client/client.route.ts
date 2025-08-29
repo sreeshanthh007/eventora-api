@@ -48,6 +48,6 @@ export class ClientRoutes extends BaseRouter{
             authorizeRole(["client"]),
             asyncHandler(clientController.updateProfileInformation.bind(clientController))
         )
-        this.router.post("/logout",verifyAuth,asyncHandler(authController.logout.bind(authController)))
+        this.router.post("/logout",verifyAuth,authorizeRole(["client"]),asyncHandler(authController.logout.bind(authController)))
     }
 }   
