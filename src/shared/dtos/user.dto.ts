@@ -65,11 +65,18 @@ export interface CategoryDTO{
 }
 
 export interface EventDTO{
+    eventId?:string,
+    status?:string
     title:string;
     pricePerTicket:number;
-    date:Date;
     eventLocation:string;
-    images:string
+    attendiesCount?:number
+    images:string,
+ eventSchedule: {
+    date: Date;
+    startTime: string;
+    endTime: string;
+  }[];
 }
 
 export type UserDTO = AdminDTO | ClientDTO | VendorDTO

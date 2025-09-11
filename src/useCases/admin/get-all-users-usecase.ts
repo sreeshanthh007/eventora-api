@@ -31,7 +31,6 @@ export class getAllUsersUseCase implements IGetAllUsersUseCase{
         skip,
         limit
       );
-
       const mappedUsers = user.map(mapClientAndVendorEntityToTableRow)
 
 

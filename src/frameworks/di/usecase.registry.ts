@@ -123,6 +123,12 @@ import { IGetEventByIdUseCase } from "@entities/useCaseInterfaces/vendor/event/g
 import { GetEventsByIdUseCase } from "@usecases/vendor/event/get-events-by-id.usecase";
 import { IGetAllEventsForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-events.usecase.interface";
 import { GetAllEventsForClientsUseCase } from "@usecases/client/get-all-events.usecase";
+import { IUpdateEventStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/update-event-status.usecase.interface";
+import { UpdateEventStatusUseCase } from "@usecases/vendor/event/update-event-status.usecase";
+import { IGetEventDetailsUseCase } from "@entities/useCaseInterfaces/client/get-event-details.interface.usecase";
+import { GetEventDetailsUseCase } from "@usecases/client/get-event-details.usercase";
+// import { IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-events-with-filters.usercase.interface";
+// import { GetAllEventsWithFilterUseCase } from "@usecases/client/get-all-events-with-filter.usecase";
 
 export class UseCaseRegistry {
   static registerUseCases(): void {
@@ -292,6 +298,14 @@ export class UseCaseRegistry {
       useClass: GetAllEventsUseCase,
     });
 
+    // container.register<IGetAllEventsWithFilterUseCase>("IGetAllEventsWithFilterUseCase",{
+    //   useClass:GetAllEventsWithFilterUseCase
+    // });
+
+    container.register<IGetEventDetailsUseCase>("IGetEventDetailsUseCase",{
+      useClass:GetEventDetailsUseCase
+    });
+
     container.register<IHandleToggleVendorUseCase>(
       "IHandleToggleVendorUseCase",
       {
@@ -307,7 +321,7 @@ export class UseCaseRegistry {
     );
 
     container.register<IForgotUpdatePasswordUseCase>(
-      "IForgotClientUpdatePasswordUseCase",
+      "IForgotUpdatePasswordUseCase",
       {
         useClass: ForgotClientUpdatePasswordUseCase,
       }
@@ -372,6 +386,10 @@ export class UseCaseRegistry {
 
     container.register<IUpdateEventUseCase>("IUpdateEventUseCase",{
       useClass:UpdateEventUseCase
+    });
+
+    container.register<IUpdateEventStatusUseCase>("IUpdateEventStatusUseCase",{
+      useClass:UpdateEventStatusUseCase
     });
     
     container.register<IGetEventByIdUseCase>("IGetEventsByIdUseCase",{

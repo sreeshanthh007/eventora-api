@@ -22,12 +22,14 @@ export class AdminRotes extends BaseRouter{
        this.router.get(
       "/users",
       verifyAuth,
+      authorizeRole(["admin"]),
       asyncHandler(adminClientController.getAllClients.bind(adminClientController))
     );
 
     this.router.get(
             "/vendors",
             verifyAuth,
+            authorizeRole(["admin"]),
             asyncHandler(adminVendorController.getAllVendors.bind(adminVendorController))
         )
 
@@ -55,18 +57,21 @@ export class AdminRotes extends BaseRouter{
     this.router.patch(
         "/user-status",
         verifyAuth,
+        authorizeRole(["admin"]),
             asyncHandler(adminClientController.updateClientAccountStatus.bind(adminClientController))
     );
 
     this.router.patch(
         "/vendor-status",
         verifyAuth,
+        authorizeRole(["admin"]),
         asyncHandler(adminVendorController.udpateVendorAccountStatus.bind(adminVendorController))
     );
 
     this.router.patch(
         "/category-status",
         verifyAuth,
+        authorizeRole(["admin"]),
         asyncHandler(categoryController.toogleCategory.bind(categoryController))
     )
 
@@ -75,7 +80,7 @@ export class AdminRotes extends BaseRouter{
         "/categories",
         verifyAuth,
         authorizeRole(["admin"]),
-        asyncHandler(categoryController.getAllCategory.bind(categoryController))
+        asyncHandler(adminController.getAllCategory.bind(adminController))
     )
 
         this.router.post(

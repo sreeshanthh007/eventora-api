@@ -1,11 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GOOGLE_LOGIN_SUCCESS_MESSAGE = exports.VERIFICATION_MAIL_CONTENT = exports.ERROR_MESSAGES = exports.SUCCESS_MESSAGES = exports.HTTP_STATUS = exports.ROLES = void 0;
+exports.GOOGLE_LOGIN_SUCCESS_MESSAGE = exports.VERIFICATION_MAIL_CONTENT = exports.EVENT_STATUS_ERROR = exports.ERROR_MESSAGES = exports.SUCCESS_MESSAGES = exports.HTTP_STATUS = exports.vendorStatus = exports.ROLES = void 0;
 exports.ROLES = {
     ADMIN: "admin",
     CLIENT: "client",
     VENDOR: "vendor",
 };
+var vendorStatus;
+(function (vendorStatus) {
+    vendorStatus["APPROVED"] = "approved";
+    vendorStatus["REJECTED"] = "rejected";
+})(vendorStatus || (exports.vendorStatus = vendorStatus = {}));
 var HTTP_STATUS;
 (function (HTTP_STATUS) {
     HTTP_STATUS[HTTP_STATUS["OK"] = 200] = "OK";
@@ -27,6 +32,16 @@ var SUCCESS_MESSAGES;
     SUCCESS_MESSAGES["VERIFICATION_SUCCESS"] = "Verification completed successfully.";
     SUCCESS_MESSAGES["UPDATE_SUCCESS"] = "Updated successfully.";
     SUCCESS_MESSAGES["USER_LOGOUT_SUCCESS"] = "Logged out successfully";
+    SUCCESS_MESSAGES["CATEGORY_FETCHED_SUCCESS"] = "Category Fetched Successfully";
+    SUCCESS_MESSAGES["EVENT_FETCHED_SUCCESS"] = "Events Fetched Sucessfully";
+    SUCCESS_MESSAGES["SERVICE_FETCHED_SUCCESS"] = "Services Fetched Successfully";
+    SUCCESS_MESSAGES["USERS_FETCHED_SUCCESS"] = "Clients Fetched Successfully";
+    SUCCESS_MESSAGES["VENDOR_REJECT_SUCCESS"] = "Rejected Successfully";
+    SUCCESS_MESSAGES["VENDOR_FETCHED_SUCCESS"] = "Vendors Fetched Successfully";
+    SUCCESS_MESSAGES["VERIFICATION_RESEND_SUCCESS"] = "Verification Resend Successfully";
+    SUCCESS_MESSAGES["REQUESTED_VENDOR_FETCHED_SUCCESS"] = "Requested Vendors Fetched Successfully";
+    SUCCESS_MESSAGES["FCM_TOKEN_SAVE_SUCCESS"] = "Token Refreshed Successfully";
+    SUCCESS_MESSAGES["REFRESH_TOKEN_REFRESHED_SUCCESS"] = "Refresh Token Refreshed Successfully";
 })(SUCCESS_MESSAGES || (exports.SUCCESS_MESSAGES = SUCCESS_MESSAGES = {}));
 ;
 var ERROR_MESSAGES;
@@ -55,8 +70,14 @@ var ERROR_MESSAGES;
     ERROR_MESSAGES["CATEGORY_ALREADY_EXISTS"] = "Category already exist";
     ERROR_MESSAGES["ID_NOT_FOUND"] = "ID not found";
     ERROR_MESSAGES["MISSING_PARAMETERS"] = "Some details are missing";
+    ERROR_MESSAGES["USER_ID_AND_STATUS_REQUIRED"] = "UserId and status are required";
+    ERROR_MESSAGES["INVALID_STATUS"] = "Status must be either 'active' or 'blocked";
+    ERROR_MESSAGES["INVALID_EVENT_STATUS"] = "Invalid Event Status.";
+    ERROR_MESSAGES["TOKEN_BLACKLISTED"] = "Token is Blacklisted";
 })(ERROR_MESSAGES || (exports.ERROR_MESSAGES = ERROR_MESSAGES = {}));
 ;
+const EVENT_STATUS_ERROR = (currentStatus, newStatus) => `cannot change from ${currentStatus} to ${newStatus}`;
+exports.EVENT_STATUS_ERROR = EVENT_STATUS_ERROR;
 const VERIFICATION_MAIL_CONTENT = (otp) => `
   <div style="font-family: Arial, sans-serif; color: #333;">
     <h2 style="color: #0a74da;">Welcome to Eventora!</h2>

@@ -26,8 +26,9 @@ const constants_1 = require("@shared/constants");
 const category_validation_1 = require("interfaceAdpaters/validations/category-validation");
 const tsyringe_1 = require("tsyringe");
 let AdminController = class AdminController {
-    constructor(_editCategoryUseCase) {
+    constructor(_editCategoryUseCase, _getAllCategoryUseCase) {
         this._editCategoryUseCase = _editCategoryUseCase;
+        this._getAllCategoryUseCase = _getAllCategoryUseCase;
     }
     editCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -39,10 +40,19 @@ let AdminController = class AdminController {
                 .json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
         });
     }
+    getAllCategory(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { page = "1", limit = "5", search = "" } = req.query;
+            const response = yield this._getAllCategoryUseCase.execute(Number(limit), search, Number(page));
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, message: "categories fetched successfully", categories: response.categories, total: response.total });
+        });
+    }
 };
 exports.AdminController = AdminController;
 exports.AdminController = AdminController = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("IEditCategoryUseCase")),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, tsyringe_1.inject)("IGetAllCategoryUseCase")),
+    __metadata("design:paramtypes", [Object, Object])
 ], AdminController);

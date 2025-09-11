@@ -1,3 +1,4 @@
+import { INotificationEntity } from "@entities/models/notification.entity";
 
 
 export interface INotificationRepository {
@@ -8,4 +9,6 @@ export interface INotificationRepository {
     message: string;
     isRead?: boolean;
   }): Promise<void>;
+
+  findNotificationsById(userId:string) : Promise<INotificationEntity[] | null>
 }

@@ -22,7 +22,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryController = void 0;
-const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
 let CategoryController = class CategoryController {
@@ -36,7 +35,7 @@ let CategoryController = class CategoryController {
         return __awaiter(this, void 0, void 0, function* () {
             const { title, image } = req.body;
             if (!title || !image) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
                     .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
             }
             yield this._addCategoryUseCase.execute(title, image);
@@ -51,7 +50,7 @@ let CategoryController = class CategoryController {
             res.status(constants_1.HTTP_STATUS.OK)
                 .json({
                 success: true,
-                message: "categpry fetched successfully",
+                message: constants_1.SUCCESS_MESSAGES.CATEGORY_FETCHED_SUCCESS,
                 category: response.categories,
                 totalPages: response.total
             });
@@ -61,19 +60,20 @@ let CategoryController = class CategoryController {
         return __awaiter(this, void 0, void 0, function* () {
             const categories = yield this._getCategoryForServiceUseCase.execute();
             res.status(constants_1.HTTP_STATUS.OK)
-                .json({ success: true, message: "category for services fetched", data: categories });
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.CATEGORY_FETCHED_SUCCESS, data: categories });
         });
     }
     toogleCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { categoryId, status } = req.body;
-            console.log("id and stats", categoryId, status);
             if (!categoryId || !status) {
-                throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.ID_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
+                return;
             }
             if (!["active", "blocked"].includes(status)) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
-                    .json({ success: false, message: "status must be active or blocked" });
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.INVALID_STATUS });
                 return;
             }
             yield this._toggleCategoryUseCase.execute(categoryId);

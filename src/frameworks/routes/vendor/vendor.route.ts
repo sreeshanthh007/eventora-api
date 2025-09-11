@@ -117,6 +117,13 @@ export class VendorRoutes extends BaseRouter{
             verifyAuth,
             authorizeRole(["vendor"]),
             asyncHandler(eventController.getEventById.bind(eventController))
+        );
+
+        this.router.patch(
+            "/update-event-status/:eventId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(eventController.updateEventStatus.bind(eventController))
         )
 
         this.router.patch(

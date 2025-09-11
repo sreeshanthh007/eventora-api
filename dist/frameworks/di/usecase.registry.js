@@ -65,6 +65,10 @@ const toggle_service_status_usecase_1 = require("@usecases/vendor/service/toggle
 const update_event_usecase_1 = require("@usecases/vendor/event/update-event-usecase");
 const get_events_by_id_usecase_1 = require("@usecases/vendor/event/get-events-by-id.usecase");
 const get_all_events_usecase_2 = require("@usecases/client/get-all-events.usecase");
+const update_event_status_usecase_1 = require("@usecases/vendor/event/update-event-status.usecase");
+const get_event_details_usercase_1 = require("@usecases/client/get-event-details.usercase");
+// import { IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-events-with-filters.usercase.interface";
+// import { GetAllEventsWithFilterUseCase } from "@usecases/client/get-all-events-with-filter.usecase";
 class UseCaseRegistry {
     static registerUseCases() {
         tsyringe_1.container.register("IRegisterUseCase", {
@@ -181,13 +185,19 @@ class UseCaseRegistry {
         tsyringe_1.container.register("IGetAllEventsUseCase", {
             useClass: get_all_events_usecase_1.GetAllEventsUseCase,
         });
+        // container.register<IGetAllEventsWithFilterUseCase>("IGetAllEventsWithFilterUseCase",{
+        //   useClass:GetAllEventsWithFilterUseCase
+        // });
+        tsyringe_1.container.register("IGetEventDetailsUseCase", {
+            useClass: get_event_details_usercase_1.GetEventDetailsUseCase
+        });
         tsyringe_1.container.register("IHandleToggleVendorUseCase", {
             useClass: handle_toggle_vendor_usecase_1.HandleToggleVendorStatusUseCase,
         });
         tsyringe_1.container.register("IHandleToggleCategoryUseCase", {
             useClass: handle_toggle_category_usecase_1.HandleToggleCategoryUseCase,
         });
-        tsyringe_1.container.register("IForgotClientUpdatePasswordUseCase", {
+        tsyringe_1.container.register("IForgotUpdatePasswordUseCase", {
             useClass: clientUpdatePasswordSUseCase_1.ForgotClientUpdatePasswordUseCase,
         });
         tsyringe_1.container.register("ForgotVendorUpdatePasswordUseCase", {
@@ -222,6 +232,9 @@ class UseCaseRegistry {
         });
         tsyringe_1.container.register("IUpdateEventUseCase", {
             useClass: update_event_usecase_1.UpdateEventUseCase
+        });
+        tsyringe_1.container.register("IUpdateEventStatusUseCase", {
+            useClass: update_event_status_usecase_1.UpdateEventStatusUseCase
         });
         tsyringe_1.container.register("IGetEventsByIdUseCase", {
             useClass: get_events_by_id_usecase_1.GetEventsByIdUseCase

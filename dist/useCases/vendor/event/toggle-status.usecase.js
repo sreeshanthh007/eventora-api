@@ -25,7 +25,6 @@ exports.ToggleStatusUseCase = void 0;
 const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
-console.log("toglestatus usecase");
 let ToggleStatusUseCase = class ToggleStatusUseCase {
     constructor(_eventRepo) {
         this._eventRepo = _eventRepo;

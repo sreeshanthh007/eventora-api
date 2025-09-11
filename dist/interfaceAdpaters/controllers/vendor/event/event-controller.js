@@ -25,17 +25,18 @@ exports.EventController = void 0;
 const constants_1 = require("@shared/constants");
 const tsyringe_1 = require("tsyringe");
 let EventController = class EventController {
-    constructor(_addEventUseCase, _getAllEventsUseCase, _toggleStatusUseCase, _updateEventUseCase, _getEventsByIdUseCase) {
+    constructor(_addEventUseCase, _getAllEventsUseCase, _toggleStatusUseCase, _updateEventUseCase, _getEventsByIdUseCase, _updateEventStatusUseCase) {
         this._addEventUseCase = _addEventUseCase;
         this._getAllEventsUseCase = _getAllEventsUseCase;
         this._toggleStatusUseCase = _toggleStatusUseCase;
         this._updateEventUseCase = _updateEventUseCase;
         this._getEventsByIdUseCase = _getEventsByIdUseCase;
+        this._updateEventStatusUseCase = _updateEventStatusUseCase;
     }
     addEvent(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const eventData = req.body;
-            console.log("eeven dta", eventData);
+            console.log("event data", eventData);
             const vendorId = req.user.id;
             const roundedData = Object.assign(Object.assign({}, eventData), { hostId: vendorId });
             yield this._addEventUseCase.execute(roundedData, vendorId);
@@ -48,15 +49,16 @@ let EventController = class EventController {
             const { limit = "6", page = "1", search = "" } = req.query;
             const response = yield this._getAllEventsUseCase.execute(Number(limit), search, Number(page));
             res.status(constants_1.HTTP_STATUS.OK)
-                .json({ success: true, message: "events fetched successfully", events: response.events, total: response.total });
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.EVENT_FETCHED_SUCCESS, events: response.events, total: response.total });
         });
     }
     toggeleStatus(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { eventId, isActive } = req.body;
+            const { isActive } = req.body;
+            const { eventId } = req.params;
             if (!eventId) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
-                    .json({ success: false, message: constants_1.ERROR_MESSAGES.ID_NOT_FOUND });
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
             }
             yield this._toggleStatusUseCase.execute(eventId, isActive);
             res.status(constants_1.HTTP_STATUS.OK)
@@ -67,16 +69,32 @@ let EventController = class EventController {
         return __awaiter(this, void 0, void 0, function* () {
             const { eventId } = req.params;
             const data = req.body;
-            console.log("datat", data);
             if (!eventId) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
-                    .json({ success: false, message: constants_1.ERROR_MESSAGES.ID_NOT_FOUND });
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
             }
             if (!data) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
-                    .json({ success: false, message: constants_1.ERROR_MESSAGES.NOT_FOUND });
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
             }
             yield this._updateEventUseCase.execute(eventId, data);
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
+        });
+    }
+    updateEventStatus(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { eventId } = req.params;
+            const { eventStatus } = req.body;
+            if (!eventId || !eventStatus) {
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
+            }
+            if (!["upcoming", "ongoing", "cancelled", "completed"].includes(eventStatus)) {
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.INVALID_EVENT_STATUS });
+            }
+            yield this._updateEventStatusUseCase.execute(eventId, eventStatus);
             res.status(constants_1.HTTP_STATUS.OK)
                 .json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
         });
@@ -85,8 +103,8 @@ let EventController = class EventController {
         return __awaiter(this, void 0, void 0, function* () {
             const { eventId } = req.params;
             if (!eventId) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
-                    .json({ success: false, message: "event id not found" });
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
             }
             const events = yield this._getEventsByIdUseCase.execute(eventId);
             res.status(constants_1.HTTP_STATUS.OK)
@@ -102,5 +120,6 @@ exports.EventController = EventController = __decorate([
     __param(2, (0, tsyringe_1.inject)("IToggleStatusUseCase")),
     __param(3, (0, tsyringe_1.inject)("IUpdateEventUseCase")),
     __param(4, (0, tsyringe_1.inject)("IGetEventsByIdUseCase")),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
+    __param(5, (0, tsyringe_1.inject)("IUpdateEventStatusUseCase")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object])
 ], EventController);

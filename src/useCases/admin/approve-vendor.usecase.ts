@@ -1,11 +1,11 @@
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
-// import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve-vendor.usecase";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { SocketService } from "interfaceAdpaters/services/socket.service";
 import { inject, injectable } from "tsyringe";
+import { vendorStatus } from "@shared/constants";
 
 
 
@@ -25,7 +25,7 @@ import { inject, injectable } from "tsyringe";
             }
 
 
-            await this.vendorRepo.findByIdAndUpdateVendorStatus(vendorId,"approved")
+            await this.vendorRepo.findByIdAndUpdateVendorStatus(vendorId,vendorStatus.APPROVED)
 
             const io = SocketService.getIO()
 

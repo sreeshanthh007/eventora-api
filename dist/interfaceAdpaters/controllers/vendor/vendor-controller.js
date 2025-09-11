@@ -39,6 +39,10 @@ let VendorController = class VendorController {
                 .json({ success: true, message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS });
         });
     }
+    getAllNotifications(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
 };
 exports.VendorController = VendorController;
 exports.VendorController = VendorController = __decorate([

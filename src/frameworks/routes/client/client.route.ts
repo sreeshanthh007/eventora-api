@@ -1,6 +1,6 @@
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { authController,blockstatusMiddleware,clientController,fetchCategoryController } from "@frameworks/di/resolver";
+import { authController,blockstatusMiddleware,clientController } from "@frameworks/di/resolver";
 import { authorizeRole, decodeToken , verifyAuth} from "interfaceAdpaters/middlewares/auth.middleware";
 import { RequestHandler } from "express";
 
@@ -16,12 +16,22 @@ export class ClientRoutes extends BaseRouter{
 
         this.router.get(
             "/all-categories",
-            asyncHandler(fetchCategoryController.getAllCategories.bind(fetchCategoryController))
+            asyncHandler(clientController.getAllCategories.bind(clientController))
         );
 
         this.router.get(
             "/all-events",
             asyncHandler(clientController.getAllEvents.bind(clientController))
+        );
+
+        // this.router.get(
+        //     "/eventPage",
+        //     asyncHandler(clientController.getAllEventsWithFilters.bind(clientController))
+        // );
+
+        this.router.get(
+            "/event-details/:eventId",
+            asyncHandler(clientController.getEventDetails.bind(clientController))
         );
 
         this.router.get(
@@ -48,6 +58,6 @@ export class ClientRoutes extends BaseRouter{
             authorizeRole(["client"]),
             asyncHandler(clientController.updateProfileInformation.bind(clientController))
         )
-        this.router.post("/logout",verifyAuth,asyncHandler(authController.logout.bind(authController)))
+        this.router.post("/logout",verifyAuth,authorizeRole(["client"]),asyncHandler(authController.logout.bind(authController)))
     }
 }   

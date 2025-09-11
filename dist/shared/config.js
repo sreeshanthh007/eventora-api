@@ -41,6 +41,9 @@ exports.config = {
         apiKey: process.env.CLOUDINARY_API_KEY,
         apiSecret: process.env.CLOUDINARY_API_SECRET,
     },
+    stripe: {
+        secretKey: process.env.STRIPE_SECRECT_KEY
+    },
     // ============FOR FIREBASE====================
     serviceAccount: {
         type: process.env.FIREBASE_TYPE,
