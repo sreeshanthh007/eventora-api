@@ -2,7 +2,7 @@
 import { inject , injectable } from "tsyringe";
 import { IRegisterUseCase } from "@entities/useCaseInterfaces/auth/register-usecase.interface";
 import { UserDTO } from "@shared/dtos/user.dto";
-import { IRegisterStrategy } from "./interfaces/register-strategy.interface";
+import { IRegisterStrategy } from "./register-strategies/register-strategy.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { HTTP_STATUS } from "@shared/constants";
 
@@ -24,7 +24,7 @@ export class RegisterUseCase implements IRegisterUseCase {
 
     async execute(user:UserDTO) : Promise<void>  {
         const strategies = this.strategies[user.role]
-        
+        console.log("user in register",user)
         if(!strategies){
             throw new CustomError(
                 "Invalid user role",

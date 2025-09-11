@@ -1,7 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
 import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase";
-import { PaginatedUsers } from "@entities/models/paginatedUsers.entity";
+import { PaginatedUsers } from "interfaceAdpaters/models/paginatedUsers";
+import { mapClientAndVendorEntityToTableRow } from "interfaceAdpaters/mappers/ClientMapper";
+import { FilterQuery } from "mongoose";
+import { IClientEntity } from "@entities/models/client.entity";
 @injectable()
 export class getAllUsersUseCase implements IGetAllUsersUseCase{
     constructor(
@@ -10,7 +13,8 @@ export class getAllUsersUseCase implements IGetAllUsersUseCase{
 
     async  execute(limit: number, searchTerm: string, current: number): Promise<PaginatedUsers>  {
 
-         let filter: any = {};
+         const filter: FilterQuery<IClientEntity> = {};
+      
             if (searchTerm) {
       filter.$or = [
         { name: { $regex: searchTerm, $options: "i" } },
@@ -27,9 +31,11 @@ export class getAllUsersUseCase implements IGetAllUsersUseCase{
         skip,
         limit
       );
+      const mappedUsers = user.map(mapClientAndVendorEntityToTableRow)
+
 
       const response: PaginatedUsers = {
-        user,
+        user:mappedUsers,
         total: Math.ceil(total / limit),
       };
 

@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginSchema = void 0;
 const zod_1 = require("zod");
-const email_validation_1 = require("@shared/validations/email-validation");
-const password_validation_1 = require("@shared/validations/password-validation");
+const email_validation_1 = require("interfaceAdpaters/validations/email-validation");
+const password_validation_1 = require("interfaceAdpaters/validations/password-validation");
 exports.loginSchema = zod_1.z.object({
     email: zod_1.z
         .string()

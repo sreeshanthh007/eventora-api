@@ -4,25 +4,23 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application} from "express";
 import { AuthRoutes } from "../../frameworks/routes/auth/auth.route";
 import { ClientRoutes } from "@frameworks/routes/client/client.route";
 import { config } from "@shared/config";
-import { MongoConnect } from "@frameworks/database/Mongodb/mongoConnect";
-import { injectedLogger , injectedLoggerMiddleWare , errorMiddleware } from "@frameworks/di/resolver";
+import { errorMiddleware } from "@frameworks/di/resolver";
 import { AdminRotes } from "@frameworks/routes/admin/admin.route";
 import { VendorRoutes } from "@frameworks/routes/vendor/vendor.route";
-const connectDB = new MongoConnect()
+import { CloudinaryRoutes } from "@frameworks/routes/common/cloudinaryRoutes";
 
 export class ExpressServer {
   private _app: Application;
 
   constructor() {
-    
     this._app = express();
-
     this.configureMiddlewares();
     this.configureRoutes();
+    this.configureErrorHandlingMiddleware();
   }
 
   private configureMiddlewares(): void {
@@ -50,33 +48,21 @@ export class ExpressServer {
 
   private configureRoutes(): void {
     console.log("✅ Mounting /api/auth route...");
-    this._app.use("/api/auth", new AuthRoutes().router);
+      this._app.use("/api_v1/auth", new AuthRoutes().router);
     console.log("✅ Mounting /api/client route...");
-    this._app.use("/api/client",new ClientRoutes().router);
+    this._app.use("/api_v1/_cl", new ClientRoutes().router);
     
-    this._app.use("/api/admin",new AdminRotes().router);
-
-  
-    this._app.use("/api/vendor",new VendorRoutes().router)
-    console.log("provider mounted successfully")
+    this._app.use("/api_v1/_ad", new AdminRotes().router);
+    this._app.use("/api_v1/_ve", new VendorRoutes().router);
+    this._app.use("/api/cloudinary",new CloudinaryRoutes().router)
+    console.log("Routes mounted successfully")
   }
 
-  public configureErrorHandlingMiddleware ():void{
+  private configureErrorHandlingMiddleware(): void {
     this._app.use(errorMiddleware.handleError.bind(errorMiddleware))
   }
 
   public getApp(): Application {
-    // console.log('jashdfjaslkdf')
     return this._app;
   }
-  public listen(){
-    this._app.listen(3000,()=>console.log('server listening'))
-    connectDB.connectDB()
-    this.configureErrorHandlingMiddleware()
-  }
-
- 
 }
-
-const app = new ExpressServer()
-app.listen()

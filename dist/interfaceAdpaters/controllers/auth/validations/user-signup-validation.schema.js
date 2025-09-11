@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userSchema = void 0;
 const zod_1 = require("zod");
-const email_validation_1 = require("@shared/validations/email-validation");
-const password_validation_1 = require("@shared/validations/password-validation");
-const name_validation_1 = require("@shared/validations/name-validation");
-const phone_validation_1 = require("@shared/validations/phone-validation");
+const email_validation_1 = require("interfaceAdpaters/validations/email-validation");
+const password_validation_1 = require("interfaceAdpaters/validations/password-validation");
+const name_validation_1 = require("interfaceAdpaters/validations/name-validation");
+const phone_validation_1 = require("interfaceAdpaters/validations/phone-validation");
 const adminSchema = zod_1.z.object({
     email: zod_1.z
         .string()
@@ -29,7 +29,9 @@ const vendorSchema = zod_1.z.object({
         .regex(email_validation_1.emailRegex, { message: "Invalid email address" }),
     phone: phone_validation_1.phoneSchema,
     password: password_validation_1.passwordSchema,
-    role: zod_1.z.literal("vendor")
+    role: zod_1.z.literal("vendor"),
+    idProof: zod_1.z
+        .string()
 });
 exports.userSchema = {
     admin: adminSchema,

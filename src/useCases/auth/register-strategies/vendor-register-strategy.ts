@@ -23,12 +23,13 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
             if(existingVendor){
                 throw new CustomError(
                     ERROR_MESSAGES.EMAIL_EXISTS,
-                    HTTP_STATUS.CONFLICT
+                    HTTP_STATUS.CONFLICT    
                 )
             }
 
-            const {name,email,phone,password,} = user as VendorDTO
-
+            const {name,email,phone,password,idProof} = user as VendorDTO
+       
+            
             let hashedPassword = null
 
             if(password){
@@ -44,6 +45,7 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
                 phone,
                 password:hashedPassword ?? "",
                 vendorId,
+                idProof:idProof,
                 role:"vendor" 
             });
 

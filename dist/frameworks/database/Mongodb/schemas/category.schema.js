@@ -4,8 +4,9 @@ exports.CategorySchema = void 0;
 const mongoose_1 = require("mongoose");
 exports.CategorySchema = new mongoose_1.Schema({
     categoryId: { type: String, required: true, unique: true },
-    status: { type: Boolean, default: true },
-    title: { type: String, required: true }
+    status: { type: String, default: "active" },
+    title: { type: String, required: true },
+    image: { type: String, required: true }
 }, {
     timestamps: true
 });

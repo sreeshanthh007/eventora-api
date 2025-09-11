@@ -25,27 +25,26 @@ exports.ForgotPasswordController = void 0;
 const tsyringe_1 = require("tsyringe");
 const constants_1 = require("@shared/constants");
 let ForgotPasswordController = class ForgotPasswordController {
-    constructor(forgotUpdatePassword) {
-        this.forgotUpdatePassword = forgotUpdatePassword;
+    constructor(forgotUpdatePasswordUseCase) {
+        this.forgotUpdatePasswordUseCase = forgotUpdatePasswordUseCase;
     }
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { email, password } = req.body;
-                yield this.forgotUpdatePassword.update(email, password);
-                res.status(constants_1.HTTP_STATUS.OK).json({
-                    message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS,
-                });
+            const { email, password, role } = req.body;
+            if (!email || !password || !role) {
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
             }
-            catch (error) {
-                res.status(constants_1.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: constants_1.ERROR_MESSAGES.SERVER_ERROR });
-            }
+            yield this.forgotUpdatePasswordUseCase.update(email, password, role);
+            res.status(constants_1.HTTP_STATUS.OK).json({
+                message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS,
+            });
         });
     }
 };
 exports.ForgotPasswordController = ForgotPasswordController;
 exports.ForgotPasswordController = ForgotPasswordController = __decorate([
     (0, tsyringe_1.injectable)(),
-    __param(0, (0, tsyringe_1.inject)("IForgotClientUpdatePasswordUseCase")),
+    __param(0, (0, tsyringe_1.inject)("IForgotUpdatePasswordUseCase")),
     __metadata("design:paramtypes", [Object])
 ], ForgotPasswordController);

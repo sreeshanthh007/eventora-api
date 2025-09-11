@@ -4,14 +4,16 @@ import { IForgotPasswordController } from "@entities/controllerInterfaces/auth/f
 import { Request, Response } from "express";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
-import { sendForgotPasswordOtp } from "@usecases/sent-forgot.password-otp.usecase";
+import { sendForgotPasswordOtp } from "@usecases/auth/sent-forgot.password-otp.usecase";
 import { ClientExistService } from "interfaceAdpaters/services/client/clientExist-service";
+import { VendorExistService } from "interfaceAdpaters/services/vendor/vendorExist-service";
 
 @injectable()
 export class ForgotOtpController implements IForgotPasswordController {
     constructor(
         @inject("ISendOTPForPasswordUseCase") private sendOTPForPassword : sendForgotPasswordOtp,
-        @inject("IClientExistService") private clientExistService : ClientExistService
+        @inject("IClientExistService") private clientExistService : ClientExistService,
+        @inject("IVendorExistService") private vendorExistService : VendorExistService
     ){}
 
 

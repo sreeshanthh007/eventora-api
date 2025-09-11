@@ -15,20 +15,24 @@ import { IVendorModel } from "../models/vendor.model";
             password:{type:String},
 
             role:{type:String,enum:ROLES,required:true,default:"vendor"},
-
-            category:{type:Schema.Types.ObjectId,ref:"Category",default:null},
     
             profilePicture:{type:String},
 
             phone:{type:String},
 
-            bio:{type:String},
+            about:{type:String},
+
+            idProof:{type:String,required:true},
 
             place:{type:String},
 
-            status:{type:String,default:"active"},
+            fcmToken:{type:String},
             
+            rejectionReason:{type:String,required:false},
 
+            status:{type:String,default:"active"},
+
+            vendorStatus:{type:String,enum:["pending","approved","rejected"],default:"pending"},
         },
         {
             timestamps:true

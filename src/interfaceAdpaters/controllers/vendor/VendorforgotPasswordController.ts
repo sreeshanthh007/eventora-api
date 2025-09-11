@@ -16,16 +16,13 @@ export class VendorForgotPassword implements IForgotPasswordController{
 
     async handle(req: Request, res: Response): Promise<void> {
         const {email,password} = req.body
-        console.log("email adn pass",email,password)
-        try {
+      
+        
             await this.vendorUseCase.update(email,password)
 
         res.status(HTTP_STATUS.OK).json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS});
         
-        } catch (error) {
+    
          res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message:ERROR_MESSAGES.SERVER_ERROR})
-
-        }
-        
     }
 }

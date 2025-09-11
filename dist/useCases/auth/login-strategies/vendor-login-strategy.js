@@ -25,6 +25,7 @@ exports.VendorLoginStrategy = void 0;
 const tsyringe_1 = require("tsyringe");
 const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
+const VendorMapper_1 = require("@mappers/VendorMapper");
 let VendorLoginStrategy = class VendorLoginStrategy {
     constructor(passwordBcrypt, vendorRepository) {
         this.passwordBcrypt = passwordBcrypt;
@@ -45,7 +46,7 @@ let VendorLoginStrategy = class VendorLoginStrategy {
                     throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.INVALID_CREDENTIALS, constants_1.HTTP_STATUS.BAD_REQUEST);
                 }
             }
-            return vendor;
+            return (0, VendorMapper_1.toVendorResponse)(vendor);
         });
     }
 };

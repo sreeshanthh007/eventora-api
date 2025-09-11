@@ -34,6 +34,7 @@ let ForgotVendorOTPController = class ForgotVendorOTPController {
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email } = req.body;
+            console.log("email inf forgotvendorotpcntroller", email);
             const exist = yield this.vendorExistService.emailExist(email);
             if (!exist) {
                 throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.EMAIL_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);

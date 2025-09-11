@@ -34,6 +34,7 @@ let loginUserController = class loginUserController {
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
+            console.log("from vendor login", data);
             const validatedData = user_login_validation_schema_1.loginSchema.parse(data);
             if (!validatedData) {
                 res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
@@ -54,12 +55,7 @@ let loginUserController = class loginUserController {
             res.status(constants_1.HTTP_STATUS.OK).json({
                 success: true,
                 message: constants_1.SUCCESS_MESSAGES.LOGIN_SUCCESS,
-                user: {
-                    id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role
-                },
+                user,
                 accessToken: token.accessToken,
                 refreshToken: token.refreshToken
             });

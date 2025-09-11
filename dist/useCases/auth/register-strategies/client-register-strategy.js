@@ -33,6 +33,7 @@ let CLientRegisterStrategy = class CLientRegisterStrategy {
     }
     register(user) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("userr in register", user);
             if (user.role == "client") {
                 const existingCLient = yield this.clientRepository.findByEmail(user.email);
                 if (existingCLient) {
@@ -45,7 +46,7 @@ let CLientRegisterStrategy = class CLientRegisterStrategy {
                 }
                 const clientId = (0, randomid_bcrypt_1.generateRandomUUID)();
                 const client = yield this.clientRepository.save({
-                    name,
+                    name: name,
                     email,
                     phone,
                     password: hashedPassword || "",

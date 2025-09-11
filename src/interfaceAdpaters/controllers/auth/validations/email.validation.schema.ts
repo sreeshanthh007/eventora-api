@@ -1,7 +1,7 @@
 
 import {z} from "zod"
 
-import { emailRegex } from "@shared/validations/email-validation"
+import { emailRegex } from "interfaceAdpaters/validations/email-validation"
 
 export const emailVerifySchema = z.object({
     email:z

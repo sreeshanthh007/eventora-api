@@ -32,8 +32,9 @@ let VerifyOTPController = class VerifyOTPController {
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, otp } = req.body;
+            console.log(email, otp);
             const validatedData = email_validation_schema_1.emailVerifySchema.parse({ email, otp });
-            yield this.VerifyOTPUseCase.execute(validatedData);
+            yield this.VerifyOTPUseCase.execute(validatedData.email, validatedData.otp);
             res.status(constants_1.HTTP_STATUS.OK).json({
                 success: true,
                 message: constants_1.SUCCESS_MESSAGES.VERIFICATION_SUCCESS

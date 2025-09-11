@@ -9,10 +9,18 @@ import { AdminRepository } from "interfaceAdpaters/repositories/admin/admin.repo
 
 import { IRefreshTokenRepository } from "@entities/repositoryInterfaces/auth/refresh-token-repository.interface";
 import { refreshTokenRepository } from "interfaceAdpaters/repositories/auth/refresh-token.repository";
-import { IOtpRepository } from "@entities/repositoryInterfaces/auth/otp-repository.interface";
-import { OTPRepository } from "interfaceAdpaters/repositories/auth/otp.repository";
 import { IRedisTokenRepository } from "@entities/repositoryInterfaces/redis/redis-token-repository.interface";
-import { RedisTokenRepository } from "interfaceAdpaters/repositories/redis/redisRepository";
+import { RedisTokenRepository } from "interfaceAdpaters/repositories/redis/redisTokenRepository";
+import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
+import { CategoryRepository } from "interfaceAdpaters/repositories/common/category.repository";
+import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
+import { EventRepository } from "interfaceAdpaters/repositories/event/event.repository.";
+import { OtpCacheRepository } from "interfaceAdpaters/repositories/redis/OtpCacheRepository";
+import { IOtpCacheRepository } from "@entities/repositoryInterfaces/redis/redis-otp-cache-repository";
+import { INotificationRepository } from "@entities/repositoryInterfaces/notification/notification.repository.interface";
+import { NotificationRepository } from "interfaceAdpaters/repositories/notification/notification.repository";
+import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
+import { ServiceRepository } from "interfaceAdpaters/repositories/common/service.repository";
 
 export class RepositoryRegistry {
     static registerRepositories():void {
@@ -28,8 +36,8 @@ export class RepositoryRegistry {
             useClass:refreshTokenRepository
         })
 
-        container.register<IOtpRepository>("IOTPRepository",{
-            useClass:OTPRepository
+        container.register<IOtpCacheRepository>("IOTPRepository",{
+            useClass:OtpCacheRepository
         });
 
         container.register<IAdminRepository>("IAdminRepository",{
@@ -39,5 +47,23 @@ export class RepositoryRegistry {
         container.register<IRedisTokenRepository>("IRedisTokenRepository",{
             useClass:RedisTokenRepository
         })
+
+        
+        container.register<ICategoryRepository>("ICategoryRepository",{
+            useClass:CategoryRepository
+        });
+
+        container.register<IEventRepository>("IEventRepository",{
+            useClass:EventRepository
+        });
+
+        container.register<IServiceRepository>("IServiceRepository",{
+            useClass:ServiceRepository
+        })
+
+        container.register<INotificationRepository>("INotificationRepository",{
+            useClass:NotificationRepository
+        });
+
     }
 }

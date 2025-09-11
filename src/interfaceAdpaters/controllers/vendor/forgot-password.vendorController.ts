@@ -1,5 +1,5 @@
 import { IForgotPasswordController } from "@entities/controllerInterfaces/auth/forgotPassword-controller.interface";
-import { sendForgotPasswordOtp } from "@usecases/sent-forgot.password-otp.usecase";
+import { sendForgotPasswordOtp } from "@usecases/auth/sent-forgot.password-otp.usecase";
 import { IVendorExistService } from "@entities/serviceInterfaces/vendor-exist.service.interface";
 import { inject, injectable } from "tsyringe";
 import { Request, Response } from "express";
@@ -17,7 +17,7 @@ export class ForgotVendorOTPController implements IForgotPasswordController {
     async handle(req: Request, res: Response): Promise<void> {
         
         const {email} = req.body
-
+        console.log("email inf forgotvendorotpcntroller",email)
         const exist = await this.vendorExistService.emailExist(email)
 
         if(!exist){

@@ -1,9 +1,10 @@
 import { injectable } from "tsyringe";
-import { IClientEntity } from "@entities/models/client.entity";4
+import { IClientEntity } from "@entities/models/client.entity";
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
 
 
-import { ClientModel , IClientModel } from "@frameworks/database/Mongodb/models/client.model";
+import { ClientModel  } from "@frameworks/database/Mongodb/models/client.model";
+import { FilterQuery, ObjectId } from "mongoose";
 
 @injectable()
 export class ClientRepository implements IClientRepository{
@@ -15,17 +16,17 @@ export class ClientRepository implements IClientRepository{
         return await ClientModel.findOne({email})
     }
 
-   async  findById(id: any): Promise<IClientEntity | null> {
+   async  findById(id: string): Promise<IClientEntity | null> {
         return await ClientModel.findById(id)
     }
 
-   async  findByIdAndUpdatePassword(id: any, password: string): Promise<void> {
+   async  findByIdAndUpdatePassword(id: ObjectId, password: string): Promise<void> {
          await ClientModel.findByIdAndUpdate(id,{
             password:password
         })
     }
 
-    async findByIdAndUpdateStatus(id: any, status: string): Promise<void> {
+    async findByIdAndUpdateStatus(id: string, status: string): Promise<void> {
         await ClientModel.findByIdAndUpdate(id,{
             $set:{
                 status:status
@@ -34,7 +35,28 @@ export class ClientRepository implements IClientRepository{
         })
     }
 
-        async findPaginatedClients(filter:any,skip:number,limit:number):Promise<{user:IClientEntity[] | []; total:number}> {
+    async findByIdAndUpdateProfileImage(userId: string, profileImage: string): Promise<void> {
+        await ClientModel.findByIdAndUpdate(userId,
+            {
+                $set:{profileImage:profileImage},
+                
+            },
+            {new:true}
+        )
+    };
+
+
+    async findByIdAndUpdateProfileInformation(userId: string,updateData:Partial<IClientEntity>): Promise<void> {
+        
+        await ClientModel.findByIdAndUpdate(userId,
+            updateData,
+            {
+                new : true
+            }
+        )
+    }
+
+        async findPaginatedClients(filter:FilterQuery<IClientEntity>,skip:number,limit:number):Promise<{user:IClientEntity[] | []; total:number}> {
             const [user,total] = await Promise.all([
                 ClientModel.find(filter).sort({createdAt:-1}).skip(skip).limit(limit),
                 ClientModel.countDocuments(filter)

@@ -22,7 +22,6 @@ let refreshTokenUsesCase = class refreshTokenUsesCase {
     }
     execute(refreshToken) {
         const payload = this.tokenService.verifyRefreshToken(refreshToken);
-        console.log("the payload is ", payload);
         if (!payload)
             throw new custom_error_1.CustomError("Invalid refresh token", constants_1.HTTP_STATUS.BAD_REQUEST);
         return {

@@ -21,11 +21,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.passwordBcrypt = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const tsyringe_1 = require("tsyringe");
-const config_1 = require("@shared/config");
 let passwordBcrypt = class passwordBcrypt {
     hash(original) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield bcrypt_1.default.hash(original, config_1.config.bcryptSaltRounds);
+            return yield bcrypt_1.default.hash(original, 10);
         });
     }
     compare(current, original) {

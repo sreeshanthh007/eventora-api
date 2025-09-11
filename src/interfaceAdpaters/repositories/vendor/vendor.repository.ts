@@ -4,6 +4,8 @@ import {
 } from "@frameworks/database/Mongodb/models/vendor.model";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { IVendorEntity } from "@entities/models/vendor.entity";
+import { FilterQuery, ObjectId } from "mongoose";
+
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
@@ -19,7 +21,7 @@ export class VendorRepository implements IVendorRepository {
     return await VendorModel.findById(id);
   }
 
-  async findByIdAndUpdateStatus(id: any, status: string): Promise<void> {
+  async findByIdAndUpdateStatus(id: string, status: string): Promise<void> {
     await VendorModel.findByIdAndUpdate(id, {
       $set: {
         status: status,
@@ -27,7 +29,16 @@ export class VendorRepository implements IVendorRepository {
     });
   }
 
-  async findByIdAndUpdatePassword(id: any, password: string): Promise<void> {
+
+  async findByIdandSaveFcmToken(id: string, fcmtoken: string): Promise<void> {
+      await VendorModel.findByIdAndUpdate(id,
+        {
+          fcmToken:fcmtoken
+        }
+      )
+  }
+
+  async findByIdAndUpdatePassword(id: ObjectId, password: string): Promise<void> {
     await VendorModel.findByIdAndUpdate(id, {
       $set: {
         password: password,
@@ -36,7 +47,7 @@ export class VendorRepository implements IVendorRepository {
   }
 
   async findPaginatedClients(
-    filter: any,
+    filter: FilterQuery<IVendorEntity>,
     skip: number,
     limit: number
   ): Promise<{ user: IVendorEntity[] | []; total: number }> {
@@ -49,5 +60,46 @@ export class VendorRepository implements IVendorRepository {
       user,
       total,
     };
+  }
+
+  async findPaginatedVendorByStatus( filter: FilterQuery<IVendorEntity>, skip: number, limit: number): Promise<{ vendors: IVendorEntity[] | []; total: number; }> {
+      const [vendors,total] = await Promise.all([
+        VendorModel.find(filter)
+        .sort({createdAt:-1})
+        .skip(skip)
+        .limit(limit),
+        VendorModel.countDocuments(filter)
+      ]);
+      return {
+        vendors,
+        total
+      }
+  }
+
+
+  async findByIdAndUpdateProfileImage(userId: string, profileImage: string): Promise<void> {
+      await VendorModel.findByIdAndUpdate(userId,
+        {
+          $set:{profilePicture : profileImage}
+        }
+      )
+  }
+
+  async updatePersonalInformation(id: string, data: Partial<IVendorEntity>): Promise<void> {
+     await VendorModel.findByIdAndUpdate(id,data,
+      {
+        new:true
+      }
+     )
+
+  }
+
+  async findByIdAndUpdateVendorStatus(id: string, status: string,rejectReason?:string): Promise<void> {
+      await VendorModel.findByIdAndUpdate(id,{
+        $set:{
+          vendorStatus:status,
+          rejectionReason:rejectReason
+        }
+      });
   }
 }

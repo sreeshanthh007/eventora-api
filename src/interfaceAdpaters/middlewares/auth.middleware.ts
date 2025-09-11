@@ -17,15 +17,25 @@ export interface CustomJWTPayload extends JwtPayload {
 
 
 export interface CustomRequest extends Request{
-    user:CustomJWTPayload
+    user:CustomJWTPayload   
 }
+
+
+
+const roleMap: Record<string, string> = {
+  "_cl": "client",
+  "_ad": "admin",
+  "_ve": "vendor"
+};
 
 const extractToken = (req: Request): { access_token: string; refresh_token: string } | null => {
 
      const basePath = req.baseUrl.split("/");
- 
-    const userType = basePath[2]; 
+    
+    const userType = roleMap[basePath[2]]
 
+
+   
 
   if (["client", "vendor", "admin"].includes(userType)) {
     return {
@@ -48,10 +58,11 @@ const isBlacklisted = async(token:string) :Promise<boolean> =>{
 }
 
 
-export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
+export const verifyAuth = async(req:Request,res:Response,next:NextFunction) : Promise<void>=>{
     try {
         const token = extractToken(req)
-
+      
+        
      if (!token) {
       res
         .status(HTTP_STATUS.UNAUTHORIZED)
@@ -60,14 +71,16 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     }
 
     if(await isBlacklisted(token.access_token)){
-        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:"Token is Blacklisted"})
+        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:ERROR_MESSAGES.TOKEN_BLACKLISTED});
+        return;
     }
  
 
     const user = tokenService.verifyAccessToken(token.access_token) as CustomJWTPayload
 
     if(!user || !user.id){
-        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:ERROR_MESSAGES.UNAUTHORIZED_ACCESS})
+        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:ERROR_MESSAGES.UNAUTHORIZED_ACCESS});
+        return
     }
 
     (req as CustomRequest).user={
@@ -84,7 +97,7 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     console.log("token is invalid is worked",error);
     res
       .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: ERROR_MESSAGES.INVALID_TOKEN });
+      .json({ message: ERROR_MESSAGES.INVALID_TOKEN,statuscode:HTTP_STATUS.UNAUTHORIZED});
     return;
     }
 }
@@ -93,7 +106,7 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
 export const decodeToken = async(req:Request , res:Response , next:NextFunction) =>{
     try {
         const token = extractToken(req)
-        console.log("this si the toke to decode",token)
+       
 
         if(!token?.refresh_token){
             console.log("no token for decode")
@@ -103,24 +116,26 @@ export const decodeToken = async(req:Request , res:Response , next:NextFunction)
             return
         }
         
-        if(await isBlacklisted(token.access_token)){
-            console.log("token is blacklisted");
-            res.status(HTTP_STATUS.UNAUTHORIZED)
-            .json({message:"Token is blacklisted"})
-            return
-        };
+   
      
-        const user =  tokenService.decodeAccessToken(token?.access_token);
-        console.log("user from decode access token",user);
+        const user =  tokenService.verifyRefreshToken(token?.refresh_token) as CustomJWTPayload;
+      
         
+            const newAccessToken = tokenService.generateAccessToken({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            });
+
 
         (req as CustomRequest).user ={
             id:user?.id,
             email:user?.email,
             role:user?.role,
-            access_token:token.access_token,
+            access_token: newAccessToken,
             refresh_token:token.refresh_token
         };
+ 
 
         next()
 
@@ -134,7 +149,7 @@ export const authorizeRole = (allowedRoles:string[])=>{
     return (req:Request , res : Response , next:NextFunction)=>{
         
         const user = (req as CustomRequest).user
-
+    
         if(!user || !allowedRoles.includes(user.role)){
             console.log("this role is not allowed")
             res.status(HTTP_STATUS.FORBIDDEN).json({message:ERROR_MESSAGES.NOT_ALLOWED,user:user ? user.role : ""})

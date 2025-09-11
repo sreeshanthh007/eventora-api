@@ -10,11 +10,19 @@ class AdminRotes extends base_route_1.BaseRouter {
         super();
     }
     initializeRoutes() {
-        this.router.get("/users", auth_middleware_1.verifyAuth, (0, async_handler_1.asyncHandler)(resolver_1.getAlluserscontroller.handle.bind(resolver_1.getAlluserscontroller)));
-        this.router.get("/vendors", auth_middleware_1.verifyAuth, (0, async_handler_1.asyncHandler)(resolver_1.getAllVendorsController.handle.bind(resolver_1.getAllVendorsController)));
-        this.router.patch("/user-status", auth_middleware_1.verifyAuth, (0, async_handler_1.asyncHandler)(resolver_1.toggleUsercontroller.handle.bind(resolver_1.toggleUsercontroller)));
-        this.router.patch("/vendor-status", auth_middleware_1.verifyAuth, (0, async_handler_1.asyncHandler)(resolver_1.toggleVendorController.handle.bind(resolver_1.toggleVendorController)));
-        this.router.post("/refresh-token", auth_middleware_1.decodeToken, (0, async_handler_1.asyncHandler)(resolver_1.refreshTokenController.handle.bind(resolver_1.refreshTokenController)));
+        this.router.get("/users", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminClientController.getAllClients.bind(resolver_1.adminClientController)));
+        this.router.get("/vendors", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminVendorController.getAllVendors.bind(resolver_1.adminVendorController)));
+        this.router.get("/requested-vendors", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminVendorController.getRequestedVendors.bind(resolver_1.adminVendorController)));
+        this.router.patch("/:vendorId/approve-vendors", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminVendorController.approveVendor.bind(resolver_1.adminVendorController)));
+        this.router.patch("/:vendorId/reject-vendors", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminVendorController.rejectVendor.bind(resolver_1.adminVendorController)));
+        this.router.patch("/user-status", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminClientController.updateClientAccountStatus.bind(resolver_1.adminClientController)));
+        this.router.patch("/vendor-status", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminVendorController.udpateVendorAccountStatus.bind(resolver_1.adminVendorController)));
+        this.router.patch("/category-status", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.categoryController.toogleCategory.bind(resolver_1.categoryController)));
+        this.router.get("/categories", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminController.getAllCategory.bind(resolver_1.adminController)));
+        this.router.post("/refresh-token", auth_middleware_1.decodeToken, (0, async_handler_1.asyncHandler)(resolver_1.authController.handleTokenRefresh.bind(resolver_1.authController)));
+        this.router.post("/add-category", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.categoryController.addCategory.bind(resolver_1.categoryController)));
+        this.router.patch("/edit-category/:categoryId", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.adminController.editCategory.bind(resolver_1.adminController)));
+        this.router.post("/logout", auth_middleware_1.verifyAuth, (0, auth_middleware_1.authorizeRole)(["admin"]), (0, async_handler_1.asyncHandler)(resolver_1.authController.logout.bind(resolver_1.authController)));
     }
 }
 exports.AdminRotes = AdminRotes;

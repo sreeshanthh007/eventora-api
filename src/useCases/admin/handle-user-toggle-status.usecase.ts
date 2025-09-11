@@ -7,39 +7,39 @@ import { RedisClient  } from "@frameworks/cache/redis.client";
 
 
 @injectable()
-export class UserToggleStatusUseCase implements IuserToggleStatusUseCase{
-    constructor(
-        @inject("IClientRepository") private clientRepository : IClientRepository
-    ){} 
+    export class UserToggleStatusUseCase implements IuserToggleStatusUseCase{
+        constructor(
+            @inject("IClientRepository") private clientRepository : IClientRepository
+        ){} 
 
-    async execute(userId: string): Promise<void> {
-        console.log(userId)
-        if(!userId){
-            throw new CustomError(
-                ERROR_MESSAGES.USER_NOT_FOUND,
-                HTTP_STATUS.NOT_FOUND
-            )
-        }
-        
-        const client = await this.clientRepository.findById(userId)
+        async execute(userId: string): Promise<void> {
+          
+            if(!userId){
+                throw new CustomError(
+                    ERROR_MESSAGES.USER_NOT_FOUND,
+                    HTTP_STATUS.NOT_FOUND
+                )
+            }
+            
+            const client = await this.clientRepository.findById(userId)
 
-        if(!client){
-            throw new CustomError(
-                ERROR_MESSAGES.USER_NOT_FOUND,
-                HTTP_STATUS.NOT_FOUND
-            )
-        }
+            if(!client){
+                throw new CustomError(
+                    ERROR_MESSAGES.USER_NOT_FOUND,
+                    HTTP_STATUS.NOT_FOUND
+                )
+            }
 
-        const newsStatus = client.status=="active" ? "blocked" : "active"
+            const newsStatus = client.status=="active" ? "blocked" : "active"
 
-        await this.clientRepository.findByIdAndUpdateStatus(userId,newsStatus);
+            await this.clientRepository.findByIdAndUpdateStatus(userId,newsStatus);
 
-        if(newsStatus=="blocked"){
-            await RedisClient.set(`user_status:client${userId}`,newsStatus,{
-                EX:3600
-            });
-        }else if(newsStatus=="active"){
-           await RedisClient.del(`user_status:client:${userId}`)
+            if(newsStatus=="blocked"){
+                await RedisClient.set(`user_status:client:${userId}`,newsStatus,{
+                    EX:3600
+                });
+            }else if(newsStatus=="active"){
+            await RedisClient.del(`user_status:client:${userId}`)
+            }
         }
     }
-}

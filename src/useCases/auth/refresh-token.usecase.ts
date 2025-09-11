@@ -17,7 +17,7 @@ export class refreshTokenUsesCase implements IRefreshTokenUseCase{
     accessToken: string;
   } {
     const payload = this.tokenService.verifyRefreshToken(refreshToken);
-    console.log("the payload is ",payload)
+  
     if (!payload)
       throw new CustomError("Invalid refresh token", HTTP_STATUS.BAD_REQUEST);
 

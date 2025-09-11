@@ -41,6 +41,7 @@ let ClientLoginStrategy = class ClientLoginStrategy {
             }
             if (user.password) {
                 const passwordIsMatch = yield this.passwordBcrypt.compare(user.password, client.password);
+                console.log(passwordIsMatch);
                 if (!passwordIsMatch) {
                     throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.INVALID_CREDENTIALS, constants_1.HTTP_STATUS.BAD_REQUEST);
                 }
