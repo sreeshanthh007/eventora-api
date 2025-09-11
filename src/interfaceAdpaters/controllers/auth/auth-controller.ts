@@ -20,6 +20,8 @@ import { ISendEmailUseCase } from "@entities/useCaseInterfaces/auth/send-email-u
 import { ICloudinarySignatureService } from "@entities/serviceInterfaces/cloudinary-service.interface";
 import { IFcmTokenUseCase } from "@entities/useCaseInterfaces/auth/fcmtoken.interface";
 import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
+import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
+import { ISendOtpUsecase } from "@entities/useCaseInterfaces/auth/sendOtp-usecase.interface";
 
 
 
@@ -36,6 +38,8 @@ export class AuthController implements IAuthController{
         @inject("IRevokeRefreshTokenUseCase") private _revokeRefreshTokenUseCase : IRevokeRefreshTokenUseCase,
         @inject("IBlacklistTokenUseCase") private _blackListTokenUseCase : IBlacklistTokenUseCase,
         @inject("IVerifyOTPUseCase") private _verifyOtpUseCase : IVerifyOtpUsecase,
+        @inject("IUserExistenceService") private _userExistService : IUserExistenceService,
+        @inject("ISendOTPForPasswordUseCase") private _sentOTPforPasswordUseCase : ISendOtpUsecase,
         @inject("IGetAllUsersDetailsUseCase") private _getAllUsersDetailsUseCase : IGetAllUsersDetailsUseCase,
         @inject("IFcmTokenUseCase")  private _fcmTokenUseCase : IFcmTokenUseCase,
         @inject("ISendEmailUseCase") private _sendEmailUseCase : ISendEmailUseCase,
@@ -213,6 +217,26 @@ export class AuthController implements IAuthController{
          .json({success:true,message:SUCCESS_MESSAGES.OTP_SEND_SUCCESS})
      }
 
+
+     async forgotPasswordController(req: Request, res: Response): Promise<void> {
+         
+        const {email} = req.body
+        console.log("email fron forgot pass",email)
+        if(!email) res.status(HTTP_STATUS.BAD_REQUEST).json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+
+       const user =  await this._userExistService.emailExists(email)
+
+       if(!user){
+        res.status(HTTP_STATUS.NOT_FOUND)
+        .json({success:false,message:ERROR_MESSAGES.EMAIL_NOT_FOUND})
+       }
+
+       await this._sentOTPforPasswordUseCase.execute(email)
+
+       res.status(HTTP_STATUS.OK)
+       .json({success:true,message:SUCCESS_MESSAGES.OTP_SEND_SUCCESS})
+
+     }
 
      async getUploadSignature(req: Request, res: Response): Promise<void> {
 

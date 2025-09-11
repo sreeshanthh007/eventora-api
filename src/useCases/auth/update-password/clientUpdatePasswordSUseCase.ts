@@ -29,8 +29,6 @@ export class ForgotClientUpdatePasswordUseCase implements IForgotUpdatePasswordU
             )
         }
 
-
-
         const isClientExist = await repository.findByEmail(email)
 
         if(!isClientExist){

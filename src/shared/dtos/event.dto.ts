@@ -1,13 +1,16 @@
+import { IEventEntity } from "@entities/models/event.entity";
 
 
 
 export interface IAddEventDTO {
     title:string,
     description:string;
-    date:Date,
+     eventSchedule: {
+    date: Date;
+    startTime: string;
+    endTime: string;
+  }[];
     status:string,
-    startTime:string,
-    endTime:string,
     pricePerTicket:number,
     totalTicket : number,
     ticketLimit:number,
@@ -26,15 +29,13 @@ type EditableFields = Pick<
   IAddEventDTO,
   | "title"
   | "description"
-  | "date"
-  | "startTime"
-  | "endTime"
   | "pricePerTicket"
   | "totalTicket"
   | "ticketLimit"
   | "eventLocation"
   | "location"
   | "Images"
+  | "eventSchedule"
 >;
 
 
@@ -48,13 +49,76 @@ export interface EventTableDTO{
     isActive?:boolean
     pricePerTicket:number
     totalTicket:number,
-    startTime:string;
-    endTime:string;
-    date:Date
+     eventSchedule: {
+    date: Date;
+    startTime: string;
+    endTime: string;
+  }[]
+     tickets?: {
+    ticketType?: string;    
+    pricePerTicket: number;
+    totalTickets: number;
+    maxTicketsPerUser: number;
+  }[];
 }
 
 
-// export interface IUpdateEventStatusDTO {
-//     eventId: string;
-//     isActive: boolean;
-// }   
+export interface PaginatedEventDetailsDTO{
+  _id?:string,
+  title:string,
+  status:string,
+  pricePerTicket:number,
+  attendiesCount:number,
+  eventLocation:string,
+  images:string,
+  description:string,
+  eventSchedule: {
+    date: Date;
+    startTime: string;
+    endTime: string;
+  }[]
+   tickets?: { 
+    pricePerTicket: number;
+  }[];
+}
+
+
+export interface eventDetailsDTO{
+  _id?:string,
+  title:string,
+  status:string,
+  pricePerTicket?:number,
+  totalTicket?:number
+  maxTicketPerUser?:number
+  attendiesCount:number,
+  description?:string
+  eventLocation:string
+  eventSchedule: {
+    date: Date;
+    startTime: string;
+    endTime: string;
+  }[]
+  // eventHost:string
+   tickets?: {
+    ticketType?: string;    
+    pricePerTicket: number;
+    totalTickets: number;
+    maxTicketsPerUser: number;
+  }[];
+  images:string[]
+
+  location : {
+        type:"Point";
+        coordinates:number[]
+    };
+}
+
+
+
+export interface IEventWithHost extends Omit<IEventEntity, "hostId"> {
+  hostId: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+}

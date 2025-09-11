@@ -17,11 +17,13 @@
     "paths": {
       "@entities/*": ["entities/*"],
       "@usecases/*": ["useCases/*"],
-      "@controllers/*": ["interfaceAdapters/controllers/*"],
+      "@controllers/*": ["interfaceAdpaters/controllers/*"],
       "@repos/*": ["interfaceAdapters/repositories/*"],
       "@services/*": ["services/*"],
       "@frameworks/*": ["frameworks/*"],
-      "@shared/*": ["shared/*"]
+        "@shared/*": ["shared/*"],
+       "@mappers/*": ["interfaceAdpaters/mappers/*"],
+       "@middlewares/*":["interfaceAdpaters/middlewares/*"]
     }
   },
   "include": ["src/**/*.ts", "src/types.d.ts", "src/entities/useCaseInterfaces/client/clientupdatePassword.usecase.interface.ts"],

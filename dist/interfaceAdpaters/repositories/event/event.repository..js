@@ -22,11 +22,25 @@ class EventRepository {
             return yield event_model_1.EventModel.find({ isActive: true });
         });
     }
+    findEventByIdForDetailsPage(eventId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield event_model_1.EventModel.findById(eventId);
+        });
+    }
     findPaginatedEvents(filter, skip, limit) {
         return __awaiter(this, void 0, void 0, function* () {
             const [events, total] = yield Promise.all([
                 yield event_model_1.EventModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
                 yield event_model_1.EventModel.countDocuments(filter)
+            ]);
+            return { events, total };
+        });
+    }
+    findfilteredEvents(filter, skip, limit, sort) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [events, total] = yield Promise.all([
+                event_model_1.EventModel.find(filter).sort(sort).skip(skip).limit(limit),
+                event_model_1.EventModel.countDocuments(filter)
             ]);
             return { events, total };
         });
@@ -44,6 +58,16 @@ class EventRepository {
     updateEvent(eventId, updateData) {
         return __awaiter(this, void 0, void 0, function* () {
             yield event_model_1.EventModel.findByIdAndUpdate(eventId, { $set: updateData }, { new: true });
+        });
+    }
+    updateEventStatus(eventId, eventStatus) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield event_model_1.EventModel.findByIdAndUpdate(eventId, {
+                $set: {
+                    status: eventStatus
+                },
+                new: true
+            });
         });
     }
 }

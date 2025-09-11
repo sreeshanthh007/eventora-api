@@ -17,5 +17,10 @@ class NotificationRepository {
             yield notification_model_1.NotificationModel.create(notification);
         });
     }
+    findNotificationsById(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield notification_model_1.NotificationModel.find({ userId });
+        });
+    }
 }
 exports.NotificationRepository = NotificationRepository;

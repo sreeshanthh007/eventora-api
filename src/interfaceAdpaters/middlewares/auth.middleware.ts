@@ -31,10 +31,10 @@ const roleMap: Record<string, string> = {
 const extractToken = (req: Request): { access_token: string; refresh_token: string } | null => {
 
      const basePath = req.baseUrl.split("/");
-    console.log('the base path is',basePath)
+    
     const userType = roleMap[basePath[2]]
 
-    console.log("the user type is",userType)
+
    
 
   if (["client", "vendor", "admin"].includes(userType)) {
@@ -58,7 +58,7 @@ const isBlacklisted = async(token:string) :Promise<boolean> =>{
 }
 
 
-export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
+export const verifyAuth = async(req:Request,res:Response,next:NextFunction) : Promise<void>=>{
     try {
         const token = extractToken(req)
       
@@ -71,14 +71,16 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     }
 
     if(await isBlacklisted(token.access_token)){
-        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:ERROR_MESSAGES.TOKEN_BLACKLISTED})
+        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:ERROR_MESSAGES.TOKEN_BLACKLISTED});
+        return;
     }
  
 
     const user = tokenService.verifyAccessToken(token.access_token) as CustomJWTPayload
 
     if(!user || !user.id){
-        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:ERROR_MESSAGES.UNAUTHORIZED_ACCESS})
+        res.status(HTTP_STATUS.UNAUTHORIZED).json({message:ERROR_MESSAGES.UNAUTHORIZED_ACCESS});
+        return
     }
 
     (req as CustomRequest).user={
@@ -95,7 +97,7 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
     console.log("token is invalid is worked",error);
     res
       .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: ERROR_MESSAGES.INVALID_TOKEN,statuscode:HTTP_STATUS.UNAUTHORIZED });
+      .json({ message: ERROR_MESSAGES.INVALID_TOKEN,statuscode:HTTP_STATUS.UNAUTHORIZED});
     return;
     }
 }
@@ -104,7 +106,7 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction)=>{
 export const decodeToken = async(req:Request , res:Response , next:NextFunction) =>{
     try {
         const token = extractToken(req)
-        console.log("this si the toke to decode",token)
+       
 
         if(!token?.refresh_token){
             console.log("no token for decode")
@@ -147,7 +149,7 @@ export const authorizeRole = (allowedRoles:string[])=>{
     return (req:Request , res : Response , next:NextFunction)=>{
         
         const user = (req as CustomRequest).user
-      
+    
         if(!user || !allowedRoles.includes(user.role)){
             console.log("this role is not allowed")
             res.status(HTTP_STATUS.FORBIDDEN).json({message:ERROR_MESSAGES.NOT_ALLOWED,user:user ? user.role : ""})

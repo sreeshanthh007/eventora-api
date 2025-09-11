@@ -32,4 +32,9 @@ export class VendorController implements IVendorController{
         .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
 
     }
+
+    async getAllNotifications(req: Request, res: Response): Promise<void> {
+        
+
+    }
 }

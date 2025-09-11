@@ -7,6 +7,4 @@ export interface ServiceTableDTO{
     servicePrice:number
     status?:string
     serviceDuration:number
-    
-
 }

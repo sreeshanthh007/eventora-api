@@ -58,7 +58,7 @@ let AdminVendorController = class AdminVendorController {
             yield this._rejectVendorUseCase.execute(vendorId, rejectReason);
             res
                 .status(constants_1.HTTP_STATUS.OK)
-                .json({ success: true, message: "rejected successfully" });
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.VENDOR_REJECT_SUCCESS });
         });
     }
     getAllVendors(req, res) {
@@ -67,7 +67,7 @@ let AdminVendorController = class AdminVendorController {
             const response = yield this._getAllVendorsUseCase.execute(Number(limit), search, Number(page));
             res.status(constants_1.HTTP_STATUS.OK).json({
                 success: true,
-                message: "vendors fetched successfully",
+                message: constants_1.SUCCESS_MESSAGES.VENDOR_FETCHED_SUCCESS,
                 vendors: response.user,
                 totalPages: response.total,
             });
@@ -82,7 +82,7 @@ let AdminVendorController = class AdminVendorController {
             }
             yield this._resendVerificationUseCase.execute(vendorId);
             res.status(constants_1.HTTP_STATUS.OK)
-                .json({ success: true, message: "verification resend successfully" });
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.VERIFICATION_RESEND_SUCCESS });
         });
     }
     getRequestedVendors(req, res) {
@@ -91,7 +91,7 @@ let AdminVendorController = class AdminVendorController {
             const response = yield this._requestedVendorUseCase.execute(Number(limit), search, Number(page));
             res.status(constants_1.HTTP_STATUS.OK).json({
                 success: true,
-                message: "requested vendors fetched successfully",
+                message: constants_1.SUCCESS_MESSAGES.REQUESTED_VENDOR_FETCHED_SUCCESS,
                 vendors: response.vendors,
                 totalPages: response.total,
             });
@@ -103,14 +103,14 @@ let AdminVendorController = class AdminVendorController {
             if (!vendorId || !status) {
                 res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
                     success: false,
-                    message: "userId and status are required",
+                    message: constants_1.ERROR_MESSAGES.USER_ID_AND_STATUS_REQUIRED
                 });
                 return;
             }
             if (!["active", "blocked"].includes(status)) {
                 res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
                     success: false,
-                    message: "Status must be either 'active' or 'blocked'",
+                    message: constants_1.ERROR_MESSAGES.INVALID_STATUS
                 });
             }
             yield this._updateVendorAccountStatusUseCase.execute(vendorId, status);

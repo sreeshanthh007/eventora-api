@@ -6,9 +6,7 @@
     import { HTTP_STATUS , ERROR_MESSAGES } from "@shared/constants";
     import { LoginUserDTO } from "@shared/dtos/user.dto";
     import { IUserEntity } from "@entities/models/user.entity";
-import { toVendorResponse } from "interfaceAdpaters/mappers/VendorMapper";
-
-
+    import { toVendorResponse } from "@mappers/VendorMapper";
     @injectable()
     export class VendorLoginStrategy implements ILoginStrategy{
         constructor(

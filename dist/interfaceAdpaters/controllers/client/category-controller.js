@@ -32,7 +32,7 @@ let FetchCategoryController = class FetchCategoryController {
         return __awaiter(this, void 0, void 0, function* () {
             const categories = yield this.getAllCategoryUseCase.execute();
             res.status(constants_1.HTTP_STATUS.OK)
-                .json({ success: true, message: "categories fetched successfully", categories: categories });
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.CATEGORY_FETCHED_SUCCESS, categories: categories });
         });
     }
 };

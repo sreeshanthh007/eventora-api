@@ -25,7 +25,7 @@ exports.VendorLoginStrategy = void 0;
 const tsyringe_1 = require("tsyringe");
 const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
-const VendorMapper_1 = require("interfaceAdpaters/mappers/VendorMapper");
+const VendorMapper_1 = require("@mappers/VendorMapper");
 let VendorLoginStrategy = class VendorLoginStrategy {
     constructor(passwordBcrypt, vendorRepository) {
         this.passwordBcrypt = passwordBcrypt;

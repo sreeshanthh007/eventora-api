@@ -29,7 +29,7 @@ const user_login_validation_schema_1 = require("./validations/user-login-validat
 const cookie_helper_1 = require("@shared/utils/cookie-helper");
 const email_validation_schema_1 = require("./validations/email.validation.schema");
 let AuthController = class AuthController {
-    constructor(_registerUseCase, _loginUserUseCase, _generateTokenUseCase, _googleLoginUseCase, _refreshTokenUseCase, _revokeRefreshTokenUseCase, _blackListTokenUseCase, _verifyOtpUseCase, _getAllUsersDetailsUseCase, _fcmTokenUseCase, _sendEmailUseCase, _cloudinaryService) {
+    constructor(_registerUseCase, _loginUserUseCase, _generateTokenUseCase, _googleLoginUseCase, _refreshTokenUseCase, _revokeRefreshTokenUseCase, _blackListTokenUseCase, _verifyOtpUseCase, _userExistService, _sentOTPforPasswordUseCase, _getAllUsersDetailsUseCase, _fcmTokenUseCase, _sendEmailUseCase, _cloudinaryService) {
         this._registerUseCase = _registerUseCase;
         this._loginUserUseCase = _loginUserUseCase;
         this._generateTokenUseCase = _generateTokenUseCase;
@@ -38,6 +38,8 @@ let AuthController = class AuthController {
         this._revokeRefreshTokenUseCase = _revokeRefreshTokenUseCase;
         this._blackListTokenUseCase = _blackListTokenUseCase;
         this._verifyOtpUseCase = _verifyOtpUseCase;
+        this._userExistService = _userExistService;
+        this._sentOTPforPasswordUseCase = _sentOTPforPasswordUseCase;
         this._getAllUsersDetailsUseCase = _getAllUsersDetailsUseCase;
         this._fcmTokenUseCase = _fcmTokenUseCase;
         this._sendEmailUseCase = _sendEmailUseCase;
@@ -68,7 +70,9 @@ let AuthController = class AuthController {
             }
             const user = yield this._loginUserUseCase.execute(validatedData);
             if (!user._id || !user.email || !user.role) {
-                throw new Error("user id , email or role is missing");
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
+                return;
             }
             const userId = user._id.toString();
             const token = yield this._generateTokenUseCase.execute(userId, user.email, user.role);
@@ -89,7 +93,9 @@ let AuthController = class AuthController {
             const { credential, role, client_id } = req.body;
             const user = yield this._googleLoginUseCase.execute(credential, client_id, role);
             if (!user._id || !user.role || !user.email) {
-                throw new Error("role,client_id or email is missing");
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
+                return;
             }
             const userId = user._id.toString();
             const token = yield this._generateTokenUseCase.execute(userId, user.email, user.role);
@@ -126,7 +132,7 @@ let AuthController = class AuthController {
             const access_token_name = `${newToken.role}_access_token`;
             (0, cookie_helper_1.updateCookieWithAccessToken)(res, newToken.accessToken, access_token_name);
             res.status(constants_1.HTTP_STATUS.OK)
-                .json({ success: true, message: "Token Refreshed Successfully", token: newToken.accessToken });
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.REFRESH_TOKEN_REFRESHED_SUCCESS, token: newToken.accessToken });
         });
     }
     verifyOtp(req, res) {
@@ -142,10 +148,26 @@ let AuthController = class AuthController {
         return __awaiter(this, void 0, void 0, function* () {
             const { email } = req.body;
             if (!email) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
                     .json({ success: false, message: constants_1.ERROR_MESSAGES.EMAIL_NOT_FOUND });
             }
             yield this._sendEmailUseCase.execute(email);
+            res.status(constants_1.HTTP_STATUS.OK)
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.OTP_SEND_SUCCESS });
+        });
+    }
+    forgotPasswordController(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.body;
+            console.log("email fron forgot pass", email);
+            if (!email)
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
+            const user = yield this._userExistService.emailExists(email);
+            if (!user) {
+                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.EMAIL_NOT_FOUND });
+            }
+            yield this._sentOTPforPasswordUseCase.execute(email);
             res.status(constants_1.HTTP_STATUS.OK)
                 .json({ success: true, message: constants_1.SUCCESS_MESSAGES.OTP_SEND_SUCCESS });
         });
@@ -154,7 +176,7 @@ let AuthController = class AuthController {
         return __awaiter(this, void 0, void 0, function* () {
             const folder = req.query.folder;
             if (!folder) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
                     .json({ success: false, message: constants_1.ERROR_MESSAGES.FOLDER_NOT_FOUND });
             }
             const data = this._cloudinaryService.generateSignature(folder);
@@ -165,7 +187,7 @@ let AuthController = class AuthController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id, role } = req.user;
             if (!id || !role) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
                     .json({ success: false, message: constants_1.ERROR_MESSAGES.INVALID_TOKEN });
             }
             const user = yield this._getAllUsersDetailsUseCase.execute(id, role);
@@ -175,17 +197,15 @@ let AuthController = class AuthController {
     }
     saveFcmToken(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("backnd", req.body);
             const { userId, fcmToken } = req.body;
-            console.log("user id and token", userId, fcmToken);
             if (!userId || !fcmToken) {
-                res.status(constants_1.HTTP_STATUS.NOT_FOUND)
-                    .json({ success: false, message: "user id or fcm token is missing" });
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
                 return;
             }
             yield this._fcmTokenUseCase.execute(userId, fcmToken);
             res.status(constants_1.HTTP_STATUS.OK)
-                .json({ success: true, message: "token saved successfully" });
+                .json({ success: true, message: constants_1.SUCCESS_MESSAGES.FCM_TOKEN_SAVE_SUCCESS });
         });
     }
 };
@@ -200,9 +220,11 @@ exports.AuthController = AuthController = __decorate([
     __param(5, (0, tsyringe_1.inject)("IRevokeRefreshTokenUseCase")),
     __param(6, (0, tsyringe_1.inject)("IBlacklistTokenUseCase")),
     __param(7, (0, tsyringe_1.inject)("IVerifyOTPUseCase")),
-    __param(8, (0, tsyringe_1.inject)("IGetAllUsersDetailsUseCase")),
-    __param(9, (0, tsyringe_1.inject)("IFcmTokenUseCase")),
-    __param(10, (0, tsyringe_1.inject)("ISendEmailUseCase")),
-    __param(11, (0, tsyringe_1.inject)("ICloudinarySignatureService")),
-    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
+    __param(8, (0, tsyringe_1.inject)("IUserExistenceService")),
+    __param(9, (0, tsyringe_1.inject)("ISendOTPForPasswordUseCase")),
+    __param(10, (0, tsyringe_1.inject)("IGetAllUsersDetailsUseCase")),
+    __param(11, (0, tsyringe_1.inject)("IFcmTokenUseCase")),
+    __param(12, (0, tsyringe_1.inject)("ISendEmailUseCase")),
+    __param(13, (0, tsyringe_1.inject)("ICloudinarySignatureService")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object])
 ], AuthController);

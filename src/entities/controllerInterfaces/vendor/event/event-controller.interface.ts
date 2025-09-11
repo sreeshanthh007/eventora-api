@@ -7,4 +7,5 @@ export interface IEventController {
     toggeleStatus(req:Request,res:Response) : Promise<void>
     updateEvent(req:Request,res:Response) : Promise<void>
     getEventById(req:Request,res:Response) : Promise<void>
+    updateEventStatus(req:Request,res:Response) : Promise<void>
 }

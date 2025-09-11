@@ -26,6 +26,7 @@ const custom_error_1 = require("@entities/utils/custom.error");
 const constants_1 = require("@shared/constants");
 const socket_service_1 = require("interfaceAdpaters/services/socket.service");
 const tsyringe_1 = require("tsyringe");
+const constants_2 = require("@shared/constants");
 let ApproveVendorUseCase = class ApproveVendorUseCase {
     constructor(vendorRepo, notificationService) {
         this.vendorRepo = vendorRepo;
@@ -37,7 +38,7 @@ let ApproveVendorUseCase = class ApproveVendorUseCase {
             if (!vendorExist) {
                 throw new custom_error_1.CustomError(constants_1.ERROR_MESSAGES.USER_NOT_FOUND, constants_1.HTTP_STATUS.NOT_FOUND);
             }
-            yield this.vendorRepo.findByIdAndUpdateVendorStatus(vendorId, "approved");
+            yield this.vendorRepo.findByIdAndUpdateVendorStatus(vendorId, constants_2.vendorStatus.APPROVED);
             const io = socket_service_1.SocketService.getIO();
             io.to(`vendor_${vendorId}`).emit("vendorApproved", { _id: vendorId, status: "approved" });
             if (vendorExist.fcmToken) {

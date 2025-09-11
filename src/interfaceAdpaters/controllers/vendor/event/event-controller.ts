@@ -4,6 +4,7 @@ import { IGetAllEventsUseCase } from "@entities/useCaseInterfaces/vendor/event/g
 import { IGetEventByIdUseCase } from "@entities/useCaseInterfaces/vendor/event/get-event-by-id..usecase.interface";
 import { IHostNewEventUseCase } from "@entities/useCaseInterfaces/vendor/event/host-new-event.usecase";
 import { IToggleStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/toggleStatus.usecase.interface";
+import { IUpdateEventStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/update-event-status.usecase.interface";
 import { IUpdateEventUseCase } from "@entities/useCaseInterfaces/vendor/event/update-event.usecase.interface";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
 import { IAddEventDTO } from "@shared/dtos/event.dto";
@@ -20,12 +21,13 @@ export class EventController implements IEventController{
         @inject("IGetAllEventsUseCase") private _getAllEventsUseCase : IGetAllEventsUseCase,
         @inject("IToggleStatusUseCase") private _toggleStatusUseCase : IToggleStatusUseCase,
         @inject("IUpdateEventUseCase") private _updateEventUseCase : IUpdateEventUseCase,
-        @inject("IGetEventsByIdUseCase") private _getEventsByIdUseCase : IGetEventByIdUseCase
+        @inject("IGetEventsByIdUseCase") private _getEventsByIdUseCase : IGetEventByIdUseCase,
+        @inject("IUpdateEventStatusUseCase") private _updateEventStatusUseCase : IUpdateEventStatusUseCase
     ){}
     async addEvent(req: Request, res: Response): Promise<void> {
 
-        const eventData = req.body as IAddEventDTO
-  
+        const eventData = req.body
+        console.log("event data",eventData)
         const vendorId = (req as CustomRequest).user.id
 
         const roundedData : IEventEntity ={
@@ -91,6 +93,29 @@ export class EventController implements IEventController{
 
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
+    }
+
+
+    async updateEventStatus(req: Request, res: Response): Promise<void> {
+        
+        const {eventId} = req.params
+        const {eventStatus} = req.body
+       
+        if(!eventId || !eventStatus){
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+        }
+
+        if(!["upcoming","ongoing","cancelled","completed"].includes(eventStatus)){
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.INVALID_EVENT_STATUS});
+        }
+
+        await this._updateEventStatusUseCase.execute(eventId,eventStatus)
+
+        res.status(HTTP_STATUS.OK)
+        .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
+
     }
 
     async getEventById(req: Request, res: Response): Promise<void> {

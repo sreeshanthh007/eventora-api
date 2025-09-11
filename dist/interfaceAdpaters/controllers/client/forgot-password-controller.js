@@ -31,6 +31,10 @@ let ForgotPasswordController = class ForgotPasswordController {
     handle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password, role } = req.body;
+            if (!email || !password || !role) {
+                res.status(constants_1.HTTP_STATUS.BAD_REQUEST)
+                    .json({ success: false, message: constants_1.ERROR_MESSAGES.MISSING_PARAMETERS });
+            }
             yield this.forgotUpdatePasswordUseCase.update(email, password, role);
             res.status(constants_1.HTTP_STATUS.OK).json({
                 message: constants_1.SUCCESS_MESSAGES.UPDATE_SUCCESS,
@@ -41,6 +45,6 @@ let ForgotPasswordController = class ForgotPasswordController {
 exports.ForgotPasswordController = ForgotPasswordController;
 exports.ForgotPasswordController = ForgotPasswordController = __decorate([
     (0, tsyringe_1.injectable)(),
-    __param(0, (0, tsyringe_1.inject)("IForgotClientUpdatePasswordUseCase")),
+    __param(0, (0, tsyringe_1.inject)("IForgotUpdatePasswordUseCase")),
     __metadata("design:paramtypes", [Object])
 ], ForgotPasswordController);

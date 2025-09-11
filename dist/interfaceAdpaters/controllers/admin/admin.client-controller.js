@@ -35,7 +35,7 @@ let AdminClientController = class AdminClientController {
             const response = yield this._getAllClientsUseCase.execute(Number(limit), search, Number(page));
             res.status(constants_1.HTTP_STATUS.OK).json({
                 success: true,
-                message: "users fetched successfully",
+                message: constants_1.SUCCESS_MESSAGES.USERS_FETCHED_SUCCESS,
                 clients: response.user,
                 totalPages: response.total,
             });
@@ -47,14 +47,14 @@ let AdminClientController = class AdminClientController {
             if (!userId || !status) {
                 res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
                     success: false,
-                    message: "userId and status are required",
+                    message: constants_1.ERROR_MESSAGES.USER_ID_AND_STATUS_REQUIRED
                 });
                 return;
             }
             if (!["active", "blocked"].includes(status)) {
                 res.status(constants_1.HTTP_STATUS.BAD_REQUEST).json({
                     success: false,
-                    message: "Status must be either 'active' or 'blocked'",
+                    message: constants_1.ERROR_MESSAGES.INVALID_STATUS
                 });
                 return;
             }

@@ -21,9 +21,7 @@ const roleMap = {
 };
 const extractToken = (req) => {
     const basePath = req.baseUrl.split("/");
-    console.log('the base path is', basePath);
     const userType = roleMap[basePath[2]];
-    console.log("the user type is", userType);
     if (["client", "vendor", "admin"].includes(userType)) {
         return {
             access_token: req.cookies[`${userType}_access_token`] || null,
@@ -40,7 +38,6 @@ const isBlacklisted = (token) => __awaiter(void 0, void 0, void 0, function* () 
 const verifyAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = extractToken(req);
-        console.log("htis is the token in verfy auth", token);
         if (!token) {
             res
                 .status(constants_1.HTTP_STATUS.UNAUTHORIZED)
@@ -48,11 +45,13 @@ const verifyAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             return;
         }
         if (yield isBlacklisted(token.access_token)) {
-            res.status(constants_1.HTTP_STATUS.UNAUTHORIZED).json({ message: "Token is Blacklisted" });
+            res.status(constants_1.HTTP_STATUS.UNAUTHORIZED).json({ message: constants_1.ERROR_MESSAGES.TOKEN_BLACKLISTED });
+            return;
         }
         const user = tokenService.verifyAccessToken(token.access_token);
         if (!user || !user.id) {
             res.status(constants_1.HTTP_STATUS.UNAUTHORIZED).json({ message: constants_1.ERROR_MESSAGES.UNAUTHORIZED_ACCESS });
+            return;
         }
         req.user = Object.assign(Object.assign({}, user), { access_token: token.access_token, refresh_token: token.refresh_token });
         next();
@@ -69,7 +68,6 @@ exports.verifyAuth = verifyAuth;
 const decodeToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = extractToken(req);
-        console.log("this si the toke to decode", token);
         if (!(token === null || token === void 0 ? void 0 : token.refresh_token)) {
             console.log("no token for decode");
             res

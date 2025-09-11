@@ -21,15 +21,15 @@ export class AdminRotes extends BaseRouter{
   protected initializeRoutes(): void {
        this.router.get(
       "/users",
-      authorizeRole(["admin"]),
       verifyAuth,
+      authorizeRole(["admin"]),
       asyncHandler(adminClientController.getAllClients.bind(adminClientController))
     );
 
     this.router.get(
             "/vendors",
-            authorizeRole(["admin"]),
             verifyAuth,
+            authorizeRole(["admin"]),
             asyncHandler(adminVendorController.getAllVendors.bind(adminVendorController))
         )
 
@@ -56,22 +56,22 @@ export class AdminRotes extends BaseRouter{
         
     this.router.patch(
         "/user-status",
-        authorizeRole(["admin"]),
         verifyAuth,
+        authorizeRole(["admin"]),
             asyncHandler(adminClientController.updateClientAccountStatus.bind(adminClientController))
     );
 
     this.router.patch(
         "/vendor-status",
-        authorizeRole(["admin"]),
         verifyAuth,
+        authorizeRole(["admin"]),
         asyncHandler(adminVendorController.udpateVendorAccountStatus.bind(adminVendorController))
     );
 
     this.router.patch(
         "/category-status",
-        authorizeRole(["admin"]),
         verifyAuth,
+        authorizeRole(["admin"]),
         asyncHandler(categoryController.toogleCategory.bind(categoryController))
     )
 
@@ -80,7 +80,7 @@ export class AdminRotes extends BaseRouter{
         "/categories",
         verifyAuth,
         authorizeRole(["admin"]),
-        asyncHandler(categoryController.getAllCategory.bind(categoryController))
+        asyncHandler(adminController.getAllCategory.bind(adminController))
     )
 
         this.router.post(
@@ -91,22 +91,22 @@ export class AdminRotes extends BaseRouter{
 
         this.router.post(
             "/add-category",
-            authorizeRole(["admin"]),
             verifyAuth,
+            authorizeRole(["admin"]),
             asyncHandler(categoryController.addCategory.bind(categoryController))
         );
 
         this.router.patch(
             "/edit-category/:categoryId",
-            authorizeRole(["admin"]),
             verifyAuth,
+            authorizeRole(["admin"]),
             asyncHandler(adminController.editCategory.bind(adminController))
         );
 
         this.router.post(
             "/logout",
-            authorizeRole(["admin"]),
             verifyAuth,
+            authorizeRole(["admin"]),
             asyncHandler(authController.logout.bind(authController))
         )
     }

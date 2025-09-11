@@ -1,39 +1,38 @@
 import { container } from "tsyringe";
 
 import { DependencyInjection } from ".";
-import { ForgotOtpController } from "interfaceAdpaters/controllers/client/forgot-password.sentOTP-controller";
-import { ForgotPasswordController } from "interfaceAdpaters/controllers/client/forgot-password-controller";
+import { ForgotOtpController } from "@controllers/client/forgot-password.sentOTP-controller";
+import { ForgotPasswordController } from "@controllers/client/forgot-password-controller";
 
 
 // ======logger=========//
-import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
+import { LoggerMiddleWare } from "@middlewares/logger.middleware";
 import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
-import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
-import { VendorForgotPassword } from "interfaceAdpaters/controllers/vendor/VendorforgotPasswordController";
-import { ForgotVendorOTPController } from "interfaceAdpaters/controllers/vendor/forgot-password.vendorController";
-import { BlockedStatusMiddleware } from "interfaceAdpaters/middlewares/block-status.middleware";
-// import { EditVendorProfileController } from "interfaceAdpaters/controllers/vendor/edit-profile-controller";
-import { AuthController } from "interfaceAdpaters/controllers/auth/auth-controller";
+import { ErrorMiddleware } from "@middlewares/error.middleware";
+import { VendorForgotPassword } from "@controllers/vendor/VendorforgotPasswordController";
+import { ForgotVendorOTPController } from "@controllers/vendor/forgot-password.vendorController";
+import { BlockedStatusMiddleware } from "@middlewares/block-status.middleware";
+import { AuthController } from "@controllers/auth/auth-controller";
 import { IAuthController } from "@entities/controllerInterfaces/auth/auth.controller.interface";
 import { ICategoryController } from "@entities/controllerInterfaces/category/category.interface";
-import { CategoryController } from "interfaceAdpaters/controllers/category-controller";
+import { CategoryController } from "@controllers/category-controller";
 import { IAdminVendorController } from "@entities/controllerInterfaces/admin/admin.vendor.controller.interface";
-import { AdminVendorController } from "interfaceAdpaters/controllers/admin/vendor-controller";
+import { AdminVendorController } from "@controllers/admin/vendor-controller";
 import { IAdminClientController } from "@entities/controllerInterfaces/admin/client.controller.interface";
 import { AdminClientController } from "interfaceAdpaters/controllers/admin/admin.client-controller";
-import { IFetchCategoryController } from "@entities/controllerInterfaces/client/get-all-categories.interface";
+
 
 import { IEventController } from "@entities/controllerInterfaces/vendor/event/event-controller.interface";
-import { EventController } from "interfaceAdpaters/controllers/vendor/event/event-controller";
+import { EventController } from "@controllers/vendor/event/event-controller";
 import { IClientController } from "@entities/controllerInterfaces/client/client-controller.interface";
-import { ClientController } from "interfaceAdpaters/controllers/client/client-controller";
+import { ClientController } from "@controllers/client/client-controller";
 import { IVendorController } from "@entities/controllerInterfaces/vendor/vendor-controller.interface";
-import { VendorController } from "interfaceAdpaters/controllers/vendor/vendor-controller";
+import { VendorController } from "@controllers/vendor/vendor-controller";
 import { IAdminController } from "@entities/controllerInterfaces/admin/admin.controller.interface";
-import { AdminController } from "interfaceAdpaters/controllers/admin/admin-controller";
+import { AdminController } from "@controllers/admin/admin-controller";
 import { IServiceController } from "@entities/controllerInterfaces/vendor/service/service-controller.interface";
-import { ServiceController } from "interfaceAdpaters/controllers/vendor/service/service-controller";
-import { FetchCategoryController } from "interfaceAdpaters/controllers/client/category-controller";
+import { ServiceController } from "@controllers/vendor/service/service-controller";
+
 
 
 DependencyInjection.registerAll();
@@ -48,7 +47,7 @@ export const vendoController = container.resolve<IVendorController>(VendorContro
 export const categoryController = container.resolve<ICategoryController>(CategoryController)
 export const eventController = container.resolve<IEventController>(EventController)
 export const serviceController = container.resolve<IServiceController>(ServiceController);
-export const fetchCategoryController = container.resolve<IFetchCategoryController>(FetchCategoryController)
+
 export const forgotOtpController = container.resolve(ForgotOtpController);
 
 export const forgotPasswordController = container.resolve(

@@ -6,6 +6,11 @@ export const ROLES = {
 
 export type TRole = "client" | "admin" | "vendor";
 
+export enum vendorStatus {
+  APPROVED="approved",
+  REJECTED="rejected"
+}
+
 export enum HTTP_STATUS  {
   OK= 200,
   CREATED= 201,
@@ -67,9 +72,11 @@ export enum ERROR_MESSAGES  {
   MISSING_PARAMETERS="Some details are missing",
    USER_ID_AND_STATUS_REQUIRED="UserId and status are required",
   INVALID_STATUS="Status must be either 'active' or 'blocked",
-  TOKEN_BLACKLISTED="Token is Blacklisted"
+  INVALID_EVENT_STATUS="Invalid Event Status.",
+  TOKEN_BLACKLISTED="Token is Blacklisted",
+} ;
 
-};
+export const   EVENT_STATUS_ERROR = (currentStatus:string,newStatus:string) => `cannot change from ${currentStatus} to ${newStatus}`
 
 export const VERIFICATION_MAIL_CONTENT = (otp: string) => `
   <div style="font-family: Arial, sans-serif; color: #333;">
