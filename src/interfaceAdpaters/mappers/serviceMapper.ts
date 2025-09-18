@@ -2,7 +2,7 @@
 // import { ServiceTableDTO } from "@shared/dtos/service.dto";
 
 import { IServiceEntity } from "@entities/models/service.entity";
-import { ServiceTableDTO } from "@shared/dtos/service.dto";
+import { PaginatedServiceDTO, ServiceTableDTO } from "@shared/dtos/service.dto";
 
 
 export interface IServiceResponse {
@@ -43,5 +43,19 @@ export function mapServiceForEditService(service:IServiceEntity) : IServiceRespo
     termsAndConditions:service.termsAndConditions,
     yearsOfExperience:service.yearsOfExperience,
     categoryId:service.categoryId
+  }
+}
+
+
+export function mapServiceforClientPage(service:IServiceEntity) : PaginatedServiceDTO{
+
+  return {
+    _id:service._id?.toString(),
+    serviceTitle:service.serviceTitle,
+    serviceDescription:service.serviceDescription,
+    yearsOfExperience:service.yearsOfExperience,
+    categoryName:service.categoryName!,
+    servicePrice:service.servicePrice,
+    vendorId:service.vendorId?.toString() || ""
   }
 }

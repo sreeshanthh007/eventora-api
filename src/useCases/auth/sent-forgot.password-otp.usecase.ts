@@ -3,6 +3,7 @@ import { ISendOtpUsecase } from "@entities/useCaseInterfaces/auth/sendOtp-usecas
 import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
 import { IBcrypt } from "@frameworks/security/bcrypt.interface";
 import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
+import { RedisClient } from "@frameworks/cache/redis.client";
 
 
 @injectable()
@@ -22,7 +23,9 @@ export class sendForgotPasswordOtp implements ISendOtpUsecase {
 
         const hashedOTP = await this.otpBcrypt.hash(otp)
 
-        await this.otpService.storeOTP(email,hashedOTP,300)
+        await RedisClient.set(email,hashedOTP,{EX:300});
+        
+        // await this.otpService.storeOTP(email,hashedOTP,300)
 
         await this.emailService.sendEmail(
             email,

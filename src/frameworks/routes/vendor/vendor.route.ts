@@ -140,6 +140,8 @@ export class VendorRoutes extends BaseRouter{
             asyncHandler(authController.logout.bind(authController))
         );
 
+       
+
         this.router.post("/refresh-token",decodeToken,asyncHandler(authController.handleTokenRefresh.bind(authController)))
         
     }

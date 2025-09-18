@@ -1,6 +1,6 @@
 
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
-import { IAddCategoryUseCase } from "@entities/useCaseInterfaces/admin/add-category.usecase";
+import { IAddCategoryUseCase } from "@entities/useCaseInterfaces/admin/add-category.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";

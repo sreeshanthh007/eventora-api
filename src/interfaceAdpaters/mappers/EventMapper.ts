@@ -1,5 +1,5 @@
 import { IEventEntity } from "@entities/models/event.entity";
-import { eventDetailsDTO, EventTableDTO} from "@shared/dtos/event.dto";
+import { eventDetailsDTO, EventTableDTO, PaginatedEventDetailsDTO} from "@shared/dtos/event.dto";
 import { EventDTO } from "@shared/dtos/user.dto";
 
 
@@ -123,27 +123,7 @@ export const toClientLandingPage = (events:IEventEntity[]) : EventDTO[]=>{
 }
 
 
-//  function mapEventToEventDetailsPage (event:IEventEntity) :PaginatedEventDetailsDTO{
-//   return{
-//     title:event.title,
-//     eventLocation:event.eventLocation,
-//     images:event.Images[0],
-//     description:event.description,
-//     attendiesCount:event.attendiesCount!,
-//     pricePerTicket:event.pricePerTicket,
-//     eventSchedule:event.eventSchedule.map(schedule =>({
-//       date:schedule.date,
-//       startTime:schedule.startTime,
-//       endTime:schedule.endTime
-//     })),
-//     status:event.status
-//   }
-// }
 
-// export const toClientEventDetailsPage =  (events:IEventEntity[]) : PaginatedEventDetailsDTO[]=>{
-
-//   return events.map(mapEventToEventDetailsPage)
-// }
 
 
 
@@ -173,5 +153,26 @@ export function mapEventsToEventDetailPage(event: IEventEntity): eventDetailsDTO
         })
   };
 }
+
+
+export function mapEventsToClientEventPage(event:IEventEntity) : PaginatedEventDetailsDTO {
+  return {
+    _id:event._id?.toString(),
+    title:event.title,
+    status:event.status,
+    pricePerTicket: event.pricePerTicket 
+  ?? Math.max(...(event.tickets?.map(item => item.pricePerTicket) ?? [])),
+    attendiesCount:event.attendiesCount,
+    eventLocation:event.eventLocation,
+    images:event.Images[0],
+    description:event.description,
+    eventSchedule:event.eventSchedule.map(s => ({
+      date:s.date,
+      startTime:s.startTime,
+      endTime:s.endTime
+    })),
+  }
+}
+
 
 

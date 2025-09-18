@@ -1,5 +1,5 @@
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
-import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase";
+import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";

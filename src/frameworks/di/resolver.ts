@@ -32,6 +32,8 @@ import { IAdminController } from "@entities/controllerInterfaces/admin/admin.con
 import { AdminController } from "@controllers/admin/admin-controller";
 import { IServiceController } from "@entities/controllerInterfaces/vendor/service/service-controller.interface";
 import { ServiceController } from "@controllers/vendor/service/service-controller";
+import { IEventBookingController } from "@entities/controllerInterfaces/client/eventBooking/event-booking-controller.interface";
+import { EventBookingController } from "@controllers/client/eventBooking/event-booking-controller";
 
 
 
@@ -47,6 +49,7 @@ export const vendoController = container.resolve<IVendorController>(VendorContro
 export const categoryController = container.resolve<ICategoryController>(CategoryController)
 export const eventController = container.resolve<IEventController>(EventController)
 export const serviceController = container.resolve<IServiceController>(ServiceController);
+export const eventBookingController = container.resolve<IEventBookingController>(EventBookingController)
 
 export const forgotOtpController = container.resolve(ForgotOtpController);
 

@@ -1,6 +1,6 @@
 import { ICategoryEnity } from "@entities/models/category.entity";
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
-import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase";
+import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase.interface";
 import { toCategoryListResponse } from "interfaceAdpaters/mappers/CategoryMapper";
 import { PaginatedCategory } from "interfaceAdpaters/models/paginatedCategory";
 import { FilterQuery } from "mongoose";

@@ -1,5 +1,5 @@
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
-import { IResendVerificationUseCase } from "@entities/useCaseInterfaces/admin/resend-verification.usecase";
+import { IResendVerificationUseCase } from "@entities/useCaseInterfaces/admin/resend-verification.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";

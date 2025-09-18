@@ -2,7 +2,7 @@ import { IServiceController } from "@entities/controllerInterfaces/vendor/servic
 import { IServiceEntity } from "@entities/models/service.entity";
 import { IAddServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/add-service.interface.usecase";
 import { IEditServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
-import { IGetAllServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/get-all-service.interface.usecase";
+import { IGetAllServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/get-all-service-vendor.interface.usecase";
 import { IGetServiceByIdUseCase } from "@entities/useCaseInterfaces/vendor/service/get-service-by-id.interface.usecase";
 import { IToggleServiceStatusUseCase } from "@entities/useCaseInterfaces/vendor/service/toggle-service.interface.usecase";
 import {

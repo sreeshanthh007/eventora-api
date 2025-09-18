@@ -6,6 +6,7 @@ import { CustomError } from "@entities/utils/custom.error";
 import { HTTP_STATUS , ERROR_MESSAGES } from "@shared/constants";
 import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
 import { IBcrypt } from "@frameworks/security/bcrypt.interface";
+import { RedisClient } from "@frameworks/cache/redis.client";
 
 
 @injectable()
@@ -33,7 +34,9 @@ export class SendEmailUseCase implements ISendEmailUseCase {
         
         const hashedOTP = await this.otpBcrypt.hash(otp);
 
-        await this.OTPService.storeOTP(email,hashedOTP,300)
+        await RedisClient.set(email,hashedOTP,{EX:300})
+        
+        // await this.OTPService.storeOTP(email,hashedOTP,300)
         
         await this.emailService.sendEmail(
             email,

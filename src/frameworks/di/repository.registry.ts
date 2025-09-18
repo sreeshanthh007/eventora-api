@@ -7,8 +7,8 @@ import { VendorRepository } from "interfaceAdpaters/repositories/vendor/vendor.r
 import { IAdminRepository } from "@entities/repositoryInterfaces/admin/admin-repository-interface";
 import { AdminRepository } from "interfaceAdpaters/repositories/admin/admin.repository";
 
-import { IRefreshTokenRepository } from "@entities/repositoryInterfaces/auth/refresh-token-repository.interface";
-import { refreshTokenRepository } from "interfaceAdpaters/repositories/auth/refresh-token.repository";
+// import { IRefreshTokenRepository } from "@entities/repositoryInterfaces/auth/refresh-token-repository.interface";
+// import { refreshTokenRepository } from "interfaceAdpaters/repositories/auth/refresh-token.repository";
 import { IRedisTokenRepository } from "@entities/repositoryInterfaces/redis/redis-token-repository.interface";
 import { RedisTokenRepository } from "interfaceAdpaters/repositories/redis/redisTokenRepository";
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
@@ -21,6 +21,10 @@ import { INotificationRepository } from "@entities/repositoryInterfaces/notifica
 import { NotificationRepository } from "interfaceAdpaters/repositories/notification/notification.repository";
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { ServiceRepository } from "interfaceAdpaters/repositories/common/service.repository";
+import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
+import { WalletRepository } from "interfaceAdpaters/repositories/wallet/wallet.repository";
+import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-repository-interface";
+import { TicketRepository } from "interfaceAdpaters/repositories/ticket/ticket-repository";
 
 export class RepositoryRegistry {
     static registerRepositories():void {
@@ -32,9 +36,9 @@ export class RepositoryRegistry {
             useClass:VendorRepository
         })
 
-        container.register<IRefreshTokenRepository>("IRefreshTokenRepository",{
-            useClass:refreshTokenRepository
-        })
+        // container.register<IRefreshTokenRepository>("IRefreshTokenRepository",{
+        //     useClass:refreshTokenRepository
+        // })
 
         container.register<IOtpCacheRepository>("IOTPRepository",{
             useClass:OtpCacheRepository
@@ -65,5 +69,12 @@ export class RepositoryRegistry {
             useClass:NotificationRepository
         });
 
+        container.register<IWalletRepository>("IWalletRepository",{
+            useClass:WalletRepository
+        });
+
+        container.register<ITicketRepository>("ITicketRepository",{
+            useClass:TicketRepository
+        });
     }
 }

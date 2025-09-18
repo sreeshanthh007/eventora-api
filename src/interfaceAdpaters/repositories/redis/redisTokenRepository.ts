@@ -12,10 +12,10 @@ export class RedisTokenRepository implements IRedisTokenRepository{
             });
     }
 
-    async isTokenBlacklisted(token: string): Promise<boolean> {
+    // async isTokenBlacklisted(token: string): Promise<boolean> {
         
-        const result = await RedisClient.get(token)
-        console.log("is token blacklisted",result)
-        return result==="blacklisted"
-    }
+    //     const result = await RedisClient.get(token)
+    //     console.log("is token blacklisted",result)
+    //     return result==="blacklisted"
+    // }
 }

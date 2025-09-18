@@ -1,6 +1,6 @@
 import { IEventEntity } from "@entities/models/event.entity";
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
-import { IGetAllEventsUseCase } from "@entities/useCaseInterfaces/vendor/event/get-all-events.usecase.interface";
+import { IGetAllEventsUseCase } from "@entities/useCaseInterfaces/vendor/event/get-all-events-vendor.usecase.interface";
 import { mapEventEntityToTable } from "interfaceAdpaters/mappers/EventMapper";
 import { PaginatedEvents } from "interfaceAdpaters/models/paginatedEvents";
 import { FilterQuery } from "mongoose";

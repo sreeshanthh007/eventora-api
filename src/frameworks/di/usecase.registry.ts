@@ -18,7 +18,6 @@ import { jwtService } from "interfaceAdpaters/services/jwtService";
 import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
 import { EmailService } from "interfaceAdpaters/services/emailServices";
 import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
-// import { OTPService } from "interfaceAdpaters/services/OTPService";
 import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
 import { UserExistService } from "interfaceAdpaters/services/user-existService";
 import { IClientExistService } from "@entities/serviceInterfaces/client-exist.service.interface";
@@ -47,14 +46,14 @@ import { WinstonLoggerAdapter } from "interfaceAdpaters/services/logger/winston-
 import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
 import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
 import { ISendOtpUsecase } from "@entities/useCaseInterfaces/auth/sendOtp-usecase.interface";
-import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase";
+import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase.interface";
 import { getAllUsersUseCase } from "@usecases/admin/get-all-users-usecase";
 import { IuserToggleStatusUseCase } from "@entities/useCaseInterfaces/admin/handle-user-toggle-status.usecase.interface";
 import { UserToggleStatusUseCase } from "@usecases/admin/handle-user-toggle-status.usecase";
 import { ForgotVendorUpdatePasswordUseCase } from "@usecases/vendor/forgotPasswordVendorUseCase";
-import { IGetAllVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-all-vendors.usecase";
+import { IGetAllVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-all-vendors.usecase.interface";
 import { GetAllVendorUseCase } from "@usecases/admin/get-all-vendors.usecase";
-import { IHandleToggleVendorUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle.vendor.usecase";
+import { IHandleToggleVendorUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle.vendor.usecase.interface";
 import { HandleToggleVendorStatusUseCase } from "@usecases/admin/handle-toggle-vendor.usecase";
 import { IVendorExistService } from "@entities/serviceInterfaces/vendor-exist.service.interface";
 import { VendorExistService } from "interfaceAdpaters/services/vendor/vendorExist-service";
@@ -66,21 +65,21 @@ import { IGoogleUseCase } from "@entities/useCaseInterfaces/auth/google-login-us
 import { GoogleuseCase } from "@usecases/auth/google-login-usecase";
 import { ICloudinarySignatureService } from "@entities/serviceInterfaces/cloudinary-service.interface";
 import { CloudinarySignatureService } from "@frameworks/cloudinary/cloudinarySignatureService";
-import { IAddCategoryUseCase } from "@entities/useCaseInterfaces/admin/add-category.usecase";
+import { IAddCategoryUseCase } from "@entities/useCaseInterfaces/admin/add-category.usecase.interface";
 import { AddCategoryUseCase } from "@usecases/admin/add-category.usecase";
-import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase";
+import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase.interface";
 import { GetAllCategoryUseCase } from "@usecases/admin/get-all-category.usecase";
-import { IGetRequestedVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-requested-vendors.usecase";
+import { IGetRequestedVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-requested-vendors.usecase.interfaces";
 import { GetRequestedVendorsUseCase } from "@usecases/admin/get-requested-vendors.usecase";
-import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve-vendor.usecase";
+import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve-vendor.usecase.interface";
 import { ApproveVendorUseCase } from "@usecases/admin/approve-vendor.usecase";
-import { IRejectVendorUseCase } from "@entities/useCaseInterfaces/admin/reject-vendor.usecase";
+import { IRejectVendorUseCase } from "@entities/useCaseInterfaces/admin/reject-vendor.usecase.interface";
 import { RejectVendorUseCase } from "@usecases/admin/reject-vendor.usecase";
 import { IHostNewEventUseCase } from "@entities/useCaseInterfaces/vendor/event/host-new-event.usecase";
 import { HostNewEventUseCase } from "@usecases/vendor/event/host-new-event.usecase";
-import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-category.usecase";
+import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-category-clients.usecase.interface";
 import { GetAllCategoryForClientUseCase } from "@usecases/client/get-all-category.usecase";
-import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase";
+import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase.interface";
 import { HandleToggleCategoryUseCase } from "@usecases/admin/handle-toggle-category.usecase";
 import { OtpCacheService } from "interfaceAdpaters/services/OtpCacheService";
 import { IFirebaseService } from "@entities/serviceInterfaces/firebase.service.interface";
@@ -89,9 +88,9 @@ import { INotificationService } from "@entities/serviceInterfaces/notification.s
 import { NotificationService } from "interfaceAdpaters/services/notification.service";
 import { IFcmTokenUseCase } from "@entities/useCaseInterfaces/auth/fcmtoken.interface";
 import { FcmTokenUseCase } from "@usecases/fcmToken/fcmtoken.usecase";
-import { IResendVerificationUseCase } from "@entities/useCaseInterfaces/admin/resend-verification.usecase";
+import { IResendVerificationUseCase } from "@entities/useCaseInterfaces/admin/resend-verification.usecase.interface";
 import { resendVerificationUseCase } from "@usecases/vendor/resend-verification.usecase";
-import { IGetAllEventsUseCase } from "@entities/useCaseInterfaces/vendor/event/get-all-events.usecase.interface";
+import { IGetAllEventsUseCase } from "@entities/useCaseInterfaces/vendor/event/get-all-events-vendor.usecase.interface";
 import { GetAllEventsUseCase } from "@usecases/vendor/event/get-all-events.usecase";
 import { IToggleStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/toggleStatus.usecase.interface";
 import { ToggleStatusUseCase } from "@usecases/vendor/event/toggle-status.usecase";
@@ -111,7 +110,7 @@ import { IGetAllCategoryForServiceUseCase } from "@entities/useCaseInterfaces/ge
 import { GetCategoriesForServiceUseCase } from "@usecases/get-category-for-service.usecase";
 import { IEditServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
 import { EditServiceUseCase } from "@usecases/vendor/service/edit-service.usecase";
-import { IGetAllServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/get-all-service.interface.usecase";
+import { IGetAllServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/get-all-service-vendor.interface.usecase";
 import { GetAllServiceUseCase } from "@usecases/vendor/service/get-all-service.usecase";
 import { IGetServiceByIdUseCase } from "@entities/useCaseInterfaces/vendor/service/get-service-by-id.interface.usecase";
 import { GetServiceByIdUseCase } from "@usecases/vendor/service/get-service-by-id.usecase";
@@ -121,14 +120,28 @@ import { IUpdateEventUseCase } from "@entities/useCaseInterfaces/vendor/event/up
 import { UpdateEventUseCase } from "@usecases/vendor/event/update-event-usecase";
 import { IGetEventByIdUseCase } from "@entities/useCaseInterfaces/vendor/event/get-event-by-id..usecase.interface";
 import { GetEventsByIdUseCase } from "@usecases/vendor/event/get-events-by-id.usecase";
-import { IGetAllEventsForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-events.usecase.interface";
+import { IGetAllEventsForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-events-clients.usecase.interface";
 import { GetAllEventsForClientsUseCase } from "@usecases/client/get-all-events.usecase";
 import { IUpdateEventStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/update-event-status.usecase.interface";
 import { UpdateEventStatusUseCase } from "@usecases/vendor/event/update-event-status.usecase";
-import { IGetEventDetailsUseCase } from "@entities/useCaseInterfaces/client/get-event-details.interface.usecase";
+import { IGetEventDetailsUseCase } from "@entities/useCaseInterfaces/client/get-event-details-clients.interface.usecase";
 import { GetEventDetailsUseCase } from "@usecases/client/get-event-details.usercase";
-// import { IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-events-with-filters.usercase.interface";
-// import { GetAllEventsWithFilterUseCase } from "@usecases/client/get-all-events-with-filter.usecase";
+import { IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-events-with-filters.usercase.interface";
+import { GetAllEventsWithFilterUseCase } from "@usecases/client/get-all-events-with-filter.usecase";
+import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { RedisLockService } from "interfaceAdpaters/services/redis-lock-service";
+import { StripeService } from "interfaceAdpaters/services/stripe-service";
+import { IQrCodeService } from "@entities/serviceInterfaces/qr-code-service.interface";
+import { QrCodeService } from "interfaceAdpaters/services/qrCode-service";
+import { IStripeService } from "@entities/serviceInterfaces/stripe-service-interface";
+import { IHandleEventWebHookUseCase } from "@entities/useCaseInterfaces/client/event-webhook-handle.usecase.interface";
+import { EventWebHookHandleUseCase } from "@usecases/client/event-webhook-handle.usecase";
+import { IGetAllServiceWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-service-with-filter.usecase.interface";
+import { GetAllServicesWithFilterUseCase } from "@usecases/client/get-all-service-with-filter.usecase";
+import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/get-service-details.usecase.interface";
+import { GetServiceDetailsUseCase } from "@usecases/client/get-all-service-details.usecase";
+import { IGetVendorDetailsUseCase } from "@entities/useCaseInterfaces/vendor/get-vendor-details.usecase.interface";
+import { GetVendorDetailsUseCase } from "@usecases/vendor/vendor-details.usecase";
 
 export class UseCaseRegistry {
   static registerUseCases(): void {
@@ -238,6 +251,18 @@ export class UseCaseRegistry {
       useClass: NotificationService,
     });
 
+   container.register<ILockService>("IRedisLockService",{
+      useClass:RedisLockService
+   });
+
+   container.register<IStripeService>("IStripeService",{
+    useClass:StripeService
+   });
+
+   container.register<IQrCodeService>("IQRCodeService",{
+    useClass:QrCodeService
+   })
+
     container.register<ICloudinarySignatureService>(
       "ICloudinarySignatureService",
       {
@@ -298,9 +323,9 @@ export class UseCaseRegistry {
       useClass: GetAllEventsUseCase,
     });
 
-    // container.register<IGetAllEventsWithFilterUseCase>("IGetAllEventsWithFilterUseCase",{
-    //   useClass:GetAllEventsWithFilterUseCase
-    // });
+    container.register<IGetAllEventsWithFilterUseCase>("IGetAllEventsWithFilterUseCase",{
+      useClass:GetAllEventsWithFilterUseCase
+    });
 
     container.register<IGetEventDetailsUseCase>("IGetEventDetailsUseCase",{
       useClass:GetEventDetailsUseCase
@@ -388,6 +413,10 @@ export class UseCaseRegistry {
       useClass:UpdateEventUseCase
     });
 
+    container.register<IHandleEventWebHookUseCase>("IHandleEventWebhookUseCase",{
+      useClass:EventWebHookHandleUseCase
+    });
+
     container.register<IUpdateEventStatusUseCase>("IUpdateEventStatusUseCase",{
       useClass:UpdateEventStatusUseCase
     });
@@ -398,6 +427,10 @@ export class UseCaseRegistry {
 
     container.register<IGetAllEventsForClientsUseCase>("IGetAllEventsForClientsUseCase",{
       useClass:GetAllEventsForClientsUseCase
+    });
+
+    container.register<IGetAllServiceWithFilterUseCase>("IGetAllServiceForClientUseCase",{
+      useClass:GetAllServicesWithFilterUseCase
     });
     
     container.register<IAddServiceUseCase>("IAddServiceUseCase", {
@@ -411,6 +444,15 @@ export class UseCaseRegistry {
     container.register<IGetAllServiceUseCase>("IGetAllServiceUsecase",{
       useClass:GetAllServiceUseCase
     });
+
+    container.register<IGetAllServiceDetailsUseCase>("IGetServiceDetailsUseCase",{
+    useClass:GetServiceDetailsUseCase
+    });
+
+
+    container.register<IGetVendorDetailsUseCase>("IGetVendorDetailsUseCase",{
+      useClass:GetVendorDetailsUseCase
+    })
 
     container.register<IGetServiceByIdUseCase>("IGetServiceByIdUseCase",{
       useClass:GetServiceByIdUseCase

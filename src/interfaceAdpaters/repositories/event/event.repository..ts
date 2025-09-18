@@ -2,7 +2,7 @@ import { IEventEntity } from "@entities/models/event.entity";
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
 import { EventModel } from "@frameworks/database/Mongodb/models/event.model";
 import { IUpdateEventDTO } from "@shared/dtos/event.dto";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, ObjectId } from "mongoose";
 
 export class EventRepository implements IEventRepository{
     async save(data: IEventEntity): Promise<void> {
@@ -28,14 +28,104 @@ export class EventRepository implements IEventRepository{
     }
 
 
-    async findfilteredEvents(filter: FilterQuery<IEventEntity>, skip: number, limit: number, sort: Record<string, 1 | -1>): Promise<{ events: IEventEntity[] | []; total: number; }> {
+    async findfilteredEvents(filters: { search?: string; location?: string; sort?: string; lat?: number; lng?: number; }, skip: number, limit: number): Promise<{ events: IEventEntity[] | []; total: number; }> {
         
-        const [events,total] = await Promise.all([
-            EventModel.find(filter).sort(sort).skip(skip).limit(limit),
-            EventModel.countDocuments(filter)
-        ]);
+        const {search,location,sort,lat,lng} = filters
 
-        return {events,total}
+        const filter : FilterQuery<IEventEntity> = {}
+
+        if(search){
+            filter.$or=[
+                {title:{$regex:search,$options:"i"}}
+            ]
+        }
+
+        if (location && location !== "near-me" && location !== "all") {
+        filter.eventLocation = { $regex: location, $options: "i" };
+      }
+
+        let sortStage: Record<string, 1 | -1> = {};
+
+            switch (sort) {
+                case "date-asc":
+                sortStage = { "eventSchedule.date": 1 };
+                break;
+                case "date-desc":
+                sortStage = { "eventSchedule.date": -1 };
+                break;
+                case "price-high":
+                sortStage = { effectivePrice: -1 };
+                break;
+                case "price-low":
+                sortStage = { effectivePrice: 1 };
+                break;
+                default:
+                sortStage = { createdAt: -1 }; 
+                break;
+                case "name-asc" :
+                sortStage = {"title":1}
+                break;
+                case "name-desc" :
+                sortStage = {"title":-1}
+                break;
+            }
+
+        const pipeline : any[] = [];
+
+
+  if (location === "near-me" && lat && lng) {
+    pipeline.push({
+      $geoNear: {
+        near: { type: "Point", coordinates: [lng, lat] },
+        distanceField: "distance",
+        spherical: true,
+        maxDistance:5000,
+        query:filter
+      },
+    });
+  } else if(location== "10-20km" && lat && lng) {
+
+    pipeline.push({
+      $geoNear: {
+        near: { type: "Point", coordinates: [lng, lat] },
+        distanceField: "distance",
+        spherical: true,
+        minDistance:0,
+        maxDistance:10000,
+        query:filter
+      },
+    });
+  }else{
+    pipeline.push({ $match: filter });
+
+  }
+
+  
+  pipeline.push({
+    $addFields: {
+      effectivePrice: {
+        $cond: [
+          { $ifNull: ["$pricePerTicket", false] },
+          "$pricePerTicket",
+          { $max: "$tickets.pricePerTicket" },
+        ],
+      },
+    },
+  });
+
+  pipeline.push({ $sort: sortStage });
+  pipeline.push({ $skip: skip });
+  pipeline.push({ $limit: limit });
+
+  const events = await EventModel.aggregate(pipeline);
+
+
+  const total =
+    location === "near-me" && lat && lng
+      ? events.length 
+      : await EventModel.countDocuments(filter);
+
+  return { events, total };
     }
 
     async findById(eventId: string): Promise<IEventEntity | null> {
@@ -68,5 +158,32 @@ export class EventRepository implements IEventRepository{
                 new:true
             }
         )
+    }
+
+    async updateAfterTicketBooking(eventId: string | ObjectId, quantity: number, ticketType?: string): Promise<void> {
+        
+      if(ticketType!==""){
+        await EventModel.updateOne(
+          {_id:eventId,"tickets.ticketType":ticketType},
+          {
+            $inc:{
+              attendiesCount:quantity,
+              "tickets.bookedTickets":quantity,
+              "tickets.totalTickets":-quantity
+            }
+          }
+        )
+      }else{
+        await EventModel.updateOne(
+          {_id:eventId},
+          {
+            $inc:{
+              bookedTickets:quantity,
+              attendiesCount:quantity,
+              totalTicket:-quantity
+            }
+          }
+        )
+      }
     }
 }

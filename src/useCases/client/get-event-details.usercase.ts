@@ -1,5 +1,5 @@
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
-import { IGetEventDetailsUseCase } from "@entities/useCaseInterfaces/client/get-event-details.interface.usecase";
+import { IGetEventDetailsUseCase } from "@entities/useCaseInterfaces/client/get-event-details-clients.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
 import { mapEventsToEventDetailPage } from "@mappers/EventMapper";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";

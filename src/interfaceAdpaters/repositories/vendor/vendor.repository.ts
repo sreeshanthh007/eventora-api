@@ -7,6 +7,7 @@ import { IVendorEntity } from "@entities/models/vendor.entity";
 import { FilterQuery, ObjectId } from "mongoose";
 
 
+
 @injectable()
 export class VendorRepository implements IVendorRepository {
   async save(data: Partial<IVendorEntity>): Promise<IVendorEntity> {
@@ -26,6 +27,7 @@ export class VendorRepository implements IVendorRepository {
       $set: {
         status: status,
       },
+      
     });
   }
 

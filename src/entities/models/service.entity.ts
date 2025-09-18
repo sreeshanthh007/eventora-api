@@ -16,5 +16,7 @@ export interface IServiceEntity  {
     termsAndConditions:string[],
     categoryId:string,
     status?:string
+    categoryName?:string
 }
+
 

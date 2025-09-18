@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
-import { IGetAllVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-all-vendors.usecase";
+import { IGetAllVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-all-vendors.usecase.interface";
 import { PaginatedUsers } from "interfaceAdpaters/models/paginatedUsers";
 import { mapClientAndVendorEntityToTableRow } from "interfaceAdpaters/mappers/ClientMapper";
 import { FilterQuery } from "mongoose";

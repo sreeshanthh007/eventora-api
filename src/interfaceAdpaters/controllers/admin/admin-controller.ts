@@ -1,6 +1,6 @@
 import { IAdminController } from "@entities/controllerInterfaces/admin/admin.controller.interface";
 import { IEditCategoryUseCase } from "@entities/useCaseInterfaces/admin/edit-category.usecase.interface";
-import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase";
+import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase.interface";
 import { HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
 import { Request, Response } from "express";
 import { categorySchema } from "interfaceAdpaters/validations/category-validation";

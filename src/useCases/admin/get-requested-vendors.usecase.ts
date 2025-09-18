@@ -1,6 +1,6 @@
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
-import { IGetRequestedVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-requested-vendors.usecase";
+import { IGetRequestedVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-requested-vendors.usecase.interfaces";
 import { toRequestedVendorTableDTO} from "interfaceAdpaters/mappers/VendorMapper";
 import { PaginatedVendors } from "interfaceAdpaters/models/PaginatedVendors";
 import { FilterQuery } from "mongoose";

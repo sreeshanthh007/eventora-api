@@ -7,6 +7,9 @@ export interface IClientController{
     updateProfileInformation(req:Request,res:Response) : Promise<void>
     getAllEvents(req:Request,res:Response) : Promise<void>
     getAllCategories(req:Request,res:Response) : Promise<void>
-    // getAllEventsWithFilters(req:Request,res:Response) : Promise<void>
+    getAllEventsWithFilters(req:Request,res:Response) : Promise<void>
+    getAllServiceWithFilters(req:Request,res:Response) : Promise<void>
     getEventDetails(req:Request,res:Response) : Promise<void>
+    getServiceDetails(req:Request,res:Response) : Promise<void>
+    getEventTickets(req:Request,res:Response) : Promise<void>
 }

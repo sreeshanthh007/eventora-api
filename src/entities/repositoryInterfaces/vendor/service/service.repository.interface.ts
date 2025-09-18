@@ -13,5 +13,7 @@ export interface IServiceRepository {
 
   getAllServices(filter:FilterQuery<IServiceEntity>,skip:number,limit:number) : Promise<{services:IServiceEntity[] | [];  total:number}>
 
+  findFIlteredSevices(filters:{search?:string,sort?:string},skip:number,limit:number) : Promise<{services:IServiceEntity[] | [] ; total:number}>
+
   findByIdAndUpdateStatus(serviceId:string,status:string) : Promise<void>
-}
+} 

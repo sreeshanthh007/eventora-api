@@ -33,12 +33,14 @@
     "mongoose": "^8.16.1",
     "morgan": "^1.10.1",
     "nodemailer": "^7.0.4",
+    "qrcode": "^1.5.4",
     "redis": "^5.5.6",
     "reflect-metadata": "^0.2.2",
     "socket.io": "^4.8.1",
     "stripe": "^18.5.0",
     "tsyringe": "^4.10.0",
     "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0",
     "zod": "^3.25.74"
   },
   "devDependencies": {
@@ -52,6 +54,7 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.0.10",
     "@types/nodemailer": "^6.4.17",
+    "@types/qrcode": "^1.5.5",
     "@types/socket.io": "^3.0.1",
     "@types/stripe": "^8.0.416",
     "@typescript-eslint/eslint-plugin": "^8.39.1",

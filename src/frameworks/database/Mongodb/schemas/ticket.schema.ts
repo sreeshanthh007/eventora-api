@@ -16,12 +16,20 @@ export const ticketSchema : Schema = new Schema<ITicketModel>(
 
         qrCodeLink:{type:String,required:true},
 
-        ticketStatus:{type:String,enum:['used', 'refunded', 'unused']},
+        ticketStatus:{type:String,enum:['used', 'refunded', 'unused'],default:'unused'},
 
         amount:{type:Number,required:false},
 
         ticketType:{type:String,required:false,default:"normal"},
 
-        quantity:{type:Number,required:true}
+        paymentStatus:{type:String,enum:["pending","successfull","failed"],default:"successful"},
+
+        // paymentTransactionId:{type:Schema.Types.ObjectId,ref:"Payment",required:false},
+
+        quantity:{type:Number,required:true},
+    },
+
+    {
+        timestamps:true
     }
 )

@@ -8,10 +8,11 @@ import express, { Application} from "express";
 import { AuthRoutes } from "../../frameworks/routes/auth/auth.route";
 import { ClientRoutes } from "@frameworks/routes/client/client.route";
 import { config } from "@shared/config";
-import { errorMiddleware } from "@frameworks/di/resolver";
+import { errorMiddleware, eventBookingController } from "@frameworks/di/resolver";
 import { AdminRotes } from "@frameworks/routes/admin/admin.route";
 import { VendorRoutes } from "@frameworks/routes/vendor/vendor.route";
 import { CloudinaryRoutes } from "@frameworks/routes/common/cloudinaryRoutes";
+import { asyncHandler } from "@shared/async-handler";
 
 export class ExpressServer {
   private _app: Application;
@@ -38,6 +39,11 @@ export class ExpressServer {
         allowedHeaders: ["Authorization", "Content-Type"],
         credentials: true,
       })
+    );
+
+    this._app.post("/cl/stripe-webhook",
+      express.raw({type:"application/json"}),
+      asyncHandler(eventBookingController.handleWebHook.bind(eventBookingController))
     );
 
     this._app.use(express.json());

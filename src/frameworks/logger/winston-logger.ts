@@ -1,25 +1,45 @@
-import winston from "winston"
+import winston from "winston";
+import DailyRotateFile from "winston-daily-rotate-file";
+
+const { combine, timestamp, errors, splat, json, colorize, simple } = winston.format;
 
 export const logger = winston.createLogger({
   level: "info",
-  format: winston.format.combine(
-    winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    winston.format.errors({ stack: true }),
-    winston.format.splat(),
-    winston.format.json()
+  format: combine(
+    timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+    errors({ stack: true }),
+    splat(),
+    json()
   ),
   defaultMeta: { service: "EVENTORA" },
   transports: [
     new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
+      format: combine(colorize(), simple()),
     }),
-    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
-    new winston.transports.File({ filename: "logs/combined.log" }),
+
+    
+    new DailyRotateFile({
+      filename: "logs/error-%DATE%.log",
+      datePattern: "YYYY-MM-DD",
+      level: "error",
+      maxFiles: "7d", 
+      zippedArchive: true, 
+    }),
+
+    
+    new DailyRotateFile({
+      filename: "logs/combined-%DATE%.log",
+      datePattern: "YYYY-MM-DD",
+      maxFiles: "14d",
+      zippedArchive: true,
+    }),
   ],
   exceptionHandlers: [
-    new winston.transports.File({ filename: "logs/exceptions.log" }),
+    new DailyRotateFile({
+      filename: "logs/exceptions-%DATE%.log",
+      datePattern: "YYYY-MM-DD",
+      maxFiles: "14d",
+      zippedArchive: true,
+    }),
   ],
-}); 
+});

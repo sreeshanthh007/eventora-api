@@ -8,11 +8,14 @@ import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES , HTTP_STATUS } from "@shared/constants";
 import { IUserEntity } from "@entities/models/user.entity";
 import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
+import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
+import { WalletDTO } from "@shared/dtos/wallet.dto";
 @injectable()
 export class CLientRegisterStrategy implements IRegisterStrategy {
     constructor(
         @inject("IPasswordBcrypt") private passwordBcrypt : IBcrypt,
-        @inject("IClientRepository") private clientRepository : IClientRepository
+        @inject("IClientRepository") private clientRepository : IClientRepository,
+        @inject("IWalletRepository") private _walletRepository : IWalletRepository
     ){}
 
     async register(user: UserDTO): Promise<IUserEntity| void > {
@@ -46,6 +49,18 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
                 clientId,
                 role:"client"
             });
+
+            const walletId = generateRandomUUID()
+
+            const walletDetails : WalletDTO ={
+
+                balance:0,
+                userId:clientId,
+                userType:"client",
+                walletId:walletId
+            }
+
+            await this._walletRepository.createWallet(walletDetails)
 
             return client
         }else{

@@ -1,6 +1,6 @@
 
 import { IAdminClientController } from "@entities/controllerInterfaces/admin/client.controller.interface";
-import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase";
+import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase.interface";
 import { IuserToggleStatusUseCase } from "@entities/useCaseInterfaces/admin/handle-user-toggle-status.usecase.interface";
 import { inject, injectable } from "tsyringe";
 import { Request, Response } from "express";

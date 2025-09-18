@@ -42,5 +42,76 @@ export class ServiceRepository implements IServiceRepository{
       }
   }
 
+ async findFIlteredSevices(filters: { search?: string; sort?: string; }, skip: number, limit: number): Promise<{ services: IServiceEntity[] | []; total: number; }> {
+
+      const {search,sort} = filters
+
+      const filter : FilterQuery<IServiceEntity> = {}
+
+      if(search){
+        filter.$or = [
+          {serviceTitle:{$regex:search,$options:"i"}}
+        ];
+      }
+
+
+      let sortStage : Record<string,1 | -1> = {}
+
+      switch(sort){
+        case "price-low" :
+          sortStage = {"servicePrice":1}
+          break;
+        case "price-high" :
+          sortStage = {"servicePrice":-1}
+          break;
+        case "name-asc" :
+          sortStage = {"serviceTitle":1}
+          break;
+        case "name-desc" :
+          sortStage = {"serviceTitle":-1}
+          break;
+      };
+
+      const [services,total] = await Promise.all([
+        serviceModel.aggregate([
+          {$match:filter},
+
+          {
+            $lookup:{
+              from:"categories",
+              localField:"categoryId",
+              foreignField:"categoryId",
+              as:"category"
+            }
+          },
+
+          {$unwind:"$category"},
+          {$sort:sortStage},
+          {$skip:skip},
+          {$limit:limit},
+
+          {
+            $project:{
+              serviceTitle:1,
+              serviceDescription:1,
+              yearsOfExperience:1,
+              servicePrice:1,
+              categoryName:"$category.title",
+
+            }
+          }
+        ]),
+
+        serviceModel.countDocuments(filter)
+      ]);
+      return {
+        services,
+        total
+      }
+
+
+
+ }
+
 
 }

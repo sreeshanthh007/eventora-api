@@ -74,6 +74,8 @@ export enum ERROR_MESSAGES  {
   INVALID_STATUS="Status must be either 'active' or 'blocked",
   INVALID_EVENT_STATUS="Invalid Event Status.",
   TOKEN_BLACKLISTED="Token is Blacklisted",
+  OTP_EXPIRED="OTP Expired",
+  TICKET_LOCKED_ERROR="Ticket already locked by another user"
 } ;
 
 export const   EVENT_STATUS_ERROR = (currentStatus:string,newStatus:string) => `cannot change from ${currentStatus} to ${newStatus}`

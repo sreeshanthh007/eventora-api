@@ -8,3 +8,27 @@ export interface ServiceTableDTO{
     status?:string
     serviceDuration:number
 }
+
+
+export interface PaginatedServiceDTO{
+    _id?:string
+    serviceTitle:string
+    serviceDescription:string
+    servicePrice:number
+    yearsOfExperience:number
+     categoryName: string 
+     vendorId:string
+}
+
+
+export interface ServiceDTO{
+    _id?:string
+    serviceTitle:string
+    serviceDescription:string
+    servicePrice:number
+    yearsOfExperience:number
+    serviceDuration:number
+    cancellationPolicies:string[]
+    termsAndConditions:string[]
+    additionalHourPrice:number
+}
