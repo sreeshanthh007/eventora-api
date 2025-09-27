@@ -2,7 +2,6 @@ import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-
 import { IHandleToggleVendorUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle.vendor.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { RedisClient } from "@frameworks/cache/redis.client";
-import { EventModel } from "@frameworks/database/Mongodb/models/event.model";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 

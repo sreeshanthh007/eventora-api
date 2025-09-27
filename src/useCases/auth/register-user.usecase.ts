@@ -24,7 +24,7 @@ export class RegisterUseCase implements IRegisterUseCase {
 
     async execute(user:UserDTO) : Promise<void>  {
         const strategies = this.strategies[user.role]
-        console.log("user in register",user)
+
         if(!strategies){
             throw new CustomError(
                 "Invalid user role",

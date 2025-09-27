@@ -1,7 +1,8 @@
-import { IClientEntity } from "@entities/models/client.entity";
+
+import { UpdateClientDTO } from "@shared/dtos/user.dto";
 
 
 export interface IUpdatePersonalInformationUseCase {
-     execute(userId:string,updateData:Partial<IClientEntity>) : Promise<void>
+     execute(userId:string,updateData:UpdateClientDTO) : Promise<void>
 }
 

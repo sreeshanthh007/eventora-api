@@ -13,6 +13,8 @@ export interface ITicketEntity {
     eventId: ObjectId | string;
     clientId: ObjectId | string;
     ticketStatus: 'used' | 'refunded' | 'unused'
+    eventName?: string
+    eventDate?: Date[]
     // paymentTransactionId?: string
     // checkInHistory?: Date[]
     ticketType: string

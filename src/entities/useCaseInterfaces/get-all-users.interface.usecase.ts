@@ -1,8 +1,8 @@
-import { IClientEntity } from "@entities/models/client.entity";
-import { IVendorEntity } from "@entities/models/vendor.entity";
+;
 import { TRole } from "@shared/constants";
+import { ClientResponseDTO, VendorResponseDTO } from "@shared/dtos/user.dto";
 
 
 export interface IGetAllUsersDetailsUseCase{
-    execute(userId:string,role:TRole) : Promise<IClientEntity | IVendorEntity>
+    execute(userId:string,role:TRole) : Promise<ClientResponseDTO | VendorResponseDTO>
 }

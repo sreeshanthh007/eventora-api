@@ -40,6 +40,7 @@ export enum SUCCESS_MESSAGES  {
   REQUESTED_VENDOR_FETCHED_SUCCESS="Requested Vendors Fetched Successfully",
   FCM_TOKEN_SAVE_SUCCESS="Token Refreshed Successfully",
   REFRESH_TOKEN_REFRESHED_SUCCESS='Refresh Token Refreshed Successfully',
+  EVENT_BOOKING_FETCHED_SUCCESS="Event Bookings Fetched Successfully"
 
 
 };

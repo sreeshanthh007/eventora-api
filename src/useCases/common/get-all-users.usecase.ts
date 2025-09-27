@@ -4,7 +4,10 @@ import { IClientRepository } from "@entities/repositoryInterfaces/client/client-
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
+import { mapClientToDTO } from "@mappers/ClientMapper";
+import { mapVendorToDTO } from "@mappers/VendorMapper";
 import { ERROR_MESSAGES, HTTP_STATUS, TRole } from "@shared/constants";
+import { ClientResponseDTO, VendorResponseDTO } from "@shared/dtos/user.dto";
 import { inject, injectable } from "tsyringe";
 
 
@@ -16,8 +19,8 @@ export class GetAllUsersDetailsUseCase implements IGetAllUsersDetailsUseCase{
         @inject("IClientRepository") private _clientRepo : IClientRepository
     ){}
 
-    async execute(userId: string, role: TRole): Promise<IClientEntity | IVendorEntity> {
-        let repository  = null
+    async execute(userId: string, role: TRole): Promise<ClientResponseDTO | VendorResponseDTO> {
+           let repository  = null
 
         if(role=="client"){
             repository  = this._clientRepo
@@ -38,8 +41,9 @@ export class GetAllUsersDetailsUseCase implements IGetAllUsersDetailsUseCase{
                 HTTP_STATUS.NOT_FOUND
             )
         }
-        return user
-
-    }
-   
+       
+         return role === "client"
+        ? mapClientToDTO(user as IClientEntity)
+        : mapVendorToDTO(user as IVendorEntity); 
+}
 }

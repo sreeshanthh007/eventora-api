@@ -1,8 +1,8 @@
 
-import { IVendorEntity } from "@entities/models/vendor.entity";
+
+import { UpdateVendorProfileDTO } from "@shared/dtos/user.dto";
 
 
 export interface IUpdateVendorPersonalInformationUseCase {
-    execute(vendorId:string,updateData:Partial<IVendorEntity>) : Promise<void>
+    execute(vendorId:string,updateData:UpdateVendorProfileDTO) : Promise<void>
 }
-

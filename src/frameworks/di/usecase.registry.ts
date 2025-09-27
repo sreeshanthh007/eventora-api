@@ -1,13 +1,11 @@
 import { container } from "tsyringe";
-import { IBcrypt } from "@frameworks/security/bcrypt.interface";
-import { OTPBcrypt } from "@frameworks/security/OTP.bcrypt.";
-import { passwordBcrypt } from "@frameworks/security/password.bcrypt";
+
 
 import { IRegisterStrategy } from "@usecases/auth/register-strategies/register-strategy.interface";
 import { ILoginStrategy } from "@usecases/auth/login-strategies/login-strategy.interface";
 import { ClientLoginStrategy } from "@usecases/auth/login-strategies/client-login-strategy";
 import { ClientGoogleLoginStrategy } from "@usecases/auth/login-strategies/client-google-login.strategy";
-import { VendorGoogleLoginStrategy } from "@usecases/auth/login-strategies/vendor-google-login.strategy";
+// import { VendorGoogleLoginStrategy } from "@usecases/auth/login-strategies/vendor-google-login.strategy";
 import { CLientRegisterStrategy } from "@usecases/auth/register-strategies/client-register-strategy";
 import { VendorRegisterStrategy } from "@usecases/auth/register-strategies/vendor-register-strategy";
 import { VendorLoginStrategy } from "@usecases/auth/login-strategies/vendor-login-strategy";
@@ -81,7 +79,7 @@ import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/cl
 import { GetAllCategoryForClientUseCase } from "@usecases/client/get-all-category.usecase";
 import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase.interface";
 import { HandleToggleCategoryUseCase } from "@usecases/admin/handle-toggle-category.usecase";
-import { OtpCacheService } from "interfaceAdpaters/services/OtpCacheService";
+import { OtpService } from "interfaceAdpaters/services/OtpService";
 import { IFirebaseService } from "@entities/serviceInterfaces/firebase.service.interface";
 import { FirebaseService } from "@frameworks/firebase/firebaseService";
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
@@ -140,8 +138,13 @@ import { IGetAllServiceWithFilterUseCase } from "@entities/useCaseInterfaces/cli
 import { GetAllServicesWithFilterUseCase } from "@usecases/client/get-all-service-with-filter.usecase";
 import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/get-service-details.usecase.interface";
 import { GetServiceDetailsUseCase } from "@usecases/client/get-all-service-details.usecase";
-import { IGetVendorDetailsUseCase } from "@entities/useCaseInterfaces/vendor/get-vendor-details.usecase.interface";
-import { GetVendorDetailsUseCase } from "@usecases/vendor/vendor-details.usecase";
+import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/client-get-event-booking.usecase.interface";
+import { ClientGetEventBookingsUseCase } from "@usecases/client/client-get-event-bookings.usecase";
+import { IOtpCacheService } from "@entities/serviceInterfaces/otp-cache-service.interface";
+import { OtpCacheService } from "interfaceAdpaters/services/otp-cache-service";
+import { BcryptService } from "interfaceAdpaters/services/bcrypt-service";
+import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
+
 
 export class UseCaseRegistry {
   static registerUseCases(): void {
@@ -149,12 +152,12 @@ export class UseCaseRegistry {
       useClass: RegisterUseCase,
     });
 
-    container.register<IBcrypt>("IPasswordBcrypt", {
-      useClass: passwordBcrypt,
+    container.register<IBcryptService>("IPasswordBcryptService", {
+      useClass: BcryptService,
     });
 
-    container.register<IBcrypt>("IOTPBcrypt", {
-      useClass: OTPBcrypt,
+    container.register<IBcryptService>("IOTPBcryptService", {
+      useClass: BcryptService,
     });
 
     container.register<ILoginUserCase>("ILoginUserUseCase", {
@@ -207,9 +210,7 @@ export class UseCaseRegistry {
       useClass: VendorLoginStrategy,
     });
 
-    container.register<ILoginStrategy>("VendorGoogleLoginStrategy", {
-      useClass: VendorGoogleLoginStrategy,
-    });
+ 
 
     container.register<ILoginStrategy>("AdminLoginStrategy", {
       useClass: AdminLoginStrategy,
@@ -220,7 +221,7 @@ export class UseCaseRegistry {
     });
 
     container.register<IOTPService>("IOTPService", {
-      useClass: OtpCacheService,
+      useClass: OtpService,
     });
 
     container.register<ISendOtpUsecase>("ISendOTPForPasswordUseCase", {
@@ -245,6 +246,10 @@ export class UseCaseRegistry {
 
     container.register<IFirebaseService>("IFirebaseService", {
       useClass: FirebaseService,
+    });
+
+    container.register<IOtpCacheService>("IOtpCacheService",{
+      useClass:OtpCacheService
     });
 
     container.register<INotificationService>("INotificationService", {
@@ -323,6 +328,10 @@ export class UseCaseRegistry {
       useClass: GetAllEventsUseCase,
     });
 
+    container.register<IClientGetEventBookingUseCase>("IClientGetEventBookingUseCase",{
+      useClass:ClientGetEventBookingsUseCase
+  });
+  
     container.register<IGetAllEventsWithFilterUseCase>("IGetAllEventsWithFilterUseCase",{
       useClass:GetAllEventsWithFilterUseCase
     });
@@ -450,9 +459,6 @@ export class UseCaseRegistry {
     });
 
 
-    container.register<IGetVendorDetailsUseCase>("IGetVendorDetailsUseCase",{
-      useClass:GetVendorDetailsUseCase
-    })
 
     container.register<IGetServiceByIdUseCase>("IGetServiceByIdUseCase",{
       useClass:GetServiceByIdUseCase

@@ -18,54 +18,59 @@ export class StripeService  implements IStripeService {
     @inject("IEventRepository") private _eventRepo : IEventRepository
   ){}
 
-  async createPaymentIntent(
-    amount: number,
-    currency: string,
-    eventId: string, 
-    userId: string,
-    ticketType: string,
-    quantity:number
-  ): Promise<Stripe.PaymentIntent> {
-    try {
-      const paymentIntent = await StripeService._stripe.paymentIntents.create({
-        amount,
-        currency,
-        metadata: {
-          eventId,
-          userId,
-          ticketType,
-          quantity,
-          amount
-        },
-      });
+    async createPaymentIntent(
+      amount: number,
+      currency: string,
+      eventId: string, 
+      userId: string,
+      ticketType: string,
+      quantity:number
+    ): Promise<Stripe.PaymentIntent> {
+      try {
+        const paymentIntent = await StripeService._stripe.paymentIntents.create({
+          amount,
+          currency,
+          metadata: {
+            eventId,
+            userId,
+            ticketType,
+            quantity,
+            amount
+          },
+        });
 
-      const eventExist = await this._eventRepo.findById(eventId)
+        const eventExist = await this._eventRepo.findById(eventId)
 
-      if(!eventExist){
-        throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
-      }
-
-
-      if(ticketType){
-        const ticketOption = eventExist.tickets?.find(t => t.ticketType === ticketType)
-
-        if(!ticketOption){
+        if(!eventExist){
           throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
         }
 
-        if(ticketOption.totalTickets - (ticketOption.bookedTickets || 0) < quantity){
-          throw new CustomError("Not Enough Ticket Available",HTTP_STATUS.BAD_REQUEST)
-        }
-      }else{
-        if(eventExist.totalTicket - (eventExist.bookedTickets || 0) < quantity){
-          throw new CustomError("Not Enough Ticket Available",HTTP_STATUS.BAD_REQUEST)
-        }
-      }
 
-      return paymentIntent;
-    } catch (error:any) {
-      console.error("Error creating PaymentIntent:", error);
-      throw new CustomError(error.message,HTTP_STATUS.BAD_REQUEST);
+        if(ticketType){
+          const ticketOption = eventExist.tickets?.find(t => t.ticketType === ticketType)
+
+          if(!ticketOption){
+            throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
+          }
+
+          if(ticketOption.totalTickets - (ticketOption.bookedTickets || 0) < quantity){
+            throw new CustomError("Not Enough Ticket Available",HTTP_STATUS.BAD_REQUEST)
+          }
+        }else{
+          if(eventExist.totalTicket - (eventExist.bookedTickets || 0) < quantity){
+            throw new CustomError("Not Enough Ticket Available",HTTP_STATUS.BAD_REQUEST)
+          }
+        }
+
+        return paymentIntent;
+    } catch (error: unknown) {
+     if (error instanceof Error) {
+      console.error("Error creating PaymentIntent:", error.message);
+    throw new CustomError(error.message, HTTP_STATUS.BAD_REQUEST);
+    }
+
+      console.error("Unknown error creating PaymentIntent:", error);
+      throw new CustomError("Unexpected error occurred", HTTP_STATUS.INTERNAL_SERVER_ERROR);
+    }
     }
   }
-}

@@ -3,13 +3,6 @@ import { CategoryDTO } from "@shared/dtos/user.dto";
 
 
 
-//  interface CategoryListItem {
-//   categoryId: string;
-//   title: string;
-//   image: string;
-//   status: string;
-// }
-
 export const toCategoryResponse = (category: ICategoryEnity) : CategoryDTO => {
   return {
     _id:category._id,
@@ -31,7 +24,7 @@ export const toCategoryListResponse = (categories: ICategoryEnity[]) : CategoryD
 
 export function mapCategoryForFrontend(category: ICategoryEnity) {
   return {
-   categoryId:category.categoryId,
+   categoryId:category.categoryId.toString(),
     title: category.title
   };
 }

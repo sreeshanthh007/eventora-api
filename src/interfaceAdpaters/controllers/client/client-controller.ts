@@ -17,6 +17,8 @@ import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
 import { inject, injectable } from "tsyringe";
 import { IGetAllServiceWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-service-with-filter.usecase.interface";
 import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/get-service-details.usecase.interface";
+import { UpdateClientDTO } from "@shared/dtos/user.dto";
+import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/client-get-event-booking.usecase.interface";
 
 @injectable()
 export class ClientController implements IClientController {
@@ -38,7 +40,9 @@ export class ClientController implements IClientController {
     @inject("IGetAllServiceForClientUseCase")
     private _getAllServiceForCLientUseCase : IGetAllServiceWithFilterUseCase,
     @inject("IGetServiceDetailsUseCase")
-    private _getServiceDetailsUseCase : IGetAllServiceDetailsUseCase
+    private _getServiceDetailsUseCase : IGetAllServiceDetailsUseCase,
+    @inject("IClientGetEventBookingUseCase")
+    private _clientGetEventBookingUseCase : IClientGetEventBookingUseCase
   ) {}
 
   async refreshSession(req: Request, res: Response): Promise<void> {
@@ -78,7 +82,7 @@ export class ClientController implements IClientController {
 
   async updateProfileInformation(req: Request, res: Response): Promise<void> {
     const { id } = (req as CustomRequest).user;
-    const data = req.body;
+    const data = req.body as UpdateClientDTO
 
     if (!id) {
       res
@@ -207,11 +211,31 @@ export class ClientController implements IClientController {
       .json({success:true,message:SUCCESS_MESSAGES.SERVICE_FETCHED_SUCCESS,service:response})
   }
 
-  async getEventTickets(req: Request, res: Response): Promise<void> {
-      
-      
 
-  }
+  async getEventBooking(req: Request, res: Response): Promise<void> {
+
+    const {
+            page = "1",
+            limit = "6",
+            search=""
+        }  = req.query as {
+            page?:string,
+            limit?:string,
+            search?:string
+        }
+
+
+        const { id } = (req as CustomRequest).user;
+
+        const response = await this._clientGetEventBookingUseCase.execute(
+          id,
+          Number(page),
+          Number(limit),
+          search
+        );
+
+        res.status(HTTP_STATUS.OK)
+        .json({success:true,message:SUCCESS_MESSAGES.EVENT_BOOKING_FETCHED_SUCCESS,bookedEvents:response.bookedEvents,total:response.total})
+ 
 }
-
-
+}

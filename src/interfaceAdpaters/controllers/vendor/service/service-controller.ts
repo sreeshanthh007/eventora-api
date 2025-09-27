@@ -10,6 +10,7 @@ import {
   HTTP_STATUS,
   SUCCESS_MESSAGES,
 } from "@shared/constants";
+import { CreateServiceDTO } from "@shared/dtos/service.dto";
 import { Request, Response } from "express";
 import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
 import {
@@ -35,7 +36,7 @@ export class ServiceController implements IServiceController {
   ) {}
 
   async addService(req: Request, res: Response): Promise<void> {
-    const serviceData = req.body;
+    const serviceData = req.body as CreateServiceDTO;
     const { id } = (req as CustomRequest).user;
     const validatedData = ServiceValidationSchema.parse(serviceData);
 

@@ -1,9 +1,10 @@
-import { IServiceEntity } from "@entities/models/service.entity";
+
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { IAddServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/add-service.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
 import { HTTP_STATUS } from "@shared/constants";
+import { CreateServiceDTO } from "@shared/dtos/service.dto";
 import { inject, injectable } from "tsyringe";
 
 
@@ -16,8 +17,7 @@ export class AddServiceUseCase implements IAddServiceUseCase{
     ){}
 
 
-    async execute(vendorId:string,data: IServiceEntity): Promise<void> {
-       
+    async execute(vendorId: string, data: CreateServiceDTO): Promise<void> {
         const vendor = await this._vendorRepo.findById(vendorId)
 
         if(vendor?.vendorStatus=="pending" || vendor?.vendorStatus=="rejected"){
@@ -25,6 +25,5 @@ export class AddServiceUseCase implements IAddServiceUseCase{
         }
         
         await this._serviceRepo.save(data)
-
-    }   
+    } 
 }

@@ -1,6 +1,7 @@
-import { IUserEntity } from "@entities/models/user.entity";
+
+import { UserDTO } from "@shared/dtos/user.dto";
 
 export interface IRegisterUseCase{
-    execute(user:Partial<IUserEntity>) : Promise<void>
+    execute(user:UserDTO) : Promise<void>
 }
 

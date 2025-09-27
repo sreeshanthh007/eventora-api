@@ -3,30 +3,7 @@ import { eventDetailsDTO, EventTableDTO, PaginatedEventDetailsDTO} from "@shared
 import { EventDTO } from "@shared/dtos/user.dto";
 
 
-// export function mapAddEventDTOToEntity(
-//   dto: IAddEventDTO,
-//   hostId: string
-// ): IEventEntity {
-//   return {
-//     title: dto.title,
-//     description: dto.description,
-//     date: new Date(dto.date),
-//     startTime: dto.startTime,
-//     endTime: dto.endTime,
-//     pricePerTicket: dto.pricePerTicket,
-//     totalTicket: dto.totalTicket,
-//     eventLocation: dto.eventLocation,
-//     location: {
-//       type: "Point",
-//       coordinates: [dto.location.coordinates[0], dto.location.coordinates[1]],
-//     },
-//     Images: dto.Images,
-//     hostId,
-//     status: "upcoming",
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//   };
-// }
+
 
 
 type eventType = "row" | "normal"

@@ -1,9 +1,9 @@
-import { IServiceEntity } from "@entities/models/service.entity";
+
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { IGetServiceByIdUseCase } from "@entities/useCaseInterfaces/vendor/service/get-service-by-id.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
-import { mapServiceForEditService } from "interfaceAdpaters/mappers/serviceMapper";
+import { IServiceResponse, mapServiceForEditService } from "interfaceAdpaters/mappers/serviceMapper";
 import { inject, injectable } from "tsyringe";
 
 
@@ -17,8 +17,7 @@ export class GetServiceByIdUseCase implements IGetServiceByIdUseCase{
     ){}
 
 
-    async execute(serviceId: string): Promise<IServiceEntity | null> {
-        
+   async execute(serviceId: string): Promise<IServiceResponse | null> {
         const service = await this._serviceRepo.findById(serviceId)
 
         if(!service){
@@ -26,5 +25,5 @@ export class GetServiceByIdUseCase implements IGetServiceByIdUseCase{
         }
 
         return mapServiceForEditService(service)
-    }
+   }
 }

@@ -32,3 +32,17 @@ export interface ServiceDTO{
     termsAndConditions:string[]
     additionalHourPrice:number
 }
+
+
+
+export interface CreateServiceDTO{
+    serviceTitle:string
+    serviceDescription:string
+    servicePrice:number
+    yearsOfExperience:number
+    serviceDuration:number
+    cancellationPolicies:string[]
+    termsAndConditions:string[]
+    additionalHourPrice:number
+    categoryId:string
+}

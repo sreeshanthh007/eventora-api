@@ -1,6 +1,8 @@
-import { IServiceEntity } from "@entities/models/service.entity";
+
+import { IServiceResponse } from "@mappers/serviceMapper";
+
 
 
 export interface IGetServiceByIdUseCase{
-    execute(serviceId:string) : Promise<IServiceEntity | null>
+    execute(serviceId:string) : Promise<IServiceResponse | null>
 }

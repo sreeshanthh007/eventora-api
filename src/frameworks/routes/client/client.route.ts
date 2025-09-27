@@ -1,9 +1,8 @@
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { authController,blockstatusMiddleware,clientController, eventBookingController, vendoController } from "@frameworks/di/resolver";
+import { authController,blockstatusMiddleware,clientController, eventBookingController } from "@frameworks/di/resolver";
 import { authorizeRole, decodeToken , verifyAuth} from "interfaceAdpaters/middlewares/auth.middleware";
 import { RequestHandler } from "express";
-import express from "express"
 
 export class ClientRoutes extends BaseRouter{
     constructor(){
@@ -53,6 +52,15 @@ export class ClientRoutes extends BaseRouter{
 
 
         this.router.get(
+            "/booked-events",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientController.getEventBooking.bind(clientController))
+        )
+
+
+        this.router.get(
             "/refresh-session",
             verifyAuth,
             authorizeRole(["client"]),
@@ -86,13 +94,7 @@ export class ClientRoutes extends BaseRouter{
         );  
 
 
-        this.router.get(
-            "/details/:vendorId",
-            verifyAuth,
-            authorizeRole(["client"]),
-            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
-            asyncHandler(vendoController.getVendorDetails.bind(vendoController))
-        );
+    
         
        
 

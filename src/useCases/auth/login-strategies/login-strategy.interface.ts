@@ -1,9 +1,9 @@
 
-import { IUserEntity } from "@entities/models/user.entity";
+// import { IUserEntity } from "@entities/models/user.entity";
 
-import { LoginUserDTO } from "@shared/dtos/user.dto";
+import { LoginResponseDTO, LoginUserDTO } from "@shared/dtos/user.dto";
 
 
 export interface ILoginStrategy {
-    login(user:LoginUserDTO) : Promise<Partial<IUserEntity>>
+    login(user:LoginUserDTO) : Promise<LoginResponseDTO>
 }
