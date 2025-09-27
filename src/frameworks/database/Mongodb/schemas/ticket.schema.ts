@@ -24,7 +24,7 @@ export const ticketSchema : Schema = new Schema<ITicketModel>(
 
         paymentStatus:{type:String,enum:["pending","successfull","failed"],default:"successful"},
 
-        // paymentTransactionId:{type:Schema.Types.ObjectId,ref:"Payment",required:false},
+        // paymentTransactionId:{type:Schema.Types.ObjectId,ref:"Payment",required:false},  
 
         quantity:{type:Number,required:true},
     },

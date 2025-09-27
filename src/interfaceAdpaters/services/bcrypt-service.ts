@@ -1,11 +1,10 @@
-import { IBcrypt } from "./bcrypt.interface";
-import bcrypt from  "bcrypt"
-import { injectable } from "tsyringe";
+import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
+import bcrypt from "bcrypt";
 
-@injectable()
-export class passwordBcrypt implements IBcrypt{
+export class BcryptService implements IBcryptService{
 
     async hash(original: string): Promise<string> {
+        
         return await bcrypt.hash(original,10)
     }
 

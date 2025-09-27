@@ -94,3 +94,65 @@ export interface LoginVendorDTO{
     rejectReason?:string
     bio?:string
 }
+
+
+export interface UpdateClientDTO {
+    name?: string;
+    phone?: string;
+}
+
+
+export interface UserResponseDTO {
+  _id?: string | ObjectId;
+  name: string;
+  email: string;
+  role?: TRole;
+}
+
+
+export interface VendorResponseDTO {
+  _id: string;
+  name: string;
+  email: string;
+  role: "vendor";
+  phone?: string;
+  place?: string;
+  about?: string;
+  rejectionReason?: string;
+  submissionDate?: string;
+  vendorStatus?: string;
+  vendorId?: string;
+ profilePicture?: string;
+}
+
+
+export interface ClientResponseDTO {
+  _id: string;
+  name: string;
+  email: string;
+  role: "client";
+  phone?: string;
+  profileImage?: string;
+  clientId?: string;
+}
+
+export interface AdminResponseDTO {
+  _id: string;
+  email: string;
+  role: "admin";
+  name?: string;
+}
+
+
+export interface UpdateVendorProfileDTO{
+    name?:string,
+    phone?:string,
+    place?:string,
+    about?:string,
+}
+
+
+export type LoginResponseDTO =
+  | ClientResponseDTO
+  | VendorResponseDTO
+  | AdminResponseDTO;

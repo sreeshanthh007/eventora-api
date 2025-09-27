@@ -12,7 +12,7 @@ export interface IUserEntity{
     password:string,
     googleId?:string,
     profileImage?:string,
-    about?:string,
+    about?:string,  
     place?:string,
     status?:string,
     vendorStatus?:string,

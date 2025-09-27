@@ -1,33 +1,34 @@
 import { inject , injectable } from "tsyringe";
 import { ISendOtpUsecase } from "@entities/useCaseInterfaces/auth/sendOtp-usecase.interface";
 import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
-import { IBcrypt } from "@frameworks/security/bcrypt.interface";
 import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
-import { RedisClient } from "@frameworks/cache/redis.client";
+import { IOtpCacheService } from "@entities/serviceInterfaces/otp-cache-service.interface";
+import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
 
 
 @injectable()
 export class sendForgotPasswordOtp implements ISendOtpUsecase {
     constructor(
-        @inject("IOTPService") private otpService : IOTPService,
-       @inject("IOTPBcrypt") private otpBcrypt :IBcrypt,
-       @inject("IEmailService") private emailService : IEmailService
+        @inject("IOTPService") private _otpService : IOTPService,
+       @inject("IOTPBcryptService") private _otpBcryptService :IBcryptService,
+       @inject("IEmailService") private _emailService : IEmailService,
+       @inject("IOtpCacheService") private _otpCacheService : IOtpCacheService
        
     ){}
 
     async execute(email: string): Promise<void> {
         
-        const otp = this.otpService.generateOTP()
+        const otp = this._otpService.generateOTP()
 
         console.log("otp sent for forgot password",otp)
 
-        const hashedOTP = await this.otpBcrypt.hash(otp)
+        const hashedOTP = await this._otpBcryptService.hash(otp)
 
-        await RedisClient.set(email,hashedOTP,{EX:300});
+        await this._otpCacheService.set(email,hashedOTP,300)
         
-        // await this.otpService.storeOTP(email,hashedOTP,300)
+       
 
-        await this.emailService.sendEmail(
+        await this._emailService.sendEmail(
             email,
             'EVENTORA - Verification for changing password',
             otp

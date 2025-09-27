@@ -1,10 +1,10 @@
 import { inject , injectable } from "tsyringe";
 import { ILoginStrategy } from "./login-strategies/login-strategy.interface";
 import { ILoginUserCase } from "@entities/useCaseInterfaces/auth/login-usecase.interface";
-import { LoginUserDTO } from "@shared/dtos/user.dto";
+import { LoginResponseDTO, LoginUserDTO } from "@shared/dtos/user.dto";
 import { CustomError } from "@entities/utils/custom.error";
 import { HTTP_STATUS } from "@shared/constants";
-import { IUserEntity } from "@entities/models/user.entity";
+
 
 
 
@@ -24,7 +24,7 @@ export class LoginUseCase implements ILoginUserCase{
         }
     }
 
-    async execute(user: LoginUserDTO): Promise<Partial<IUserEntity>> {
+    async execute(user: LoginUserDTO): Promise<LoginResponseDTO> {
         const strategy = this._strategies[user.role]
 
         if(!strategy){

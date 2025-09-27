@@ -18,9 +18,9 @@ export class jwtService implements ITokenService{
     private refreshExpirenIn:string
 
     constructor(){
-        this.jwtSecrect = config.jwt.JWT_SECRECT_KEY,
-        this.accessExpiresIn = config.jwt.ACCESS_EXPIRES_IN,
-        this.refreshExpirenIn=config.jwt.REFRESH_EXPIRES_IN
+        this.jwtSecrect = config.jwt.JWT_SECRECT_KEY;
+        this.accessExpiresIn = config.jwt.ACCESS_EXPIRES_IN;
+        this.refreshExpirenIn=config.jwt.REFRESH_EXPIRES_IN;
     }
 
     generateAccessToken(payload: JwtPayloadData): string {

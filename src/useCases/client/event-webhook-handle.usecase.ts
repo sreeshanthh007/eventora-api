@@ -7,7 +7,6 @@ import { CustomError } from "@entities/utils/custom.error";
 import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { TicketDTO } from "@shared/dtos/ticket.dto";
-import { ObjectId } from "mongoose";
 import { inject, injectable } from "tsyringe";
 
 

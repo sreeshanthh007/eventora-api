@@ -1,5 +1,8 @@
-import { IUserEntity } from "@entities/models/user.entity";
+
+import { LoginResponseDTO, LoginUserDTO } from "@shared/dtos/user.dto";
+
+
 
 export interface ILoginUserCase {
-    execute(user:Partial<IUserEntity>) : Promise<Partial<IUserEntity>>
+    execute(user:LoginUserDTO) : Promise<LoginResponseDTO>
 }

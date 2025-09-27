@@ -1,4 +1,6 @@
-import { IUserEntity } from "@entities/models/user.entity";
+
+import { TRole } from "@shared/constants";
+import { UserResponseDTO } from "@shared/dtos/user.dto";
 
 
 
@@ -6,6 +8,6 @@ export interface IGoogleUseCase{
     execute(
         credential:string,
         client_id:string,
-        role:any
-    ) : Promise<Partial<IUserEntity>>
+        role:TRole
+    ) : Promise<UserResponseDTO>
 }

@@ -1,6 +1,7 @@
-import { IClientEntity } from "@entities/models/client.entity";
+
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
 import { IUpdatePersonalInformationUseCase } from "@entities/useCaseInterfaces/client/update-personal-information.interface.usecase";
+import { UpdateClientDTO } from "@shared/dtos/user.dto";
 import { inject, injectable } from "tsyringe";
 
 
@@ -12,8 +13,7 @@ export class ClientUpdatePersonalInformationUseCase implements IUpdatePersonalIn
         @inject("IClientRepository") private _clientRepo : IClientRepository
     ){}
 
-    async execute(userId: string, updateData: Partial<IClientEntity>): Promise<void> {
-        
+    async execute(userId: string, updateData: UpdateClientDTO): Promise<void> {
         await this._clientRepo.findByIdAndUpdateProfileInformation(userId,updateData)
     }
 

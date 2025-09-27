@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { ILoginStrategy } from "./login-strategy.interface";
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
-import { IUserEntity } from "@entities/models/user.entity";
-import { LoginUserDTO } from "@shared/dtos/user.dto";
+import { LoginResponseDTO, LoginUserDTO } from "@shared/dtos/user.dto";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { CustomError } from "@entities/utils/custom.error";
+import { mapClientDetailsViaGoogleLogin } from "@mappers/ClientMapper";
 
 
 
@@ -15,15 +15,22 @@ export class ClientGoogleLoginStrategy  implements ILoginStrategy {
         @inject("IClientRepository") private clientRepo : IClientRepository
     ){}
 
-    async login(user: LoginUserDTO): Promise<Partial<IUserEntity>> {
-        const client  = await this.clientRepo.findByEmail(user.email)
+    async login(user: LoginUserDTO): Promise<LoginResponseDTO> {
+          const client  = await this.clientRepo.findByEmail(user.email)
 
-        if(client){
-            if(client.status!=="active"){
-                throw new CustomError(ERROR_MESSAGES.BLOCKED,HTTP_STATUS.FORBIDDEN)
-            }
-        }
+           if (!client) {
+      throw new CustomError(
+        ERROR_MESSAGES.EMAIL_NOT_FOUND,
+        HTTP_STATUS.NOT_FOUND
+      );
+    }
 
-        return client as Partial<IUserEntity>
+    if (client.status !== "active") {
+      throw new CustomError(
+        ERROR_MESSAGES.BLOCKED,
+        HTTP_STATUS.FORBIDDEN
+      );
+    }
+        return mapClientDetailsViaGoogleLogin(client)
     }
 }

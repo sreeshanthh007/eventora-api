@@ -2,11 +2,11 @@ import { IGoogleUseCase } from "@entities/useCaseInterfaces/auth/google-login-us
 import { inject, injectable } from "tsyringe";
 import { IRegisterStrategy } from "./register-strategies/register-strategy.interface";
 import { ILoginStrategy } from "./login-strategies/login-strategy.interface";
-import { OAuth2Client } from "google-auth-library";
-import { IUserEntity } from "@entities/models/user.entity";
+import { OAuth2Client } from "google-auth-library";;
 import { CustomError } from "@entities/utils/custom.error";
-import { ERROR_MESSAGES, GOOGLE_LOGIN_SUCCESS_MESSAGE, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, GOOGLE_LOGIN_SUCCESS_MESSAGE, HTTP_STATUS, TRole } from "@shared/constants";
 import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
+import { UserResponseDTO } from "@shared/dtos/user.dto";
 
 
 
@@ -33,8 +33,9 @@ export class GoogleuseCase implements IGoogleUseCase {
         this.client = new OAuth2Client()
     }
 
-    async execute(credential: string, client_id: string, role: any): Promise<Partial<IUserEntity>> {
-        const registerStrategy =  this.registerStrategies[role]
+    async execute(credential: string, client_id: string, role: TRole): Promise<UserResponseDTO> {
+        
+             const registerStrategy =  this.registerStrategies[role]
         const loginStrategy = this.loginStrategies[role]
         
         if(!registerStrategy || !loginStrategy){
@@ -43,7 +44,8 @@ export class GoogleuseCase implements IGoogleUseCase {
 
          const ticket  =  await this.client.verifyIdToken({
             idToken:credential,
-            audience:client_id
+            audience:client_id,
+
         })
 
         const payload = ticket.getPayload() 
@@ -64,7 +66,9 @@ export class GoogleuseCase implements IGoogleUseCase {
 
         const existingUser = await loginStrategy.login({email,role})
 
-        if(!existingUser){
+       if(role=="client"){
+        
+         if(!existingUser){
             const newUser = await registerStrategy.register({
                 name:name as string,
                 role,
@@ -83,9 +87,9 @@ export class GoogleuseCase implements IGoogleUseCase {
             if(!newUser){
                 throw new CustomError("",0)
             }
-            return {email,role,_id:newUser._id,name:name}
+            return {email,role,_id:newUser._id,name:newUser.name}
         }
-        return {email,role,_id:existingUser._id,name:name}
-
+       }
+        return {email,role,_id:existingUser._id,name:existingUser.name || ""}
     }
 }

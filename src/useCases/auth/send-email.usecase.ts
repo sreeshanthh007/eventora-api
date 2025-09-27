@@ -5,22 +5,23 @@ import { ISendEmailUseCase } from "@entities/useCaseInterfaces/auth/send-email-u
 import { CustomError } from "@entities/utils/custom.error";
 import { HTTP_STATUS , ERROR_MESSAGES } from "@shared/constants";
 import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
-import { IBcrypt } from "@frameworks/security/bcrypt.interface";
-import { RedisClient } from "@frameworks/cache/redis.client";
+import { IOtpCacheService } from "@entities/serviceInterfaces/otp-cache-service.interface";
+import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
 
 
 @injectable()
 
 export class SendEmailUseCase implements ISendEmailUseCase {
     constructor(
-        @inject("IEmailService") private emailService : IEmailService,
-        @inject("IOTPService") private OTPService : IOTPService,
-        @inject("IUserExistenceService") private UserExistsenceService : IUserExistenceService,
-        @inject("IOTPBcrypt") private otpBcrypt : IBcrypt
+        @inject("IEmailService") private _emailService : IEmailService,
+        @inject("IOTPService") private _OTPService : IOTPService,
+        @inject("IUserExistenceService") private _UserExistsenceService : IUserExistenceService,
+        @inject("IOTPBcryptService") private _otpBcryptService : IBcryptService,
+        @inject("IOtpCacheService") private _otpCacheService : IOtpCacheService
     ){}
 
     async execute(email: string): Promise<void> {
-        const emailExists = await this.UserExistsenceService.emailExists(email)
+        const emailExists = await this._UserExistsenceService.emailExists(email)
         if(emailExists){
             throw new CustomError(
                 ERROR_MESSAGES.EMAIL_EXISTS,
@@ -28,17 +29,17 @@ export class SendEmailUseCase implements ISendEmailUseCase {
             )
             
         }
-        const otp = this.OTPService.generateOTP()
+        const otp = this._OTPService.generateOTP()
         
         console.log("otp sent",otp)
         
-        const hashedOTP = await this.otpBcrypt.hash(otp);
+        const hashedOTP = await this._otpBcryptService.hash(otp);
 
-        await RedisClient.set(email,hashedOTP,{EX:300})
+        await this._otpCacheService.set(email,hashedOTP,300)
         
-        // await this.OTPService.storeOTP(email,hashedOTP,300)
+      
         
-        await this.emailService.sendEmail(
+        await this._emailService.sendEmail(
             email,
             "EVENTORA - verify your Email",
             otp

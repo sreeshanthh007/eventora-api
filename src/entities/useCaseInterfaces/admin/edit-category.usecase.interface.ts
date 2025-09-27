@@ -1,6 +1,6 @@
-import { ICategoryEnity } from "@entities/models/category.entity";
+import { EditCategoryDTO } from "@shared/dtos/category.dto";
 
 
 export interface IEditCategoryUseCase {
-    execute(categoryId:string,data:Partial<ICategoryEnity>) : Promise<void>
+    execute(categoryId:string,data:EditCategoryDTO) : Promise<void>
 }

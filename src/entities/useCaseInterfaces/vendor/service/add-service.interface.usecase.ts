@@ -1,6 +1,7 @@
-import { IServiceEntity } from "@entities/models/service.entity";
+
+import { CreateServiceDTO } from "@shared/dtos/service.dto";
 
 
 export interface IAddServiceUseCase {
-    execute(vendorId:string,data:IServiceEntity) : Promise<void>
+    execute(vendorId:string,data:CreateServiceDTO) : Promise<void>
 }

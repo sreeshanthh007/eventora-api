@@ -52,9 +52,9 @@ export class EventBookingController implements IEventBookingController{
 
         const sig = req.headers["stripe-signature"] as string
 
-        let event: Stripe.Event;
+     
 
-        event = stripe.webhooks.constructEvent(req.body,sig,config.stripe.webHookSecrect!)
+        const event : Stripe.Event = stripe.webhooks.constructEvent(req.body,sig,config.stripe.webHookSecrect!)
         
         if (event.type === "payment_intent.succeeded") {
             const paymentIntent = event.data.object as Stripe.PaymentIntent;

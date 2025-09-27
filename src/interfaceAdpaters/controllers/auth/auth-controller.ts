@@ -153,7 +153,7 @@ export class AuthController implements IAuthController{
 
      async logout(req: Request, res: Response): Promise<void> {
 
-        (req as CustomRequest).user
+      
 
         await this._blackListTokenUseCase.execute((req as CustomRequest).user.access_token)
 

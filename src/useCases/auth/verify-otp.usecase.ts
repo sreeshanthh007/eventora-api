@@ -2,23 +2,24 @@ import { inject , injectable } from "tsyringe";
 import { IVerifyOtpUsecase } from "@entities/useCaseInterfaces/auth/verifyOtp-usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
-import { RedisClient } from "@frameworks/cache/redis.client";
-import { IBcrypt } from "@frameworks/security/bcrypt.interface";
+import { IOtpCacheService } from "@entities/serviceInterfaces/otp-cache-service.interface";
+import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
 
 @injectable()
 export class VerifyOTPUseCase implements IVerifyOtpUsecase{
     constructor(
-         @inject("IOTPBcrypt") private otpBcrypt : IBcrypt
+         @inject("IOTPBcryptService") private _otpBcryptService : IBcryptService,
+         @inject("IOtpCacheService") private _otpCacheService: IOtpCacheService
     ){}
     async execute(key:string,otp:string): Promise<void> {
-        const prevOTP : string | null = await RedisClient.get(key);
+        const prevOTP : string | null = await this._otpCacheService.get(key)
       
 
 
         if(!prevOTP) throw new CustomError(ERROR_MESSAGES.OTP_EXPIRED,HTTP_STATUS.NOT_FOUND)
 
 
-        const isOTPValid = await this.otpBcrypt.compare(otp,prevOTP)
+        const isOTPValid = await this._otpBcryptService.compare(otp,prevOTP)
 
        
 
@@ -26,7 +27,7 @@ export class VerifyOTPUseCase implements IVerifyOtpUsecase{
             throw new CustomError("Invalid OTP",HTTP_STATUS.BAD_REQUEST)
         }
         
-        await RedisClient.del(key)
+       await this._otpCacheService.del(key)
     }
     
 }

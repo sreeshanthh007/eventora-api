@@ -5,20 +5,22 @@ import { HTTP_STATUS, ERROR_MESSAGES } from "@shared/constants";
 import { ZodError } from "zod";
 import { CustomError } from "@entities/utils/custom.error";
 import { ValidationError } from "@entities/utils/validation.error";
+import { TError } from "@shared/types/error.type";
+import { TValidationIssue } from "@shared/types/error.type";
 
 @injectable()
 export class ErrorMiddleware {
   constructor(@inject("ILogger") private logger: ILogger) {}
 
   public handleError(
-    err: any,
+    err: TError,
     req: Request,
     res: Response,
     next: NextFunction
   ): void {
     let statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR;
     let message: string = ERROR_MESSAGES.SERVER_ERROR;
-    let errors: any[] | undefined;
+    let errors: TValidationIssue[] | undefined
 
     this.logger.error("An Error Occurred", {
       message: err.message,

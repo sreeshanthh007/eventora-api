@@ -7,7 +7,6 @@ import { IToggleStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/t
 import { IUpdateEventStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/update-event-status.usecase.interface";
 import { IUpdateEventUseCase } from "@entities/useCaseInterfaces/vendor/event/update-event.usecase.interface";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
-import { IAddEventDTO } from "@shared/dtos/event.dto";
 import { Request, Response } from "express";
 import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
 import { inject, injectable } from "tsyringe";

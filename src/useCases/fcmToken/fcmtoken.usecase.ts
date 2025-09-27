@@ -16,7 +16,7 @@ export class FcmTokenUseCase implements IFcmTokenUseCase{
         
         const user = await this.vendorRepo.findById(userId)
 
-        console.log("userr came",user)
+      
         if(!user){
             throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
