@@ -37,7 +37,8 @@ export class ClientGetEventBookingsUseCase implements IClientGetEventBookingUseC
         if(search){
 
             filter.$or = [
-                {eventName:{$regex:search,$options:"i"}}
+                {eventName:{$regex:search,$options:"i"}},
+                {ticketId:{$regex:search,$options:"i"}}
             ]
         }
 

@@ -43,10 +43,11 @@ export class EventController implements IEventController{
 
     async getAllEvents(req: Request, res: Response): Promise<void> {
 
+        const {id} =  (req as CustomRequest).user
         const {limit="6",page="1",search=""} =  
             req.query as {limit?:string,page?:string,search?:string}
     
-            const response = await this._getAllEventsUseCase.execute(Number(limit),search,Number(page))
+            const response = await this._getAllEventsUseCase.execute(Number(limit),search,Number(page),id)
 
             res.status(HTTP_STATUS.OK)
             .json({success:true,message:SUCCESS_MESSAGES.EVENT_FETCHED_SUCCESS,events:response.events,total:response.total})

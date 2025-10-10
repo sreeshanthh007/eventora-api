@@ -102,6 +102,12 @@ export interface UpdateClientDTO {
 }
 
 
+export interface UpdatePasswordDTO{
+    currentPassword:string,
+    newPassword:string,
+}
+
+
 export interface UserResponseDTO {
   _id?: string | ObjectId;
   name: string;

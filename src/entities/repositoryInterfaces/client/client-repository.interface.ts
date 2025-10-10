@@ -11,6 +11,8 @@ export interface IClientRepository  {
 
 
     findByIdAndUpdatePassword(id:ObjectId,password:string) : Promise<void>
+    
+    findByIdAndChangePassword(clientId:string,password:string) : Promise<void>
 
     findByIdAndUpdateStatus(id:string,status:string) : Promise<void>
 

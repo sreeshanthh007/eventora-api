@@ -1,5 +1,5 @@
 import { Request , Response , NextFunction } from "express";
-import { jwtService } from "interfaceAdpaters/services/jwtService";
+import { jwtService } from "interfaceAdpaters/services/jwt/jwtService";
 import { JwtPayload } from "jsonwebtoken";
 import { ERROR_MESSAGES , HTTP_STATUS } from "@shared/constants";
 import { RedisClient } from "@frameworks/cache/redis.client";

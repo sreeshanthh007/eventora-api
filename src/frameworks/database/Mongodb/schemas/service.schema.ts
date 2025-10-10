@@ -4,7 +4,7 @@ import { Schema } from "mongoose";
 
 export const ServiceSchema = new Schema<IServiceModel>(
     {
-        vendorId:{type:Schema.Types.ObjectId,ref:"Vendor",required:true},
+        vendorId:{type:String,ref:"Vendor",required:true},
 
 
         serviceTitle:{type:String,required:true},

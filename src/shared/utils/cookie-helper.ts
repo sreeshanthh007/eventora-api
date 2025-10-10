@@ -14,14 +14,14 @@ export const setAuthCookies =(
         httpOnly:true,
         secure:isProduction,
         sameSite:isProduction ? "none" : "strict",
-         maxAge: 15 * 60 * 1000 // 15 min
+         maxAge: 15 * 60 * 1000 
     });
 
     res.cookie(refreshTokenName,refreshToken,{
         httpOnly:true,
         secure:isProduction,
         sameSite: isProduction ? "none" : "strict",
-         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+         maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 };
 
@@ -37,7 +37,7 @@ export const updateCookieWithAccessToken = (
         httpOnly: true,
         secure: isProduction,
         sameSite: isProduction ? "none" : "strict",
-        maxAge: 15 * 60 * 1000, // 15 minutes
+        maxAge: 15 * 60 * 1000, 
     });
 };
 

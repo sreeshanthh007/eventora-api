@@ -17,8 +17,9 @@ import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
 import { inject, injectable } from "tsyringe";
 import { IGetAllServiceWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-service-with-filter.usecase.interface";
 import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/get-service-details.usecase.interface";
-import { UpdateClientDTO } from "@shared/dtos/user.dto";
+import { UpdateClientDTO, UpdatePasswordDTO } from "@shared/dtos/user.dto";
 import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/client-get-event-booking.usecase.interface";
+import { IChangeClientPasswordUseCase } from "@entities/useCaseInterfaces/client/change-password-client-usecase.interface";
 
 @injectable()
 export class ClientController implements IClientController {
@@ -42,7 +43,9 @@ export class ClientController implements IClientController {
     @inject("IGetServiceDetailsUseCase")
     private _getServiceDetailsUseCase : IGetAllServiceDetailsUseCase,
     @inject("IClientGetEventBookingUseCase")
-    private _clientGetEventBookingUseCase : IClientGetEventBookingUseCase
+    private _clientGetEventBookingUseCase : IClientGetEventBookingUseCase,
+    @inject("IChangeClientPasswordClientUseCase")
+    private _changeClientPasswordUseCase : IChangeClientPasswordUseCase
   ) {}
 
   async refreshSession(req: Request, res: Response): Promise<void> {
@@ -102,6 +105,29 @@ export class ClientController implements IClientController {
       .status(HTTP_STATUS.OK)
       .json({ success: true, message: SUCCESS_MESSAGES.UPDATE_SUCCESS });
   }
+
+
+
+
+ async changePassword(req: Request, res: Response): Promise<void> {
+
+      const { id } = (req as CustomRequest).user;
+
+    const {currentPassword,newPassword} = req.body as UpdatePasswordDTO
+
+    if(!id || !currentPassword || !newPassword){
+
+      res.status(HTTP_STATUS.BAD_REQUEST)
+
+      .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+    }
+
+
+    await this._changeClientPasswordUseCase.execute(id,currentPassword,newPassword)
+
+    res.status(HTTP_STATUS.OK)
+    .json({success:true,message:SUCCESS_MESSAGES.UPDATE_PASSWORD_SUCCESS})
+ }
 
   async getAllEvents(req: Request, res: Response): Promise<void> {
     const events = await this._getAllEventsForClientsUseCase.execute();

@@ -77,11 +77,15 @@ export class ServiceController implements IServiceController {
       search?: string;
     };
 
+  
+    const {id} = (req as CustomRequest).user
+    console.log("id is",id,typeof id)
     const response = await this._getServiceUseCase.execute(
       Number(limit),
       search,
-      Number(page)
-    );
+      Number(page),
+      id
+    )
 
     res
       .status(HTTP_STATUS.OK)

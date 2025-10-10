@@ -1,23 +1,24 @@
 import { container } from "tsyringe";
 
-
+// ========strategies========//
 import { IRegisterStrategy } from "@usecases/auth/register-strategies/register-strategy.interface";
 import { ILoginStrategy } from "@usecases/auth/login-strategies/login-strategy.interface";
 import { ClientLoginStrategy } from "@usecases/auth/login-strategies/client-login-strategy";
 import { ClientGoogleLoginStrategy } from "@usecases/auth/login-strategies/client-google-login.strategy";
-// import { VendorGoogleLoginStrategy } from "@usecases/auth/login-strategies/vendor-google-login.strategy";
 import { CLientRegisterStrategy } from "@usecases/auth/register-strategies/client-register-strategy";
 import { VendorRegisterStrategy } from "@usecases/auth/register-strategies/vendor-register-strategy";
 import { VendorLoginStrategy } from "@usecases/auth/login-strategies/vendor-login-strategy";
 import { AdminLoginStrategy } from "@usecases/auth/login-strategies/admin-login-strategy";
+// ======strategies========//
+
 
 import { ITokenService } from "@usecases/auth/interfaces/token-service-interface";
-import { jwtService } from "interfaceAdpaters/services/jwtService";
+import { jwtService } from "interfaceAdpaters/services/jwt/jwtService";
 import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
-import { EmailService } from "interfaceAdpaters/services/emailServices";
+import { EmailService } from "interfaceAdpaters/services/common/emailServices";
 import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
 import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
-import { UserExistService } from "interfaceAdpaters/services/user-existService";
+import { UserExistService } from "interfaceAdpaters/services/common/user-existService";
 import { IClientExistService } from "@entities/serviceInterfaces/client-exist.service.interface";
 import { ClientExistService } from "interfaceAdpaters/services/client/clientExist-service";
 import { sendForgotPasswordOtp } from "@usecases/auth/sent-forgot.password-otp.usecase";
@@ -36,13 +37,17 @@ import { IRefreshTokenUseCase } from "@entities/useCaseInterfaces/auth/generate-
 import { refreshTokenUsesCase } from "@usecases/auth/refresh-token.usecase";
 
 import { IForgotUpdatePasswordUseCase } from "@entities/useCaseInterfaces/client/clientupdatePassword.usecase.interface";
-import { ForgotClientUpdatePasswordUseCase } from "@usecases/auth/update-password/clientUpdatePasswordSUseCase";
+import { ForgotClientUpdatePasswordUseCase } from "@usecases/auth/update-password/forgot-update-password.usecase";
 
 // =====error====//
 import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
 import { WinstonLoggerAdapter } from "interfaceAdpaters/services/logger/winston-logger-adapter";
 import { LoggerMiddleWare } from "interfaceAdpaters/middlewares/logger.middleware";
 import { ErrorMiddleware } from "interfaceAdpaters/middlewares/error.middleware";
+// ====error====//
+
+
+
 import { ISendOtpUsecase } from "@entities/useCaseInterfaces/auth/sendOtp-usecase.interface";
 import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase.interface";
 import { getAllUsersUseCase } from "@usecases/admin/get-all-users-usecase";
@@ -79,11 +84,11 @@ import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/cl
 import { GetAllCategoryForClientUseCase } from "@usecases/client/get-all-category.usecase";
 import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase.interface";
 import { HandleToggleCategoryUseCase } from "@usecases/admin/handle-toggle-category.usecase";
-import { OtpService } from "interfaceAdpaters/services/OtpService";
+import { OtpService } from "interfaceAdpaters/services/common/OtpService";
 import { IFirebaseService } from "@entities/serviceInterfaces/firebase.service.interface";
 import { FirebaseService } from "@frameworks/firebase/firebaseService";
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
-import { NotificationService } from "interfaceAdpaters/services/notification.service";
+import { NotificationService } from "interfaceAdpaters/services/common/notification.service";
 import { IFcmTokenUseCase } from "@entities/useCaseInterfaces/auth/fcmtoken.interface";
 import { FcmTokenUseCase } from "@usecases/fcmToken/fcmtoken.usecase";
 import { IResendVerificationUseCase } from "@entities/useCaseInterfaces/admin/resend-verification.usecase.interface";
@@ -127,10 +132,10 @@ import { GetEventDetailsUseCase } from "@usecases/client/get-event-details.userc
 import { IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-events-with-filters.usercase.interface";
 import { GetAllEventsWithFilterUseCase } from "@usecases/client/get-all-events-with-filter.usecase";
 import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
-import { RedisLockService } from "interfaceAdpaters/services/redis-lock-service";
-import { StripeService } from "interfaceAdpaters/services/stripe-service";
+import { RedisLockService } from "interfaceAdpaters/services/common/redis-lock-service";
+import { StripeService } from "interfaceAdpaters/services/stripe/stripe-service";
 import { IQrCodeService } from "@entities/serviceInterfaces/qr-code-service.interface";
-import { QrCodeService } from "interfaceAdpaters/services/qrCode-service";
+import { QrCodeService } from "interfaceAdpaters/services/common/qrCode-service";
 import { IStripeService } from "@entities/serviceInterfaces/stripe-service-interface";
 import { IHandleEventWebHookUseCase } from "@entities/useCaseInterfaces/client/event-webhook-handle.usecase.interface";
 import { EventWebHookHandleUseCase } from "@usecases/client/event-webhook-handle.usecase";
@@ -141,9 +146,16 @@ import { GetServiceDetailsUseCase } from "@usecases/client/get-all-service-detai
 import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/client-get-event-booking.usecase.interface";
 import { ClientGetEventBookingsUseCase } from "@usecases/client/client-get-event-bookings.usecase";
 import { IOtpCacheService } from "@entities/serviceInterfaces/otp-cache-service.interface";
-import { OtpCacheService } from "interfaceAdpaters/services/otp-cache-service";
-import { BcryptService } from "interfaceAdpaters/services/bcrypt-service";
+import { OtpCacheService } from "interfaceAdpaters/services/common/otp-cache-service";
+import { BcryptService } from "interfaceAdpaters/services/security/bcrypt-service";
 import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
+import {  IChangeClientPasswordUseCase } from "@entities/useCaseInterfaces/client/change-password-client-usecase.interface";
+import { ChangePasswordClientUseCase } from "@usecases/client/change-password-client-usecase";
+import { IChangeVendorPasswordUseCase } from "@entities/useCaseInterfaces/vendor/change-password-vendor.usecase.interface";
+import { ChangeVendorPasswordUseCase } from "@usecases/vendor/change-vendor-password.usecase";
+import { IAddWorkSampleUseCase } from "@entities/useCaseInterfaces/vendor/worksample/add-work-sample.usecase.interface";
+import { AddWorksampleUseCase } from "@usecases/vendor/worksample/add-work-sample.usecase";
+
 
 
 export class UseCaseRegistry {
@@ -422,6 +434,16 @@ export class UseCaseRegistry {
       useClass:UpdateEventUseCase
     });
 
+    container.register<IChangeClientPasswordUseCase>("IChangeClientPasswordClientUseCase",{
+      useClass:ChangePasswordClientUseCase
+    });
+
+
+
+    container.register<IChangeVendorPasswordUseCase>("IChangeVendorPasswordUseCase",{
+      useClass:ChangeVendorPasswordUseCase
+    });
+    
     container.register<IHandleEventWebHookUseCase>("IHandleEventWebhookUseCase",{
       useClass:EventWebHookHandleUseCase
     });
@@ -458,6 +480,14 @@ export class UseCaseRegistry {
     useClass:GetServiceDetailsUseCase
     });
 
+
+    container.register<IAddWorkSampleUseCase>("IAddWorkSampleUseCase",{
+      useClass:AddWorksampleUseCase
+    });
+
+  
+
+  
 
 
     container.register<IGetServiceByIdUseCase>("IGetServiceByIdUseCase",{

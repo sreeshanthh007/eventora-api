@@ -18,6 +18,8 @@ import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.
 import { WalletRepository } from "interfaceAdpaters/repositories/wallet/wallet.repository";
 import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-repository-interface";
 import { TicketRepository } from "interfaceAdpaters/repositories/ticket/ticket-repository";
+import { IWorkSampleRepository } from "@entities/repositoryInterfaces/vendor/worksample/work-sample.repository.interface";
+import { WorkSampleRepository } from "interfaceAdpaters/repositories/worksample/work-sample.repository";
 
 export class RepositoryRegistry {
     static registerRepositories():void {
@@ -59,6 +61,10 @@ export class RepositoryRegistry {
 
         container.register<ITicketRepository>("ITicketRepository",{
             useClass:TicketRepository
+        });
+
+        container.register<IWorkSampleRepository>("IWorkSampleRepository",{
+            useClass:WorkSampleRepository
         });
     }
 }

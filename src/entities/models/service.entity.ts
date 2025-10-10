@@ -5,7 +5,7 @@ import { ObjectId } from "mongoose";
 
 export interface IServiceEntity  {
     _id?: string | ObjectId,
-    vendorId?:string| ObjectId,
+    vendorId?:string,
     serviceTitle:string,
     yearsOfExperience:number,
     serviceDescription:string,
