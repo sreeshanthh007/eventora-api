@@ -12,6 +12,8 @@ export interface IVendorRepository{
 
     findByIdAndUpdatePassword(id:ObjectId,password:string) : Promise<void>
 
+    changePassword(vendorId:string,password:string) : Promise<void>
+
     findByIdAndUpdateStatus(id:string,status:string) : Promise<void>
 
     findByIdAndUpdateVendorStatus(id:string,status:string,rejectReason?:string) : Promise<void> 

@@ -27,8 +27,9 @@ export class StripeService  implements IStripeService {
       quantity:number
     ): Promise<Stripe.PaymentIntent> {
       try {
+
         const paymentIntent = await StripeService._stripe.paymentIntents.create({
-          amount,
+          amount:amount*100,
           currency,
           metadata: {
             eventId,
@@ -38,6 +39,8 @@ export class StripeService  implements IStripeService {
             amount
           },
         });
+
+        
 
         const eventExist = await this._eventRepo.findById(eventId)
 

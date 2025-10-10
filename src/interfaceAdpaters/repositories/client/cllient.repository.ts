@@ -26,6 +26,14 @@ export class ClientRepository implements IClientRepository{
         })
     }
 
+    async findByIdAndChangePassword(clientId: string, password: string): Promise<void> {
+        
+        await ClientModel.findByIdAndUpdate(clientId,{
+            password:password
+        });
+        
+    }
+
     async findByIdAndUpdateStatus(id: string, status: string): Promise<void> {
         await ClientModel.findByIdAndUpdate(id,{
             $set:{

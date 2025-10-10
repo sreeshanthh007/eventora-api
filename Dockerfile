@@ -7,10 +7,9 @@ WORKDIR /app
 # Copy package files first (to leverage caching)
 COPY package*.json ./
 
-# Install dependencies
+
 RUN npm install
 
-# Copy the rest of your code
 COPY . .
 
 # Build TypeScript

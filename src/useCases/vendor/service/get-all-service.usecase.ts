@@ -14,10 +14,10 @@ export class GetAllServiceUseCase implements IGetAllServiceUseCase{
         @inject("IServiceRepository") private _serviceRepo : IServiceRepository
     ){}
 
-    async execute(limit: number, searchTerm: string, current: number): Promise<PaginatedServices> {
-        
-        const filter : FilterQuery<IServiceEntity> = {}
-
+   async execute(limit: number, searchTerm: string, current: number, vendorId: string): Promise<PaginatedServices> {
+       
+         const filter : FilterQuery<IServiceEntity> = {vendorId:vendorId}
+    
         if(searchTerm){
             filter.$or=[
                 {serviceTitle:{$regex:searchTerm,$options:"i"}}
@@ -29,7 +29,7 @@ export class GetAllServiceUseCase implements IGetAllServiceUseCase{
         const skip = (validPageNumber - 1)*limit
 
         const {services,total} = await this._serviceRepo.getAllServices(filter,skip,limit)
-
+    
         const mappedServices = services.map(mapServiceToTableResponse)
 
         const response : PaginatedServices ={
@@ -38,6 +38,5 @@ export class GetAllServiceUseCase implements IGetAllServiceUseCase{
         }
 
         return response
-
-    }
+   }
 }

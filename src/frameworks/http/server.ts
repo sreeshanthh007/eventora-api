@@ -41,7 +41,7 @@ export class ExpressServer {
       })
     );
 
-    this._app.post("/cl/stripe-webhook",
+    this._app.post("/api/webhook/stripe", 
       express.raw({type:"application/json"}),
       asyncHandler(eventBookingController.handleWebHook.bind(eventBookingController))
     );

@@ -46,7 +46,7 @@ export class ServiceRepository implements IServiceRepository{
 
       const {search,sort} = filters
 
-      const filter : FilterQuery<IServiceEntity> = {}
+      const filter : FilterQuery<IServiceEntity> = {status:"active"}
 
       if(search){
         filter.$or = [

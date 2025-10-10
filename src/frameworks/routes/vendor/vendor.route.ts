@@ -5,6 +5,7 @@ import { BaseRouter } from "../base.route";
 import { authController, blockstatusMiddleware, clientController,eventController, forgotVendorOTPController, adminVendorController, vendoController, serviceController, categoryController } from "@frameworks/di/resolver";
 import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
 import { RequestHandler } from "express";
+
  
 
 export class VendorRoutes extends BaseRouter{
@@ -40,7 +41,15 @@ export class VendorRoutes extends BaseRouter{
             blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             authorizeRole(["vendor"]),
             vendoController.updatePersonalInformation.bind(vendoController)
-        )
+        );
+
+        this.router.patch(
+            "/change-password",
+            verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            authorizeRole(["vendor"]),
+            vendoController.changePassword.bind(vendoController)
+        );
         this.router.patch(
             "/:vendorId/resend-verification",
             verifyAuth,
@@ -51,6 +60,7 @@ export class VendorRoutes extends BaseRouter{
         this.router.post(
             "/add-event",
             verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             authorizeRole(["vendor"]),
             asyncHandler(eventController.addEvent.bind(eventController))
         );
@@ -58,6 +68,7 @@ export class VendorRoutes extends BaseRouter{
         this.router.post(
             "/add-service",
             verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             authorizeRole(["vendor"]),
             asyncHandler(serviceController.addService.bind(serviceController))
         );
@@ -97,6 +108,20 @@ export class VendorRoutes extends BaseRouter{
             authorizeRole(["vendor"]),
             asyncHandler(serviceController.toggleServiceStatus.bind(serviceController))
         );
+
+        this.router.post(
+            "/add-work-sample",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.addWorkSample.bind(vendoController))
+        );
+
+        // this.router.get(
+        //     "/get-work-sample-details",
+        //     verifyAuth,
+        //     authorizeRole(["vendor"]),
+        //     asyncHandler(vendoController.getWorkSampleByVendor.bind(vendoController))
+        // );
         
         this.router.get(
             "/get-all-events",
@@ -139,9 +164,6 @@ export class VendorRoutes extends BaseRouter{
             authorizeRole(["vendor"]),
             asyncHandler(authController.logout.bind(authController))
         );
-
-       
-
         this.router.post("/refresh-token",decodeToken,asyncHandler(authController.handleTokenRefresh.bind(authController)))
         
     }

@@ -6,16 +6,16 @@ import { PaginatedEvents } from "interfaceAdpaters/models/paginatedEvents";
 import { FilterQuery } from "mongoose";
 import { inject, injectable } from "tsyringe";
 
-console.log("gettalleventsusecase")
+
 @injectable()
 export class GetAllEventsUseCase implements IGetAllEventsUseCase{
     constructor(
         @inject("IEventRepository") private _eventRepo:IEventRepository
     ){}
 
-    async execute(limit: number, searchTerm: string, current: number): Promise<PaginatedEvents> {
-        
-        const filter : FilterQuery<IEventEntity> = {}
+async execute(limit: number, searchTerm: string, current: number, vendorId: string): Promise<PaginatedEvents> {
+    
+            const filter : FilterQuery<IEventEntity> = {_id:vendorId}
 
         if(searchTerm){
             filter.$or = [

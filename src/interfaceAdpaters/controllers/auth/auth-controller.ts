@@ -221,7 +221,7 @@ export class AuthController implements IAuthController{
      async forgotPasswordController(req: Request, res: Response): Promise<void> {
          
         const {email} = req.body
-        console.log("email fron forgot pass",email)
+        
         if(!email) res.status(HTTP_STATUS.BAD_REQUEST).json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
 
        const user =  await this._userExistService.emailExists(email)

@@ -32,7 +32,7 @@ export class EventRepository implements IEventRepository{
         
         const {search,location,sort,lat,lng} = filters
 
-        const filter : FilterQuery<IEventEntity> = {}
+        const filter : FilterQuery<IEventEntity> = {isActive:true}
 
         if(search){
             filter.$or=[

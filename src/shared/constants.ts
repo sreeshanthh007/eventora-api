@@ -30,6 +30,7 @@ export enum SUCCESS_MESSAGES  {
   VERIFICATION_SUCCESS= "Verification completed successfully.",
   UPDATE_SUCCESS= "Updated successfully.",
   USER_LOGOUT_SUCCESS= "Logged out successfully",
+  UPDATE_PASSWORD_SUCCESS= "Password updated successfully",
   CATEGORY_FETCHED_SUCCESS="Category Fetched Successfully",
   EVENT_FETCHED_SUCCESS="Events Fetched Sucessfully",
   SERVICE_FETCHED_SUCCESS="Services Fetched Successfully",
@@ -40,7 +41,8 @@ export enum SUCCESS_MESSAGES  {
   REQUESTED_VENDOR_FETCHED_SUCCESS="Requested Vendors Fetched Successfully",
   FCM_TOKEN_SAVE_SUCCESS="Token Refreshed Successfully",
   REFRESH_TOKEN_REFRESHED_SUCCESS='Refresh Token Refreshed Successfully',
-  EVENT_BOOKING_FETCHED_SUCCESS="Event Bookings Fetched Successfully"
+  EVENT_BOOKING_FETCHED_SUCCESS="Event Bookings Fetched Successfully",
+  WORK_SAMPLES_DETAILS_FETHCED_SUCCESS="Works Sample of vendor Fetched Successfully"
 
 
 };
@@ -75,9 +77,12 @@ export enum ERROR_MESSAGES  {
   INVALID_STATUS="Status must be either 'active' or 'blocked",
   INVALID_EVENT_STATUS="Invalid Event Status.",
   TOKEN_BLACKLISTED="Token is Blacklisted",
+  SAME_PASSWORD="New password cannot be the same as the current password",
+  INVALID_PASSWORD="Current password is incorrect",
   OTP_EXPIRED="OTP Expired",
-  TICKET_LOCKED_ERROR="Ticket already locked by another user"
-} ;
+  TICKET_LOCKED_ERROR="Ticket already locked by another user",
+  GOOGLE_GOOGLE_USER_PASSWORD_NOT_FOUND="Google user does not have a password",
+};
 
 export const   EVENT_STATUS_ERROR = (currentStatus:string,newStatus:string) => `cannot change from ${currentStatus} to ${newStatus}`
 

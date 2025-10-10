@@ -85,6 +85,14 @@ export class ClientRoutes extends BaseRouter{
             asyncHandler(clientController.updateProfileInformation.bind(clientController))
         );
 
+
+        this.router.patch(
+            "/change-password",
+            verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            authorizeRole(["client"]),
+            asyncHandler(clientController.changePassword.bind(clientController))
+        )
         this.router.post(
             "/create-booking",
             verifyAuth,

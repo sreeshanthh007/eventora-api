@@ -32,6 +32,12 @@ export class VendorRepository implements IVendorRepository {
   }
 
 
+  async changePassword(vendorId: string, password: string): Promise<void> {
+      await VendorModel.findByIdAndUpdate(vendorId,{
+        $set:{password:password}
+      });
+  }
+
   async findByIdandSaveFcmToken(id: string, fcmtoken: string): Promise<void> {
       await VendorModel.findByIdAndUpdate(id,
         {
