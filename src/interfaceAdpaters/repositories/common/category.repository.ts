@@ -47,4 +47,8 @@ export class CategoryRepository implements ICategoryRepository{
     async findCategoryForClients(): Promise<ICategoryEnity[]> {
         return await categoryModel.find({status:"active"})
     }
+
+    async findCategoryForFilter(): Promise<ICategoryEnity[]> {
+        return await categoryModel.find()
     }
+}

@@ -1,3 +1,5 @@
+import { IWalletEntity } from "@entities/models/wallet.entity"
+import { TransactionDTO } from "@shared/dtos/wallet.dto"
 
 
 
@@ -9,4 +11,8 @@ export interface walletDetails {
 }
 export interface IWalletRepository {
     createWallet(walletDetails:walletDetails) : Promise<void>
+    findWalletDetailsByUserId(userId:string) : Promise<IWalletEntity | null>
+    findWalletByUserTypeAndUpdate(userType:string,transaction:TransactionDTO,amount:number) : Promise<void>
+     findWalletByUserIdAndUpdate(userId:string,transaction:TransactionDTO,amount:number) : Promise<void>
+   
 }

@@ -7,3 +7,10 @@ export const workSampleSchema = z.object({
   images: z.array(z.string()).min(1).max(10),
 });
 
+
+
+export const editWorkSampleSchema = z.object({
+  title:z.string().min(3).max(100).optional(),
+  description:z.string().min(10).max(1000).optional(),
+  images:z.array(z.string()).min(1).max(10).optional()
+});

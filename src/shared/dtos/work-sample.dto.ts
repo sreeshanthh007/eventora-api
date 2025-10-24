@@ -10,8 +10,24 @@ export interface IWorksampleDTO{
 }
 
 
-export interface IWorkSampleResponseDTO {
-    // _id:string
+export interface IWorkSampleResponseToVendorDTO {
+    _id:string
+    title:string
+    description:string
+    images:string[]
+}
+
+
+type EditableFields = Pick<
+IWorksampleDTO,
+"title" |
+"description" |
+"images"
+>
+
+export type TeditWorkSampleDTO = Partial<EditableFields>
+
+export interface WorkSampleResponseDTO{
     title:string
     description:string
     images:string[]

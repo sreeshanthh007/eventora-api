@@ -21,6 +21,8 @@ export const ClientSchema = new Schema<IClientModel>(
         googleId:{type:String},
 
         status:{type:String,default:"active"},
+
+        fcmToken:{type:String}
     },
 
     {

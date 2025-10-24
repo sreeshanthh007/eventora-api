@@ -1,3 +1,4 @@
+
 import { IServiceEntity } from "@entities/models/service.entity";
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { EditableServiceFields } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
@@ -5,15 +6,21 @@ import { serviceModel } from "@frameworks/database/Mongodb/models/service.model"
 import { FilterQuery } from "mongoose";
 
 
+
 export class ServiceRepository implements IServiceRepository{
      async save(data: IServiceEntity): Promise<void> {
     await serviceModel.create(data);
   }
 
+
   async findById(id: string): Promise<IServiceEntity | null> {
       return await serviceModel.findById(id)
   }
 
+  async findServicesProvidedByVendors(vendorId: string): Promise<IServiceEntity[] | null> {
+      
+    return await serviceModel.find({vendorId,status:"active"});
+  }
   async findByIdAndUpdate(id: string, data: EditableServiceFields): Promise<void> {
       await serviceModel.findByIdAndUpdate(id,data,
         {
@@ -42,9 +49,9 @@ export class ServiceRepository implements IServiceRepository{
       }
   }
 
- async findFIlteredSevices(filters: { search?: string; sort?: string; }, skip: number, limit: number): Promise<{ services: IServiceEntity[] | []; total: number; }> {
+ async findFIlteredSevices(filters: { search?: string; sort?: string;categoryId?:string }, skip: number, limit: number): Promise<{ services: IServiceEntity[] | []; total: number; }> {
 
-      const {search,sort} = filters
+      const {search,sort,categoryId} = filters
 
       const filter : FilterQuery<IServiceEntity> = {status:"active"}
 
@@ -52,6 +59,11 @@ export class ServiceRepository implements IServiceRepository{
         filter.$or = [
           {serviceTitle:{$regex:search,$options:"i"}}
         ];
+      }
+
+
+          if (categoryId) {
+        filter.categoryId = filters.categoryId;
       }
 
 
@@ -108,10 +120,15 @@ export class ServiceRepository implements IServiceRepository{
         services,
         total
       }
-
-
-
  }
 
-
+  async findByIdAndUpdateBookedCount(serviceId: string, startDateTime: Date, endDateTime: Date): Promise<void> {
+       await serviceModel.findOneAndUpdate(
+    {
+      _id: serviceId,
+      slots: { $elemMatch: { startDateTime, endDateTime } },
+    },
+    { $inc: { "slots.$.bookedCount": 1 } }
+  );
+  }
 }

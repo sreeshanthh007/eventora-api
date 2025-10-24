@@ -1,12 +1,20 @@
 import { IEventEntity } from "@entities/models/event.entity";
+import { TEventEntityWithVendorPopulated } from "@entities/models/populated-types/event-populated.type";
+import { IVendorEntity } from "@entities/models/vendor.entity";
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
 import { EventModel } from "@frameworks/database/Mongodb/models/event.model";
 import { IUpdateEventDTO } from "@shared/dtos/event.dto";
-import { FilterQuery, ObjectId, PipelineStage } from "mongoose";
+import mongoose, { FilterQuery, ObjectId, PipelineStage } from "mongoose";
 
 export class EventRepository implements IEventRepository{
     async save(data: IEventEntity): Promise<void> {
         await EventModel.create(data)
+    }
+
+
+    async createManyTickets(tickets: IEventEntity[]): Promise<IEventEntity[]> {
+        
+      return await EventModel.insertMany(tickets)
     }
 
     async findEvents(): Promise<IEventEntity[]> {
@@ -14,9 +22,9 @@ export class EventRepository implements IEventRepository{
     }
 
 
-    async findEventByIdForDetailsPage(eventId: string): Promise<IEventEntity | null> {
-        return await EventModel.findById(eventId)
-    
+    async findEventByIdForDetailsPage(eventId: string): Promise<TEventEntityWithVendorPopulated | null> {
+        return await EventModel.findById(eventId) .populate<{ hostId: IVendorEntity }>("hostId", "name email profilePicture") 
+      .lean();
     }
 
    async findPaginatedEvents(filter: FilterQuery<IEventEntity>, skip: number, limit: number): Promise<{ events: IEventEntity[] | []; total: number; }> {
@@ -90,8 +98,8 @@ export class EventRepository implements IEventRepository{
         near: { type: "Point", coordinates: [lng, lat] },
         distanceField: "distance",
         spherical: true,
-        minDistance:0,
-        maxDistance:10000,
+        minDistance:10 * 1000,
+        maxDistance:20*1000,
         query:filter
       },
     });
@@ -162,14 +170,14 @@ export class EventRepository implements IEventRepository{
 
     async updateAfterTicketBooking(eventId: string | ObjectId, quantity: number, ticketType?: string): Promise<void> {
         
-      if(ticketType!==""){
+    if(ticketType !== undefined && ticketType !== ""){
         await EventModel.updateOne(
           {_id:eventId,"tickets.ticketType":ticketType},
           {
             $inc:{
               attendiesCount:quantity,
-              "tickets.bookedTickets":quantity,
-              "tickets.totalTickets":-quantity
+           "tickets.$.bookedTickets": quantity,
+          "tickets.$.totalTickets": -quantity 
             }
           }
         )
@@ -185,5 +193,14 @@ export class EventRepository implements IEventRepository{
           }
         )
       }
+    }
+
+
+    async findEventsHostedByVendors(vendorId: string): Promise<IEventEntity | null> {
+      return await EventModel.findOne({hostId: new mongoose.Types.ObjectId(vendorId)})
+    }
+
+    async findHostIdFromEvents(eventId: string): Promise<TEventEntityWithVendorPopulated | null> {
+        return await EventModel.findById(eventId).populate<{hostId:IVendorEntity}>("hostId").lean()
     }
 }

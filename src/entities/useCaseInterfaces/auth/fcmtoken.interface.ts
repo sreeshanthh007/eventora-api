@@ -1,5 +1,5 @@
 
 
 export interface IFcmTokenUseCase{
-    execute(userId:string,fcmToken:string) : Promise<void>
+    execute(userId:string,fcmToken:string,role:string) : Promise<void>
 }

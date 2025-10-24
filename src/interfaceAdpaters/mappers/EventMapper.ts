@@ -1,5 +1,6 @@
 import { IEventEntity } from "@entities/models/event.entity";
-import { eventDetailsDTO, EventTableDTO, PaginatedEventDetailsDTO} from "@shared/dtos/event.dto";
+import { TEventEntityWithVendorPopulated } from "@entities/models/populated-types/event-populated.type";
+import { eventDetailsDTO, EventTableDTO, PaginatedEventDetailsDTO,IEventVerifyAttendiesDTO} from "@shared/dtos/event.dto";
 import { EventDTO } from "@shared/dtos/user.dto";
 
 
@@ -41,7 +42,8 @@ export function mapEventEntityToTable (event:IEventEntity) : EventTableDTO{
         title:event.title,
         status:event.status,
         pricePerTicket: event.pricePerTicket || event.tickets?.[0]?.pricePerTicket || 0,
-
+      qrCode:event.qrCode,
+      vendorId:event.hostId.toString(),
         totalTicket: event.totalTicket || event.tickets?.[0]?.totalTickets || 0,
         isActive:event.isActive,
   eventSchedule: event.eventSchedule?.map(schedule => ({
@@ -104,7 +106,7 @@ export const toClientLandingPage = (events:IEventEntity[]) : EventDTO[]=>{
 
 
 
-export function mapEventsToEventDetailPage(event: IEventEntity): eventDetailsDTO {
+export function mapEventsToEventDetailPage(event: TEventEntityWithVendorPopulated): eventDetailsDTO {
   return {
     _id: event._id?.toString(),
     title: event.title,
@@ -127,7 +129,12 @@ export function mapEventsToEventDetailPage(event: IEventEntity): eventDetailsDTO
           pricePerTicket: event.pricePerTicket,
           totalTicket: event.totalTicket,
           maxTicketPerUser: event.maxTicketPerUser
-        })
+        }),
+        vendor:{
+          name:event.hostId.name,
+          email:event.hostId.email,
+          profilePicture:event.hostId.profilePicture
+        }
   };
 }
 
@@ -137,8 +144,12 @@ export function mapEventsToClientEventPage(event:IEventEntity) : PaginatedEventD
     _id:event._id?.toString(),
     title:event.title,
     status:event.status,
-    pricePerTicket: event.pricePerTicket 
-  ?? Math.max(...(event.tickets?.map(item => item.pricePerTicket) ?? [])),
+    pricePerTicket:
+  event.pricePerTicket && event.pricePerTicket > 0
+    ? event.pricePerTicket
+    : (event.tickets && event.tickets.length > 0
+        ? Math.min(...event.tickets.map(item => item.pricePerTicket))
+        : 0),
     attendiesCount:event.attendiesCount,
     eventLocation:event.eventLocation,
     images:event.Images[0],
@@ -148,6 +159,30 @@ export function mapEventsToClientEventPage(event:IEventEntity) : PaginatedEventD
       startTime:s.startTime,
       endTime:s.endTime
     })),
+  }
+}
+
+export function mapEventForverifyAttendiestoDTO(event:IEventEntity) : IEventVerifyAttendiesDTO{
+    const totalTicket =
+    !event.totalTicket 
+      ? event.tickets?.reduce((acc, t) => acc + (t.totalTickets ?? 0), 0) ?? 0
+      : event.totalTicket;
+
+  const bookedTickets =
+    !event.bookedTickets 
+      ? event.tickets?.reduce((acc, t) => acc + (t.bookedTickets ?? 0), 0) ?? 0
+      : event.bookedTickets;
+
+return{
+    event:{
+      eventId:event._id!.toString(),
+      image:event.Images[0],
+      title:event.title,
+      eventLocation:event.eventLocation,
+      eventSchedule:event.eventSchedule,
+      totalTicket:totalTicket,
+      bookedTickets: bookedTickets
+    },
   }
 }
 

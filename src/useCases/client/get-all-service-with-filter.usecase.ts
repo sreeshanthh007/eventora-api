@@ -15,7 +15,8 @@ export class GetAllServicesWithFilterUseCase implements IGetAllServiceWithFilter
 
     async execute(serviceFilters: ServiceFilters): Promise<PaginatedServicesForClient> {
         
-        const {page,limit,search,sort} =serviceFilters
+        const {page,limit,search,sort,categoryId} =serviceFilters
+
 
 
         const validPageNumber = Math.max(1,page || 1)
@@ -23,7 +24,7 @@ export class GetAllServicesWithFilterUseCase implements IGetAllServiceWithFilter
         const skip = (validPageNumber - 1)*limit
 
         const {services,total} = await this._serviceRepo.findFIlteredSevices(
-            {search,sort},
+            {search,sort,categoryId},
             skip,
             limit
         );

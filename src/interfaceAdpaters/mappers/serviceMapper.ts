@@ -2,7 +2,7 @@
 // import { ServiceTableDTO } from "@shared/dtos/service.dto";
 
 import { IServiceEntity } from "@entities/models/service.entity";
-import { PaginatedServiceDTO, ServiceTableDTO } from "@shared/dtos/service.dto";
+import { PaginatedServiceDTO, PaginatedServicesProvidedByVendorsDTO, ServiceTableDTO } from "@shared/dtos/service.dto";
 
 
 export interface IServiceResponse {
@@ -15,6 +15,13 @@ export interface IServiceResponse {
   termsAndConditions:string[];
   cancellationPolicies:string[];
   categoryId:string
+    slots?: {
+    date?: Date;
+    startDateTime?: Date;
+    endDateTime?: Date;
+    capacity?: number;
+    bookedCount?: number;
+  }[];
 }
 
 
@@ -42,7 +49,14 @@ export function mapServiceForEditService(service:IServiceEntity) : IServiceRespo
     servicePrice:service.servicePrice,
     termsAndConditions:service.termsAndConditions,
     yearsOfExperience:service.yearsOfExperience,
-    categoryId:service.categoryId
+    categoryId:service.categoryId,
+     slots: service.slots?.map(slot => ({
+      date: slot.date,
+      startDateTime: slot.startDateTime,
+      endDateTime: slot.endDateTime,
+      capacity: slot.capacity,
+      bookedCount: slot.bookedCount,
+    })),
   }
 }
 
@@ -57,5 +71,17 @@ export function mapServiceforClientPage(service:IServiceEntity) : PaginatedServi
     categoryName:service.categoryName!,
     servicePrice:service.servicePrice,
     vendorId:service.vendorId?.toString() || ""
+  }
+}
+
+
+
+export function mapServiceForServiceDetails(service:IServiceEntity) : PaginatedServicesProvidedByVendorsDTO{
+  return{
+    _id:service._id?.toString(),
+    serviceTitle:service.serviceTitle,
+    serviceDescription:service.serviceDescription,
+    yearsOfExperience:service.yearsOfExperience,
+    categoryName:service.categoryName!
   }
 }

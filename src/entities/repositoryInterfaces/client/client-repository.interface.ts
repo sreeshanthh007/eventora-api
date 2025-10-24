@@ -9,6 +9,7 @@ export interface IClientRepository  {
 
     findById(id:string) : Promise<IClientEntity | null>
 
+    findByIdandSaveFcmToken(id:string,fcmtoken:string) : Promise<void>
 
     findByIdAndUpdatePassword(id:ObjectId,password:string) : Promise<void>
     

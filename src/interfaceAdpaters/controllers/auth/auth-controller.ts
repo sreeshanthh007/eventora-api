@@ -272,7 +272,7 @@ export class AuthController implements IAuthController{
 
      async saveFcmToken(req: Request, res: Response): Promise<void> {
      
-         const {userId,fcmToken} = req.body
+         const {userId,fcmToken,role} = req.body
     
          if(!userId || !fcmToken){
             res.status(HTTP_STATUS.BAD_REQUEST)
@@ -280,7 +280,7 @@ export class AuthController implements IAuthController{
             return;
          }
 
-         await this._fcmTokenUseCase.execute(userId,fcmToken);
+         await this._fcmTokenUseCase.execute(userId,fcmToken,role);
 
          res.status(HTTP_STATUS.OK)
          .json({success:true,message:SUCCESS_MESSAGES.FCM_TOKEN_SAVE_SUCCESS})

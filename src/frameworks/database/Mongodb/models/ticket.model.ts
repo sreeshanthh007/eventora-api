@@ -4,8 +4,8 @@ import { ticketSchema } from "../schemas/ticket.schema";
 
 
 
-export interface ITicketModel extends Omit<ITicketEntity,"_id">,Document{
-    _id:ObjectId
+export interface ITicketModel extends Omit<ITicketEntity, "_id"> {
+  _id: ObjectId;
 }
 
 export const ticketModel = model<ITicketModel>("Ticket",ticketSchema)

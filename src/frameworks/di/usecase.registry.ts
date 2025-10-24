@@ -155,6 +155,49 @@ import { IChangeVendorPasswordUseCase } from "@entities/useCaseInterfaces/vendor
 import { ChangeVendorPasswordUseCase } from "@usecases/vendor/change-vendor-password.usecase";
 import { IAddWorkSampleUseCase } from "@entities/useCaseInterfaces/vendor/worksample/add-work-sample.usecase.interface";
 import { AddWorksampleUseCase } from "@usecases/vendor/worksample/add-work-sample.usecase";
+import { IGetworkSampleDataUseCase } from "@entities/useCaseInterfaces/vendor/worksample/get-work-sample-data.usecase";
+import { GetWorkSampleDataUseCase } from "@usecases/vendor/worksample/get-work-sample-data.usecase";
+import { IEditWorkSampleUseCase } from "@entities/useCaseInterfaces/vendor/worksample/edit-work-sample.usecase.interface";
+import { EditWorkSampleUseCase } from "@usecases/vendor/worksample/edit-work-sample.usecase";
+import { ICreateBookingUseCase } from "@entities/useCaseInterfaces/client/creating-booking-usercase.interface";
+import { CreateBookingUseCase } from "@usecases/client/create-ticket-booking-usecase";
+import { IGetCategoryForFilterUseCase } from "@entities/useCaseInterfaces/client/get-category-for-filter.usecase.interface";
+import { GetCategoryForFilterUseCase } from "@usecases/client/get-all-category-for-filter.usecase";
+import { IScanAndVerifyAttendiesUseCase } from "@entities/useCaseInterfaces/vendor/scan-verify-attendies.usecase.interface";
+import { ScanAndVerifyAttendiesUseCase } from "@usecases/vendor/scan-verify-attendies.usecase";
+import { IGetServicesProvidedByVendorsUseCase } from "@entities/useCaseInterfaces/client/get-services-provided-vendors.usecase.interface";
+import { GetServicesProvidedByVendorsUseCase } from "@usecases/client/get-services-provided-vendors.usecase";
+import { IGetClientWalletDetailsUseCase } from "@entities/useCaseInterfaces/client/get-client-wallet-details.usecase.interface";
+import { GetClientWalletDetailsUseCase } from "@usecases/client/get-client-wallet-details.usecase";
+import { IGetVendorWalletDetailsUseCase } from "@entities/useCaseInterfaces/vendor/get-vendor-wallet-details.usecase.interface";
+import { GetVendorWalletDetailsUseCase } from "@usecases/vendor/get-vendor-wallet-details.usecase";
+import { IGetAdminWalletDetailsUseCase } from "@entities/useCaseInterfaces/admin/get-admin-wallet-details.usecase.interface";
+import { GetAdminWalletDetailsUseCase } from "@usecases/admin/get-admin-wallet-details.usecase";
+import { IScanAndVerifyTicketsUseCase } from "@entities/useCaseInterfaces/vendor/scan-and-verify-tickets.usecase.interface";
+import { ScanAndVerifyTicketsUseCase } from "@usecases/vendor/scan-and-verify-tickets.usecase";
+import { ICreateServiceBookingUseCase } from "@entities/useCaseInterfaces/client/create-service-booking-usercase.interface";
+import { CreateServiceBookingUseCase } from "@usecases/client/create-service-booking.usecase";
+import { IHandleServiceBookingWebhookUseCase } from "@entities/useCaseInterfaces/client/handle-service-booking-webhook.usecase.interface";
+import { HandleServiceBookingWebhookUseCase } from "@usecases/client/handle-service-booking-webhook.usecase";
+import { IServicebookingStripeService } from "@entities/serviceInterfaces/service-booking-stripe.service";
+import { ServiceBookingStripeService } from "interfaceAdpaters/services/stripe/service-booking-stripe-sevice";
+import { IGetVendorBookingUseCase } from "@entities/useCaseInterfaces/vendor/get-vendor-booking.usecase.interface";
+import { GetVendorBookingsUseCase } from "@usecases/vendor/get-vendor-bookings.usecase";
+import { IGetTicketDetailsUseCase } from "@entities/useCaseInterfaces/vendor/get-ticket-details.usecase.interface";
+import { GetTicketDetailsUseCase } from "@usecases/vendor/get-ticket-details.usecase";
+import { ICancelTicketUseCase } from "@entities/useCaseInterfaces/client/cancel-ticket.usecase.interface";
+import { CancelTicketUseCase } from "@usecases/client/cancel-ticket.usecase";
+import { IGetVendorWorkFolioUseCase } from "@entities/useCaseInterfaces/client/get-workfolio-of-vendor.usecase.interface";
+import { GetWorkfolioOfVendorUseCase } from "@usecases/client/get-workfolio-of-vendor.usecase";
+import { IGetAllNotificationUseCase } from "@entities/useCaseInterfaces/get-all-notification.usecase.interface";
+import { GetAllNotificationUseCase } from "@usecases/common/get-all-notification.usecase";
+import { IAddRatingUseCase } from "@entities/useCaseInterfaces/client/add-rating.usecase.interface";
+import { AddRatingUseCase } from "@usecases/client/add-rating.usecase";
+import { IEditRatingUseCase } from "@entities/useCaseInterfaces/client/edit-rating.usecase.interface";
+import { EditRatingUseCase } from "@usecases/client/edit-rating.usecase";
+// import { IGetClientBookedServicesUseCase } from "@entities/useCaseInterfaces/client/client-get-booked-service.usecase.interface";
+// // import { GetClientBookedServicesUseCase } from "@usecases/client/client-get-booked-services.usecase";
+
 
 
 
@@ -344,6 +387,7 @@ export class UseCaseRegistry {
       useClass:ClientGetEventBookingsUseCase
   });
   
+  
     container.register<IGetAllEventsWithFilterUseCase>("IGetAllEventsWithFilterUseCase",{
       useClass:GetAllEventsWithFilterUseCase
     });
@@ -420,10 +464,19 @@ export class UseCaseRegistry {
       }
     );
 
+
+    container.register<IGetAllNotificationUseCase>("IGetAllNotificationUseCase",{
+      useClass:GetAllNotificationUseCase
+    });
+
     container.register<IGetAllCategoryForServiceUseCase>("IGetCategoriesForServiceUseCase",{
 
       useClass:GetCategoriesForServiceUseCase
     })
+
+    container.register<IGetCategoryForFilterUseCase>("IGetCategoriesForFilterUseCase",{
+      useClass:GetCategoryForFilterUseCase
+    });
 
     container.register<IHostNewEventUseCase>("IHostNewEventUseCase", {
       useClass: HostNewEventUseCase,
@@ -434,11 +487,46 @@ export class UseCaseRegistry {
       useClass:UpdateEventUseCase
     });
 
+    container.register<ICreateServiceBookingUseCase>("ICreateServiceBookingUseCase",{
+      useClass:CreateServiceBookingUseCase
+    });
+
+    container.register<IHandleServiceBookingWebhookUseCase>("IHandleServiceBookingWebhookUseCase",{
+      useClass:HandleServiceBookingWebhookUseCase
+    });
+
+    container.register<IScanAndVerifyAttendiesUseCase>("IScanAndVerifyAttendiesUseCase",{
+      useClass:ScanAndVerifyAttendiesUseCase
+    });
+
+    container.register<IGetTicketDetailsUseCase>("IGetTicketDetailsUseCase",{
+      useClass:GetTicketDetailsUseCase
+    });
+
+    container.register<ICancelTicketUseCase>("ICancelTicketUseCase",{
+      useClass:CancelTicketUseCase
+    });
+    
+    container.register<IScanAndVerifyTicketsUseCase>("IScanAndVerifyTicketsUseCase",{
+      useClass:ScanAndVerifyTicketsUseCase
+    });
+    
     container.register<IChangeClientPasswordUseCase>("IChangeClientPasswordClientUseCase",{
       useClass:ChangePasswordClientUseCase
     });
 
 
+    container.register<IServicebookingStripeService>("IServiceBookingStripeService",{
+      useClass:ServiceBookingStripeService
+    });
+
+    container.register<IGetVendorBookingUseCase>("IGetVendorBookingsUseCase",{
+      useClass:GetVendorBookingsUseCase
+    });
+    
+    // container.register<IGetClientBookedServicesUseCase>("IGetClientBookedServiceUseCase",{
+    //   useClass:GetClientBookedServicesUseCase
+    // });
 
     container.register<IChangeVendorPasswordUseCase>("IChangeVendorPasswordUseCase",{
       useClass:ChangeVendorPasswordUseCase
@@ -463,6 +551,10 @@ export class UseCaseRegistry {
     container.register<IGetAllServiceWithFilterUseCase>("IGetAllServiceForClientUseCase",{
       useClass:GetAllServicesWithFilterUseCase
     });
+
+    container.register<ICreateBookingUseCase>("ICreateBookingUseCase",{
+      useClass:CreateBookingUseCase
+    });
     
     container.register<IAddServiceUseCase>("IAddServiceUseCase", {
       useClass: AddServiceUseCase,
@@ -480,6 +572,10 @@ export class UseCaseRegistry {
     useClass:GetServiceDetailsUseCase
     });
 
+    container.register<IGetServicesProvidedByVendorsUseCase>("IGetServicesProvidedByVendorsUseCase",{
+      useClass:GetServicesProvidedByVendorsUseCase
+    });
+    
 
     container.register<IAddWorkSampleUseCase>("IAddWorkSampleUseCase",{
       useClass:AddWorksampleUseCase
@@ -487,8 +583,28 @@ export class UseCaseRegistry {
 
   
 
+    container.register<IGetworkSampleDataUseCase>("IGetWorkSampleDataUseCase",{
+      useClass:GetWorkSampleDataUseCase
+    });
   
 
+    container.register<IEditWorkSampleUseCase>("IEditWorkSampleUseCase",{
+      useClass:EditWorkSampleUseCase
+    });
+
+
+
+    container.register<IAddRatingUseCase>("IAddRatingUseCase",{
+      useClass:AddRatingUseCase
+    });
+
+    container.register<IEditRatingUseCase>("IEditRatingUseCase",{
+      useClass:EditRatingUseCase
+    });
+
+    container.register<IGetVendorWorkFolioUseCase>("IGetWorkFolioforClientUseCase",{
+      useClass:GetWorkfolioOfVendorUseCase
+    });
 
     container.register<IGetServiceByIdUseCase>("IGetServiceByIdUseCase",{
       useClass:GetServiceByIdUseCase
@@ -498,10 +614,23 @@ export class UseCaseRegistry {
       useClass:toggleServiceStatusUseCase
     });
 
+    container.register<IGetClientWalletDetailsUseCase>("IGetClientWalletDetailsUseCase",{
+      useClass:GetClientWalletDetailsUseCase
+    });
+    container.register<IGetVendorWalletDetailsUseCase>("IGetVendorWalletDetailsUseCase",{
+      useClass:GetVendorWalletDetailsUseCase
+    });
+    
+    container.register<IGetAdminWalletDetailsUseCase>("IGetAdminWalletDetailsUseCase",{
+      useClass:GetAdminWalletDetailsUseCase
+    });
+    
     container.register<IFcmTokenUseCase>("IFcmTokenUseCase", {
       useClass: FcmTokenUseCase,
     });
 
+
+    
     // ======logger==========//
 
     container.register<ILogger>("ILogger", {

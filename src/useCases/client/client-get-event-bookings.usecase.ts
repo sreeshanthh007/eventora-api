@@ -37,7 +37,7 @@ export class ClientGetEventBookingsUseCase implements IClientGetEventBookingUseC
         if(search){
 
             filter.$or = [
-                {eventName:{$regex:search,$options:"i"}},
+                {title:{$regex:search,$options:"i"}},
                 {ticketId:{$regex:search,$options:"i"}}
             ]
         }
@@ -50,9 +50,12 @@ export class ClientGetEventBookingsUseCase implements IClientGetEventBookingUseC
 
         const {tickets,total} =  await this._ticketRepo.findTicketsByClientId(filter,clientId,skip,limit)
 
-
+       
+       
+        
         const mappedTickets = tickets.map(ticket => mapToTicketDTO(ticket));
-
+ 
+        
      
         
         return {
