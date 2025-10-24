@@ -22,7 +22,7 @@ export class SocketServer {
 
   private initializeConnection() {
     this._io.on("connection", (socket: Socket) => {
-      console.log("client connected");
+      console.log("socket connected");
 
       const notificationEvents = new NotificationEvents(socket, this._io);
       notificationEvents.register();

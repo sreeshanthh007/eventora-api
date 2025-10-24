@@ -1,5 +1,5 @@
 export interface NotificationDTO {
-  id: string;
+  notificationId: string;
   title: string;
   message: string;
   isRead: boolean;

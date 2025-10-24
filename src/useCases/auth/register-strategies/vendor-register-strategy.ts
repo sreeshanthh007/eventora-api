@@ -56,7 +56,7 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
 
             const walletDetails : WalletDTO = {
                 balance:0,
-                userId:vendorId,
+                userId:vendor._id.toString(),
                 userType:"vendor",
                 walletId:walletId
             };

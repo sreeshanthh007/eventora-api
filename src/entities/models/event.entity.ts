@@ -9,11 +9,12 @@ export interface IEventEntity {
     status:string,
     pricePerTicket:number,
     totalTicket : number,
+    ticketType?:string
     attendiesCount:number
     bookedTickets?:number,
     maxTicketPerUser?:number
      tickets?: {
-    ticketType: string;           // e.g. Silver, Gold, Platinum
+    ticketType: string;
     pricePerTicket: number;
     totalTickets: number;
     bookedTickets?: number;
@@ -31,6 +32,7 @@ export interface IEventEntity {
         coordinates:number[]
     };
     Images:string[];
+    qrCode:string;
     hostId:string | ObjectId;
     createdAt?:Date,
     updatedAt?:Date

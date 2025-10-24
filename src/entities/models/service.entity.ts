@@ -17,6 +17,13 @@ export interface IServiceEntity  {
     categoryId:string,
     status?:string
     categoryName?:string
+    slots?: {
+    date?: Date;
+    startDateTime?: Date;
+    endDateTime?: Date;
+    capacity?: number;
+    bookedCount?: number;
+  }[];
 }
 
 

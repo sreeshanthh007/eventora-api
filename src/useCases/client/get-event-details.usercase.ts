@@ -15,11 +15,13 @@ export class GetEventDetailsUseCase implements IGetEventDetailsUseCase{
 
     async execute(eventId: string): Promise<eventDetailsDTO | null> {
         
-        const eventExist = await this._eventRepo.findEventByIdForDetailsPage(eventId)
+        const eventExist = await this._eventRepo.findEventByIdForDetailsPage(eventId);
+
+        console.log("event details is",eventExist)
         if(!eventExist){
             throw new CustomError(ERROR_MESSAGES.ID_NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
         }
-
+        
         const mappedEvent  = mapEventsToEventDetailPage(eventExist)
         
       

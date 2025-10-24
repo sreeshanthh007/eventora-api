@@ -12,6 +12,7 @@ export type EditableServiceFields = Partial<
     | "serviceTitle"
     | "termsAndConditions"
     | "yearsOfExperience"
+    | "slots"
   >
 >;
 

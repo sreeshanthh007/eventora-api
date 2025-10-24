@@ -1,20 +1,20 @@
 
 
-import { RedisClientType } from "redis";
+
 import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { injectable } from "tsyringe";
+import { RedisClient } from "@frameworks/cache/redis.client";
 
-
+@injectable()
 export class RedisLockService implements ILockService{
     private readonly _prefix = `lock:event:`
-    constructor(
-        private _redisType : RedisClientType
-    ){}
 
+    
     async acquireLock(eventId: string, ticketType: string, userId: string, ttl: number): Promise<boolean> {
         
         const key = `${this._prefix}${eventId}:ticketType:${ticketType}`
 
-        const result = await this._redisType.set(
+        const result = await RedisClient.set(
             key,
             userId,
             {NX:true,EX:ttl}
@@ -28,10 +28,10 @@ export class RedisLockService implements ILockService{
         
         const key = `${this._prefix}${eventId}:ticketType:${ticketType}`
 
-        const currentValue = await this._redisType.get(key);
+        const currentValue = await RedisClient.get(key);
 
         if(currentValue == userId){
-            await this._redisType.del(key);
+            await RedisClient.del(key);
         }
     }
 }

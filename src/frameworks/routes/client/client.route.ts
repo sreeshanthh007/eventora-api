@@ -1,6 +1,6 @@
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { authController,blockstatusMiddleware,clientController, eventBookingController } from "@frameworks/di/resolver";
+import { authController,blockstatusMiddleware,clientController, clientRatingController, eventBookingController } from "@frameworks/di/resolver";
 import { authorizeRole, decodeToken , verifyAuth} from "interfaceAdpaters/middlewares/auth.middleware";
 import { RequestHandler } from "express";
 
@@ -25,12 +25,34 @@ export class ClientRoutes extends BaseRouter{
 
         this.router.get(
             "/eventPage",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             asyncHandler(clientController.getAllEventsWithFilters.bind(clientController))
         );
 
         this.router.get(
             "/servicePage",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             asyncHandler(clientController.getAllServiceWithFilters.bind(clientController))
+        );
+
+        this.router.get(
+            "/client-notification",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientController.getAllNotifications.bind(clientController))
+        );
+
+        this.router.get(
+            "/get-category-for-filter",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientController.getCategoriesForFilter.bind(clientController))
         );
 
         this.router.get(
@@ -41,6 +63,13 @@ export class ClientRoutes extends BaseRouter{
             asyncHandler(clientController.getEventDetails.bind(clientController))
         );
 
+        this.router.get(
+            "/workfolio/:vendorId",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientController.getVendorWorkfolioForClient.bind(clientController))
+        );
 
         this.router.get(
             "/service-details/:serviceId",
@@ -50,6 +79,14 @@ export class ClientRoutes extends BaseRouter{
             asyncHandler(clientController.getServiceDetails.bind(clientController))
         );
 
+        this.router.get(
+            "/services-by-vendors/:vendorId",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientController.getServicesProvidedByVendors.bind(clientController))
+        )
+
 
         this.router.get(
             "/booked-events",
@@ -57,9 +94,33 @@ export class ClientRoutes extends BaseRouter{
             authorizeRole(["client"]),
             blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             asyncHandler(clientController.getEventBooking.bind(clientController))
-        )
+        );
+
+        this.router.patch(
+            "/cancel-ticket/:ticketId/:eventId",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientController.cancelTickets.bind(clientController))
+        );
 
 
+        this.router.post(
+            "/add-rating",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientRatingController.addReview.bind(clientRatingController))
+        );
+
+        this.router.patch(
+            "/edit-rating/:ratingId",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientRatingController.editReview.bind(clientRatingController))
+        );
+        
         this.router.get(
             "/refresh-session",
             verifyAuth,
@@ -99,13 +160,29 @@ export class ClientRoutes extends BaseRouter{
             blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             authorizeRole(["client"]),
             asyncHandler(eventBookingController.createBooking.bind(eventBookingController))
-        );  
+        ); 
 
+        this.router.post(
+            "/create-service-booking",
+            verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            authorizeRole(["client"]),
+            asyncHandler(clientController.bookService.bind(clientController))
+        );
 
-    
-        
-       
+        this.router.get(
+            "/wallet-details",
+            verifyAuth,
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            authorizeRole(["client"]),
+            asyncHandler(clientController.getClientWalletDetails.bind(clientController))
+            
+        );
 
-        this.router.post("/logout",verifyAuth,authorizeRole(["client"]),asyncHandler(authController.logout.bind(authController)))
+        this.router.post("/logout",
+            verifyAuth,
+            authorizeRole(["client"]),
+            asyncHandler(authController.logout.bind(authController))
+        )
     }
 }   

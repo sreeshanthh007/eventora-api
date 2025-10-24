@@ -20,6 +20,16 @@ export class ClientRepository implements IClientRepository{
         return await ClientModel.findById(id)
     }
 
+
+    async findByIdandSaveFcmToken(id: string,fcmtoken:string): Promise<void> {
+        await ClientModel.findByIdAndUpdate(
+            id,
+            {
+                fcmToken:fcmtoken
+            }
+        )
+    }
+
    async  findByIdAndUpdatePassword(id: ObjectId, password: string): Promise<void> {
          await ClientModel.findByIdAndUpdate(id,{
             password:password

@@ -1,5 +1,4 @@
 import { IServiceController } from "@entities/controllerInterfaces/vendor/service/service-controller.interface";
-import { IServiceEntity } from "@entities/models/service.entity";
 import { IAddServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/add-service.interface.usecase";
 import { IEditServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
 import { IGetAllServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/get-all-service-vendor.interface.usecase";
@@ -10,10 +9,11 @@ import {
   HTTP_STATUS,
   SUCCESS_MESSAGES,
 } from "@shared/constants";
-import { CreateServiceDTO } from "@shared/dtos/service.dto";
+import { CreateServiceDTO, EditServiceDTO } from "@shared/dtos/service.dto";
 import { Request, Response } from "express";
 import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
 import {
+
   EditServiceValidationSchema,
   ServiceValidationSchema,
 } from "interfaceAdpaters/validations/service.validation";
@@ -32,18 +32,24 @@ export class ServiceController implements IServiceController {
     @inject("IGetServiceByIdUseCase")
     private _getServiceByIdUseCase: IGetServiceByIdUseCase,
     @inject("IToggleServiceStatusUseCase")
-    private _toggleServiceUseCase: IToggleServiceStatusUseCase
+    private _toggleServiceUseCase: IToggleServiceStatusUseCase,
   ) {}
 
   async addService(req: Request, res: Response): Promise<void> {
     const serviceData = req.body as CreateServiceDTO;
+   
     const { id } = (req as CustomRequest).user;
     const validatedData = ServiceValidationSchema.parse(serviceData);
 
-    const mappedData: IServiceEntity = {
-      vendorId: id,
-      ...validatedData,
-    };
+  const mappedData: CreateServiceDTO = {
+  ...validatedData,
+  slots: validatedData.slots?.map((slot) => ({
+    startDateTime: new Date(slot.startDateTime),
+    endDateTime: new Date(slot.endDateTime),
+    capacity: slot.capacity,
+    bookedCount: slot.bookedCount || 0,
+  })),
+};
 
     await this._addServiceUseCase.execute(id, mappedData);
 
@@ -58,8 +64,17 @@ export class ServiceController implements IServiceController {
     const { serviceId } = req.params;
 
     const validatedData = EditServiceValidationSchema.parse(data);
-
-    await this._editServiceUseCase.execute(id, serviceId, validatedData);
+    
+    const mappedData: Partial<EditServiceDTO> = {
+      ...validatedData,
+      slots: validatedData.slots?.map(slot => ({
+        date: slot.startDateTime ? new Date(slot.startDateTime) : undefined,
+        startDateTime: slot.startDateTime ? new Date(slot.startDateTime) : undefined,
+        endDateTime: slot.endDateTime ? new Date(slot.endDateTime) : undefined,
+        capacity: slot.capacity,
+      })),
+    };
+    await this._editServiceUseCase.execute(id, serviceId, mappedData);
 
     res
       .status(HTTP_STATUS.OK)
@@ -79,7 +94,7 @@ export class ServiceController implements IServiceController {
 
   
     const {id} = (req as CustomRequest).user
-    console.log("id is",id,typeof id)
+ 
     const response = await this._getServiceUseCase.execute(
       Number(limit),
       search,

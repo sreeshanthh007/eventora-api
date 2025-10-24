@@ -1,4 +1,4 @@
-import { PaginatedServiceDTO, ServiceTableDTO } from "@shared/dtos/service.dto";
+import { PaginatedServiceDTO, PaginatedServicesProvidedByVendorsDTO, ServiceTableDTO } from "@shared/dtos/service.dto";
 
 
 export interface PaginatedServices{
@@ -8,5 +8,11 @@ export interface PaginatedServices{
 
 export interface PaginatedServicesForClient {
     services:PaginatedServiceDTO[];
+    total:number
+}
+
+
+export interface PaginatedServicesProvidedByVendors {
+    services:PaginatedServicesProvidedByVendorsDTO[]
     total:number
 }

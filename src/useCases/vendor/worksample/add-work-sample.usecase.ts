@@ -25,6 +25,6 @@ export class AddWorksampleUseCase implements IAddWorkSampleUseCase{
             throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
 
-        await this._workSampleRepo.save(data)
+        await this._workSampleRepo.save(data,vendorId)
     }
 }

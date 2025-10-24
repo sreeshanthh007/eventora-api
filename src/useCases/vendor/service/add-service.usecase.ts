@@ -24,6 +24,7 @@ export class AddServiceUseCase implements IAddServiceUseCase{
             throw new CustomError(`cannot add event due to vendor Status : ${vendor?.vendorStatus}`,HTTP_STATUS.BAD_REQUEST)
         }
         
-        await this._serviceRepo.save(data)
+        const dataWithId = {...data,vendorId}
+        await this._serviceRepo.save(dataWithId)
     } 
 }

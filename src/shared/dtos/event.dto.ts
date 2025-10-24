@@ -45,6 +45,8 @@ export interface EventTableDTO{
     _id?:string,
     title:string,
     image:string,
+    qrCode:string,
+    vendorId:string
     status:string,
     isActive?:boolean
     pricePerTicket:number
@@ -98,13 +100,17 @@ export interface eventDetailsDTO{
     startTime: string;
     endTime: string;
   }[]
-  // eventHost:string
    tickets?: {
     ticketType?: string;    
     pricePerTicket: number;
     totalTickets: number;
     maxTicketsPerUser: number;
   }[];
+  vendor:{
+    name:string
+    email:string
+    profilePicture:string
+  }
   images:string[]
 
   location : {
@@ -122,3 +128,22 @@ export interface IEventWithHost extends Omit<IEventEntity, "hostId"> {
     email: string;
   };
 }
+
+
+export interface IEventVerifyAttendiesDTO{
+  event: {
+    eventId:string,
+    image:string
+    title: string;
+    eventLocation: string;
+    eventSchedule: {
+      date: Date;
+      startTime: string;
+      endTime: string;
+    }[];
+    totalTicket: number;
+    bookedTickets: number; 
+  };
+
+}
+

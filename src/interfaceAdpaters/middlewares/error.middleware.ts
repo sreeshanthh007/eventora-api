@@ -26,8 +26,6 @@ export class ErrorMiddleware {
       message: err.message,
       stack: err.stack,
       method: req.method,
-      url: req.url,
-      ip: req.ip,
       timestamp: new Date().toISOString(),
     });
 

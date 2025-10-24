@@ -52,6 +52,8 @@ export const EventSchema: Schema = new Schema<IEventModel>(
 
     Images: [{ type: String, required: true }],
 
+    qrCode:{type:String,required:true},
+
     hostId: {
       type: Schema.Types.ObjectId,
       ref: "Vendor",

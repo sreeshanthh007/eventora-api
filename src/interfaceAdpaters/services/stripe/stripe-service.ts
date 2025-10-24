@@ -19,23 +19,24 @@ export class StripeService  implements IStripeService {
   ){}
 
     async createPaymentIntent(
-      amount: number,
+      bookingType:string,
+        amount: number,
       currency: string,
       eventId: string, 
       userId: string,
-      ticketType: string,
-      quantity:number
+      tickets: { ticketType: string; pricePerTicket: number; quantity: number }[]
     ): Promise<Stripe.PaymentIntent> {
       try {
+        const totalAmount = tickets.reduce((sum, t) => sum + t.pricePerTicket * t.quantity, 0);
 
         const paymentIntent = await StripeService._stripe.paymentIntents.create({
-          amount:amount*100,
+          amount:totalAmount*100,
           currency,
           metadata: {
+            bookingType,
             eventId,
             userId,
-            ticketType,
-            quantity,
+            tickets: JSON.stringify(tickets),
             amount
           },
         });
@@ -49,20 +50,19 @@ export class StripeService  implements IStripeService {
         }
 
 
-        if(ticketType){
-          const ticketOption = eventExist.tickets?.find(t => t.ticketType === ticketType)
+        for(const ticket of tickets){
 
-          if(!ticketOption){
-            throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
+          if(ticket.quantity<=0) continue
+
+          const ticketOptions = eventExist.tickets?.find((t)=>t.ticketType==ticket.ticketType)
+
+          if(!ticketOptions){
+            throw new CustomError(ERROR_MESSAGES.TICKET_TYPE_NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
           }
 
-          if(ticketOption.totalTickets - (ticketOption.bookedTickets || 0) < quantity){
-            throw new CustomError("Not Enough Ticket Available",HTTP_STATUS.BAD_REQUEST)
-          }
-        }else{
-          if(eventExist.totalTicket - (eventExist.bookedTickets || 0) < quantity){
-            throw new CustomError("Not Enough Ticket Available",HTTP_STATUS.BAD_REQUEST)
-          }
+          if(ticketOptions.totalTickets-(ticketOptions.bookedTickets || 0) < ticket.quantity){
+            throw new CustomError(ERROR_MESSAGES.NOT_ENOUGH_TICKET_AVAILABLE,HTTP_STATUS.BAD_REQUEST)
+          } 
         }
 
         return paymentIntent;

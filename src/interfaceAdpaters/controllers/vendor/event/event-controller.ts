@@ -44,6 +44,7 @@ export class EventController implements IEventController{
     async getAllEvents(req: Request, res: Response): Promise<void> {
 
         const {id} =  (req as CustomRequest).user
+      
         const {limit="6",page="1",search=""} =  
             req.query as {limit?:string,page?:string,search?:string}
     

@@ -9,6 +9,7 @@ export interface ServiceFilters {
   search?: string;
   location?: string;
   sort?: string;
+  categoryId?:string;
   lat?: number;
   lng?: number;
 }

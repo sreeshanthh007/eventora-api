@@ -20,6 +20,15 @@ import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client
 import { UpdateClientDTO, UpdatePasswordDTO } from "@shared/dtos/user.dto";
 import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/client-get-event-booking.usecase.interface";
 import { IChangeClientPasswordUseCase } from "@entities/useCaseInterfaces/client/change-password-client-usecase.interface";
+import { IGetCategoryForFilterUseCase } from "@entities/useCaseInterfaces/client/get-category-for-filter.usecase.interface";
+import { IGetServicesProvidedByVendorsUseCase } from "@entities/useCaseInterfaces/client/get-services-provided-vendors.usecase.interface";
+import { IGetClientWalletDetailsUseCase } from "@entities/useCaseInterfaces/client/get-client-wallet-details.usecase.interface";
+import { ServiceBookingCreationDTO } from "@shared/dtos/service-booking-dto";
+import { ICreateServiceBookingUseCase } from "@entities/useCaseInterfaces/client/create-service-booking-usercase.interface";
+import { ICancelTicketUseCase } from "@entities/useCaseInterfaces/client/cancel-ticket.usecase.interface";
+import { IGetVendorWorkFolioUseCase } from "@entities/useCaseInterfaces/client/get-workfolio-of-vendor.usecase.interface";
+import { IGetAllNotificationUseCase } from "@entities/useCaseInterfaces/get-all-notification.usecase.interface";
+
 
 @injectable()
 export class ClientController implements IClientController {
@@ -40,12 +49,26 @@ export class ClientController implements IClientController {
     private _getEventDetailsUseCase : IGetEventDetailsUseCase,
     @inject("IGetAllServiceForClientUseCase")
     private _getAllServiceForCLientUseCase : IGetAllServiceWithFilterUseCase,
+    @inject("IGetServicesProvidedByVendorsUseCase")
+    private _getServicesProvidedByVendorsUseCase : IGetServicesProvidedByVendorsUseCase,
     @inject("IGetServiceDetailsUseCase")
     private _getServiceDetailsUseCase : IGetAllServiceDetailsUseCase,
+    @inject("IGetCategoriesForFilterUseCase")
+    private _getCategoryForfilterUseCase : IGetCategoryForFilterUseCase,
     @inject("IClientGetEventBookingUseCase")
     private _clientGetEventBookingUseCase : IClientGetEventBookingUseCase,
     @inject("IChangeClientPasswordClientUseCase")
-    private _changeClientPasswordUseCase : IChangeClientPasswordUseCase
+    private _changeClientPasswordUseCase : IChangeClientPasswordUseCase,
+    @inject("IGetClientWalletDetailsUseCase")
+    private _getClientWalletDetailsUseCase : IGetClientWalletDetailsUseCase,
+    @inject("ICreateServiceBookingUseCase")
+    private _createServiceBookingUseCase : ICreateServiceBookingUseCase,
+    @inject("ICancelTicketUseCase") 
+    private _cancelTicketUseCase : ICancelTicketUseCase,
+    @inject("IGetAllNotificationUseCase")
+    private _getAllNotificationUseCase : IGetAllNotificationUseCase,
+    @inject("IGetWorkFolioforClientUseCase")
+     private  _getWorkfolioOfVendorUseCase : IGetVendorWorkFolioUseCase
   ) {}
 
   async refreshSession(req: Request, res: Response): Promise<void> {
@@ -153,6 +176,15 @@ export class ClientController implements IClientController {
       });
   }
 
+  async  getCategoriesForFilter(req: Request, res: Response): Promise<void> {
+      
+
+    const categories = await this._getCategoryForfilterUseCase.execute()
+
+    res.status(HTTP_STATUS.OK)
+    .json({success:true,message:SUCCESS_MESSAGES.CATEGORY_FETCHED_SUCCESS,categories});
+  }
+
   async getAllEventsWithFilters(req: Request, res: Response): Promise<void> {
       
       const {page="1",limit="6",search="",location="",sort="date-asc",lat,lng} = 
@@ -200,18 +232,20 @@ export class ClientController implements IClientController {
 
   async getAllServiceWithFilters(req: Request, res: Response): Promise<void> {
       
-      const {page="1",limit="6",search="",sort="date-asc"} = req.query as unknown as {
+      const {page="1",limit="6",search="",sort="date-asc",categoryId} = req.query as unknown as {
         page:number,
         limit:number,
         search:string,
-        sort:string
+        sort:string,
+        categoryId:string
       }
 
       const response = await this._getAllServiceForCLientUseCase.execute({
         page:Number(page),
         limit:Number(limit),
         search:search,
-        sort:sort
+        sort:sort,
+        categoryId
       });
 
 
@@ -235,6 +269,55 @@ export class ClientController implements IClientController {
 
       res.status(HTTP_STATUS.OK)
       .json({success:true,message:SUCCESS_MESSAGES.SERVICE_FETCHED_SUCCESS,service:response})
+  }
+
+
+  async bookService(req: Request, res: Response): Promise<void> {
+  
+      const {serviceId,bookingData,amount,currency,vendorId,} : ServiceBookingCreationDTO =  req.body
+
+      const {id} = (req as CustomRequest).user
+    console.log("user id is",id)
+      if(!id){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+        .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS});
+        return
+      }
+
+      const paymentIntent = await this._createServiceBookingUseCase.execute(
+        "service",
+        id,
+        vendorId,
+        serviceId,
+        bookingData,
+        amount,
+        currency
+      );
+
+      res.status(HTTP_STATUS.OK)
+      .json({success:true,clientSecret:paymentIntent.client_secret});
+
+
+  }
+
+
+  async getServicesProvidedByVendors(req: Request, res: Response): Promise<void> {
+
+    
+
+      const {id} = (req as CustomRequest).user
+      const {vendorId} = req.params
+
+      if(!id || !vendorId){
+        res.status(HTTP_STATUS.NOT_FOUND)
+        .json({success:false,message:ERROR_MESSAGES.USER_NOT_FOUND})
+      }
+
+      const services = await this._getServicesProvidedByVendorsUseCase.execute(vendorId)
+
+      res.status(HTTP_STATUS.OK)
+      .json({success:true,message:SUCCESS_MESSAGES.SERVICE_FETCHED_SUCCESS,services})
+
   }
 
 
@@ -263,5 +346,73 @@ export class ClientController implements IClientController {
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.EVENT_BOOKING_FETCHED_SUCCESS,bookedEvents:response.bookedEvents,total:response.total})
  
+  }
+
+  async getClientWalletDetails(req: Request, res: Response): Promise<void> {
+      
+      const {id} = (req as CustomRequest).user
+  
+      if(!id){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+        .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+      }
+  
+      const response = await this._getClientWalletDetailsUseCase.execute(id)
+
+      res.status(HTTP_STATUS.OK)
+      .json({success:true,message:SUCCESS_MESSAGES.WALLET_FETCHED_SUCCESS,wallet:response})
+  }
+
+
+  async cancelTickets(req: Request, res: Response): Promise<void> {
+      
+      const {ticketId,eventId} = req.params
+      console.log("ticket and event id for cancellation",ticketId,eventId)
+      const {id} = (req as CustomRequest).user
+
+      if(!ticketId){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+        .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+      }
+
+      await this._cancelTicketUseCase.execute(ticketId,id,eventId)
+
+      res.status(HTTP_STATUS.OK)
+      .json({success:true,message:SUCCESS_MESSAGES.TICKET_CANCELLED_SUCCESS})
+  }
+
+
+  async getAllNotifications(req: Request, res: Response): Promise<void> {
+      const {id} = (req as CustomRequest).user
+
+      if(!id){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+        .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+      }
+
+      const notification = await this._getAllNotificationUseCase.execute(id)
+
+      res.status(HTTP_STATUS.OK)
+      .json({success:true,message:SUCCESS_MESSAGES.NOTIFICATION_FETCHED_SUCCESS,notification})
+  }
+
+
+  async getVendorWorkfolioForClient(req: Request, res: Response): Promise<void> {
+      
+      const {vendorId} = req.params
+
+      if(!vendorId){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+        .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+      }
+
+      const worksample = await this._getWorkfolioOfVendorUseCase.execute(vendorId)
+
+      res.status(HTTP_STATUS.OK)
+      .json({success:true,message:SUCCESS_MESSAGES.WORKFOLIO_FETCHED_SUCCESS,worksample});
+
+  }
 }
-}
+
+
+

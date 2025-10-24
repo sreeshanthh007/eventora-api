@@ -1,11 +1,15 @@
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
 import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-repository-interface";
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
+import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
+import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { IQrCodeService } from "@entities/serviceInterfaces/qr-code-service.interface";
-import { IHandleEventWebHookUseCase } from "@entities/useCaseInterfaces/client/event-webhook-handle.usecase.interface";
+import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { IHandleEventWebHookUseCase, ITicketPurchase } from "@entities/useCaseInterfaces/client/event-webhook-handle.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+// import { createTransaction } from "@mappers/WalletMapper";
+import { ERROR_MESSAGES, FCM_NOTIFICATION_MESSAGE, HTTP_STATUS } from "@shared/constants";
 import { TicketDTO } from "@shared/dtos/ticket.dto";
 import { inject, injectable } from "tsyringe";
 
@@ -17,67 +21,95 @@ export class EventWebHookHandleUseCase implements IHandleEventWebHookUseCase{
         @inject("IEventRepository") private _eventRepo : IEventRepository,
         @inject("IClientRepository") private _clientRepo : IClientRepository,
         @inject("ITicketRepository") private _ticketRepo : ITicketRepository,
-        @inject("IQRCodeService") private _qrCodeService : IQrCodeService
+        @inject("IWalletRepository") private _walletRepo : IWalletRepository,
+        @inject("IQRCodeService") private _qrCodeService : IQrCodeService,
+        @inject("IRedisLockService") private _lockService : ILockService,
+        @inject("INotificationService") private _notificationService : INotificationService
     ){}
 
 
-    async execute(eventId: string, userId: string, ticketType: string,amount:number,paymentId:string,quantity:number): Promise<void> {
+    async execute(eventId: string, userId: string, tickets: ITicketPurchase[], paymentId: string): Promise<void> {
         
-        const eventExist = await this._eventRepo.findById(eventId);
+        const eventExist = await this._eventRepo.findById(eventId)
 
-        const userExist = await this._clientRepo.findById(userId)
-
-        
-
-        if(!userExist){
-            throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
-        }
+        const userExist = await this._clientRepo.findById(userId);
 
         if(!eventExist){
-            throw new CustomError(ERROR_MESSAGES.ID_NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
-        }   
+            throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.NOT_FOUND)
+        }
 
+        if(!userExist){
+            throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
+        }
 
-        if(ticketType){
-            const ticketOption = eventExist.tickets?.find(t=>t.ticketType==ticketType)
+        const ticketsToCreate: TicketDTO[] = [];
+
+        for(const ticket of tickets){
+
+            if(ticket.quantity<=0) continue
+
+            const ticketOption = eventExist?.tickets?.find((t)=>t.ticketType===ticket.ticketType)
 
             if(!ticketOption){
-                throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
+                throw new CustomError(ERROR_MESSAGES.TICKET_TYPE_NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
+            }
+
+            if(ticketOption.totalTickets - (ticketOption.bookedTickets || 0) < ticket.quantity){
+                throw new CustomError(ERROR_MESSAGES.NOT_ENOUGH_TICKET_AVAILABLE,HTTP_STATUS.BAD_REQUEST)
+            }
+
+
+            for(let i=0;i<ticket.quantity;i++){
+
+                const ticketId = generateRandomUUID()
+
+                const qrCode = await this._qrCodeService.generateQrCode(`${eventId}|${ticket.ticketType}|${ticketId}`)
+
+                ticketsToCreate.push({
+                    clientId:userId,
+                    name:userExist.name,
+                    email:userExist.email,
+                    eventId:eventId,
+                    qrCodeLink:qrCode,
+                    amount:ticket.pricePerTicket,
+                    ticketType:ticket.ticketType,
+                    paymentTransactionId:paymentId,
+                    quantity:1,
+                    ticketId:ticketId,
+                    ticketStatus:"unused",
+                    paymentStatus:"successfull",
+                    title:eventExist.title
+                })
+
+                // const transaction = createTransaction("ticketBooking","Event",ticketId,ticket.pricePerTicket,"credit");
+
+                // await this._walletRepo.
+
                 
             }
-
-            if(ticketOption.totalTickets - (ticketOption.bookedTickets || 0) < quantity){
-                throw new CustomError("Not Enough Ticket Available",HTTP_STATUS.BAD_REQUEST)
-            } 
-        }else{
-            if(eventExist.totalTicket - (eventExist.bookedTickets || 0) < quantity ){
-                throw new CustomError("Not Enough Ticket Avilable",HTTP_STATUS.BAD_REQUEST)
-            }
-        }
-
-        const qrCode = await this._qrCodeService.generateQrCode(`${eventId}:${userId}:${ticketType}`);
-
-        const ticketId = generateRandomUUID()
-
-        const ticket : TicketDTO = {
-            clientId:userId,
-            email:userExist.email,
-            name:userExist.name,
-            eventId:eventId,
-            qrCodeLink:qrCode,
-            amount:amount,
-            ticketType:ticketType,
-            paymentTransactionId:paymentId,
-            quantity:quantity,
-            ticketId:ticketId,
-            ticketStatus:'unused',
-            paymentStatus:"pending"
         }
 
 
-        await this._ticketRepo.createTicket(ticket);
+        
+        await this._ticketRepo.createTicket(ticketsToCreate)
+        
+        for(const ticket of tickets){
+            await this._eventRepo.updateAfterTicketBooking(eventId,ticket.quantity,ticket.ticketType)
+        }
+        
+        if(userExist.fcmToken){
+            await this._notificationService.sendNotification(
+                userId,
+                userExist.fcmToken,
+                {
+                    title:FCM_NOTIFICATION_MESSAGE.EVENT_BOOKING_SUCCESS.title,
+                    body:FCM_NOTIFICATION_MESSAGE.EVENT_BOOKING_SUCCESS.body
+                }
+            );
+        }
 
-        await this._eventRepo.updateAfterTicketBooking(eventId,quantity,ticketType)
-     
+
+        const ticketType = tickets.map(t => t.ticketType).join(",");
+        await this._lockService.releaseLock(eventId,ticketType,userId)
     }
 }

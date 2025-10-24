@@ -34,6 +34,10 @@ import { IServiceController } from "@entities/controllerInterfaces/vendor/servic
 import { ServiceController } from "@controllers/vendor/service/service-controller";
 import { IEventBookingController } from "@entities/controllerInterfaces/client/eventBooking/event-booking-controller.interface";
 import { EventBookingController } from "@controllers/client/eventBooking/event-booking-controller";
+import { IChatSocketHandler } from "@entities/socketHandlerInterfaces/chat-socket.handle.interface";
+import { ChatSocketHandler } from "interfaceAdpaters/websockets/handlers/chat.handler";
+import { IClientRatingController } from "@entities/controllerInterfaces/client/rating/client-rating-controller.interface";
+import { ClientRatingCOntroller } from "@controllers/client/rating/client-rating-controller";
 
 
 
@@ -49,7 +53,8 @@ export const vendoController = container.resolve<IVendorController>(VendorContro
 export const categoryController = container.resolve<ICategoryController>(CategoryController)
 export const eventController = container.resolve<IEventController>(EventController)
 export const serviceController = container.resolve<IServiceController>(ServiceController);
-export const eventBookingController = container.resolve<IEventBookingController>(EventBookingController)
+export const eventBookingController = container.resolve<IEventBookingController>(EventBookingController);
+export const clientRatingController = container.resolve<IClientRatingController>(ClientRatingCOntroller)
 
 export const forgotOtpController = container.resolve(ForgotOtpController);
 
@@ -77,3 +82,7 @@ export const injectedLogger = container.resolve<ILogger>("ILogger");
 // =========error handling middleware=========//
 export const errorMiddleware =
   container.resolve<ErrorMiddleware>("ErrorMiddleware");
+
+
+  export const chatSocketHandler = 
+  container.resolve<IChatSocketHandler>(ChatSocketHandler)

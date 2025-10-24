@@ -15,7 +15,7 @@ export class GetAllEventsUseCase implements IGetAllEventsUseCase{
 
 async execute(limit: number, searchTerm: string, current: number, vendorId: string): Promise<PaginatedEvents> {
     
-            const filter : FilterQuery<IEventEntity> = {_id:vendorId}
+            const filter : FilterQuery<IEventEntity> = {hostId:vendorId}
 
         if(searchTerm){
             filter.$or = [

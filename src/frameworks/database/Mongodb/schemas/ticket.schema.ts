@@ -8,10 +8,15 @@ export const ticketSchema : Schema = new Schema<ITicketModel>(
 
         clientId:{type:Schema.Types.ObjectId,ref:"Client",required:true},
 
+        title:{type:String,required:true},
+        
         email:{type:String,required:true},
 
         name:{type:String,required:true},
 
+
+        // eventDate:{type:Date,required:true},
+        
         eventId:{type:Schema.Types.ObjectId,ref:"Event",required:true},
 
         qrCodeLink:{type:String,required:true},
@@ -22,9 +27,13 @@ export const ticketSchema : Schema = new Schema<ITicketModel>(
 
         ticketType:{type:String,required:false,default:"normal"},
 
-        paymentStatus:{type:String,enum:["pending","successfull","failed"],default:"successful"},
+        paymentStatus:{type:String,enum:["pending","successfull","failed"],default:"pending"},
 
         // paymentTransactionId:{type:Schema.Types.ObjectId,ref:"Payment",required:false},  
+
+        checkInHistory:{type:Date},
+
+        isCheckedIn:{type:Boolean,default:false},
 
         quantity:{type:Number,required:true},
     },

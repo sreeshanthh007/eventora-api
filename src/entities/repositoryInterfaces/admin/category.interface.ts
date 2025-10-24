@@ -9,5 +9,6 @@ export interface ICategoryRepository {
     findByIdAndEditCategory(categoryId:string,data:Partial<ICategoryEnity>) : Promise<void>
     findPaginatedCategory(filter:FilterQuery<ICategoryEnity>,skip:number,limit:number) :  Promise<{categories:ICategoryEnity[] | [];total:number}>
     findCategoryForClients() : Promise<ICategoryEnity[]>
+    findCategoryForFilter() : Promise<ICategoryEnity[]>
 }
 

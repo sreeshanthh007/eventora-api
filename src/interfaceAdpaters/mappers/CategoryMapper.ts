@@ -1,5 +1,7 @@
 import { ICategoryEnity } from "@entities/models/category.entity";
+import { ICategoryForFilterDTO } from "@shared/dtos/category.dto";
 import { CategoryDTO } from "@shared/dtos/user.dto";
+
 
 
 
@@ -32,4 +34,12 @@ export function mapCategoryForFrontend(category: ICategoryEnity) {
 
 export function mapCategoriesForFrontend(categories: ICategoryEnity[]) {
   return categories.map(mapCategoryForFrontend);
+}
+
+
+export function mapCategoriesForFilter(categories: ICategoryEnity[]): ICategoryForFilterDTO[] {
+  return categories.map(category => ({
+    title: category.title,
+    categoryId:category.categoryId
+  }));
 }

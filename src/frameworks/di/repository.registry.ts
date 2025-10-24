@@ -20,6 +20,10 @@ import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-
 import { TicketRepository } from "interfaceAdpaters/repositories/ticket/ticket-repository";
 import { IWorkSampleRepository } from "@entities/repositoryInterfaces/vendor/worksample/work-sample.repository.interface";
 import { WorkSampleRepository } from "interfaceAdpaters/repositories/worksample/work-sample.repository";
+import { IBookingRepository } from "@entities/repositoryInterfaces/booking/booking.repository.interface";
+import { BookingRepository } from "interfaceAdpaters/repositories/booking/booking.repository";
+import { IRatingRepository } from "@entities/repositoryInterfaces/rating/rating.repository.interface";
+import { RatingRepository } from "interfaceAdpaters/repositories/rating/rating.repository";
 
 export class RepositoryRegistry {
     static registerRepositories():void {
@@ -63,8 +67,17 @@ export class RepositoryRegistry {
             useClass:TicketRepository
         });
 
+        container.register<IBookingRepository>("IBookingRepository",{
+            useClass:BookingRepository
+        });
+
+
         container.register<IWorkSampleRepository>("IWorkSampleRepository",{
             useClass:WorkSampleRepository
+        });
+
+        container.register<IRatingRepository>("IRatingRepository",{
+            useClass:RatingRepository
         });
     }
 }

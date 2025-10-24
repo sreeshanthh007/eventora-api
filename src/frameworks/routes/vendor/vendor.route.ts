@@ -109,6 +109,14 @@ export class VendorRoutes extends BaseRouter{
             asyncHandler(serviceController.toggleServiceStatus.bind(serviceController))
         );
 
+
+        this.router.get(
+            "/vendor-notification",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.getVendorNotification.bind(vendoController))
+        )
+
         this.router.post(
             "/add-work-sample",
             verifyAuth,
@@ -116,12 +124,20 @@ export class VendorRoutes extends BaseRouter{
             asyncHandler(vendoController.addWorkSample.bind(vendoController))
         );
 
-        // this.router.get(
-        //     "/get-work-sample-details",
-        //     verifyAuth,
-        //     authorizeRole(["vendor"]),
-        //     asyncHandler(vendoController.getWorkSampleByVendor.bind(vendoController))
-        // );
+        this.router.get(
+            "/get-work-sample-details",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.getWorkSampleData.bind(vendoController))
+        );
+
+        this.router.patch(
+            "/edit-work-sample/:workSampleId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.editWorkSample.bind(vendoController))
+        );
+        
         
         this.router.get(
             "/get-all-events",
@@ -149,13 +165,48 @@ export class VendorRoutes extends BaseRouter{
             verifyAuth,
             authorizeRole(["vendor"]),
             asyncHandler(eventController.updateEventStatus.bind(eventController))
-        )
+        );
+
+        this.router.post(
+            "/scan-event",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.scanAndVerifyAttendies.bind(vendoController))
+        );
+
+        this.router.post(
+            "/scan-ticket",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.scanAndVerifyTickets.bind(vendoController))
+        );
 
         this.router.patch(
             "/toggle-status/:eventId",
             verifyAuth,
             authorizeRole(["vendor"]),
             asyncHandler(eventController.toggeleStatus.bind(eventController))
+        );
+
+        this.router.get(
+            "/wallet-details",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.getVendorwalletDetails.bind(vendoController))
+        );
+
+        this.router.get(
+            "/get-ticket-details",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.getTicketDetails.bind(vendoController))   
+        );
+        
+        this.router.get(
+            "/get-booked-services",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            asyncHandler(vendoController.getBookedServices.bind(vendoController))
         );
         
         this.router.post(

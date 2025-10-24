@@ -25,7 +25,17 @@ export const ServiceSchema = new Schema<IServiceModel>(
         
         termsAndConditions:{type:[String],required:true},
 
-        status:{type:String,enum:["active","blocked"],default:"active"}
+        status:{type:String,enum:["active","blocked"],default:"active"},
+
+
+     slots: [
+      {
+        startDateTime: { type: Date, required: true }, 
+        endDateTime: { type: Date, required: true },   
+        capacity: { type: Number, required: true },
+        bookedCount: { type: Number, default: 0 }
+      }
+    ]
     },
     {
         timestamps:true

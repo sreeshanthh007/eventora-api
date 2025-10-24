@@ -1,22 +1,40 @@
+import { TTicketEntityWithEventPopulated } from "@entities/models/populated-types/ticket-populated.type";
 import { ITicketEntity } from "@entities/models/ticket.entity";
-import { paginatedTicketDTO } from "@shared/dtos/ticket.dto";
+import { IPaginatedTicketDetailsDTO, paginatedTicketDTO } from "@shared/dtos/ticket.dto";
 
 
 
-export function mapToTicketDTO(ticket:ITicketEntity) : paginatedTicketDTO{
+
+
+export function mapToTicketDTO(ticket:TTicketEntityWithEventPopulated) : paginatedTicketDTO{
 
     return {
-
+        
         ticketId:ticket.ticketId,
-        name:ticket.name,
         email:ticket.email,
+        eventId:ticket.eventId._id!.toString(),
         amount:ticket.amount,
         qrCodeLink:ticket.qrCodeLink,
         paymentStatus:ticket.paymentStatus,
         ticketStatus:ticket.ticketStatus,
         ticketType:ticket.ticketType,
         quantity:ticket.quantity,
-       title:ticket.eventName!,
-       eventSchedule:ticket.eventDate!
+       title:ticket.title!,
+        eventSchedule:ticket.eventId.eventSchedule,
+       Images:ticket.eventId.Images,
+    }
+}
+
+
+
+export function mapTicketsForVerifyAttendiesDetails(ticket:ITicketEntity) : IPaginatedTicketDetailsDTO{
+
+    return {
+        name:ticket.name,
+        email:ticket.email,
+        qrCode:ticket.qrCodeLink,
+        ticketId:ticket.ticketId,
+        ticketType:ticket.ticketType,
+        isCheckedIn:ticket.isCheckedIn!
     }
 }

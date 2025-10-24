@@ -42,7 +42,17 @@ export enum SUCCESS_MESSAGES  {
   FCM_TOKEN_SAVE_SUCCESS="Token Refreshed Successfully",
   REFRESH_TOKEN_REFRESHED_SUCCESS='Refresh Token Refreshed Successfully',
   EVENT_BOOKING_FETCHED_SUCCESS="Event Bookings Fetched Successfully",
-  WORK_SAMPLES_DETAILS_FETHCED_SUCCESS="Works Sample of vendor Fetched Successfully"
+  WORK_SAMPLES_DETAILS_FETHCED_SUCCESS="Works Sample of vendor Fetched Successfully",
+  WALLET_FETCHED_SUCCESS="Wallet details fetched successfully",
+  TICKET_VERIFIED_SUCCESS="Ticket verified successfully",
+  TICKET_SCANNED_SUCCESS="Ticket Scanned Successfully",
+  TICKET_CANCELLED_SUCCESS="Ticket Cancelled Successfully",
+  RATING_ADDED_SUCCESS="Rating addedd Successfully",
+  VENDOR_BOOKED_SERVICES_FETCHED_SUCCESS='Bookings fetched Successfully',
+  BOOKING_FETCHED_SUCCESS="Bookings Fetched successfully",
+  TICKET_FETCHED_SUCCESS="Tickets Fetched Successfully",
+  WORKFOLIO_FETCHED_SUCCESS="Workfolio Fetched Successfully",
+  NOTIFICATION_FETCHED_SUCCESS="Notification Fetched Successfully"
 
 
 };
@@ -78,11 +88,55 @@ export enum ERROR_MESSAGES  {
   INVALID_EVENT_STATUS="Invalid Event Status.",
   TOKEN_BLACKLISTED="Token is Blacklisted",
   SAME_PASSWORD="New password cannot be the same as the current password",
+  NOTIFICATION_NOT_FOUND="Notification not found",
   INVALID_PASSWORD="Current password is incorrect",
   OTP_EXPIRED="OTP Expired",
   TICKET_LOCKED_ERROR="Ticket already locked by another user",
+  SERVICE_SLOT_LOCKED_ERROR="Selected service slot is on Hold",
   GOOGLE_GOOGLE_USER_PASSWORD_NOT_FOUND="Google user does not have a password",
+  INVALID_VENDOR_SCAN_ERROR="It looks like this event isn’t associated with your account.",
+  NO_VALID_TICKETS_SELECTED_ERROR="No valid tickets selected",
+  TICKET_TYPE_NOT_FOUND="Ticket type not Found.",
+  NOT_ENOUGH_TICKET_AVAILABLE="Not enough ticket Available.",
+  WALLET_NOT_FOUND="Wallet not found",
+  TICKET_NOT_FOUND="Ticket not found",
+  INVALID_TICKET_FOR_EVENT="The ticket does not belong to this event",
+  SLOT_CAPACITY_EXCEEDED="The selected slot has reached its maximum capacity",
+  SLOT_NOT_FOUND="Slot not found",
+  EVENT_NOT_FOUND="Event not found",
+  INVALIID_TICKET_TYPE="Invalid Ticket Type",
+  USER_ALREADY_BOOKED="You are already booked this slot one time !",
+  WORK_SAMPLE_NOT_EXIST="Worksample of this Vendor is not provided",
+  RATING_ALREDY_ADDED="you can't add multiple Ratings",
+  INVALID_RATING_EDITING="You cannot Edit Other person's Rating"
+  
 };
+
+
+
+export const DIRECT_CHAT_EVENTS={
+  SEND_MESSAGE:"direct-chat:send-message",
+  RECEIVE_MESSAGE:"direct-chat:reveive-message",
+  READ_MESSAGE:"direct-chat:read-message",
+} as const
+
+
+export const FCM_NOTIFICATION_MESSAGE={
+  EVENT_BOOKING_SUCCESS:{
+  title:"🎉 Your event is confirmed!",
+  body:"Thanks for booking with us — we’ve received your request and will follow up shortly with all the details. Keep an eye on your gmail!",
+  },
+  SERVICE_BOOKING_SUCCESS: {
+    title: "🎉 Service Booked Successfully!",
+    body: "Thanks for choosing our service. We’ve received your booking and will get in touch shortly with the next steps."
+  },
+  TICKET_CANCELLATION_MESSAGE:{
+    title: " Ticket Cancelled Successfully!",
+    body: "The ticket has been cancelled Successfully !, check your wallet for further details"
+  }
+
+}
+
 
 export const   EVENT_STATUS_ERROR = (currentStatus:string,newStatus:string) => `cannot change from ${currentStatus} to ${newStatus}`
 

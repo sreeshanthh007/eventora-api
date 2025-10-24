@@ -3,5 +3,5 @@ import Stripe from "stripe"
 
 export interface IStripeService{
     
-    createPaymentIntent(amount:number,currency:string,eventId:string,userId:string,ticketType:string,quantity:number) : Promise<Stripe.PaymentIntent>
+    createPaymentIntent(bookingType:string,amount:number,currency:string,eventId:string,userId:string, tickets: { ticketType: string; pricePerTicket: number; quantity: number }[]) : Promise<Stripe.PaymentIntent>
 }

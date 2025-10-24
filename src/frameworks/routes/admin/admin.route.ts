@@ -61,6 +61,15 @@ export class AdminRotes extends BaseRouter{
             asyncHandler(adminClientController.updateClientAccountStatus.bind(adminClientController))
     );
 
+
+    this.router.get(
+        "/admin-notification",
+        verifyAuth,
+        authorizeRole(["admin"]),
+        asyncHandler(adminController.getAdminNotifications.bind(adminController))
+    );
+
+    
     this.router.patch(
         "/vendor-status",
         verifyAuth,
@@ -101,6 +110,13 @@ export class AdminRotes extends BaseRouter{
             verifyAuth,
             authorizeRole(["admin"]),
             asyncHandler(adminController.editCategory.bind(adminController))
+        );
+
+        this.router.get(
+            "/wallet-details",
+            verifyAuth,
+            authorizeRole(["admin"]),
+            asyncHandler(adminController.getAdminWalletDetails.bind(adminController))
         );
 
         this.router.post(

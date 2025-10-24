@@ -55,7 +55,7 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
             const walletDetails : WalletDTO ={
 
                 balance:0,
-                userId:clientId,
+                userId:client._id.toString(),
                 userType:"client",
                 walletId:walletId
             }

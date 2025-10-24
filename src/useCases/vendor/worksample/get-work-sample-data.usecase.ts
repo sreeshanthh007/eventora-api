@@ -3,11 +3,11 @@ import { IGetworkSampleDataUseCase } from "@entities/useCaseInterfaces/vendor/wo
 import { CustomError } from "@entities/utils/custom.error";
 import { mapToWorkSampleDTO } from "@mappers/WorkSampleMapper";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
-import { IWorkSampleResponseDTO } from "@shared/dtos/work-sample.dto";
-import { inject } from "tsyringe";
+import { IWorkSampleResponseToVendorDTO } from "@shared/dtos/work-sample.dto";
+import { inject, injectable } from "tsyringe";
 
 
-
+@injectable()
 export class GetWorkSampleDataUseCase implements IGetworkSampleDataUseCase{
 
     constructor(
@@ -15,7 +15,7 @@ export class GetWorkSampleDataUseCase implements IGetworkSampleDataUseCase{
     ){}
 
 
-    async execute(vendorId: string): Promise<IWorkSampleResponseDTO> {
+    async execute(vendorId: string): Promise<IWorkSampleResponseToVendorDTO> {
         
         const data = await this._workSampleRepo.getWorkSampleData(vendorId)
 
@@ -26,5 +26,6 @@ export class GetWorkSampleDataUseCase implements IGetworkSampleDataUseCase{
         const mappdData = mapToWorkSampleDTO(data)
 
         return mappdData
+
     }
 }
