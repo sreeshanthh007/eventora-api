@@ -196,8 +196,8 @@ export class EventRepository implements IEventRepository{
     }
 
 
-    async findEventsHostedByVendors(vendorId: string): Promise<IEventEntity | null> {
-      return await EventModel.findOne({hostId: new mongoose.Types.ObjectId(vendorId)})
+    async findEventsHostedByVendors(vendorId: string,eventId:string): Promise<IEventEntity | null> {
+      return await EventModel.findOne({hostId: new mongoose.Types.ObjectId(vendorId), _id: new mongoose.Types.ObjectId(eventId)}).lean()
     }
 
     async findHostIdFromEvents(eventId: string): Promise<TEventEntityWithVendorPopulated | null> {

@@ -179,6 +179,14 @@ export class ClientRoutes extends BaseRouter{
             
         );
 
+        this.router.get(
+            "/booked-services",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientController.getBookedServices.bind(clientController))
+        )
+
         this.router.post("/logout",
             verifyAuth,
             authorizeRole(["client"]),

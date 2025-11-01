@@ -1,7 +1,7 @@
 import { ITicketEntity } from "@entities/models/ticket.entity";
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
 import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-repository-interface";
-import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/client-get-event-booking.usecase.interface";
+import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/event/client-get-event-booking.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { mapToTicketDTO } from "@mappers/TicketMapper";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";

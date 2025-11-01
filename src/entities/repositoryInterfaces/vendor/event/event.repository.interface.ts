@@ -16,6 +16,6 @@ export interface IEventRepository {
     updateEventStatus(eventId:string,eventStatus:string) : Promise<void>
     updateAfterTicketBooking(eventId:string | ObjectId,quantity:number,ticketType?:string) : Promise<void>
     findByIdAndToggleStatus(evendId:string,isActive:boolean) : Promise<void>
-    findEventsHostedByVendors(vendorId:string) : Promise<IEventEntity | null>
+    findEventsHostedByVendors(vendorId:string,eventId:string) : Promise<IEventEntity | null>
     findHostIdFromEvents(eventId:string) : Promise<TEventEntityWithVendorPopulated | null>
 }

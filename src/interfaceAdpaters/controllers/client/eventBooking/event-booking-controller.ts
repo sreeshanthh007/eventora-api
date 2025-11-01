@@ -1,7 +1,7 @@
 import { IEventBookingController } from "@entities/controllerInterfaces/client/eventBooking/event-booking-controller.interface";
 import { ICreateBookingUseCase } from "@entities/useCaseInterfaces/client/creating-booking-usercase.interface";
-import { IHandleEventWebHookUseCase, ITicketPurchase } from "@entities/useCaseInterfaces/client/event-webhook-handle.usecase.interface";
-import { IHandleServiceBookingWebhookUseCase } from "@entities/useCaseInterfaces/client/handle-service-booking-webhook.usecase.interface";
+import { IHandleEventWebHookUseCase, ITicketPurchase } from "@entities/useCaseInterfaces/client/event/event-webhook-handle.usecase.interface";
+import { IHandleServiceBookingWebhookUseCase } from "@entities/useCaseInterfaces/client/service/handle-service-booking-webhook.usecase.interface";
 import stripe from "@frameworks/stripe/stripe-client";
 import { CustomRequest } from "@middlewares/auth.middleware";
 import { config } from "@shared/config";
@@ -51,6 +51,9 @@ export class EventBookingController implements IEventBookingController{
          .json({success:true,clientSecret:paymentIntent.client_secret});
    }
 
+
+
+
 async handleWebHook(req: Request, res: Response): Promise<void> {
   const sig = req.headers["stripe-signature"] as string;
   const event = stripe.webhooks.constructEvent(req.body, sig, config.stripe.webHookSecrect!);
@@ -71,6 +74,8 @@ async handleWebHook(req: Request, res: Response): Promise<void> {
         }
       }
     }
+
+
 
     if (bookingType === "service") {
       const { serviceId, clientId, currency, vendorId } = paymentIntent.metadata;

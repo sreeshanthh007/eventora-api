@@ -5,7 +5,7 @@ import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { IQrCodeService } from "@entities/serviceInterfaces/qr-code-service.interface";
 import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
-import { IHandleEventWebHookUseCase, ITicketPurchase } from "@entities/useCaseInterfaces/client/event-webhook-handle.usecase.interface";
+import { IHandleEventWebHookUseCase, ITicketPurchase } from "@entities/useCaseInterfaces/client/event/event-webhook-handle.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
 // import { createTransaction } from "@mappers/WalletMapper";

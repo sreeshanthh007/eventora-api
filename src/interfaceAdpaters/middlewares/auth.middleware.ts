@@ -61,7 +61,7 @@ const isBlacklisted = async(token:string) :Promise<boolean> =>{
 export const verifyAuth = async(req:Request,res:Response,next:NextFunction) : Promise<void>=>{
     try {
         const token = extractToken(req)
-      
+   
         
      if (!token) {
       res

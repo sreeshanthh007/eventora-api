@@ -23,7 +23,7 @@ export class GetServiceByIdUseCase implements IGetServiceByIdUseCase{
         if(!service){
             throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
-
+       
         return mapServiceForEditService(service)
    }
 }

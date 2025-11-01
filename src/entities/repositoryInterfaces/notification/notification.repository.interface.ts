@@ -11,4 +11,6 @@ export interface INotificationRepository {
   }): Promise<void>;
 
   findNotificationsById(userId:string) : Promise<INotificationEntity[] | null>
+
+  markAsReadNotification(userId:string,notificationId:string) : Promise<void>
 }

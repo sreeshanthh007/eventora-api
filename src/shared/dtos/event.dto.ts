@@ -147,3 +147,13 @@ export interface IEventVerifyAttendiesDTO{
 
 }
 
+
+ export interface IGetEventsByVendorsDTO{
+  event:{
+    image:string
+    title:string
+    eventLocation:string
+    
+  }
+ }
+

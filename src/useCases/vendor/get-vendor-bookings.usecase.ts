@@ -22,7 +22,9 @@ export class GetVendorBookingsUseCase implements IGetVendorBookingUseCase{
         
         const {bookings,total} = await this._bookingRepo.findBookedServices(vendorId,skip,limit,search)
 
+
         const mappedBookings = bookings.map(mapBookingstoVendorBookedServices)
+      
 
        const data = {
         bookings:mappedBookings,

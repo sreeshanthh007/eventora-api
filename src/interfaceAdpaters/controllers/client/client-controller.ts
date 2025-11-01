@@ -1,8 +1,8 @@
 import { IClientController } from "@entities/controllerInterfaces/client/client-controller.interface";
-import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-category-clients.usecase.interface";
-import { IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-events-with-filters.usercase.interface";
-import { IGetAllEventsForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-events-clients.usecase.interface";
-import { IGetEventDetailsUseCase } from "@entities/useCaseInterfaces/client/get-event-details-clients.interface.usecase";
+import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/client/category/get-all-category-clients.usecase.interface";
+import { IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/event/get-all-events-with-filters.usercase.interface";
+import { IGetAllEventsForClientsUseCase } from "@entities/useCaseInterfaces/client/event/get-all-events-clients.usecase.interface";
+import { IGetEventDetailsUseCase } from "@entities/useCaseInterfaces/client/event/get-event-details-clients.interface.usecase";
 import { IUpdatePersonalInformationUseCase } from "@entities/useCaseInterfaces/client/update-personal-information.interface.usecase";
 import { IUpdateProfileImageUseCase } from "@entities/useCaseInterfaces/client/updateProfileImage.usecase.interface";
 import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
@@ -15,19 +15,21 @@ import {
 import { Request, Response } from "express";
 import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
 import { inject, injectable } from "tsyringe";
-import { IGetAllServiceWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-service-with-filter.usecase.interface";
-import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/get-service-details.usecase.interface";
+import { IGetAllServiceWithFilterUseCase } from "@entities/useCaseInterfaces/client/service/get-all-service-with-filter.usecase.interface";
+import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/service/get-service-details.usecase.interface";
 import { UpdateClientDTO, UpdatePasswordDTO } from "@shared/dtos/user.dto";
-import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/client-get-event-booking.usecase.interface";
+import { IClientGetEventBookingUseCase } from "@entities/useCaseInterfaces/client/event/client-get-event-booking.usecase.interface";
 import { IChangeClientPasswordUseCase } from "@entities/useCaseInterfaces/client/change-password-client-usecase.interface";
-import { IGetCategoryForFilterUseCase } from "@entities/useCaseInterfaces/client/get-category-for-filter.usecase.interface";
-import { IGetServicesProvidedByVendorsUseCase } from "@entities/useCaseInterfaces/client/get-services-provided-vendors.usecase.interface";
+import { IGetCategoryForFilterUseCase } from "@entities/useCaseInterfaces/client/category/get-category-for-filter.usecase.interface";
+import { IGetServicesProvidedByVendorsUseCase } from "@entities/useCaseInterfaces/client/service/get-services-provided-vendors.usecase.interface";
 import { IGetClientWalletDetailsUseCase } from "@entities/useCaseInterfaces/client/get-client-wallet-details.usecase.interface";
 import { ServiceBookingCreationDTO } from "@shared/dtos/service-booking-dto";
-import { ICreateServiceBookingUseCase } from "@entities/useCaseInterfaces/client/create-service-booking-usercase.interface";
-import { ICancelTicketUseCase } from "@entities/useCaseInterfaces/client/cancel-ticket.usecase.interface";
+import { ICreateServiceBookingUseCase } from "@entities/useCaseInterfaces/client/service/create-service-booking-usercase.interface";
+import { ICancelTicketUseCase } from "@entities/useCaseInterfaces/client/event/cancel-ticket.usecase.interface";
 import { IGetVendorWorkFolioUseCase } from "@entities/useCaseInterfaces/client/get-workfolio-of-vendor.usecase.interface";
 import { IGetAllNotificationUseCase } from "@entities/useCaseInterfaces/get-all-notification.usecase.interface";
+import { IGetClientBookedServicesUseCase } from "@entities/useCaseInterfaces/client/service/client-get-booked-service.usecase.interface";
+import { IMarkAsReadNotificationUseCase } from "@entities/useCaseInterfaces/client/mark-as-read-notification.usecase.interface";
 
 
 @injectable()
@@ -57,6 +59,8 @@ export class ClientController implements IClientController {
     private _getCategoryForfilterUseCase : IGetCategoryForFilterUseCase,
     @inject("IClientGetEventBookingUseCase")
     private _clientGetEventBookingUseCase : IClientGetEventBookingUseCase,
+    @inject("IGetClientBookedServiceUseCase") 
+    private _getBookedServiceUseCase : IGetClientBookedServicesUseCase,
     @inject("IChangeClientPasswordClientUseCase")
     private _changeClientPasswordUseCase : IChangeClientPasswordUseCase,
     @inject("IGetClientWalletDetailsUseCase")
@@ -67,9 +71,15 @@ export class ClientController implements IClientController {
     private _cancelTicketUseCase : ICancelTicketUseCase,
     @inject("IGetAllNotificationUseCase")
     private _getAllNotificationUseCase : IGetAllNotificationUseCase,
+    @inject("IMarkAsReadNotificationUseCase")
+    private _markAsReadNotificationUseCase : IMarkAsReadNotificationUseCase,
     @inject("IGetWorkFolioforClientUseCase")
      private  _getWorkfolioOfVendorUseCase : IGetVendorWorkFolioUseCase
   ) {}
+
+
+
+
 
   async refreshSession(req: Request, res: Response): Promise<void> {
     const { id, role } = (req as CustomRequest).user;
@@ -87,6 +97,9 @@ export class ClientController implements IClientController {
 
     res.status(HTTP_STATUS.OK).json({ success: true, user: user });
   }
+
+
+
 
   async updateProfileImage(req: Request, res: Response): Promise<void> {
     const { image } = req.body;
@@ -106,6 +119,10 @@ export class ClientController implements IClientController {
       .json({ success: true, message: SUCCESS_MESSAGES.UPDATE_SUCCESS });
   }
 
+
+
+
+  
   async updateProfileInformation(req: Request, res: Response): Promise<void> {
     const { id } = (req as CustomRequest).user;
     const data = req.body as UpdateClientDTO
@@ -152,6 +169,13 @@ export class ClientController implements IClientController {
     .json({success:true,message:SUCCESS_MESSAGES.UPDATE_PASSWORD_SUCCESS})
  }
 
+
+
+
+
+
+
+
   async getAllEvents(req: Request, res: Response): Promise<void> {
     const events = await this._getAllEventsForClientsUseCase.execute();
 
@@ -163,6 +187,12 @@ export class ClientController implements IClientController {
         events: events,
       });
   }
+
+
+
+
+
+
 
   async getAllCategories(req: Request, res: Response): Promise<void> {
     const categories = await this._getAllCategoryForClientsUseCase.execute();
@@ -176,6 +206,9 @@ export class ClientController implements IClientController {
       });
   }
 
+
+
+
   async  getCategoriesForFilter(req: Request, res: Response): Promise<void> {
       
 
@@ -184,6 +217,9 @@ export class ClientController implements IClientController {
     res.status(HTTP_STATUS.OK)
     .json({success:true,message:SUCCESS_MESSAGES.CATEGORY_FETCHED_SUCCESS,categories});
   }
+
+
+
 
   async getAllEventsWithFilters(req: Request, res: Response): Promise<void> {
       
@@ -214,6 +250,9 @@ export class ClientController implements IClientController {
   }
 
 
+
+
+
   async getEventDetails(req: Request, res: Response): Promise<void> {
       
       const {eventId} = req.params
@@ -228,6 +267,9 @@ export class ClientController implements IClientController {
       res.status(HTTP_STATUS.OK)
       .json({success:true,message:SUCCESS_MESSAGES.EVENT_FETCHED_SUCCESS,event})
   }
+
+
+
 
 
   async getAllServiceWithFilters(req: Request, res: Response): Promise<void> {
@@ -255,6 +297,9 @@ export class ClientController implements IClientController {
   }
 
 
+
+
+
   async getServiceDetails(req: Request, res: Response): Promise<void> {
   
       const {serviceId} = req.params
@@ -272,12 +317,15 @@ export class ClientController implements IClientController {
   }
 
 
+
+
+
   async bookService(req: Request, res: Response): Promise<void> {
   
-      const {serviceId,bookingData,amount,currency,vendorId,} : ServiceBookingCreationDTO =  req.body
+      const {serviceId,bookingData,amount,currency,vendorId} : ServiceBookingCreationDTO =  req.body
 
       const {id} = (req as CustomRequest).user
-    console.log("user id is",id)
+ 
       if(!id){
         res.status(HTTP_STATUS.BAD_REQUEST)
         .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS});
@@ -301,9 +349,10 @@ export class ClientController implements IClientController {
   }
 
 
-  async getServicesProvidedByVendors(req: Request, res: Response): Promise<void> {
 
-    
+
+
+  async getServicesProvidedByVendors(req: Request, res: Response): Promise<void> {
 
       const {id} = (req as CustomRequest).user
       const {vendorId} = req.params
@@ -319,6 +368,9 @@ export class ClientController implements IClientController {
       .json({success:true,message:SUCCESS_MESSAGES.SERVICE_FETCHED_SUCCESS,services})
 
   }
+
+
+
 
 
   async getEventBooking(req: Request, res: Response): Promise<void> {
@@ -348,6 +400,37 @@ export class ClientController implements IClientController {
  
   }
 
+
+
+  async getBookedServices(req: Request, res: Response): Promise<void> {
+      
+    const {id} = (req as CustomRequest).user
+
+        const {
+          page="1",
+          limit="6",
+          search=""
+        } = req.query as {
+          page:string,
+          limit:string
+          search:string
+        }
+
+
+    if(!id || !page || !limit){
+      res.status(HTTP_STATUS.BAD_REQUEST)
+      .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+    }
+
+    const response = await this._getBookedServiceUseCase.execute(id,Number(page),Number(limit),search)
+
+    res.status(HTTP_STATUS.OK)
+    .json({success:true,message:SUCCESS_MESSAGES.SERVICE_FETCHED_SUCCESS,bookings:response.bookings,total:response.total})
+
+  }
+
+
+
   async getClientWalletDetails(req: Request, res: Response): Promise<void> {
       
       const {id} = (req as CustomRequest).user
@@ -364,10 +447,13 @@ export class ClientController implements IClientController {
   }
 
 
+
+
+
   async cancelTickets(req: Request, res: Response): Promise<void> {
       
       const {ticketId,eventId} = req.params
-      console.log("ticket and event id for cancellation",ticketId,eventId)
+  
       const {id} = (req as CustomRequest).user
 
       if(!ticketId){
@@ -380,6 +466,9 @@ export class ClientController implements IClientController {
       res.status(HTTP_STATUS.OK)
       .json({success:true,message:SUCCESS_MESSAGES.TICKET_CANCELLED_SUCCESS})
   }
+
+
+
 
 
   async getAllNotifications(req: Request, res: Response): Promise<void> {
@@ -395,6 +484,26 @@ export class ClientController implements IClientController {
       res.status(HTTP_STATUS.OK)
       .json({success:true,message:SUCCESS_MESSAGES.NOTIFICATION_FETCHED_SUCCESS,notification})
   }
+
+
+
+  async markAsReadNotifications(req: Request, res: Response): Promise<void> {
+      
+      const {id} = (req as CustomRequest).user
+    console.log("notitifation user id",id)
+      const {notificationId} = req.params
+
+      if(!id || !notificationId){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+        .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+      }
+
+      await this._markAsReadNotificationUseCase.execute(id,notificationId);
+
+      res.status(HTTP_STATUS.OK)
+      .json({success:true,message:SUCCESS_MESSAGES.MARK_AS_READ_SUCCCESS})
+  }
+
 
 
   async getVendorWorkfolioForClient(req: Request, res: Response): Promise<void> {

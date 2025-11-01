@@ -1,4 +1,5 @@
-// import { IServiceTestEntity } from "@entities/models/service-test.entity";
+
+import { TServiceEntityWithPopulatedVendorForClient } from "@entities/models/populated-types/service-populated.type";
 import { IServiceEntity } from "@entities/models/service.entity";
 import { type EditableServiceFields } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
 import { FilterQuery } from "mongoose";
@@ -16,10 +17,14 @@ export interface IServiceRepository {
 
   getAllServices(filter:FilterQuery<IServiceEntity>,skip:number,limit:number) : Promise<{services:IServiceEntity[] | [];  total:number}>
 
+  getServiceDetails(serviceId:string) : Promise<TServiceEntityWithPopulatedVendorForClient | null>
+
   findFIlteredSevices(filters:{search?:string,sort?:string,categoryId?:string},skip:number,limit:number) : Promise<{services:IServiceEntity[] | [] ; total:number}>
 
   findByIdAndUpdateStatus(serviceId:string,status:string) : Promise<void>
 
   findByIdAndUpdateBookedCount(serviceId:string,startDateTime:Date,endDateTime:Date) : Promise<void>
+
+
 
 } 

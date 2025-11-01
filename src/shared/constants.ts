@@ -52,6 +52,7 @@ export enum SUCCESS_MESSAGES  {
   BOOKING_FETCHED_SUCCESS="Bookings Fetched successfully",
   TICKET_FETCHED_SUCCESS="Tickets Fetched Successfully",
   WORKFOLIO_FETCHED_SUCCESS="Workfolio Fetched Successfully",
+  MARK_AS_READ_SUCCCESS="Notification marked as Read",
   NOTIFICATION_FETCHED_SUCCESS="Notification Fetched Successfully"
 
 

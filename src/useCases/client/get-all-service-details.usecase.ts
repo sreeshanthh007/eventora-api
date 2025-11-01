@@ -1,12 +1,14 @@
 
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
-import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
-import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/get-service-details.usecase.interface";
+import { ISlotGeneratorService } from "@entities/serviceInterfaces/slot-generator.service.interface";
+import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/service/get-service-details.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
+import { mapServiceForServiceDetails } from "@mappers/serviceMapper";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { GetServiceDetailsForClientsDTO } from "@shared/dtos/service.dto";
 
 import { inject, injectable } from "tsyringe";
+
 
 
 @injectable()
@@ -14,50 +16,34 @@ export class GetServiceDetailsUseCase implements IGetAllServiceDetailsUseCase{
 
     constructor(
         @inject("IServiceRepository") private _serviceRepo : IServiceRepository,
-        @inject("IVendorRepository") private _vendorRepo : IVendorRepository,
+        @inject("ISlotGeneratorService") private _slotGeneratorService : ISlotGeneratorService
     ){}
 
 
     async execute(serviceId: string): Promise<GetServiceDetailsForClientsDTO | null> {
         
-        const serviceExist = await this._serviceRepo.findById(serviceId)
+        const serviceExist = await this._serviceRepo.getServiceDetails(serviceId)
         if(!serviceExist){
             throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
         }
 
-     
-            const vendor = await this._vendorRepo.findById(serviceExist.vendorId!)
 
-            if(!vendor){
-                throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
-            }
+        const slots = await this._slotGeneratorService.generateSlots({
+            serviceId:serviceExist._id?.toString() || "",
+            frequency:serviceExist.schedule.frequency,
+            startDate:serviceExist.schedule.startDate,
+            endDate: new Date(serviceExist.schedule.endDate),
+            startTime: serviceExist.schedule.startTime,
+            endTime: serviceExist.schedule.endTime,
+            duration: serviceExist.schedule.duration,
+            workingDays: serviceExist.schedule.workingDays || [],
+            holidays: serviceExist.holidays || undefined
+        });
 
-        
-            const mappedService  : GetServiceDetailsForClientsDTO = {
-            _id:serviceExist._id?.toString(),
-            additionalHourPrice:serviceExist.additionalHourPrice,
-            cancellationPolicies:serviceExist.cancellationPolicies,
-            serviceDescription:serviceExist.serviceDescription,
-            serviceDuration:serviceExist.serviceDuration,
-            servicePrice:serviceExist.servicePrice,
-            serviceTitle:serviceExist.serviceTitle,
-            termsAndConditions:serviceExist.termsAndConditions,
-            yearsOfExperience:serviceExist.yearsOfExperience,
-              slots: serviceExist.slots?.map(slot => ({
-            startDateTime: slot.startDateTime,
-             endDateTime: slot.endDateTime,
-            capacity: slot.capacity,
-             })) || [],
-             vendor:{
-                vendorId:vendor._id.toString(),
-                name:vendor.name,
-                email:vendor.email,
-                place:vendor.place,
-                description:vendor.about,
-                profilePicture:vendor.profilePicture
-             }
 
-        }
+   
+        const mappedService = mapServiceForServiceDetails(serviceExist,slots)
+
         return mappedService
     }
 

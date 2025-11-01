@@ -1,5 +1,5 @@
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
-import { IGetAllServiceWithFilterUseCase, ServiceFilters } from "@entities/useCaseInterfaces/client/get-all-service-with-filter.usecase.interface";
+import { IGetAllServiceWithFilterUseCase, ServiceFilters } from "@entities/useCaseInterfaces/client/service/get-all-service-with-filter.usecase.interface";
 import { mapServiceforClientPage } from "@mappers/serviceMapper";
 import { PaginatedServicesForClient } from "interfaceAdpaters/models/paginatedService";
 import { inject, injectable } from "tsyringe";

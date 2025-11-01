@@ -46,6 +46,27 @@ export interface ServiceDTO{
     bookedCount?: number;
   }[];
 }
+export interface RRuleServiceDTO{
+    _id?:string
+    serviceTitle:string
+    serviceDescription:string
+    servicePrice:number
+    yearsOfExperience:number
+    serviceDuration:number
+    cancellationPolicies:string[]
+    termsAndConditions:string[]
+    additionalHourPrice:number
+    schedule?: {
+    frequency?: string;
+    startDate?: Date;
+    endDate?: Date;
+    startTime?:string
+    endTime?:string
+    duration?:string
+    workingDays?:number[]
+    capacity?: number;
+  }[];
+}
 
 
 export interface GetServiceDetailsForClientsDTO{
@@ -58,57 +79,63 @@ export interface GetServiceDetailsForClientsDTO{
     cancellationPolicies:string[]
     termsAndConditions:string[]
     additionalHourPrice:number
-    slots?: {
-    startDateTime?: Date;
-    endDateTime?: Date;
-    capacity?: number;
-    bookedCount?: number;
-  }[];
     vendor: {
-      vendorId:string
+    vendorId:string
     name: string;
     email: string;
     profilePicture?: string;
     place:string
-    description:string
   };
 }
 
 
 
-export interface CreateServiceDTO{
-    serviceTitle:string
-    serviceDescription:string
-    servicePrice:number
-    yearsOfExperience:number
-    serviceDuration:number
-    cancellationPolicies:string[]
-    termsAndConditions:string[]
-    additionalHourPrice:number
-    categoryId:string
-    slots?: {
-    startDateTime?: Date;
-    endDateTime?: Date;
-    capacity?: number;
-  }[];
+export interface CreateServiceDTO {
+  serviceTitle: string;
+  serviceDescription: string;
+  servicePrice: number;
+  yearsOfExperience: number;
+  serviceDuration: number;
+  cancellationPolicies: string[];
+  termsAndConditions: string[];
+  additionalHourPrice: number;
+  categoryId: string;
+  schedule: {
+    frequency: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY" | "ONCE";
+    startDate: Date;
+    endDate: Date;
+    startTime: string;
+    endTime: string;
+    duration: number;
+    capacity: number;
+    bookedCount?:number
+    workingDays?: number[];
+  };
+  holidays?: Date[];
 }
 
-export interface EditServiceDTO{
-    serviceTitle:string
-    serviceDescription:string
-    servicePrice:number
-    yearsOfExperience:number
-    serviceDuration:number
-    cancellationPolicies:string[]
-    termsAndConditions:string[]
-    additionalHourPrice:number
-    categoryId:string
-    slots?: {
-    startDateTime?: Date;
-    endDateTime?: Date;
-    capacity?: number;
-  }[];
-}
 
+export interface EditServiceDTO {
+  serviceTitle: string;
+  serviceDescription: string;
+  servicePrice: number;
+  yearsOfExperience: number;
+  serviceDuration: number;
+  cancellationPolicies: string[];
+  termsAndConditions: string[];
+  additionalHourPrice: number;
+  categoryId: string;
+  schedule?: {
+    frequency: "ONCE" | "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
+    startDate: string;
+    endDate: string;
+    startTime: string;
+    endTime: string;
+    workingDays?: number[];
+    duration: number;
+    capacity: number;
+  };
+  holidays?: Date[];
+}
 
 
