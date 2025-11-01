@@ -1,5 +1,7 @@
 
+import { TServiceEntityWithPopulatedVendorForClient } from "@entities/models/populated-types/service-populated.type";
 import { IServiceEntity } from "@entities/models/service.entity";
+import { IVendorEntity } from "@entities/models/vendor.entity";
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { EditableServiceFields } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
 import { serviceModel } from "@frameworks/database/Mongodb/models/service.model";
@@ -16,6 +18,33 @@ export class ServiceRepository implements IServiceRepository{
   async findById(id: string): Promise<IServiceEntity | null> {
       return await serviceModel.findById(id)
   }
+
+
+  async getServiceDetails(serviceId: string): Promise<TServiceEntityWithPopulatedVendorForClient | null> {
+      
+    const service =   await serviceModel.findOne({ _id: serviceId })
+       .populate<{ vendorId: Pick<IVendorEntity, "_id" | "name"  | "profilePicture" | "place" | "email"> }>({
+            path: "vendorId",
+            select: "_id name  profilePicture place email",
+        })
+        .lean();
+        
+        if(!service) return null
+
+    const mappedService : TServiceEntityWithPopulatedVendorForClient = {
+      ...service!,
+      vendorId:{
+        _id:service!.vendorId._id!.toString(),
+        name:service!.vendorId.name!,
+        email:service!.vendorId.email!,
+        place: service?.vendorId.place || "", 
+       profilePicture: service?.vendorId.profilePicture || "",
+      }
+    }
+
+    return mappedService
+  } 
+
 
   async findServicesProvidedByVendors(vendorId: string): Promise<IServiceEntity[] | null> {
       

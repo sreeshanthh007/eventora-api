@@ -1,5 +1,17 @@
 import { IServiceEntity } from "@entities/models/service.entity";
 
+
+export type EditableScheduleFields = Partial<{
+  frequency: "ONCE" | "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  workingDays?: number[];
+  holidays?: string[];
+}>;
+
+
 export type EditableServiceFields = Partial<
   Pick<
     IServiceEntity,
@@ -12,10 +24,11 @@ export type EditableServiceFields = Partial<
     | "serviceTitle"
     | "termsAndConditions"
     | "yearsOfExperience"
-    | "slots"
-  >
+  > & {
+    schedule?: EditableScheduleFields; 
+  }
 >;
 
 export interface IEditServiceUseCase {
-  execute(vendorId:string,serviceId: string, data: EditableServiceFields): Promise<void>;
+  execute(serviceId: string, data: EditableServiceFields): Promise<void>;
 }

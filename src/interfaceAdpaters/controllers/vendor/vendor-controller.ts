@@ -140,9 +140,9 @@ export class VendorController implements IVendorController{
 
 
     async scanAndVerifyAttendies(req: Request, res: Response): Promise<void> {
-        
-        const {vendorId} = req.body;
-  
+
+        const {vendorId,eventId} = req.body;
+    
         if(!vendorId){
             res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS});
@@ -150,7 +150,7 @@ export class VendorController implements IVendorController{
         }
 
 
-        const response = await this._scanAndVerifyAttendiesUseCase.execute(vendorId)
+        const response = await this._scanAndVerifyAttendiesUseCase.execute(vendorId,eventId)
 
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.TICKET_SCANNED_SUCCESS,response})

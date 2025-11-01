@@ -10,7 +10,14 @@ export class NotificationRepository implements INotificationRepository{
     }
 
     async findNotificationsById(userId: string): Promise<INotificationEntity[] | null> {
-        return await NotificationModel.find({userId})
+        return await NotificationModel.find({userId}).sort({createdAt:-1})
     }
+
+    async markAsReadNotification(userId: string, notificationId: string): Promise<void> {
+        await NotificationModel.updateOne(
+            {_id:notificationId,userId:userId},
+            {$set:{isRead:true}}
+        );
+    } 
 
 }

@@ -1,5 +1,5 @@
-import { IBookingEntity, TPaymentStatus } from "@entities/models/booking.entity";
-import { TBookingEntityWithPopulatedService } from "@entities/models/populated-types/service-populated.type";
+import {  TPaymentStatus } from "@entities/models/booking.entity";
+import { TBookingEntityWithPopulatedService, TBookingEntityWithPopulatedServiceForClient } from "@entities/models/populated-types/service-populated.type";
 import { BookingDTO, ClientPaginatedBookingDTO, VendorPaginatedBookingDTO } from "@shared/dtos/booking.dto";
 
 
@@ -11,7 +11,6 @@ export function mapBookingstoVendorBookedServices(booking:TBookingEntityWithPopu
         name:booking.name,
         email:booking.email,
         phone:booking.phone,
-        currency:booking.currency,
         bookingSlot:{
             startDateTIme:booking.bookingSlot.startDateTime,
             endDateTime:booking.bookingSlot.endDateTime 
@@ -26,17 +25,25 @@ export function mapBookingstoVendorBookedServices(booking:TBookingEntityWithPopu
 }
 
 
-export function mapBookingstoClientBookedService(booking:IBookingEntity) : ClientPaginatedBookingDTO{
+export function mapBookingstoClientBookedService(booking:TBookingEntityWithPopulatedServiceForClient) : ClientPaginatedBookingDTO{
 
     return{
         bookingId:booking.bookingId,
         name:booking.name,
         email:booking.email,
         phone:booking.phone,
-        currency:booking.currency,
         bookingSlot:{
             startDateTIme:booking.bookingSlot.startDateTime,
             endDateTime:booking.bookingSlot.endDateTime
+        },
+        vendorId:{
+          name:booking.vendorId.name,
+          email:booking.vendorId.email,
+          profilePicture:booking.vendorId.profilePicture,
+          phone:booking.vendorId.phone
+        },
+        serviceId:{
+          serviceTitle:booking.serviceId.serviceTitle
         },
         status:booking.status,
         amount:booking.amount,

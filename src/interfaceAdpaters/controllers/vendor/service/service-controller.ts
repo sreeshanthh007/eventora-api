@@ -15,6 +15,7 @@ import { CustomRequest } from "interfaceAdpaters/middlewares/auth.middleware";
 import {
 
   EditServiceValidationSchema,
+  // RRuleServiceValidationSchema,
   ServiceValidationSchema,
 } from "interfaceAdpaters/validations/service.validation";
 import { inject, injectable } from "tsyringe";
@@ -41,14 +42,14 @@ export class ServiceController implements IServiceController {
     const { id } = (req as CustomRequest).user;
     const validatedData = ServiceValidationSchema.parse(serviceData);
 
-  const mappedData: CreateServiceDTO = {
-  ...validatedData,
-  slots: validatedData.slots?.map((slot) => ({
-    startDateTime: new Date(slot.startDateTime),
-    endDateTime: new Date(slot.endDateTime),
-    capacity: slot.capacity,
-    bookedCount: slot.bookedCount || 0,
-  })),
+      const mappedData: CreateServiceDTO = {
+      ...validatedData,
+     schedule: {
+     ...validatedData.schedule,
+      startDate: new Date(validatedData.schedule.startDate),
+    endDate: new Date(validatedData.schedule.endDate),
+  },
+  holidays: validatedData.holidays?.map((h) => new Date(h)),
 };
 
     await this._addServiceUseCase.execute(id, mappedData);
@@ -59,22 +60,17 @@ export class ServiceController implements IServiceController {
   }
 
   async editService(req: Request, res: Response): Promise<void> {
-    const { id } = (req as CustomRequest).user;
+   
     const data = req.body;
     const { serviceId } = req.params;
 
     const validatedData = EditServiceValidationSchema.parse(data);
     
     const mappedData: Partial<EditServiceDTO> = {
-      ...validatedData,
-      slots: validatedData.slots?.map(slot => ({
-        date: slot.startDateTime ? new Date(slot.startDateTime) : undefined,
-        startDateTime: slot.startDateTime ? new Date(slot.startDateTime) : undefined,
-        endDateTime: slot.endDateTime ? new Date(slot.endDateTime) : undefined,
-        capacity: slot.capacity,
-      })),
-    };
-    await this._editServiceUseCase.execute(id, serviceId, mappedData);
+    ...validatedData,
+    
+  };
+    await this._editServiceUseCase.execute( serviceId, mappedData);
 
     res
       .status(HTTP_STATUS.OK)
@@ -149,4 +145,9 @@ export class ServiceController implements IServiceController {
       .status(HTTP_STATUS.OK)
       .json({ success: true, message: SUCCESS_MESSAGES.UPDATE_SUCCESS });
   }
+
+
+
+
+
 }

@@ -10,3 +10,6 @@ export interface PaginatedEvents {
         events:PaginatedEventDetailsDTO[],
         total:number
     }
+
+
+    

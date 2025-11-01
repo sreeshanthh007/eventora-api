@@ -1,7 +1,7 @@
 import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-repository-interface";
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
 import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
-import { ICancelTicketUseCase } from "@entities/useCaseInterfaces/client/cancel-ticket.usecase.interface";
+import { ICancelTicketUseCase } from "@entities/useCaseInterfaces/client/event/cancel-ticket.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { createTransaction } from "@mappers/WalletMapper";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";

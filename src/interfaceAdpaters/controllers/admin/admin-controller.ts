@@ -86,4 +86,7 @@ export class AdminController implements IAdminController{
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.NOTIFICATION_FETCHED_SUCCESS,notification})
     }
+
+
+   
 }

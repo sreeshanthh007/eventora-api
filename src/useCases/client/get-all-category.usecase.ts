@@ -1,5 +1,5 @@
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
-import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/client/get-all-category-clients.usecase.interface";
+import { IGetAllCategoryForClientsUseCase } from "@entities/useCaseInterfaces/client/category/get-all-category-clients.usecase.interface";
 import { CategoryDTO } from "@shared/dtos/user.dto";
 import { toCategoryListResponse } from "interfaceAdpaters/mappers/CategoryMapper";
 import { inject, injectable } from "tsyringe";

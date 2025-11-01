@@ -16,7 +16,7 @@ export class ScanAndVerifyAttendiesUseCase implements IScanAndVerifyAttendiesUse
         @inject("IEventRepository") private _eventRepo : IEventRepository
     ){}
 
-        async execute(vendorId: string): Promise<IEventVerifyAttendiesDTO> {
+        async execute(vendorId: string,eventId:string): Promise<IEventVerifyAttendiesDTO> {
 
                    
         const vendor = await this._vendorRepo.findById(vendorId)
@@ -25,12 +25,12 @@ export class ScanAndVerifyAttendiesUseCase implements IScanAndVerifyAttendiesUse
             throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
 
-        const event = await this._eventRepo.findEventsHostedByVendors(vendorId)
+        const event = await this._eventRepo.findEventsHostedByVendors(vendorId,eventId)
 
         if(!event){
             throw new CustomError(ERROR_MESSAGES.EVENT_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
-
+     
         const mappedEvent = mapEventForverifyAttendiestoDTO(event)
         console.log("mapped events from scanning",mappedEvent)
         return mappedEvent

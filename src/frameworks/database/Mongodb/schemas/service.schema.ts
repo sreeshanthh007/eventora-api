@@ -28,14 +28,17 @@ export const ServiceSchema = new Schema<IServiceModel>(
         status:{type:String,enum:["active","blocked"],default:"active"},
 
 
-     slots: [
-      {
-        startDateTime: { type: Date, required: true }, 
-        endDateTime: { type: Date, required: true },   
-        capacity: { type: Number, required: true },
-        bookedCount: { type: Number, default: 0 }
-      }
-    ]
+    schedule:{
+      frequency:{type:String,enum:["DAILY","WEEKLY","MONTHLY","YEARLY","ONCE"],required:true},
+      startDate: { type: Date, required: true }, 
+      endDate: { type: Date, required: true },   
+      startTime: { type: String, required: true }, 
+      endTime: { type: String, required: true },
+      duration: { type: Number, required: true }, 
+      capacity:{type:Number},
+      workingDays: [{ type: Number, required: true }], 
+    },
+    holidays: [{ type: Date }],
     },
     {
         timestamps:true

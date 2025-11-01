@@ -11,7 +11,7 @@ import { config } from "@shared/config";
 import { errorMiddleware, eventBookingController } from "@frameworks/di/resolver";
 import { AdminRotes } from "@frameworks/routes/admin/admin.route";
 import { VendorRoutes } from "@frameworks/routes/vendor/vendor.route";
-import { CloudinaryRoutes } from "@frameworks/routes/common/cloudinaryRoutes";
+import { CommonRoutes } from "@frameworks/routes/common/commonRoutes";
 import { asyncHandler } from "@shared/async-handler";
 
 export class ExpressServer {
@@ -60,7 +60,8 @@ export class ExpressServer {
     
     this._app.use("/api_v1/_ad", new AdminRotes().router);
     this._app.use("/api_v1/_ve", new VendorRoutes().router);
-    this._app.use("/api/cloudinary",new CloudinaryRoutes().router)
+    this._app.use("/api",new CommonRoutes().router);
+
     console.log("Routes mounted successfully")
   }
 

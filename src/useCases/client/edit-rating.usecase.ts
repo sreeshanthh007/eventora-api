@@ -1,5 +1,5 @@
 import { IRatingRepository } from "@entities/repositoryInterfaces/rating/rating.repository.interface";
-import { IEditRatingUseCase } from "@entities/useCaseInterfaces/client/edit-rating.usecase.interface";
+import { IEditRatingUseCase } from "@entities/useCaseInterfaces/client/rating/edit-rating.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { IEditRatingDTO } from "@shared/dtos/rating.dto";

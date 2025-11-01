@@ -22,6 +22,7 @@ export class VendorRoutes extends BaseRouter{
            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
            asyncHandler(authController.refreshSession.bind(authController))
         );
+        
         this.router.post(
             "/vendorForgot/sent-otp",
             asyncHandler(forgotVendorOTPController.handle.bind(forgotVendorOTPController))

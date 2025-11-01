@@ -1,5 +1,5 @@
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
-import { EventFilters, IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/get-all-events-with-filters.usercase.interface";
+import { EventFilters, IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/event/get-all-events-with-filters.usercase.interface";
 import { mapEventsToClientEventPage } from "@mappers/EventMapper";
 import { paginatedEventsForClient } from "interfaceAdpaters/models/paginatedEvents";
 import { inject, injectable } from "tsyringe";

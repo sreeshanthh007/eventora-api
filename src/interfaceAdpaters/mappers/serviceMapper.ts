@@ -1,7 +1,8 @@
-// import { IServiceEntity } from "@entities/models/service.entity";
-// import { ServiceTableDTO } from "@shared/dtos/service.dto";
 
+
+import { TServiceEntityWithPopulatedVendorForClient } from "@entities/models/populated-types/service-populated.type";
 import { IServiceEntity } from "@entities/models/service.entity";
+import { SlotGenerationResponse } from "@shared/dtos/slot-generator.dto";
 import { PaginatedServiceDTO, PaginatedServicesProvidedByVendorsDTO, ServiceTableDTO } from "@shared/dtos/service.dto";
 
 
@@ -9,19 +10,23 @@ export interface IServiceResponse {
   serviceTitle: string;
   serviceDescription: string;
   servicePrice: number;
-  serviceDuration:number;
-  yearsOfExperience:number;
-  additionalHourPrice:number;
-  termsAndConditions:string[];
-  cancellationPolicies:string[];
-  categoryId:string
-    slots?: {
-    date?: Date;
-    startDateTime?: Date;
-    endDateTime?: Date;
-    capacity?: number;
-    bookedCount?: number;
-  }[];
+  serviceDuration: number;
+  yearsOfExperience: number;
+  additionalHourPrice: number;
+  termsAndConditions: string[];
+  cancellationPolicies: string[];
+  categoryId: string;
+  schedule?: {
+    frequency: "ONCE" | "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
+    startDate: Date;
+    endDate: Date;
+    startTime: string;
+    endTime: string;
+    workingDays?: number[]; 
+    capacity:number
+    duration:number
+  };
+  holidays?: Date[];      
 }
 
 
@@ -50,14 +55,18 @@ export function mapServiceForEditService(service:IServiceEntity) : IServiceRespo
     termsAndConditions:service.termsAndConditions,
     yearsOfExperience:service.yearsOfExperience,
     categoryId:service.categoryId,
-     slots: service.slots?.map(slot => ({
-      date: slot.date,
-      startDateTime: slot.startDateTime,
-      endDateTime: slot.endDateTime,
-      capacity: slot.capacity,
-      bookedCount: slot.bookedCount,
-    })),
-  }
+       schedule:{
+        frequency:service.schedule.frequency,
+        startDate:service.schedule.startDate,
+        endDate:service.schedule.endDate,
+        startTime:service.schedule.startTime,
+        endTime:service.schedule.endTime,
+        capacity:service.schedule.capacity,
+        duration:service.schedule.duration,
+        workingDays:service.schedule.workingDays
+       },
+      holidays:service.holidays
+}
 }
 
 
@@ -76,7 +85,7 @@ export function mapServiceforClientPage(service:IServiceEntity) : PaginatedServi
 
 
 
-export function mapServiceForServiceDetails(service:IServiceEntity) : PaginatedServicesProvidedByVendorsDTO{
+export function mapServiceForServiceDetailsSuggestion(service:IServiceEntity) : PaginatedServicesProvidedByVendorsDTO{
   return{
     _id:service._id?.toString(),
     serviceTitle:service.serviceTitle,
@@ -84,4 +93,36 @@ export function mapServiceForServiceDetails(service:IServiceEntity) : PaginatedS
     yearsOfExperience:service.yearsOfExperience,
     categoryName:service.categoryName!
   }
+}
+
+
+export function mapServiceForServiceDetails(
+  service: TServiceEntityWithPopulatedVendorForClient,
+  slots:SlotGenerationResponse[]
+) {
+  return {
+    _id: service._id!.toString(),
+    serviceTitle: service.serviceTitle,
+    serviceDescription: service.serviceDescription,
+    servicePrice: service.servicePrice,
+    serviceDuration: service.serviceDuration,
+    additionalHourPrice: service.additionalHourPrice,
+    yearsOfExperience: service.yearsOfExperience,
+    termsAndConditions: service.termsAndConditions,
+    cancellationPolicies: service.cancellationPolicies,
+    schedule:{
+      startDate:service.schedule.startDate,
+      endDate:service.schedule.endDate,
+      workingDays:service.schedule.workingDays,
+      holidays:service.holidays
+    },
+    slots,
+    vendor: {
+    vendorId: service.vendorId._id.toString(), 
+    name: service.vendorId.name || "",
+    email: service.vendorId.email || "",
+    place: service.vendorId.place || "",
+    profilePicture: service.vendorId.profilePicture || "",
+  }
+  };
 }

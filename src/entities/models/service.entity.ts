@@ -17,6 +17,18 @@ export interface IServiceEntity  {
     categoryId:string,
     status?:string
     categoryName?:string
+      schedule: {
+    frequency: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY" | "ONCE";
+    startDate: Date;
+    endDate: Date;
+    startTime: string;
+    endTime: string;
+    duration: number;
+    capacity: number;
+    bookedCount?: number;
+    workingDays?: number[];
+  };
+    holidays?:Date[]
     slots?: {
     date?: Date;
     startDateTime?: Date;

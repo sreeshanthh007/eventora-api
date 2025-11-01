@@ -1,5 +1,5 @@
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
-import { IGetCategoryForFilterUseCase } from "@entities/useCaseInterfaces/client/get-category-for-filter.usecase.interface";
+import { IGetCategoryForFilterUseCase } from "@entities/useCaseInterfaces/client/category/get-category-for-filter.usecase.interface";
 import { mapCategoriesForFilter } from "@mappers/CategoryMapper";
 import { ICategoryForFilterDTO } from "@shared/dtos/category.dto";
 import { inject, injectable } from "tsyringe";

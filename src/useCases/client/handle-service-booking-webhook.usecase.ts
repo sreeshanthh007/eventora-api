@@ -4,7 +4,7 @@ import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/servic
 import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
-import { IHandleServiceBookingWebhookUseCase } from "@entities/useCaseInterfaces/client/handle-service-booking-webhook.usecase.interface";
+import { IHandleServiceBookingWebhookUseCase } from "@entities/useCaseInterfaces/client/service/handle-service-booking-webhook.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
 import { mapToBookingDTO } from "@mappers/BookingMapper";
@@ -53,25 +53,7 @@ export class HandleServiceBookingWebhookUseCase implements IHandleServiceBooking
         
         const bookingId = generateRandomUUID()
 
-        // const booking : BookingDTO ={
-        //     bookingId:bookingId,
-        //     clientId:clientId,
-        //     vendorId:vendorId,
-        //     serviceId:serviceId,
-        //     currency:currency,
-        //     amount:amount,
-        //     bookingSlot:{
-        //         startDateTime:new Date(bookingData.slotStart),
-        //         endDateTime: new Date(bookingData.slotEnd)
-        //     },
-        //     email:bookingData.email,
-        //     name:bookingData.name,
-        //     phone:bookingData.phone,
-        //     paymentId:paymentIntentId,
-        //     status:"pending",
-        //     paymentStatus:"successfull",
-
-        // };
+        
 
         const booking = mapToBookingDTO({
             bookingId:bookingId,

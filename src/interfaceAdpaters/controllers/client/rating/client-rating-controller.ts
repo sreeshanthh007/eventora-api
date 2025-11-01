@@ -1,6 +1,6 @@
 import { IClientRatingController } from "@entities/controllerInterfaces/client/rating/client-rating-controller.interface";
-import { IAddRatingUseCase } from "@entities/useCaseInterfaces/client/add-rating.usecase.interface";
-import { IEditRatingUseCase } from "@entities/useCaseInterfaces/client/edit-rating.usecase.interface";
+import { IAddRatingUseCase } from "@entities/useCaseInterfaces/client/rating/add-rating.usecase.interface";
+import { IEditRatingUseCase } from "@entities/useCaseInterfaces/client/rating/edit-rating.usecase.interface";
 import { CustomRequest } from "@middlewares/auth.middleware";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
 import { Request, Response } from "express";
@@ -31,6 +31,10 @@ export class ClientRatingCOntroller implements IClientRatingController{
 
         
     }
+
+
+
+
     async addReview(req: Request, res: Response): Promise<void> {
         
         const {id} = (req as CustomRequest).user

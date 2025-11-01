@@ -10,12 +10,10 @@
   export class AuthRoutes extends BaseRouter{
       constructor(){
           super()
-           console.log("🔧 AuthRoutes constructor called");
       }
     
 
     protected initializeRoutes(): void {
-       console.log("✅ initializeRoutes() running...");
       this.router.post("/signup",asyncHandler(authController.register.bind(authController)))
       this.router.post("/login",asyncHandler(authController.login.bind(authController)))
       this.router.post("/sent-otp", asyncHandler(authController.sentOtpEmail.bind(authController)))

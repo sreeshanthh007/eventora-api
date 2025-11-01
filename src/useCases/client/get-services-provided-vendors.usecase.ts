@@ -1,6 +1,6 @@
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
-import { IGetServicesProvidedByVendorsUseCase } from "@entities/useCaseInterfaces/client/get-services-provided-vendors.usecase.interface";
-import { mapServiceForServiceDetails } from "@mappers/serviceMapper";
+import { IGetServicesProvidedByVendorsUseCase } from "@entities/useCaseInterfaces/client/service/get-services-provided-vendors.usecase.interface";
+import { mapServiceForServiceDetailsSuggestion } from "@mappers/serviceMapper";
 import { PaginatedServicesProvidedByVendorsDTO } from "@shared/dtos/service.dto";
 import { inject, injectable } from "tsyringe";
 
@@ -19,7 +19,7 @@ export class GetServicesProvidedByVendorsUseCase implements IGetServicesProvided
 
     console.log("service by vendors",services)
     if(services){
-        const mappedServices = services.map(service => mapServiceForServiceDetails(service));
+        const mappedServices = services.map(service => mapServiceForServiceDetailsSuggestion(service));
         console.log("mapped serices are",mappedServices)
         return mappedServices
     }
