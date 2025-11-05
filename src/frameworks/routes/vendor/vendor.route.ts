@@ -2,7 +2,7 @@
 
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { authController, blockstatusMiddleware, clientController,eventController, forgotVendorOTPController, adminVendorController, vendoController, serviceController, categoryController } from "@frameworks/di/resolver";
+import { authController, blockstatusMiddleware, clientController,eventController, forgotVendorOTPController, adminVendorController, vendoController, serviceController, categoryController, chatController } from "@frameworks/di/resolver";
 import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
 import { RequestHandler } from "express";
 
@@ -210,6 +210,40 @@ export class VendorRoutes extends BaseRouter{
             asyncHandler(vendoController.getBookedServices.bind(vendoController))
         );
         
+        this.router.patch(
+            "/start-service/:bookingId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(vendoController.startBookedService.bind(vendoController))
+        );
+
+
+        this.router.patch(
+            "/stop-service/:bookingId",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(vendoController.stopBookedService.bind(vendoController))
+        );
+
+
+        this.router.get(
+            "/vendor/chat",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(chatController.getChatbyChatId.bind(chatController))
+        );
+
+        this.router.get(
+            "/vendor/chats",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(chatController.getAllChatsByUserId.bind(chatController))
+        );
+
         this.router.post(
             "/logout",
             verifyAuth,

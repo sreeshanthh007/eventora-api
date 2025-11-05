@@ -4,8 +4,8 @@ export interface ServiceBookingCreationDTO {
     vendorId: string;
     serviceId: string
     bookingData: {
-        slotStart: string;
-        slotEnd: string;
+        selectedDate: string;
+        selectedSlotTime: string;
         name: string;
         email: string;
         phone: string;

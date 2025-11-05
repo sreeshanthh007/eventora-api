@@ -12,8 +12,9 @@ export function mapBookingstoVendorBookedServices(booking:TBookingEntityWithPopu
         email:booking.email,
         phone:booking.phone,
         bookingSlot:{
-            startDateTIme:booking.bookingSlot.startDateTime,
-            endDateTime:booking.bookingSlot.endDateTime 
+            startDate:booking.bookingSlot.startDate,
+            slotStartTime:booking.bookingSlot.slotStartTime,
+            slotEndTime:booking.bookingSlot.slotEndTime 
         },
         status:booking.status,
         amount:booking.amount,
@@ -33,16 +34,19 @@ export function mapBookingstoClientBookedService(booking:TBookingEntityWithPopul
         email:booking.email,
         phone:booking.phone,
         bookingSlot:{
-            startDateTIme:booking.bookingSlot.startDateTime,
-            endDateTime:booking.bookingSlot.endDateTime
+            startDate:booking.bookingSlot.startDate,
+            slotStartTime:booking.bookingSlot.slotStartTime,
+            slotEndTime:booking.bookingSlot.slotEndTime
         },
         vendorId:{
+          _id:booking.vendorId._id,
           name:booking.vendorId.name,
           email:booking.vendorId.email,
           profilePicture:booking.vendorId.profilePicture,
           phone:booking.vendorId.phone
         },
         serviceId:{
+          _id:booking.serviceId._id,
           serviceTitle:booking.serviceId.serviceTitle
         },
         status:booking.status,
@@ -59,8 +63,9 @@ export function mapToBookingDTO(data: {
   serviceId: string;
   currency: string;
   amount: number;
-  slotStart: string | Date;
-  slotEnd: string | Date;
+  startDate: string | Date;
+  slotStartTime: string | Date;
+  slotEndTime: string | Date;
   email: string;
   name: string;
   phone: string;
@@ -76,8 +81,9 @@ export function mapToBookingDTO(data: {
     currency: data.currency,
     amount: data.amount,
     bookingSlot: {
-      startDateTime: new Date(data.slotStart),
-      endDateTime: new Date(data.slotEnd),
+      startDate: new Date(data.startDate),
+      slotStartTime: new Date(data.slotStartTime),
+      slotEndTime:new Date(data.slotEndTime)
     },
     email: data.email,
     name: data.name,

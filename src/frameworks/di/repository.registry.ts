@@ -24,6 +24,10 @@ import { IBookingRepository } from "@entities/repositoryInterfaces/booking/booki
 import { BookingRepository } from "interfaceAdpaters/repositories/booking/booking.repository";
 import { IRatingRepository } from "@entities/repositoryInterfaces/rating/rating.repository.interface";
 import { RatingRepository } from "interfaceAdpaters/repositories/rating/rating.repository";
+import { IChatRoomRepository } from "@entities/repositoryInterfaces/chat/chat.repository.interface";
+import { ChatRoomRepository } from "interfaceAdpaters/repositories/chat/chatRoom.repository";
+import { IMessageRepository } from "@entities/repositoryInterfaces/chat/message.repository.interface";
+import { MessageRepository } from "interfaceAdpaters/repositories/chat/message.repository";
 
 export class RepositoryRegistry {
     static registerRepositories():void {
@@ -78,6 +82,15 @@ export class RepositoryRegistry {
 
         container.register<IRatingRepository>("IRatingRepository",{
             useClass:RatingRepository
+        });
+
+
+        container.register<IChatRoomRepository>("IChatRoomRepository",{
+            useClass:ChatRoomRepository
+        });
+
+        container.register<IMessageRepository>("IMessageRepository",{
+            useClass:MessageRepository
         });
     }
 }

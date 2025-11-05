@@ -10,7 +10,7 @@ export interface WalletDTO{
 
 
 type TPaymentStatus = "debit" | "credit";
-type TPaymentType = "Refund" | "ticketBooking" | "top-up" | "serviceBooking" | "partialRefund";
+type TPaymentType = "Refund" | "ticketBooking" | "top-up" | "serviceBooking" | "partialRefund" | "fundReleased";
 export type TResourceType = "Event" | "service";
 
 export interface TPaymentFor {

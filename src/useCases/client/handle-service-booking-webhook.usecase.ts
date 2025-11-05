@@ -27,7 +27,7 @@ export class HandleServiceBookingWebhookUseCase implements IHandleServiceBooking
     ){}
 
 
-   async execute(vendorId:string,serviceId: string, clientId: string, currency: string, bookingData: { slotStart: string; slotEnd: string; name: string; email: string; phone: string; }, amount: number, paymentIntentId: string): Promise<void> {
+   async execute(vendorId:string,serviceId: string, clientId: string, currency: string, bookingData: { selectedDate: string; selectedSlotTime: string; name: string; email: string; phone: string; }, amount: number, paymentIntentId: string): Promise<void> {
        
             const serviceExist = await this._serviceRepo.findById(serviceId)
 
@@ -38,23 +38,27 @@ export class HandleServiceBookingWebhookUseCase implements IHandleServiceBooking
             if(!serviceExist){
             throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.NOT_FOUND)
             }
-        
-        const slot = serviceExist.slots?.find((each)=>each.startDateTime?.toISOString()===bookingData.slotStart
-        && each.endDateTime?.toISOString()===bookingData.slotEnd
-        );
-
-        if(!slot){
-        throw new CustomError(ERROR_MESSAGES.SLOT_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
-        }
-
-        if(slot.bookedCount! >= slot.capacity!){
-        throw new CustomError(ERROR_MESSAGES.SLOT_CAPACITY_EXCEEDED,HTTP_STATUS.BAD_REQUEST)
-        }
+            
+            if(serviceExist.status=="blocked"){
+                throw new CustomError(ERROR_MESSAGES.SERVICE_BOOKING_BLOCKED_ERROR,HTTP_STATUS.BAD_REQUEST)
+            }
+            
         
         const bookingId = generateRandomUUID()
 
         
+        const startDate = new Date(bookingData.selectedDate)
 
+        const [slotStartStr, slotEndStr] = bookingData.selectedSlotTime.split(' - '); 
+     
+        
+        const slotStart = new Date(startDate);
+        const [startHour, startMinute] = slotStartStr.split(':').map(Number);
+        slotStart.setHours(startHour, startMinute, 0, 0);
+
+        const slotEnd = new Date(startDate);
+        const [endHour, endMinute] = slotEndStr.split(':').map(Number);
+        slotEnd.setHours(endHour, endMinute, 0, 0);
         const booking = mapToBookingDTO({
             bookingId:bookingId,
             clientId:clientId,
@@ -62,8 +66,9 @@ export class HandleServiceBookingWebhookUseCase implements IHandleServiceBooking
             serviceId:serviceId,
             currency:currency,
             amount:amount,
-            slotStart:new Date(bookingData.slotStart),
-            slotEnd:new Date(bookingData.slotEnd),
+            startDate:startDate,
+            slotStartTime:slotStart,
+            slotEndTime:slotEnd,
             email:bookingData.email,
             name:bookingData.name,
             phone:bookingData.phone,
@@ -76,13 +81,12 @@ export class HandleServiceBookingWebhookUseCase implements IHandleServiceBooking
         const transaction  = createTransaction("serviceBooking","service",serviceId,amount,"credit")
         
 
-        const startDate = new Date(bookingData.slotStart)
-        const endDate = new Date(bookingData.slotEnd)
+    
    
         await this._bookingRepo.createBooking(booking)
         await this._walletRepo.findWalletByUserTypeAndUpdate("admin",transaction,amount)
-        await this._serviceRepo.findByIdAndUpdateBookedCount(serviceId,startDate,endDate)
-        await this._lockService.releaseLock(serviceId,bookingData.slotStart,clientId)
+
+        await this._lockService.releaseServiceLock(serviceId,bookingData.selectedDate,bookingData.selectedSlotTime,clientId)
 
         if(userExist?.fcmToken){
             this._notificationService.sendNotification(

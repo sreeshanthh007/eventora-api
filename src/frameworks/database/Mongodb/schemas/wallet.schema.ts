@@ -18,7 +18,7 @@ export const walletSchema = new Schema<IWalletModel>(
         paymentStatus: { type: String, enum: ["debit", "credit"], required: true },
         amount: { type: Number, required: true },
         date: { type: Date, required: true },
-        paymentType: { type: String, enum: ["Refund","ticketBooking","top-up","serviceBooking"], required: true },
+        paymentType: { type: String, enum: ["Refund","ticketBooking","top-up","serviceBooking","fundReleased"], required: true },
         paymentFor: {
         resourceType: { type: String, enum: ["Event", "service"], required: true },
         resourceId: { type: String, required:true }

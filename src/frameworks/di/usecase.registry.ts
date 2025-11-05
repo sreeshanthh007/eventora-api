@@ -201,8 +201,29 @@ import { IMarkAsReadNotificationUseCase } from "@entities/useCaseInterfaces/clie
 import { MarkAsReadNotificaionUseCase } from "@usecases/common/mark-as-read-notification.usecase";
 import { SlotGeneratorService } from "interfaceAdpaters/services/common/slot-generator.service";
 import { ISlotGeneratorService } from "@entities/serviceInterfaces/slot-generator.service.interface";
-// import { IGetClientBookedServicesUseCase } from "@entities/useCaseInterfaces/client/client-get-booked-service.usecase.interface";
-// // import { GetClientBookedServicesUseCase } from "@usecases/client/client-get-booked-services.usecase";
+import { IGetAllRatingsWithAverageUseCase } from "@entities/useCaseInterfaces/client/rating/get-rating.usecase.interface";
+import { GetAllRatingsWithAverageUseCase } from "@usecases/client/get-all-rating.usecase";
+import { IRemoveReviewUseCase } from "@entities/useCaseInterfaces/client/rating/remove-review.usecase.interface";
+import { RemoveReviewUseCase } from "@usecases/client/remove-review.usecase";
+import { ICancelServiceUseCase } from "@entities/useCaseInterfaces/client/service/cancel-service.usecase.interface";
+import { CancelServiceUseCase } from "@usecases/client/cancel-service.usecase";
+import { IStartBookedServiceUseCase } from "@entities/useCaseInterfaces/vendor/start-booked-service.usecase.interface";
+import { StartBookedServiceUseCase } from "@usecases/vendor/start-booked-service.usecase";
+import { IStopBookedServiceUseCase } from "@entities/useCaseInterfaces/vendor/stop-booked-service.usecase.interface";
+import { StopBookedServiceUseCase } from "@usecases/vendor/stop-booked-service.usecase";
+import { IGetAllChatsByUserUseCase } from "@entities/useCaseInterfaces/chat/get-all-chats-user.usecase.interface";
+import { GetAllChatsByUserUseCase } from "@usecases/chat/get-all-chats-user.usecase";
+import { IGetChatByChatIdUseCase } from "@entities/useCaseInterfaces/chat/get-chats-chatId.usecase.interface";
+import { GetChatByChatIdUseCase } from "@usecases/chat/get-chat-chatId.usecase";
+import { ICreateChatRoomUseCase } from "@entities/useCaseInterfaces/chat/createChatRoom.usecase.interface";
+import { CreateChatRoomUseCase } from "@usecases/chat/create-chat-room.usecase";
+import { IGetChatByuserUseCase } from "@entities/useCaseInterfaces/chat/get-chat-user.usecase.interface";
+import { GetChatbyUserUseCase } from "@usecases/chat/get-chat-user.usercase";
+import { ISendMessageUseCase } from "@entities/useCaseInterfaces/chat/send-message.usecase.interface";
+import { SendMessageUseCase } from "@usecases/chat/send-message.usecase";
+import { IReadMessageUseCase } from "@entities/useCaseInterfaces/chat/read-message.usecase.interface";
+import { ReadMessageUseCase } from "@usecases/chat/read-message.usecase";
+
 
 
 
@@ -596,7 +617,18 @@ export class UseCaseRegistry {
     container.register<IGetServicesProvidedByVendorsUseCase>("IGetServicesProvidedByVendorsUseCase",{
       useClass:GetServicesProvidedByVendorsUseCase
     });
+
+    container.register<ICancelServiceUseCase>("ICancelServiceUseCase",{
+      useClass:CancelServiceUseCase
+    });
+
+    container.register<IStartBookedServiceUseCase>("IStartBookedServiceUseCase",{
+      useClass:StartBookedServiceUseCase
+    });
     
+    container.register<IStopBookedServiceUseCase>("IStopBookedServiceUseCase",{
+      useClass:StopBookedServiceUseCase
+    });
 
     container.register<IAddWorkSampleUseCase>("IAddWorkSampleUseCase",{
       useClass:AddWorksampleUseCase
@@ -621,6 +653,14 @@ export class UseCaseRegistry {
 
     container.register<IEditRatingUseCase>("IEditRatingUseCase",{
       useClass:EditRatingUseCase
+    });
+
+    container.register<IGetAllRatingsWithAverageUseCase>("IGetAllRatingsWithAverageUseCase",{
+      useClass:GetAllRatingsWithAverageUseCase
+    });
+
+    container.register<IRemoveReviewUseCase>("IRemoveReviewUseCase",{
+      useClass:RemoveReviewUseCase
     });
 
     container.register<IGetVendorWorkFolioUseCase>("IGetWorkFolioforClientUseCase",{
@@ -650,6 +690,37 @@ export class UseCaseRegistry {
       useClass: FcmTokenUseCase,
     });
 
+
+
+
+
+
+
+
+    container.register<IGetAllChatsByUserUseCase>("IGetAllChatsByUserUseCase",{
+      useClass:GetAllChatsByUserUseCase
+    });
+
+
+    container.register<IGetChatByChatIdUseCase>("IGetChatByChatIdUseCase",{
+      useClass:GetChatByChatIdUseCase
+    });
+
+    container.register<ICreateChatRoomUseCase>("ICreateChatRoomUseCase",{
+      useClass:CreateChatRoomUseCase
+    });
+
+    container.register<IGetChatByuserUseCase>("IGetChatbyUserUseCase",{
+      useClass:GetChatbyUserUseCase
+    });
+
+    container.register<ISendMessageUseCase>("ISendMessageUseCase",{
+      useClass:SendMessageUseCase
+    });
+
+    container.register<IReadMessageUseCase>("IReadMessageUseCase",{
+      useClass:ReadMessageUseCase
+    });
 
     
     // ======logger==========//

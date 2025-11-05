@@ -6,6 +6,8 @@ import { IGetVendorBookingUseCase } from "@entities/useCaseInterfaces/vendor/get
 import { IGetVendorWalletDetailsUseCase } from "@entities/useCaseInterfaces/vendor/get-vendor-wallet-details.usecase.interface";
 import { IScanAndVerifyTicketsUseCase } from "@entities/useCaseInterfaces/vendor/scan-and-verify-tickets.usecase.interface";
 import { IScanAndVerifyAttendiesUseCase } from "@entities/useCaseInterfaces/vendor/scan-verify-attendies.usecase.interface";
+import { IStartBookedServiceUseCase } from "@entities/useCaseInterfaces/vendor/start-booked-service.usecase.interface";
+import { IStopBookedServiceUseCase } from "@entities/useCaseInterfaces/vendor/stop-booked-service.usecase.interface";
 import { IUpdateVendorPersonalInformationUseCase } from "@entities/useCaseInterfaces/vendor/update-vendor-personal.usecase.interface";
 import { IAddWorkSampleUseCase } from "@entities/useCaseInterfaces/vendor/worksample/add-work-sample.usecase.interface";
 import { IEditWorkSampleUseCase } from "@entities/useCaseInterfaces/vendor/worksample/edit-work-sample.usecase.interface";
@@ -33,7 +35,9 @@ export class VendorController implements IVendorController{
         @inject("IGetVendorWalletDetailsUseCase") private _getVendorWalletDetailsUseCase : IGetVendorWalletDetailsUseCase,
         @inject("IScanAndVerifyTicketsUseCase") private _scanAndVerifyTicketsUseCase : IScanAndVerifyTicketsUseCase,
         @inject("IGetVendorBookingsUseCase") private _getVendorBookingsUseCase :IGetVendorBookingUseCase,
-        @inject("IGetTicketDetailsUseCase") private _getTicketDetailsUseCase : IGetTicketDetailsUseCase
+        @inject("IGetTicketDetailsUseCase") private _getTicketDetailsUseCase : IGetTicketDetailsUseCase,
+        @inject("IStartBookedServiceUseCase") private _startBookedServiceUseCase : IStartBookedServiceUseCase,
+        @inject("IStopBookedServiceUseCase") private _stopBookedServiceUseCase : IStopBookedServiceUseCase
 
     ){}
 
@@ -245,5 +249,44 @@ export class VendorController implements IVendorController{
         res.status(HTTP_STATUS.OK)
         .json({success:true,message:SUCCESS_MESSAGES.VENDOR_BOOKED_SERVICES_FETCHED_SUCCESS,bookings:response.bookings,total:response.total})
 
+    }
+
+
+    async startBookedService(req: Request, res: Response): Promise<void> {
+        
+        const {id} = (req as CustomRequest).user
+
+        const {bookingId} = req.params
+
+
+        if(!id || !bookingId){
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+        }
+
+        await this._startBookedServiceUseCase.execute(bookingId,id)
+
+        res.status(HTTP_STATUS.OK)
+        .json({success:true,messasge:SUCCESS_MESSAGES.SERVICE_STARTED_SUCCESS})
+    }
+
+
+    async stopBookedService(req: Request, res: Response): Promise<void> {
+        
+        const {id} = (req as CustomRequest).user
+
+        const {bookingId} = req.params
+
+        if(!id || !bookingId){
+            res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+        }
+
+        await this._stopBookedServiceUseCase.execute(bookingId,id)
+
+
+        res.status(HTTP_STATUS.OK)
+        .json({success:true,message:SUCCESS_MESSAGES.SERVICE_STOPED_SUCCESS})
+        
     }
 }

@@ -1,6 +1,6 @@
-import { RatingDTO } from "@shared/dtos/rating.dto";
+import { GetAllRatingsWithAverageDTO } from "@shared/dtos/rating.dto";
 
 
-export interface IGetRatingUseCase{
-    execute(clientId:string,serviceId:string) : Promise<RatingDTO>
+export interface IGetAllRatingsWithAverageUseCase{
+    execute(serviceId:string) : Promise<GetAllRatingsWithAverageDTO>
 }

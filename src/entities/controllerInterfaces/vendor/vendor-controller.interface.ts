@@ -13,4 +13,6 @@ export interface IVendorController {
     scanAndVerifyTickets(req:Request,res:Response) : Promise<void>
     getVendorwalletDetails(req:Request,res:Response) : Promise<void>
     getBookedServices(req:Request,res:Response) : Promise<void>
+    startBookedService(req:Request,res:Response) : Promise<void>
+    stopBookedService(req:Request,res:Response) : Promise<void>
 }

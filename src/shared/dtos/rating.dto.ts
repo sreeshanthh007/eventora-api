@@ -13,6 +13,12 @@ export interface RatingDTO{
     createdAt?:string
 }
 
+export interface GetAllRatingsWithAverageDTO{
+    averageRatings:number
+    totalRatings:number
+    reviews:RatingDTO[]
+}
+
 type EditableFields = Pick<
 RatingDTO,
 "description" | 

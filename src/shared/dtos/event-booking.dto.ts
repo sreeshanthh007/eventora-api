@@ -7,6 +7,7 @@ export interface TicketItemDTO {
 }
 
 export interface BookingCreationDTO {
+  vendorId:string
   eventId: string;
   currency: string;
   totalAmount: number;

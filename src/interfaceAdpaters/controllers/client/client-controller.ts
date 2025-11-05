@@ -30,6 +30,7 @@ import { IGetVendorWorkFolioUseCase } from "@entities/useCaseInterfaces/client/g
 import { IGetAllNotificationUseCase } from "@entities/useCaseInterfaces/get-all-notification.usecase.interface";
 import { IGetClientBookedServicesUseCase } from "@entities/useCaseInterfaces/client/service/client-get-booked-service.usecase.interface";
 import { IMarkAsReadNotificationUseCase } from "@entities/useCaseInterfaces/client/mark-as-read-notification.usecase.interface";
+import { ICancelServiceUseCase } from "@entities/useCaseInterfaces/client/service/cancel-service.usecase.interface";
 
 
 @injectable()
@@ -69,6 +70,8 @@ export class ClientController implements IClientController {
     private _createServiceBookingUseCase : ICreateServiceBookingUseCase,
     @inject("ICancelTicketUseCase") 
     private _cancelTicketUseCase : ICancelTicketUseCase,
+    @inject("ICancelServiceUseCase")
+    private _cancelServiceUseCase : ICancelServiceUseCase,
     @inject("IGetAllNotificationUseCase")
     private _getAllNotificationUseCase : IGetAllNotificationUseCase,
     @inject("IMarkAsReadNotificationUseCase")
@@ -469,6 +472,26 @@ export class ClientController implements IClientController {
 
 
 
+  async cancelService(req: Request, res: Response): Promise<void> {
+      
+    const {id} = (req as CustomRequest).user
+
+    const {vendorId,serviceId,bookingId} = req.params
+
+    if(!id || !vendorId  || !serviceId || !bookingId){
+      res.status(HTTP_STATUS.BAD_REQUEST)
+      .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+    }
+
+
+    await this._cancelServiceUseCase.execute(id,vendorId,serviceId,bookingId)
+
+    res.status(HTTP_STATUS.OK)
+    .json({success:true,message:SUCCESS_MESSAGES.SERVICE_CANCELLED_SUCCESS})
+  }
+
+
+
 
 
   async getAllNotifications(req: Request, res: Response): Promise<void> {
@@ -490,7 +513,7 @@ export class ClientController implements IClientController {
   async markAsReadNotifications(req: Request, res: Response): Promise<void> {
       
       const {id} = (req as CustomRequest).user
-    console.log("notitifation user id",id)
+    
       const {notificationId} = req.params
 
       if(!id || !notificationId){

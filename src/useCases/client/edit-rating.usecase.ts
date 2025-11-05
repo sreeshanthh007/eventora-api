@@ -22,13 +22,26 @@ export class EditRatingUseCase implements IEditRatingUseCase{
             throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
         }
 
-        const isClientProvidedRating = await this._ratingRepo.getRatingByClientId(clientId)
+          
+        const convertedData = {
+            description:data.description,
+            rating:Number(data.rating)
+        }
+        const isClientProvidedRating = await this._ratingRepo.getRatingsByClientId(clientId)
 
         if(!isClientProvidedRating){
             throw new CustomError(ERROR_MESSAGES.INVALID_RATING_EDITING,HTTP_STATUS.FORBIDDEN)
         }
 
-        await this._ratingRepo.findRatingByIdAndEditRating(ratingId,data)
+        const {rating,description} = data
+
+        if(ratingExist.description==description && ratingExist.rating==rating){
+            throw new CustomError(ERROR_MESSAGES.INVALID_RATING_SUBMISSION,HTTP_STATUS.CONFLICT)
+        }
+
+
+
+        await this._ratingRepo.findRatingByIdAndEditRating(ratingId,convertedData)
 
     }
 }

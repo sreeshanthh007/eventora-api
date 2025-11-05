@@ -52,8 +52,21 @@ export class SlotGeneratorService implements ISlotGeneratorService{
 }
 
     private generateSlotsPerDay(date:Date,startTIme:string,endTime:string,duration:number) : string[]{
+        
+        const today = new Date()
+
+        today.setHours(0,0,0,0)
+
+        const givenDate = new Date(date)
+
+        givenDate.setHours(0,0,0,0)
+
+        if(givenDate < today){
+            return []
+        }
 
         const slots : string[] = []
+
 
         const [startHour,startMinute] = startTIme.split(":").map(Number)
         const [endHour,endMinute] = endTime.split(":").map(Number)
@@ -87,7 +100,7 @@ export class SlotGeneratorService implements ISlotGeneratorService{
         
             const cacheKey = `lock:service:${options.serviceId}:${options.startDate.toISOString()}:${options.endDate.toISOString()}`;
           const cached = await this._lockService.getLock(cacheKey)
-
+      
           if(cached=="OK"){
             return JSON.parse(cached)
           }
@@ -112,7 +125,7 @@ export class SlotGeneratorService implements ISlotGeneratorService{
         slots: this.generateSlotsPerDay(date,options.startTime, options.endTime, options.duration),
         }));
 
-           await this._lockService.acquireServiceLock(options.serviceId,options.startDate.toISOString(),options.endDate.toISOString(),60)
+           await this._lockService.acquireServiceSlotLock(options.serviceId,options.startDate.toISOString(),options.endDate.toISOString(),60)
           return response
   }
 }

@@ -10,9 +10,11 @@ export type TBookingEntityWithPopulatedService = Omit<IBookingEntity,"serviceId"
 
 export type TBookingEntityWithPopulatedServiceForClient = Omit<IBookingEntity,"vendorId" | "serviceId"> & {
     serviceId:{
+        _id:string
         serviceTitle:string
     },
     vendorId:{
+        _id:string
         name:string
         email:string
         profilePicture:string

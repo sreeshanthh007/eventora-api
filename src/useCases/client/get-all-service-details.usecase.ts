@@ -1,4 +1,5 @@
 
+import { IBookingRepository } from "@entities/repositoryInterfaces/booking/booking.repository.interface";
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { ISlotGeneratorService } from "@entities/serviceInterfaces/slot-generator.service.interface";
 import { IGetAllServiceDetailsUseCase } from "@entities/useCaseInterfaces/client/service/get-service-details.usecase.interface";
@@ -16,7 +17,8 @@ export class GetServiceDetailsUseCase implements IGetAllServiceDetailsUseCase{
 
     constructor(
         @inject("IServiceRepository") private _serviceRepo : IServiceRepository,
-        @inject("ISlotGeneratorService") private _slotGeneratorService : ISlotGeneratorService
+        @inject("ISlotGeneratorService") private _slotGeneratorService : ISlotGeneratorService,
+        @inject("IBookingRepository") private _bookingRepo : IBookingRepository
     ){}
 
 
@@ -27,6 +29,9 @@ export class GetServiceDetailsUseCase implements IGetAllServiceDetailsUseCase{
             throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
         }
 
+        if(serviceExist.status!=="active"){
+            throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.NOT_FOUND)
+        }
 
         const slots = await this._slotGeneratorService.generateSlots({
             serviceId:serviceExist._id?.toString() || "",
@@ -39,10 +44,32 @@ export class GetServiceDetailsUseCase implements IGetAllServiceDetailsUseCase{
             workingDays: serviceExist.schedule.workingDays || [],
             holidays: serviceExist.holidays || undefined
         });
+        
+        if(!serviceExist._id){
+            throw new CustomError(ERROR_MESSAGES.ID_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
+        }
+        const bookedSlots = await this._bookingRepo.findBookingsAfterAllBookings(serviceExist._id.toString(),serviceExist.schedule.startDate,serviceExist.schedule.endDate)
+        
+        const filteredSlots = slots.map((day)=>{
+           const dayBookings = bookedSlots?.filter((b)=>new Date(b.bookingSlot.slotStartTime).toISOString().split("T")[0] === day.date)
 
 
-   
-        const mappedService = mapServiceForServiceDetails(serviceExist,slots)
+           const bookedTimes = dayBookings?.map((b)=>{
+            const start = new Date(b.bookingSlot.slotStartTime).toTimeString().slice(0,5)
+            const end = new Date(b.bookingSlot.slotEndTime).toTimeString().slice(0,5)
+
+            return `${start} - ${end}`
+           })
+
+           return {
+            ...day,
+            slots:day.slots.filter((slot)=>!bookedTimes?.includes(slot))
+           }
+        });
+
+
+
+        const mappedService = mapServiceForServiceDetails(serviceExist,filteredSlots)
 
         return mappedService
     }

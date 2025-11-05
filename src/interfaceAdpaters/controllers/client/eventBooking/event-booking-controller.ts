@@ -25,7 +25,7 @@ export class EventBookingController implements IEventBookingController{
 
    async createBooking(req: Request, res: Response): Promise<void> {
 
-         const { eventId, currency, totalAmount, tickets }: BookingCreationDTO = req.body;
+         const {vendorId, eventId, currency, totalAmount, tickets }: BookingCreationDTO = req.body;
         
 
            const validTickets = tickets.filter(t => t.quantity > 0);
@@ -44,7 +44,8 @@ export class EventBookingController implements IEventBookingController{
                 currency,
                 eventId,
                 userId,
-                validTickets 
+                validTickets,
+                vendorId
             );
 
          res.status(HTTP_STATUS.OK)
@@ -65,12 +66,12 @@ async handleWebHook(req: Request, res: Response): Promise<void> {
    
 
     if (bookingType === "event") {
-      const { eventId, userId, tickets } = paymentIntent.metadata;
+      const { eventId, userId, tickets , vendorId } = paymentIntent.metadata;
       if (tickets) {
         const parsedTickets: ITicketPurchase[] = JSON.parse(tickets);
         const hasValidTickets = parsedTickets.some(ticket => ticket.quantity > 0);
         if (hasValidTickets) {
-          await this._eventWebHookUseCase.execute(eventId, userId, parsedTickets, paymentIntent.id);
+          await this._eventWebHookUseCase.execute(eventId, userId, parsedTickets, paymentIntent.id,vendorId);
         }
       }
     }

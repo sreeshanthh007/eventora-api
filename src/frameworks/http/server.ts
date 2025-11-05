@@ -8,7 +8,7 @@ import express, { Application} from "express";
 import { AuthRoutes } from "../../frameworks/routes/auth/auth.route";
 import { ClientRoutes } from "@frameworks/routes/client/client.route";
 import { config } from "@shared/config";
-import { errorMiddleware, eventBookingController } from "@frameworks/di/resolver";
+import { errorMiddleware, eventBookingController, serviceAutoCompleteCron, serviceNotificationCron } from "@frameworks/di/resolver";
 import { AdminRotes } from "@frameworks/routes/admin/admin.route";
 import { VendorRoutes } from "@frameworks/routes/vendor/vendor.route";
 import { CommonRoutes } from "@frameworks/routes/common/commonRoutes";
@@ -22,6 +22,7 @@ export class ExpressServer {
     this.configureMiddlewares();
     this.configureRoutes();
     this.configureErrorHandlingMiddleware();
+    this.configureCronJobs()
   }
 
   private configureMiddlewares(): void {
@@ -50,6 +51,7 @@ export class ExpressServer {
     this._app.use(express.urlencoded({extended:true}))
     this._app.use(cookieParser())
     this._app.use(morgan("dev"))
+
   }
 
   private configureRoutes(): void {
@@ -67,6 +69,11 @@ export class ExpressServer {
 
   private configureErrorHandlingMiddleware(): void {
     this._app.use(errorMiddleware.handleError.bind(errorMiddleware))
+  }
+
+  private configureCronJobs() : void{
+    serviceNotificationCron.start()
+    serviceAutoCompleteCron.start()
   }
 
   public getApp(): Application {

@@ -22,7 +22,7 @@ export function mapWalletDetailstoDTO(wallet:IWalletEntity) : IWalletResponseDTO
 }
 
   export function createTransaction(
-    paymentType: "Refund" | "partialRefund" | "ticketBooking" | "serviceBooking",
+    paymentType: "Refund" | "partialRefund" | "ticketBooking" | "serviceBooking" | "fundReleased",
     resourceType: "Event" | "service",
     resourceId: string,
     amount: number,
