@@ -11,13 +11,15 @@ export interface IBookingEntity{
     phone:string
     currency:string
     bookingSlot:{
-        startDateTime:Date
-        endDateTime:Date
+        startDate:Date
+        slotStartTime:Date
+        slotEndTime:Date
     }
     status:TServiceBookingStatus
     paymentStatus:TPaymentStatus
     paymentId:string
     amount:number
+    notificationSent?:boolean
     createdAt?:Date
     updatedAt?:Date
 }

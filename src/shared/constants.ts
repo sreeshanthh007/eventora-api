@@ -47,7 +47,12 @@ export enum SUCCESS_MESSAGES  {
   TICKET_VERIFIED_SUCCESS="Ticket verified successfully",
   TICKET_SCANNED_SUCCESS="Ticket Scanned Successfully",
   TICKET_CANCELLED_SUCCESS="Ticket Cancelled Successfully",
+  SERVICE_CANCELLED_SUCCESS="Service Cancelled Successfully",
+    SERVICE_STARTED_SUCCESS="Service Started Successfully",
+    SERVICE_STOPED_SUCCESS="Service Stopped Successfully",
+    RATINGS_FETCHED_SUCCESS="Ratings fetched Successfully",
   RATING_ADDED_SUCCESS="Rating addedd Successfully",
+  REVIEW_REMOVED_SUCCESS="Your provided review has removed successfully",
   VENDOR_BOOKED_SERVICES_FETCHED_SUCCESS='Bookings fetched Successfully',
   BOOKING_FETCHED_SUCCESS="Bookings Fetched successfully",
   TICKET_FETCHED_SUCCESS="Tickets Fetched Successfully",
@@ -92,8 +97,14 @@ export enum ERROR_MESSAGES  {
   NOTIFICATION_NOT_FOUND="Notification not found",
   INVALID_PASSWORD="Current password is incorrect",
   OTP_EXPIRED="OTP Expired",
+EVENT_BOOKING_BLOCKED_ERROR="Unable to proceed with booking as this event is currently restricted by the provider.",
   TICKET_LOCKED_ERROR="Ticket already locked by another user",
   SERVICE_SLOT_LOCKED_ERROR="Selected service slot is on Hold",
+SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is currently restricted by the vendor.",
+  SERVICE_BOOKING_ERROR="Cannot book service for past dates",
+  SERVICE_STARTED_COMPLETED_ERROR="Service already started or Completed",
+  SERVICE_STOP_COMPLETED_ERROR="Service is not ongoing",
+  SERVICE_SLOT_BOOKING_ERROR="Cannot book a time slot that already has been passed",
   GOOGLE_GOOGLE_USER_PASSWORD_NOT_FOUND="Google user does not have a password",
   INVALID_VENDOR_SCAN_ERROR="It looks like this event isn’t associated with your account.",
   NO_VALID_TICKETS_SELECTED_ERROR="No valid tickets selected",
@@ -107,9 +118,15 @@ export enum ERROR_MESSAGES  {
   EVENT_NOT_FOUND="Event not found",
   INVALIID_TICKET_TYPE="Invalid Ticket Type",
   USER_ALREADY_BOOKED="You are already booked this slot one time !",
+  CANNOT_CANCEL_SERVICE="This service cannot be cancelled if it is already ongoing, completed, or previously cancelled.",
   WORK_SAMPLE_NOT_EXIST="Worksample of this Vendor is not provided",
+  RATING_NOT_FOUND="Rating not found",
   RATING_ALREDY_ADDED="you can't add multiple Ratings",
-  INVALID_RATING_EDITING="You cannot Edit Other person's Rating"
+  INVALID_RATING_EDITING="You cannot Edit Other person's Rating",
+  RATING_BEFORE_BOOKING="You need to book this service before reviewing.",
+  RATING_AFTER_COMPLETED="You can only review after completing the service.",
+  INVALID_RATING_SUBMISSION="Unable to submit the review as no changes have been detected. Please make modifications before attempting to post again",
+  CHAT_NOT_FOUND="Chat not found"
   
 };
 
@@ -134,6 +151,11 @@ export const FCM_NOTIFICATION_MESSAGE={
   TICKET_CANCELLATION_MESSAGE:{
     title: " Ticket Cancelled Successfully!",
     body: "The ticket has been cancelled Successfully !, check your wallet for further details"
+  },
+  SEND_UPCOMING_SERVICE_NOTIFICATION:{
+    title:(vendorName:string)=>`Hey Be Ready ${vendorName}`,
+    body:(clientName:string)=>`Only 15 minutes left to begin the service for client: ${clientName}. Get ready to take action!`
+
   }
 
 }

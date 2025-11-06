@@ -30,6 +30,30 @@ export class WalletRepository implements IWalletRepository{
       )
   }
 
+
+  async transfer(fromUserId: string, toUserId: string, amount: number, adminTransaction: TransactionDTO,vendorTransaction:TransactionDTO): Promise<void> {
+      
+        await walletModel.findOneAndUpdate(
+            {userType:fromUserId},
+            {
+                $inc:{balance:-amount},
+
+                  $push: { transactions: adminTransaction } 
+            },
+            
+        );
+
+
+        await walletModel.findOneAndUpdate(
+            {userId:toUserId},
+
+            {
+                $inc:{balance:amount},
+
+                  $push: { transactions: vendorTransaction } 
+            }
+        )
+  }
    
 
 }

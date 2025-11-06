@@ -1,7 +1,8 @@
 import { IRatingEntity } from "@entities/models/rating.entity";
 import { IRatingRepository } from "@entities/repositoryInterfaces/rating/rating.repository.interface";
 import { ratingModel } from "@frameworks/database/Mongodb/models/rating.model";
-import { IEditRatingDTO, RatingRequestDTO } from "@shared/dtos/rating.dto";
+import { GetAllRatingsWithAverageDTO, IEditRatingDTO, RatingRequestDTO } from "@shared/dtos/rating.dto";
+import mongoose from "mongoose";
 
 
 export class RatingRepository implements IRatingRepository{
@@ -21,8 +22,45 @@ export class RatingRepository implements IRatingRepository{
    }
 
 
-   async getRatingByClientId(clientId: string): Promise<IRatingEntity | null> {
-       return await ratingModel.findOne({clientId:clientId});
+   async getRatingsByClientId(clientId: string): Promise<IRatingEntity | null> {
+       return await ratingModel.findOne({clientId:clientId})
+   }
+
+
+   async getAllRatingsWithAverage(serviceId:string) : Promise<GetAllRatingsWithAverageDTO> {
+       
+         const result = await ratingModel.aggregate([
+    { $match: { serviceId: new mongoose.Types.ObjectId(serviceId) } },
+    {
+      $lookup: {
+        from: "clients",
+        localField: "clientId",
+        foreignField: "_id",
+        as: "clientDetails",
+      },
+    },
+    { $unwind: "$clientDetails" },
+    {
+      $group: {
+        _id: "$serviceId",
+        averageRating: { $avg: "$rating" },
+        totalRatings: { $sum: 1 },
+        reviews: {
+          $push: {
+            clientId: "$clientId",
+            clientName: "$clientDetails.name",
+            profileImage: "$clientDetails.profileImage",
+            rating: "$rating",
+            description: "$description",
+            reviewId: "$_id",
+            createdAt: "$createdAt",
+          },
+        },
+      },
+    },
+  ]);
+
+        return result[0]
    }
 
 
@@ -34,5 +72,10 @@ export class RatingRepository implements IRatingRepository{
             },
             {new:true}
         )
+   }
+
+
+   async findRatingByIdAndRemove(ratingId: string): Promise<void> {
+        await ratingModel.findByIdAndDelete(ratingId)
    }
 }

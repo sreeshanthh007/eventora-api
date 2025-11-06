@@ -133,7 +133,8 @@ export function mapEventsToEventDetailPage(event: TEventEntityWithVendorPopulate
         vendor:{
           name:event.hostId.name,
           email:event.hostId.email,
-          profilePicture:event.hostId.profilePicture
+          profilePicture:event.hostId.profilePicture,
+          vendorId:event.hostId._id.toString()
         }
   };
 }

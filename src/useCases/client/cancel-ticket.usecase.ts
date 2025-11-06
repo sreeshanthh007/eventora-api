@@ -30,7 +30,7 @@ export class CancelTicketUseCase implements ICancelTicketUseCase{
 
        
         const vendorId = eventByVendor!.hostId._id.toString()
-        console.log("vendor id is",vendorId)
+     
         const amountForClient = ticketExist.amount * 0.5
         const amountForVendor = ticketExist.amount * 0.5
 

@@ -1,6 +1,6 @@
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { authController,blockstatusMiddleware,clientController, clientRatingController, eventBookingController } from "@frameworks/di/resolver";
+import { authController,blockstatusMiddleware,chatController,clientController, clientRatingController, eventBookingController } from "@frameworks/di/resolver";
 import { authorizeRole, decodeToken , verifyAuth} from "interfaceAdpaters/middlewares/auth.middleware";
 import { RequestHandler } from "express";
 
@@ -104,6 +104,21 @@ export class ClientRoutes extends BaseRouter{
             asyncHandler(clientController.cancelTickets.bind(clientController))
         );
 
+        this.router.patch(
+            "/cancel-service/:serviceId/:vendorId/:bookingId",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientController.cancelService.bind(clientController))
+        );
+
+        this.router.get(
+            "/ratings/:serviceId",
+            verifyAuth,
+            authorizeRole(["client"]),
+            asyncHandler(clientRatingController.getAllRatingsWithAverage.bind(clientRatingController))
+
+        );
 
         this.router.post(
             "/add-rating",
@@ -119,6 +134,14 @@ export class ClientRoutes extends BaseRouter{
             authorizeRole(["client"]),
             blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             asyncHandler(clientRatingController.editReview.bind(clientRatingController))
+        );
+
+        this.router.delete(
+            "/delete-rating/:reviewId",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(clientRatingController.removeReview.bind(clientRatingController))
         );
         
         this.router.get(
@@ -185,6 +208,24 @@ export class ClientRoutes extends BaseRouter{
             authorizeRole(["client"]),
             blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             asyncHandler(clientController.getBookedServices.bind(clientController))
+        );
+
+
+        this.router.get(
+            "/client/chat",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(chatController.getChatbyChatId.bind(chatController))
+        );
+
+
+        this.router.get(
+            "/client/chats",
+            verifyAuth,
+            authorizeRole(["client"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(chatController.getAllChatsByUserId.bind(chatController))
         )
 
         this.router.post("/logout",

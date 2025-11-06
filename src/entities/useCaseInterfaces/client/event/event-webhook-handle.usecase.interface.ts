@@ -7,5 +7,5 @@ export interface ITicketPurchase {
   pricePerTicket: number;
 }
 export interface IHandleEventWebHookUseCase {
-    execute(eventId:string,userId:string,tickets:ITicketPurchase[],paymentId:string) : Promise<void>
+    execute(eventId:string,userId:string,tickets:ITicketPurchase[],paymentId:string,vendorId:string) : Promise<void>
 }

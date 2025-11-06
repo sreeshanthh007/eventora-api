@@ -18,7 +18,7 @@ export class ServiceBookingStripeService implements IServicebookingStripeService
     ){}
 
 
-    async createPaymentIntent(bookingType: string, amount: number, currency: string, vendorId: string, serviceId: string,clientId:string, bookingData: { slotStart: string; slotEnd: string; name: string; email: string; phone: string; }): Promise<Stripe.PaymentIntent> {
+    async createPaymentIntent(bookingType:string, amount: number, currency: string, vendorId: string, serviceId: string,clientId:string, bookingData: { selectedDate: string; selectedSlotTime: string; name: string; email: string; phone: string; }): Promise<Stripe.PaymentIntent> {
         
              
         try {
@@ -31,12 +31,12 @@ export class ServiceBookingStripeService implements IServicebookingStripeService
                 metadata:{
                     currency,
                     clientId,
-                    bookingType,
                     serviceId,
+                    bookingType,
                     vendorId,
                    bookingData: JSON.stringify({
-                    slotStart: bookingData.slotStart,
-                    slotEnd: bookingData.slotEnd,
+                    selectedDate: bookingData.selectedDate,
+                    selectedSlotTime: bookingData.selectedSlotTime,
                     name: bookingData.name,
                     email: bookingData.email,
                     phone: bookingData.phone
@@ -57,20 +57,30 @@ export class ServiceBookingStripeService implements IServicebookingStripeService
                 throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
             }
 
-         
 
-            
-            const slot = serviceExist.slots?.find((each)=>each.startDateTime?.toISOString()===bookingData.slotStart 
-            && each.endDateTime?.toISOString()===bookingData.slotEnd
-            );
+            const bookingDate = new Date(bookingData.selectedDate)
 
+            const today = new Date()
 
-            if(!slot){
-                throw new CustomError(ERROR_MESSAGES.SLOT_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
+            today.setHours(0,0,0,0)
+
+            if(bookingDate < today){
+                throw new CustomError(ERROR_MESSAGES.SERVICE_BOOKING_ERROR,HTTP_STATUS.BAD_REQUEST)
             }
 
-            if(slot.bookedCount! >=slot.capacity!){
-                throw new CustomError(ERROR_MESSAGES.SLOT_CAPACITY_EXCEEDED,HTTP_STATUS.BAD_REQUEST)
+
+            if(bookingDate.getTime() == today.getTime()){
+                const [startTime] = bookingData.selectedSlotTime.split(" - ")
+                const [hour,minute] = startTime.split(":").map(Number)
+
+                const slotDateTime = new Date()
+
+                slotDateTime.setHours(hour,minute,0,0)
+
+                if(slotDateTime<= new Date()){
+                    throw new CustomError(ERROR_MESSAGES.SERVICE_SLOT_BOOKING_ERROR,HTTP_STATUS.BAD_REQUEST)
+                }
+
             }
             
             return paymentIntent;

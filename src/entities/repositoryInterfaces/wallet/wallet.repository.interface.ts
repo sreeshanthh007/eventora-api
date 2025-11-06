@@ -14,5 +14,5 @@ export interface IWalletRepository {
     findWalletDetailsByUserId(userId:string) : Promise<IWalletEntity | null>
     findWalletByUserTypeAndUpdate(userType:string,transaction:TransactionDTO,amount:number) : Promise<void>
      findWalletByUserIdAndUpdate(userId:string,transaction:TransactionDTO,amount:number) : Promise<void>
-   
+     transfer(fromUserId:string,toUserId:string,amount:number,adminTransaction:TransactionDTO,vendorTransaction:TransactionDTO) : Promise<void>
 }

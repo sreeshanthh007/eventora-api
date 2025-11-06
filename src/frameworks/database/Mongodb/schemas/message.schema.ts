@@ -26,4 +26,4 @@ export const messageSchema = new Schema<IMessageModel>(
     {
         timestamps: { createdAt: "createdAt", updatedAt: false },
     }
-);
+);  

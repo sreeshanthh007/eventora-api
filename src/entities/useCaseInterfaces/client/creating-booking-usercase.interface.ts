@@ -3,5 +3,5 @@ import Stripe from "stripe";
 
 
 export interface ICreateBookingUseCase{
-    execute(bookingType:string,amount:number,currency:string,eventId:string,userId:string,tickets:TicketItemDTO[]) : Promise<Stripe.PaymentIntent>
+    execute(bookingType:string,amount:number,currency:string,eventId:string,userId:string,tickets:TicketItemDTO[],vendorId:string) : Promise<Stripe.PaymentIntent>
 }

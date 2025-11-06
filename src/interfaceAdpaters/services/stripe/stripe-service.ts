@@ -24,7 +24,7 @@ export class StripeService  implements IStripeService {
       currency: string,
       eventId: string, 
       userId: string,
-      tickets: { ticketType: string; pricePerTicket: number; quantity: number }[]
+      tickets: { ticketType: string; pricePerTicket: number; quantity: number }[], vendorId:string
     ): Promise<Stripe.PaymentIntent> {
       try {
         const totalAmount = tickets.reduce((sum, t) => sum + t.pricePerTicket * t.quantity, 0);
@@ -37,7 +37,8 @@ export class StripeService  implements IStripeService {
             eventId,
             userId,
             tickets: JSON.stringify(tickets),
-            amount
+            amount,
+            vendorId
           },
         });
 

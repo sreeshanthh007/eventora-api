@@ -110,6 +110,7 @@ export interface eventDetailsDTO{
     name:string
     email:string
     profilePicture:string
+    vendorId:string
   }
   images:string[]
 

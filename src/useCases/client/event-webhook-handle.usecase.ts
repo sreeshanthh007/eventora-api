@@ -8,6 +8,7 @@ import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.in
 import { IHandleEventWebHookUseCase, ITicketPurchase } from "@entities/useCaseInterfaces/client/event/event-webhook-handle.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
+import { createTransaction } from "@mappers/WalletMapper";
 // import { createTransaction } from "@mappers/WalletMapper";
 import { ERROR_MESSAGES, FCM_NOTIFICATION_MESSAGE, HTTP_STATUS } from "@shared/constants";
 import { TicketDTO } from "@shared/dtos/ticket.dto";
@@ -28,7 +29,7 @@ export class EventWebHookHandleUseCase implements IHandleEventWebHookUseCase{
     ){}
 
 
-    async execute(eventId: string, userId: string, tickets: ITicketPurchase[], paymentId: string): Promise<void> {
+    async execute(eventId: string, userId: string, tickets: ITicketPurchase[], paymentId: string,vendorId:string): Promise<void> {
         
         const eventExist = await this._eventRepo.findById(eventId)
 
@@ -36,6 +37,11 @@ export class EventWebHookHandleUseCase implements IHandleEventWebHookUseCase{
 
         if(!eventExist){
             throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.NOT_FOUND)
+        }
+
+
+        if(!eventExist.isActive){
+            throw new CustomError(ERROR_MESSAGES.EVENT_BOOKING_BLOCKED_ERROR,HTTP_STATUS.BAD_REQUEST)
         }
 
         if(!userExist){
@@ -81,11 +87,13 @@ export class EventWebHookHandleUseCase implements IHandleEventWebHookUseCase{
                     title:eventExist.title
                 })
 
-                // const transaction = createTransaction("ticketBooking","Event",ticketId,ticket.pricePerTicket,"credit");
+                const commisionForAdmin = ticket.pricePerTicket * 0.25
+                const commissionForVendor = ticket.pricePerTicket * 0.75
+                const adminTransaction = createTransaction("ticketBooking","Event",ticketId,commisionForAdmin,"credit");
+                const vendorTransaction = createTransaction("ticketBooking","Event",ticketId,commissionForVendor,"credit");
 
-                // await this._walletRepo.
-
-                
+                await this._walletRepo.findWalletByUserTypeAndUpdate("admin",adminTransaction,commisionForAdmin);
+                await this._walletRepo.findWalletByUserIdAndUpdate(vendorId,vendorTransaction,commissionForVendor)
             }
         }
 
@@ -110,6 +118,6 @@ export class EventWebHookHandleUseCase implements IHandleEventWebHookUseCase{
 
 
         const ticketType = tickets.map(t => t.ticketType).join(",");
-        await this._lockService.releaseLock(eventId,ticketType,userId)
+        await this._lockService.releaseEventLock(eventId,ticketType,userId)
     }
 }

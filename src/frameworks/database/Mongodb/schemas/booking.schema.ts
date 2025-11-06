@@ -20,8 +20,9 @@ export const bookingSchema = new Schema<IBookingModel>(
         phone:{type:String,required:true},
 
         bookingSlot: {
-            startDateTime: { type: Date, required: true },
-            endDateTime: { type: Date, required: true }, 
+            startDate: { type: Date, required: true },
+            slotStartTime : { type: Date, required: true }, 
+            slotEndTime : { type: Date, required: true }, 
         },
         status:{
             type:String,
@@ -36,6 +37,7 @@ export const bookingSchema = new Schema<IBookingModel>(
         },
         paymentId:{type:String,required:true},
         amount:{type:Number,required:true},
+        notificationSent:{type:Boolean}
 
     },
 

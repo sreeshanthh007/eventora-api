@@ -10,8 +10,9 @@ export interface BookingDTO{
         phone:string
         currency:string
         bookingSlot:{
-            startDateTime:Date
-            endDateTime:Date
+            startDate:Date
+            slotStartTime:Date
+            slotEndTime:Date
         }
         status:"pending" | "ongoing" | "cancelled" | "completed"
         paymentStatus:"pending" | "successfull" | "refunded" | "failed"
@@ -28,8 +29,9 @@ export interface VendorPaginatedBookingDTO{
     email:string
     phone:string
     bookingSlot:{
-        startDateTIme:Date,
-        endDateTime:Date
+        startDate:Date,
+        slotStartTime:Date,
+        slotEndTime:Date
     },
     status:"pending" | "ongoing" | "cancelled" | "completed"
     paymentStatus:"pending" | "successfull" | "refunded" | "failed"
@@ -45,16 +47,19 @@ export interface ClientPaginatedBookingDTO{
     email:string
     phone:string
      bookingSlot:{
-        startDateTIme:Date,
-        endDateTime:Date
+        startDate:Date,
+        slotStartTime:Date,
+        slotEndTime:Date,
     },
     vendorId:{
+        _id:string
         name:string
         email:string
         profilePicture:string
         phone:string
     },
     serviceId:{
+        _id:string
         serviceTitle:string
     }
     status:"pending" | "ongoing" | "cancelled" | "completed"

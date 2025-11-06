@@ -16,10 +16,10 @@ export class CreateBookingUseCase implements ICreateBookingUseCase{
         @inject("IRedisLockService") private _lockService : ILockService,
     ){}
 
-    async execute(bookingType:string,amount: number, currency: string, eventId: string, userId: string, tickets: TicketItemDTO[]): Promise<Stripe.PaymentIntent> {
+    async execute(bookingType:string,amount: number, currency: string, eventId: string, userId: string, tickets: TicketItemDTO[],vendorId:string): Promise<Stripe.PaymentIntent> {
         
         for(const ticket of tickets){
-        const locked = await this._lockService.acquireLock(eventId, ticket.ticketType, userId, 60);
+        const locked = await this._lockService.acquireEventLock(eventId, ticket.ticketType, userId, 60);
         
         if(!locked){
             throw new CustomError(ERROR_MESSAGES.TICKET_LOCKED_ERROR,HTTP_STATUS.CONFLICT)
@@ -28,7 +28,7 @@ export class CreateBookingUseCase implements ICreateBookingUseCase{
 
     }
 
-    const paymentIntent = await this._stripeService.createPaymentIntent(bookingType,amount,currency,eventId,userId,tickets);
+    const paymentIntent = await this._stripeService.createPaymentIntent(bookingType,amount,currency,eventId,userId,tickets,vendorId);
 
     return paymentIntent
     }

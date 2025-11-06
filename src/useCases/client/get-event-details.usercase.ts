@@ -17,7 +17,7 @@ export class GetEventDetailsUseCase implements IGetEventDetailsUseCase{
         
         const eventExist = await this._eventRepo.findEventByIdForDetailsPage(eventId);
 
-        console.log("event details is",eventExist)
+       
         if(!eventExist){
             throw new CustomError(ERROR_MESSAGES.ID_NOT_FOUND,HTTP_STATUS.BAD_REQUEST)
         }

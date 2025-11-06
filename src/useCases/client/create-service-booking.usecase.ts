@@ -15,19 +15,20 @@ export class CreateServiceBookingUseCase implements ICreateServiceBookingUseCase
         @inject("IRedisLockService") private _lockService : ILockService,
     ){}
 
-   async execute(bookingType: string, clientId: string, vendorId: string, serviceId: string, bookingData: { slotStart: string; slotEnd: string; name: string; email: string; phone: string; }, amount: number, currency: string): Promise<Stripe.PaymentIntent> {
-                
-        const locked = await this._lockService.acquireLock(serviceId,bookingData.slotStart,clientId,60);
+ async execute(bookingType:string, clientId: string, vendorId: string, serviceId: string, bookingData: { selectedDate: string; selectedSlotTime: string; name: string; email: string; phone: string; }, amount: number, currency: string): Promise<Stripe.PaymentIntent> {
+     
+            const locked = await this._lockService.acquireServiceLock(serviceId,bookingData.selectedDate,bookingData.selectedSlotTime,clientId,60)
+
 
         if(!locked){
             throw new CustomError(ERROR_MESSAGES.SERVICE_SLOT_LOCKED_ERROR,HTTP_STATUS.CONFLICT)
         }
 
         const paymentIntent = await this._serviceStripeService.createPaymentIntent(bookingType,amount,currency,vendorId,serviceId,clientId,bookingData);
-        await this._lockService.releaseLock(serviceId,bookingData.slotStart,clientId)
+        await this._lockService.releaseServiceLock(serviceId,bookingData.selectedDate,bookingData.selectedSlotTime,clientId)
 
         return paymentIntent
-   }
+ }
 
 
 }

@@ -14,4 +14,3 @@ export const chatRoomSchema = new Schema<IChatRoomModel>(
         timestamps:true
     }
 );
-

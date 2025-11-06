@@ -3,6 +3,7 @@ import { Server as Httpserver } from "http";
 import { SocketService } from "interfaceAdpaters/services/socket/socket.service";
 import { Server, Socket } from "socket.io";
 import { NotificationEvents } from "./events/notification.events";
+import { ChatEvents } from "./events/chat-events";
 
 export class SocketServer {
   private _io: Server;
@@ -26,6 +27,10 @@ export class SocketServer {
 
       const notificationEvents = new NotificationEvents(socket, this._io);
       notificationEvents.register();
+
+      const chatEvents = new ChatEvents(socket,this._io)
+      chatEvents.register()
+
     });
   } 
 }
