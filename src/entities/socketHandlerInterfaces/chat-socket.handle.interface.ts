@@ -5,4 +5,5 @@ export interface IChatSocketHandler{
     setSocket(socket:Socket,io:Server) :Promise<void>
     handleSendMessage(data:SendMessageDTO) : Promise<void>
     handleReadMessage(data:ReadMessageDTO) : Promise<void>
+    handleJoinRoom(roomId: string): Promise<void>
 }

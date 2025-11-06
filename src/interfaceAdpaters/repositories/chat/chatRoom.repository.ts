@@ -1,8 +1,9 @@
 import { IChatRoomEntity } from "@entities/models/chatRoom.entity";
 import { IChatRoomRepository } from "@entities/repositoryInterfaces/chat/chat.repository.interface";
 import { chatModel } from "@frameworks/database/Mongodb/models/chatRoom.model";
+import { injectable } from "tsyringe";
 
-
+@injectable()
 export class ChatRoomRepository implements IChatRoomRepository{
 
 

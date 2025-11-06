@@ -15,7 +15,6 @@ export const ticketSchema : Schema = new Schema<ITicketModel>(
         name:{type:String,required:true},
 
 
-        // eventDate:{type:Date,required:true},
         
         eventId:{type:Schema.Types.ObjectId,ref:"Event",required:true},
 
@@ -29,7 +28,7 @@ export const ticketSchema : Schema = new Schema<ITicketModel>(
 
         paymentStatus:{type:String,enum:["pending","successfull","failed"],default:"pending"},
 
-        // paymentTransactionId:{type:Schema.Types.ObjectId,ref:"Payment",required:false},  
+    
 
         checkInHistory:{type:Date},
 

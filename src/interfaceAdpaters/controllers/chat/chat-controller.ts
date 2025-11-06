@@ -42,7 +42,6 @@ export class ChatController implements IChatController{
         const {role,id:currentUserId} = (req as CustomRequest).user
       
         const {userId:opponentUserId,chatId} = req.query
-
       
 
         if(!currentUserId){
