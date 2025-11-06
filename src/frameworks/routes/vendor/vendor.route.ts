@@ -2,7 +2,7 @@
 
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { authController, blockstatusMiddleware, clientController,eventController, forgotVendorOTPController, adminVendorController, vendoController, serviceController, categoryController, chatController } from "@frameworks/di/resolver";
+import { authController, blockstatusMiddleware, clientController,eventController, forgotVendorOTPController, adminVendorController, vendoController, serviceController, categoryController, chatController, analyticsDashboardController } from "@frameworks/di/resolver";
 import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
 import { RequestHandler } from "express";
 
@@ -242,6 +242,14 @@ export class VendorRoutes extends BaseRouter{
             authorizeRole(["vendor"]),
             blockstatusMiddleware.checkBlockedStatus as RequestHandler,
             asyncHandler(chatController.getAllChatsByUserId.bind(chatController))
+        );
+
+        this.router.get(
+            "/vendor-analytics",
+            verifyAuth,
+            authorizeRole(["vendor"]),
+            blockstatusMiddleware.checkBlockedStatus as RequestHandler,
+            asyncHandler(analyticsDashboardController.getVendorDashboard.bind(analyticsDashboardController))
         );
 
         this.router.post(

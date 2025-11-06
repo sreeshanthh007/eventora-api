@@ -134,8 +134,9 @@ SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is
 
 export const DIRECT_CHAT_EVENTS={
   SEND_MESSAGE:"direct-chat:send-message",
-  RECEIVE_MESSAGE:"direct-chat:reveive-message",
+  RECEIVE_MESSAGE:"direct-chat:receive-message",
   READ_MESSAGE:"direct-chat:read-message",
+  JOIN_ROOM: "direct-chat:join-room"
 } as const
 
 

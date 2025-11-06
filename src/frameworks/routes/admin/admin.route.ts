@@ -10,7 +10,8 @@ import {
      authController,
      adminVendorController,
      adminClientController,
-     adminController
+     adminController,
+     analyticsDashboardController
  } from "@frameworks/di/resolver";
 
 export class AdminRotes extends BaseRouter{
@@ -119,6 +120,14 @@ export class AdminRotes extends BaseRouter{
             asyncHandler(adminController.getAdminWalletDetails.bind(adminController))
         );
 
+        this.router.get(
+            "/admin-analytics",
+            verifyAuth,
+            authorizeRole(["admin"]),
+            asyncHandler(analyticsDashboardController.getAdminDashboard.bind(analyticsDashboardController))
+        );
+
+        
         this.router.post(
             "/logout",
             verifyAuth,

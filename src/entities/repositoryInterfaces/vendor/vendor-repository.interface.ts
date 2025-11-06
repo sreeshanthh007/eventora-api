@@ -1,5 +1,6 @@
 
 import { IVendorEntity } from "@entities/models/vendor.entity";
+import { VendorAnalyticsDashboardResponseDTO } from "@shared/dtos/vendor-analytics.dto";
 import { FilterQuery, ObjectId } from "mongoose";
 
 
@@ -27,4 +28,6 @@ export interface IVendorRepository{
      findByIdAndUpdateProfileImage(userId:string,profileImage:string) : Promise<void>
 
     updatePersonalInformation(id:string,data:Partial<IVendorEntity>) : Promise<void>
+
+    getVendorAnalyticsDashboard(vendorId:string,period:string,startDate?:Date,endDate?:Date) : Promise<VendorAnalyticsDashboardResponseDTO>
 }

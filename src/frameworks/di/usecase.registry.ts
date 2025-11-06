@@ -223,6 +223,10 @@ import { ISendMessageUseCase } from "@entities/useCaseInterfaces/chat/send-messa
 import { SendMessageUseCase } from "@usecases/chat/send-message.usecase";
 import { IReadMessageUseCase } from "@entities/useCaseInterfaces/chat/read-message.usecase.interface";
 import { ReadMessageUseCase } from "@usecases/chat/read-message.usecase";
+import { IGetAdminAnalyticsDashboardUseCase } from "@entities/useCaseInterfaces/dashboard/get-admin-analytics-dashboard.usecase.interface";
+import { GetAdminAnalyticsDashboardUseCase } from "@usecases/dashboard/get-admin-analytics-dashboard.usecase";
+import { IGetVendorAnalyticsDashboardUseCase } from "@entities/useCaseInterfaces/dashboard/get-vendor-analytics-dashboard.usecase.interface";
+import { GetVendorAnalyticsDashboardUseCase } from "@usecases/dashboard/get-vendor-analytics-dashboard.usecase";
 
 
 
@@ -684,6 +688,17 @@ export class UseCaseRegistry {
     
     container.register<IGetAdminWalletDetailsUseCase>("IGetAdminWalletDetailsUseCase",{
       useClass:GetAdminWalletDetailsUseCase
+    });
+    
+
+
+    container.register<IGetAdminAnalyticsDashboardUseCase>("IGetAdminAnalyticsDashboardUseCase",{
+      useClass:GetAdminAnalyticsDashboardUseCase
+    });
+
+
+    container.register<IGetVendorAnalyticsDashboardUseCase>("IGetVendorAnalyticsDashboardUseCase",{
+      useClass:GetVendorAnalyticsDashboardUseCase
     });
     
     container.register<IFcmTokenUseCase>("IFcmTokenUseCase", {

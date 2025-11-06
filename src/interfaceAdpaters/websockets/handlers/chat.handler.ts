@@ -29,10 +29,10 @@ private _socket!: Socket;
                 socketId:this._socket.id,
                 userId:this._socket.data.userId
             });
-
+            console.log("meslsage", data)
             const receiverSocketId = this._socketUserStore.getSocketId(data.receiverId)
             const result = await this._sendMessageUseCase.execute(data)
-
+            console.log("receiverSocketId", receiverSocketId)
           if(receiverSocketId){
             this._io
             .to(receiverSocketId)
@@ -67,5 +67,13 @@ private _socket!: Socket;
     } catch (error) {
         socketLogger.error(error)
     }
+   }
+
+   async handleJoinRoom(roomId: string): Promise<void> {
+    socketLogger.info("direct-chat:room-joined",{
+        socketId:this._socket.id,
+        roomId
+    });
+       this._socket.join(roomId)
    }
 }

@@ -42,6 +42,8 @@ import { ServiceNotificationCron } from "@frameworks/scheduler/serviceNotificati
 import { ServiceAutoCompleteCron } from "@frameworks/scheduler/serviceAutoComplete.cron";
 import { IChatController } from "@entities/controllerInterfaces/chat/chat.controller.interface";
 import { ChatController } from "@controllers/chat/chat-controller";
+import { IAnalyticsDashboardController } from "@entities/controllerInterfaces/dashboard/dashboard-controller.interface";
+import { AnalyticsDashboardController } from "@controllers/dashboard/analytics-dashboard.controller";
 
 
 
@@ -60,7 +62,7 @@ export const serviceController = container.resolve<IServiceController>(ServiceCo
 export const eventBookingController = container.resolve<IEventBookingController>(EventBookingController);
 export const clientRatingController = container.resolve<IClientRatingController>(ClientRatingCOntroller);
 export const chatController = container.resolve<IChatController>(ChatController)
-
+export const analyticsDashboardController = container.resolve<IAnalyticsDashboardController>(AnalyticsDashboardController)
 export const forgotOtpController = container.resolve(ForgotOtpController);
 
 export const forgotPasswordController = container.resolve(
