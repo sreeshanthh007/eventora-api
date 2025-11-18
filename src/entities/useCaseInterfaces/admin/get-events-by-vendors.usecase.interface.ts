@@ -1,5 +1,6 @@
+import { PaginatedEventsByVendors } from "interfaceAdapters/models/paginatedEvents";
 
 
-// export interface IGetEventsBYVendorsUseCase{
-//     execute(page:number,limit:number:search:number)
-// }
+export interface IGetEventsByVendorsUseCase{
+    execute(page:number,limit:number,search:string,filterBy:string) : Promise<PaginatedEventsByVendors>
+}

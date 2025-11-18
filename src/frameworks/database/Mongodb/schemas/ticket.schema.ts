@@ -18,7 +18,7 @@ export const ticketSchema : Schema = new Schema<ITicketModel>(
         
         eventId:{type:Schema.Types.ObjectId,ref:"Event",required:true},
 
-        qrCodeLink:{type:String,required:true},
+        qrCodeLink:{type:String,required:false},
 
         ticketStatus:{type:String,enum:['used', 'refunded', 'unused'],default:'unused'},
 
@@ -29,6 +29,7 @@ export const ticketSchema : Schema = new Schema<ITicketModel>(
         paymentStatus:{type:String,enum:["pending","successfull","failed"],default:"pending"},
 
     
+        paymentTransactionId:{type:String},
 
         checkInHistory:{type:Date},
 

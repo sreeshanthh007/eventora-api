@@ -17,7 +17,7 @@ export interface ITicketEntity {
     eventName?: string
     eventDate?: Date[]
     Images?:string[]    
-    // paymentTransactionId?: string
+    paymentTransactionId?: string
     checkInHistory?: Date[]
     isCheckedIn?: boolean
     ticketType: string

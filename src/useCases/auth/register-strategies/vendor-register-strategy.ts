@@ -3,12 +3,12 @@ import { IRegisterStrategy } from "./register-strategy.interface";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { UserDTO , VendorDTO } from "@shared/dtos/user.dto";
 import { CustomError } from "@entities/utils/custom.error";
-import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
 import { IUserEntity } from "@entities/models/user.entity";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
 import { WalletDTO } from "@shared/dtos/wallet.dto";
 import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
+import { IUUIDGeneratorService } from "@entities/serviceInterfaces/generate-random-uuid.interface";
 
 
 @injectable()
@@ -16,7 +16,8 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
     constructor(
         @inject("IVendorRepository") private _vendorRepository : IVendorRepository,
         @inject("IPasswordBcryptService") private _passwordBcryptService : IBcryptService,
-        @inject("IWalletRepository") private _walletRepository : IWalletRepository
+        @inject("IWalletRepository") private _walletRepository : IWalletRepository,
+        @inject("IUUIDGeneratorService") private _generateUUID : IUUIDGeneratorService
     ){}
     
     async register(user: UserDTO): Promise<IUserEntity | void> {
@@ -40,7 +41,7 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
 
             }
 
-            const vendorId = generateRandomUUID()
+            const vendorId = this._generateUUID.generate()
 
             const vendor = await this._vendorRepository.save({
                 name,
@@ -52,7 +53,7 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
                 role:"vendor" 
             });
 
-            const walletId = generateRandomUUID()
+            const walletId = this._generateUUID.generate()
 
             const walletDetails : WalletDTO = {
                 balance:0,

@@ -30,7 +30,13 @@ export class ScanAndVerifyAttendiesUseCase implements IScanAndVerifyAttendiesUse
         if(!event){
             throw new CustomError(ERROR_MESSAGES.EVENT_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
+
+        if(event.eventId!==eventId){
+            throw new CustomError(ERROR_MESSAGES.INVALID_QR_CODE,HTTP_STATUS.BAD_REQUEST)
+        }
      
+
+        
         const mappedEvent = mapEventForverifyAttendiestoDTO(event)
         console.log("mapped events from scanning",mappedEvent)
         return mappedEvent

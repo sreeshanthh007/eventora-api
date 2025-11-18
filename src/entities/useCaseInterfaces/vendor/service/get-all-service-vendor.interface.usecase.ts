@@ -1,4 +1,4 @@
-import { PaginatedServices } from "interfaceAdpaters/models/paginatedService";
+import { PaginatedServices } from "interfaceAdapters/models/paginatedService";
 
 
 

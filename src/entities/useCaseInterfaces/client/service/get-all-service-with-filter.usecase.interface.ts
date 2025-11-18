@@ -1,5 +1,5 @@
 
-import { PaginatedServicesForClient } from "interfaceAdpaters/models/paginatedService";
+import { PaginatedServicesForClient } from "interfaceAdapters/models/paginatedService";
 
 
 

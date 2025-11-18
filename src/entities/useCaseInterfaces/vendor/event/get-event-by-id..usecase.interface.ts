@@ -1,5 +1,5 @@
 
-import { IEventReponse } from "interfaceAdpaters/mappers/EventMapper";
+import { IEventReponse } from "@mappers/EventMapper";
 
 
 export interface IGetEventByIdUseCase{

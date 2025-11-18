@@ -1,4 +1,4 @@
-import { paginatedEventsForClient } from "interfaceAdpaters/models/paginatedEvents";
+import { paginatedEventsForClient } from "interfaceAdapters/models/paginatedEvents";
 
 
 

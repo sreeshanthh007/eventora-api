@@ -2,7 +2,7 @@ import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/ev
 import { IUpdateEventStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/update-event-status.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
-import { EventStatus, validateEventStatus } from "interfaceAdpaters/validations/event-status-validation";
+import { EventStatus, validateEventStatus } from "interfaceAdapters/validations/event-status-validation";
 import { inject, injectable } from "tsyringe";
 
 

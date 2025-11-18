@@ -18,4 +18,5 @@ export interface IEventRepository {
     findByIdAndToggleStatus(evendId:string,isActive:boolean) : Promise<void>
     findEventsHostedByVendors(vendorId:string,eventId:string) : Promise<IEventEntity | null>
     findHostIdFromEvents(eventId:string) : Promise<TEventEntityWithVendorPopulated | null>
+    findEventsHostedByVendorsForAdmin(skip:number,limit:number,search:string,filterBy:string) : Promise<{ events: TEventEntityWithVendorPopulated[]; total: number }>
 }

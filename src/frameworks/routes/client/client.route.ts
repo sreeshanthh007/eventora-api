@@ -1,7 +1,7 @@
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
 import { authController,blockstatusMiddleware,chatController,clientController, clientRatingController, eventBookingController } from "@frameworks/di/resolver";
-import { authorizeRole, decodeToken , verifyAuth} from "interfaceAdpaters/middlewares/auth.middleware";
+import { authorizeRole, decodeToken , verifyAuth} from "@middlewares/auth.middleware";
 import { RequestHandler } from "express";
 
 export class ClientRoutes extends BaseRouter{

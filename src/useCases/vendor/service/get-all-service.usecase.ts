@@ -1,8 +1,8 @@
 import { IServiceEntity } from "@entities/models/service.entity";
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { IGetAllServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/get-all-service-vendor.interface.usecase";
-import { mapServiceToTableResponse } from "interfaceAdpaters/mappers/serviceMapper";
-import { PaginatedServices } from "interfaceAdpaters/models/paginatedService";
+import { mapServiceToTableResponse } from "@mappers/serviceMapper";
+import { PaginatedServices } from "interfaceAdapters/models/paginatedService";
 import { FilterQuery } from "mongoose";
 import { inject, injectable } from "tsyringe";
 

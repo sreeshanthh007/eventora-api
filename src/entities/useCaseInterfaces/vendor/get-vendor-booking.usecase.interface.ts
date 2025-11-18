@@ -1,4 +1,4 @@
-import { PaginatedVendorBookingsDTO } from "interfaceAdpaters/models/paginatedBooking";
+import { PaginatedVendorBookingsDTO } from "interfaceAdapters/models/paginatedBooking";
 
 
 export interface IGetVendorBookingUseCase{

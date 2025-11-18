@@ -3,7 +3,7 @@ import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/ev
 import { IGetEventByIdUseCase } from "@entities/useCaseInterfaces/vendor/event/get-event-by-id..usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
-import { IEventReponse, mapEventsForEditEvent } from "interfaceAdpaters/mappers/EventMapper";
+import { IEventReponse, mapEventsForEditEvent } from "@mappers/EventMapper";
 import { inject, injectable } from "tsyringe";
 
 

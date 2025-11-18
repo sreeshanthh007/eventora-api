@@ -22,6 +22,7 @@ export interface IClientController{
     getClientWalletDetails(req:Request,res:Response) : Promise<void>
     cancelTickets(req:Request,res:Response) : Promise<void>
     cancelService(req:Request,res:Response) : Promise<void>
+    retryPaymentForTicket(req:Request,res:Response) : Promise<void>
     getVendorWorkfolioForClient(req:Request,res:Response) : Promise<void>
 
 }

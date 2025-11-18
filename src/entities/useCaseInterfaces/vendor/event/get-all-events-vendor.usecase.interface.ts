@@ -1,5 +1,5 @@
 
-import { PaginatedEvents } from "interfaceAdpaters/models/paginatedEvents";
+import { PaginatedEvents } from "interfaceAdapters/models/paginatedEvents";
 
 
 export interface IGetAllEventsUseCase {

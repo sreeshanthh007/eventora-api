@@ -5,7 +5,7 @@ import { createServer } from "http";
 import { config } from "@shared/config";
 import { ExpressServer } from "@frameworks/http/server";
 import { MongoConnect } from "@frameworks/database/Mongodb/mongoConnect";
-import { SocketServer } from "interfaceAdpaters/websockets/socket-server";
+import { SocketServer } from "interfaceAdapters/websockets/socket-server";
 
 
 const mongoConnect = new MongoConnect();

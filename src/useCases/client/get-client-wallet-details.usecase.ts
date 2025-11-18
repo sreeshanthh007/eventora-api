@@ -3,7 +3,7 @@ import { IGetClientWalletDetailsUseCase } from "@entities/useCaseInterfaces/clie
 import { CustomError } from "@entities/utils/custom.error";
 import { mapWalletDetailstoDTO } from "@mappers/WalletMapper";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
-import { IWalletResponseDTO } from "@shared/dtos/wallet.dto";
+import { PaginatedWalletDetails } from "interfaceAdapters/models/paginatedWalletDetails";
 import { inject, injectable } from "tsyringe";
 
 
@@ -15,17 +15,29 @@ export class GetClientWalletDetailsUseCase implements IGetClientWalletDetailsUse
         @inject("IWalletRepository") private _walletRepo : IWalletRepository
     ){}
     
-   async execute(clientId: string): Promise<IWalletResponseDTO> {
+   async execute(clientId: string, type: string, page: number, limit: number): Promise<PaginatedWalletDetails> {
        
-        const walletdetails = await this._walletRepo.findWalletDetailsByUserId(clientId)
+        const walletdetails = await this._walletRepo.findWallet(clientId)
 
         if(!walletdetails){
             throw new CustomError(ERROR_MESSAGES.WALLET_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
         
-        const mappedWalletDetails = mapWalletDetailstoDTO(walletdetails)
+        const validPageNumber = Math.max(1,page || 1);
 
-        return mappedWalletDetails
+        const skip = (validPageNumber-1)*limit
+
+        const {wallet,total} = await this._walletRepo.findWalletDetailsByUserId(clientId,type,skip,limit)
+
+        if(!wallet) {
+            throw new CustomError(ERROR_MESSAGES.WALLET_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
+        }
+        const mappedData = mapWalletDetailstoDTO(wallet)
+        return {
+            total,
+            walletDetails:mappedData
+        }
+
    }
     
 }

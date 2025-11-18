@@ -3,7 +3,7 @@ import { INotificationService } from "@entities/serviceInterfaces/notification.s
 import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve-vendor.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
-import { SocketService } from "interfaceAdpaters/services/socket/socket.service";
+import { SocketService } from "interfaceAdapters/services/socket/socket.service";
 import { inject, injectable } from "tsyringe";
 import { vendorStatus } from "@shared/constants";
 

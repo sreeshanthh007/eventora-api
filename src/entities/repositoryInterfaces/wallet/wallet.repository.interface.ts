@@ -11,7 +11,8 @@ export interface walletDetails {
 }
 export interface IWalletRepository {
     createWallet(walletDetails:walletDetails) : Promise<void>
-    findWalletDetailsByUserId(userId:string) : Promise<IWalletEntity | null>
+    findWallet(userId:string) : Promise<IWalletEntity | null>
+    findWalletDetailsByUserId(userId:string,type:string,skip:number,limit:number) : Promise<{wallet:IWalletEntity | null; total:number}>
     findWalletByUserTypeAndUpdate(userType:string,transaction:TransactionDTO,amount:number) : Promise<void>
      findWalletByUserIdAndUpdate(userId:string,transaction:TransactionDTO,amount:number) : Promise<void>
      transfer(fromUserId:string,toUserId:string,amount:number,adminTransaction:TransactionDTO,vendorTransaction:TransactionDTO) : Promise<void>

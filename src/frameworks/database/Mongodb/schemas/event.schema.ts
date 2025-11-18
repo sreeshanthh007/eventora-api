@@ -6,6 +6,8 @@ export const EventSchema: Schema = new Schema<IEventModel>(
     title: { type: String, required: true },
     description: { type: String, required: true },
 
+    eventId:{type:String,required:true},
+    
     status: {
       type: String,
       enum: ["upcoming", "completed", "cancelled", "ongoing"],
@@ -52,7 +54,7 @@ export const EventSchema: Schema = new Schema<IEventModel>(
 
     Images: [{ type: String, required: true }],
 
-    qrCode:{type:String,required:true},
+    qrCode:{type:String,required:false},
 
     hostId: {
       type: Schema.Types.ObjectId,

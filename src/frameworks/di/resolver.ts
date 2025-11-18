@@ -7,7 +7,7 @@ import { ForgotPasswordController } from "@controllers/client/forgot-password-co
 
 // ======logger=========//
 import { LoggerMiddleWare } from "@middlewares/logger.middleware";
-import { ILogger } from "interfaceAdpaters/services/logger/logger.interface";
+import { ILogger } from "interfaceAdapters/services/logger/logger.interface";
 import { ErrorMiddleware } from "@middlewares/error.middleware";
 import { VendorForgotPassword } from "@controllers/vendor/VendorforgotPasswordController";
 import { ForgotVendorOTPController } from "@controllers/vendor/forgot-password.vendorController";
@@ -17,9 +17,9 @@ import { IAuthController } from "@entities/controllerInterfaces/auth/auth.contro
 import { ICategoryController } from "@entities/controllerInterfaces/category/category.interface";
 import { CategoryController } from "@controllers/category-controller";
 import { IAdminVendorController } from "@entities/controllerInterfaces/admin/admin.vendor.controller.interface";
-import { AdminVendorController } from "@controllers/admin/vendor-controller";
+import { AdminVendorController } from "@controllers/admin/admin-vendor-controller";
 import { IAdminClientController } from "@entities/controllerInterfaces/admin/client.controller.interface";
-import { AdminClientController } from "interfaceAdpaters/controllers/admin/admin.client-controller";
+import { AdminClientController } from "@controllers/admin/admin.client-controller";
 
 
 import { IEventController } from "@entities/controllerInterfaces/vendor/event/event-controller.interface";
@@ -35,7 +35,7 @@ import { ServiceController } from "@controllers/vendor/service/service-controlle
 import { IEventBookingController } from "@entities/controllerInterfaces/client/eventBooking/event-booking-controller.interface";
 import { EventBookingController } from "@controllers/client/eventBooking/event-booking-controller";
 import { IChatSocketHandler } from "@entities/socketHandlerInterfaces/chat-socket.handle.interface";
-import { ChatSocketHandler } from "interfaceAdpaters/websockets/handlers/chat.handler";
+import { ChatSocketHandler } from "interfaceAdapters/websockets/handlers/chat.handler";
 import { IClientRatingController } from "@entities/controllerInterfaces/client/rating/client-rating-controller.interface";
 import { ClientRatingCOntroller } from "@controllers/client/rating/client-rating-controller";
 import { ServiceNotificationCron } from "@frameworks/scheduler/serviceNotification.cron";
