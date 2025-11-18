@@ -34,6 +34,15 @@ export interface IWalletResponseDTO{
     }[]
 }
 
+export interface IWalletResponseWithoutTransactionDTO{
+    walletDetails:{
+        userId:string;
+        balance:number
+        transaction:[]
+        userType:string
+    }
+}
+
 
 export interface TransactionDTO{
     currency?:string

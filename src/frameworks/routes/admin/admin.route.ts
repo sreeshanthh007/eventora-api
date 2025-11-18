@@ -4,7 +4,7 @@
 
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
-import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
+import { authorizeRole, decodeToken, verifyAuth } from "@middlewares/auth.middleware";
 import { 
     categoryController,
      authController,
@@ -120,12 +120,28 @@ export class AdminRotes extends BaseRouter{
             asyncHandler(adminController.getAdminWalletDetails.bind(adminController))
         );
 
+
+        this.router.get(
+            "/events-vendors",
+            verifyAuth,
+            authorizeRole(["admin"]),
+            asyncHandler(adminController.getEventsByVendors.bind(adminController))
+        );
+
+        this.router.get(
+            "/booked-services-vendors",
+            verifyAuth,
+            authorizeRole(["admin"]),
+            asyncHandler(adminController.getBookedServicesofVendors.bind(adminController))
+        );
+
         this.router.get(
             "/admin-analytics",
             verifyAuth,
             authorizeRole(["admin"]),
             asyncHandler(analyticsDashboardController.getAdminDashboard.bind(analyticsDashboardController))
         );
+
 
         
         this.router.post(

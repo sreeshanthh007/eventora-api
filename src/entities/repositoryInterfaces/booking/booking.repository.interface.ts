@@ -13,7 +13,7 @@ export interface IBookingRepository{
     createBooking(booking:BookingDTO) :Promise<void>
     findBookedServices(vendorId:string,skip:number,limit:number,searchTerm?:string) : Promise<{bookings:TBookingEntityWithPopulatedService[] | []; total:number}>
     findBookedServicesForClient(clientId:string,skip:number,limit:number,searchTerm:string) : Promise<{bookings:TBookingEntityWithPopulatedServiceForClient[] | [];total:number}>
-    findAlreadyBookedServiceByClients(clientId:string) : Promise<IBookingEntity | null>
+    findAlreadyBookedServiceByClients(clientId:string,bookingId?:string) : Promise<IBookingEntity | null>
     updateBookingStatus(bookingId:string,status:string) : Promise<void>
     findBookingsWithStatusPending(currentTime:Date,fifteenMinutesLater:Date) : Promise<IBookingEntity[] | null>
     findBookingsWithStatusOngoing() : Promise<IBookingEntity[] | null>

@@ -1,6 +1,7 @@
-import { IWalletResponseDTO } from "@shared/dtos/wallet.dto";
+
+import { PaginatedWalletDetails } from "interfaceAdapters/models/paginatedWalletDetails";
 
 
 export interface IGetAdminWalletDetailsUseCase{
-    execute(adminId:string) : Promise<IWalletResponseDTO>
+    execute(adminId:string,type:string,page:number,limit:number) : Promise<PaginatedWalletDetails>
 }

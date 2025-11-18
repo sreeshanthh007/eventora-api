@@ -1,4 +1,4 @@
-import { PaginatedCategory } from "interfaceAdpaters/models/paginatedCategory";
+import { PaginatedCategory } from "interfaceAdapters/models/paginatedCategory";
 
 
 export interface IGetAllCatgoryUseCase {

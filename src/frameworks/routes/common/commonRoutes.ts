@@ -1,5 +1,5 @@
 
-import {  verifyAuth } from "@middlewares/auth.middleware";
+import { verifyAuth } from "@middlewares/auth.middleware";
 import { BaseRouter } from "../base.route";
 import { authController, clientController } from "@frameworks/di/resolver";
 import { asyncHandler } from "@shared/async-handler";

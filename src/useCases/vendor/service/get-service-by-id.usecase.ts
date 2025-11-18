@@ -3,7 +3,7 @@ import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/servic
 import { IGetServiceByIdUseCase } from "@entities/useCaseInterfaces/vendor/service/get-service-by-id.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
-import { IServiceResponse, mapServiceForEditService } from "interfaceAdpaters/mappers/serviceMapper";
+import { IServiceResponse, mapServiceForEditService } from "@mappers/serviceMapper";
 import { inject, injectable } from "tsyringe";
 
 

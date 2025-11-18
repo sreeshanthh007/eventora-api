@@ -17,6 +17,12 @@ export interface TicketDTO{
     quantity:number
 }
 
+export interface ITicketPurchaseDTO {
+  ticketType: string;
+  quantity: number;
+  pricePerTicket: number;
+}
+
 export interface paginatedTicketDTO{
 
     ticketId:string,
@@ -45,6 +51,7 @@ export interface IPaginatedTicketDetailsDTO{
     qrCode:string
     ticketType:string
     isCheckedIn:boolean
+    paymentStatus:"pending" | "successfull" | "failed",
 }
 
 

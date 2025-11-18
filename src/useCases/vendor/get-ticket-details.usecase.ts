@@ -1,7 +1,7 @@
 import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-repository-interface";
 import { IGetTicketDetailsUseCase } from "@entities/useCaseInterfaces/vendor/get-ticket-details.usecase.interface";
 import { mapTicketsForVerifyAttendiesDetails } from "@mappers/TicketMapper";
-import { PaginatedTicketDetails } from "interfaceAdpaters/models/PaginatedTicketDetails";
+import { PaginatedTicketDetails } from "interfaceAdapters/models/PaginatedTicketDetails";
 import { inject, injectable } from "tsyringe";
 
 

@@ -7,24 +7,25 @@
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
+     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
 
 
-    "baseUrl": "./src",
-    "paths": {
-      "@entities/*": ["entities/*"],
-      "@usecases/*": ["useCases/*"],
-      "@controllers/*": ["interfaceAdpaters/controllers/*"],
-      "@repos/*": ["interfaceAdapters/repositories/*"],
-      "@services/*": ["services/*"],
-      "@frameworks/*": ["frameworks/*"],
-        "@shared/*": ["shared/*"],
-       "@mappers/*": ["interfaceAdpaters/mappers/*"],
-       "@middlewares/*":["interfaceAdpaters/middlewares/*"]
-    }
+"baseUrl": "./src",
+"paths": {  
+  "@entities/*": ["entities/*"],
+  "@usecases/*": ["useCases/*"],
+  "@controllers/*": ["interfaceAdapters/controllers/*"],    
+  "@repos/*": ["interfaceAdapters/repositories/*"],         
+  "@services/*": ["interfaceAdapters/services/*"],
+  "@frameworks/*": ["frameworks/*"],
+  "@shared/*": ["shared/*"],
+  "@mappers/*": ["interfaceAdapters/mappers/*"],            
+  "@middlewares/*": ["interfaceAdapters/middlewares/*"]      
+}
   },
   "include": ["src/**/*.ts", "src/types.d.ts", "src/entities/useCaseInterfaces/client/clientupdatePassword.usecase.interface.ts"],
   "exclude": ["node_modules", "dist"]

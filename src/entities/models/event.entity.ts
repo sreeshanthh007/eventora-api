@@ -6,6 +6,7 @@ export interface IEventEntity {
     _id?:string | ObjectId,
     title:string,
     description:string;
+    eventId?:string
     status:string,
     pricePerTicket:number,
     totalTicket : number,

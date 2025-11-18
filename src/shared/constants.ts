@@ -112,13 +112,17 @@ SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is
   NOT_ENOUGH_TICKET_AVAILABLE="Not enough ticket Available.",
   WALLET_NOT_FOUND="Wallet not found",
   TICKET_NOT_FOUND="Ticket not found",
+  PAYMENT_ALREADY_COMPLETED="Payment already completed",
+  FAILED_PAYMENT_RETRY="Only failed payments can be Retried !",
   INVALID_TICKET_FOR_EVENT="The ticket does not belong to this event",
+  INVALID_QR_CODE="Invalid QR Code",
   SLOT_CAPACITY_EXCEEDED="The selected slot has reached its maximum capacity",
   SLOT_NOT_FOUND="Slot not found",
   EVENT_NOT_FOUND="Event not found",
   INVALIID_TICKET_TYPE="Invalid Ticket Type",
   USER_ALREADY_BOOKED="You are already booked this slot one time !",
   CANNOT_CANCEL_SERVICE="This service cannot be cancelled if it is already ongoing, completed, or previously cancelled.",
+  CANNOT_CANCEL_TICKET="This Ticket cannot be cancelled if it is already failed, completed, or previously cancelled.",
   WORK_SAMPLE_NOT_EXIST="Worksample of this Vendor is not provided",
   RATING_NOT_FOUND="Rating not found",
   RATING_ALREDY_ADDED="you can't add multiple Ratings",
@@ -144,6 +148,10 @@ export const FCM_NOTIFICATION_MESSAGE={
   EVENT_BOOKING_SUCCESS:{
   title:"🎉 Your event is confirmed!",
   body:"Thanks for booking with us — we’ve received your request and will follow up shortly with all the details. Keep an eye on your gmail!",
+  },
+  EVENT_BOOKING_FAILED:{
+  title:"🎉 Your Payment is Failed!",
+  body:"We’ve received your booking request, but the payment didn’t go through. Don’t worry — Please check your My tickets to retry the Payment!",
   },
   SERVICE_BOOKING_SUCCESS: {
     title: "🎉 Service Booked Successfully!",

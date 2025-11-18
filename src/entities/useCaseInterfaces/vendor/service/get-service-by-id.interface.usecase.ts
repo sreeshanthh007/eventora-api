@@ -1,5 +1,5 @@
 
-import { IServiceResponse } from "@mappers/serviceMapper";
+import { IServiceResponse } from "@mappers/serviceMapper"
 
 
 

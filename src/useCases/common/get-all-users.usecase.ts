@@ -4,6 +4,8 @@ import { IClientRepository } from "@entities/repositoryInterfaces/client/client-
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
+
+
 import { mapClientToDTO } from "@mappers/ClientMapper";
 import { mapVendorToDTO } from "@mappers/VendorMapper";
 import { ERROR_MESSAGES, HTTP_STATUS, TRole } from "@shared/constants";
@@ -41,7 +43,7 @@ export class GetAllUsersDetailsUseCase implements IGetAllUsersDetailsUseCase{
                 HTTP_STATUS.NOT_FOUND
             )
         }
-       
+
          return role === "client"
         ? mapClientToDTO(user as IClientEntity)
         : mapVendorToDTO(user as IVendorEntity); 

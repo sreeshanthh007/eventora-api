@@ -3,7 +3,7 @@
 import { asyncHandler } from "@shared/async-handler";
 import { BaseRouter } from "../base.route";
 import { authController, blockstatusMiddleware, clientController,eventController, forgotVendorOTPController, adminVendorController, vendoController, serviceController, categoryController, chatController, analyticsDashboardController } from "@frameworks/di/resolver";
-import { authorizeRole, decodeToken, verifyAuth } from "interfaceAdpaters/middlewares/auth.middleware";
+import { authorizeRole, decodeToken, verifyAuth } from "@middlewares/auth.middleware";
 import { RequestHandler } from "express";
 
  

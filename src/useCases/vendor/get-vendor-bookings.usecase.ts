@@ -2,7 +2,7 @@ import { IBookingRepository } from "@entities/repositoryInterfaces/booking/booki
 import { IGetVendorBookingUseCase } from "@entities/useCaseInterfaces/vendor/get-vendor-booking.usecase.interface";
 import { mapBookingstoVendorBookedServices } from "@mappers/BookingMapper";
 
-import { PaginatedVendorBookingsDTO } from "interfaceAdpaters/models/paginatedBooking";
+import { PaginatedVendorBookingsDTO } from "interfaceAdapters/models/paginatedBooking";
 import { inject, injectable } from "tsyringe";
 
 

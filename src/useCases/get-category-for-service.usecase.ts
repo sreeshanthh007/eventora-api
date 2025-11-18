@@ -1,6 +1,6 @@
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
 import { IGetAllCategoryForServiceUseCase } from "@entities/useCaseInterfaces/get-category-for-service.interface.usecase";
-import { mapCategoriesForFrontend } from "interfaceAdpaters/mappers/CategoryMapper";
+import { mapCategoriesForFrontend } from "@mappers/CategoryMapper";
 import { inject, injectable } from "tsyringe";
 
 

@@ -6,16 +6,17 @@ import { ClientDTO , UserDTO } from "@shared/dtos/user.dto";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES , HTTP_STATUS } from "@shared/constants";
 import { IUserEntity } from "@entities/models/user.entity";
-import { generateRandomUUID } from "@frameworks/security/randomid.bcrypt";
 import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
 import { WalletDTO } from "@shared/dtos/wallet.dto";
 import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
+import { IUUIDGeneratorService } from "@entities/serviceInterfaces/generate-random-uuid.interface";
 @injectable()
 export class CLientRegisterStrategy implements IRegisterStrategy {
     constructor(
         @inject("IPasswordBcryptService") private _passwordBcryptService : IBcryptService,
         @inject("IClientRepository") private _clientRepository : IClientRepository,
-        @inject("IWalletRepository") private _walletRepository : IWalletRepository
+        @inject("IWalletRepository") private _walletRepository : IWalletRepository,
+        @inject("IUUIDGeneratorService") private _generateUUID : IUUIDGeneratorService
     ){}
 
     async register(user: UserDTO): Promise<IUserEntity| void > {
@@ -39,7 +40,7 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
         
             }
 
-            const clientId = generateRandomUUID()
+            const clientId = this._generateUUID.generate()
 
             const client = await this._clientRepository.save({
                 name:name,
@@ -50,7 +51,7 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
                 role:"client"
             });
 
-            const walletId = generateRandomUUID()
+            const walletId = this._generateUUID.generate()
 
             const walletDetails : WalletDTO ={
 

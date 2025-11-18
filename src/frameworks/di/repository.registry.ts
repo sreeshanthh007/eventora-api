@@ -1,33 +1,33 @@
 import { container } from "tsyringe";
 
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
-import { ClientRepository } from "interfaceAdpaters/repositories/client/cllient.repository";
+import { ClientRepository } from "@repos/client/cllient.repository";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
-import { VendorRepository } from "interfaceAdpaters/repositories/vendor/vendor.repository";
+import { VendorRepository } from "@repos/vendor/vendor.repository";
 import { IAdminRepository } from "@entities/repositoryInterfaces/admin/admin-repository-interface";
-import { AdminRepository } from "interfaceAdpaters/repositories/admin/admin.repository";
+import { AdminRepository } from "@repos/admin/admin.repository";
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
-import { CategoryRepository } from "interfaceAdpaters/repositories/common/category.repository";
+import { CategoryRepository } from "@repos/common/category.repository";
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
-import { EventRepository } from "interfaceAdpaters/repositories/event/event.repository.";
+import { EventRepository } from "@repos/event/event.repository.";
 import { INotificationRepository } from "@entities/repositoryInterfaces/notification/notification.repository.interface";
-import { NotificationRepository } from "interfaceAdpaters/repositories/notification/notification.repository";
+import { NotificationRepository } from "@repos/notification/notification.repository";
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
-import { ServiceRepository } from "interfaceAdpaters/repositories/common/service.repository";
+import { ServiceRepository } from "@repos/common/service.repository";
 import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
-import { WalletRepository } from "interfaceAdpaters/repositories/wallet/wallet.repository";
+import { WalletRepository } from "@repos/wallet/wallet.repository";
 import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-repository-interface";
-import { TicketRepository } from "interfaceAdpaters/repositories/ticket/ticket-repository";
+import { TicketRepository } from "@repos/ticket/ticket-repository";
 import { IWorkSampleRepository } from "@entities/repositoryInterfaces/vendor/worksample/work-sample.repository.interface";
-import { WorkSampleRepository } from "interfaceAdpaters/repositories/worksample/work-sample.repository";
+import { WorkSampleRepository } from "@repos/worksample/work-sample.repository";
 import { IBookingRepository } from "@entities/repositoryInterfaces/booking/booking.repository.interface";
-import { BookingRepository } from "interfaceAdpaters/repositories/booking/booking.repository";
+import { BookingRepository } from "@repos/booking/booking.repository";
 import { IRatingRepository } from "@entities/repositoryInterfaces/rating/rating.repository.interface";
-import { RatingRepository } from "interfaceAdpaters/repositories/rating/rating.repository";
+import { RatingRepository } from "@repos/rating/rating.repository";
 import { IChatRoomRepository } from "@entities/repositoryInterfaces/chat/chat.repository.interface";
-import { ChatRoomRepository } from "interfaceAdpaters/repositories/chat/chatRoom.repository";
+import { ChatRoomRepository } from "@repos/chat/chatRoom.repository";
 import { IMessageRepository } from "@entities/repositoryInterfaces/chat/message.repository.interface";
-import { MessageRepository } from "interfaceAdpaters/repositories/chat/message.repository";
+import { MessageRepository } from "@repos/chat/message.repository";
 
 export class RepositoryRegistry {
     static registerRepositories():void {

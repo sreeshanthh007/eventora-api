@@ -1,4 +1,4 @@
-import { PaginatedTicketDetails } from "interfaceAdpaters/models/PaginatedTicketDetails";
+import { PaginatedTicketDetails } from "interfaceAdapters/models/PaginatedTicketDetails";
 
 
 export interface IGetTicketDetailsUseCase{

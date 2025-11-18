@@ -1,4 +1,4 @@
-import { PaginatedVendors } from "interfaceAdpaters/models/PaginatedVendors";
+import { PaginatedVendors } from "interfaceAdapters/models/PaginatedVendors";
 
 
 export interface IGetRequestedVendorsUseCase {
