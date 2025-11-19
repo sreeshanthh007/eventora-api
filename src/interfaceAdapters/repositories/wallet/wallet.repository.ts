@@ -1,6 +1,6 @@
 import { IWalletEntity } from "@entities/models/wallet.entity";
 import { IWalletRepository, walletDetails } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
-import { walletModel } from "@frameworks/database/Mongodb/models/wallet.model";
+import { walletModel } from "@frameworks/database/mongodb/models/wallet.model";
 import { TransactionDTO } from "@shared/dtos/wallet.dto";
 import { FilterQuery, PipelineStage } from "mongoose";
 

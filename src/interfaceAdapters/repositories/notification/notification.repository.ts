@@ -1,6 +1,6 @@
 import { INotificationEntity } from "@entities/models/notification.entity";
 import { INotificationRepository } from "@entities/repositoryInterfaces/notification/notification.repository.interface";
-import { NotificationModel } from "@frameworks/database/Mongodb/models/notification.model";
+import { NotificationModel } from "@frameworks/database/mongodb/models/notification.model";
 
 
 

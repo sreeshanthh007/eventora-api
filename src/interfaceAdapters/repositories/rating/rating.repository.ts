@@ -1,6 +1,6 @@
 import { IRatingEntity } from "@entities/models/rating.entity";
 import { IRatingRepository } from "@entities/repositoryInterfaces/rating/rating.repository.interface";
-import { ratingModel } from "@frameworks/database/Mongodb/models/rating.model";
+import { ratingModel } from "@frameworks/database/mongodb/models/rating.model";
 import { GetAllRatingsWithAverageDTO, IEditRatingDTO, RatingRequestDTO } from "@shared/dtos/rating.dto";
 import mongoose from "mongoose";
 

@@ -3,7 +3,7 @@ import { IClientEntity } from "@entities/models/client.entity";
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
 
 
-import { ClientModel  } from "@frameworks/database/Mongodb/models/client.model";
+import { ClientModel  } from "@frameworks/database/mongodb/models/client.model";
 import { FilterQuery, ObjectId } from "mongoose";
 
 @injectable()

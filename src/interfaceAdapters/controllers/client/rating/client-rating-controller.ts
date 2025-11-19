@@ -12,7 +12,7 @@ import { inject, injectable } from "tsyringe";
 
 
 @injectable()
-export class ClientRatingCOntroller implements IClientRatingController{
+export class ClientRatingController implements IClientRatingController{
 
     constructor(
         @inject("IAddRatingUseCase") private _addRatingUseCase : IAddRatingUseCase,

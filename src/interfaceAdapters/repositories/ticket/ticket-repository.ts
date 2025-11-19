@@ -2,7 +2,7 @@ import { IEventEntity } from "@entities/models/event.entity";
 import { TTicketEntityWithEventPopulated } from "@entities/models/populated-types/ticket-populated.type";
 import { ITicketEntity } from "@entities/models/ticket.entity";
 import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-repository-interface";
-import { ticketModel } from "@frameworks/database/Mongodb/models/ticket.model";
+import { ticketModel } from "@frameworks/database/mongodb/models/ticket.model";
 import { FilterQuery } from "mongoose";
 
 

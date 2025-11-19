@@ -1,12 +1,12 @@
-import "reflect-metadata";
+
 import "module-alias/register";
+import "reflect-metadata";
 import chalk from "chalk";
 import { createServer } from "http";
 import { config } from "@shared/config";
 import { ExpressServer } from "@frameworks/http/server";
-import { MongoConnect } from "@frameworks/database/Mongodb/mongoConnect";
-import { SocketServer } from "interfaceAdapters/websockets/socket-server";
-
+import { MongoConnect } from "@frameworks/database/mongodb/mongoConnect";
+import { SocketServer } from "@websockets/socket-server";
 
 const mongoConnect = new MongoConnect();
 

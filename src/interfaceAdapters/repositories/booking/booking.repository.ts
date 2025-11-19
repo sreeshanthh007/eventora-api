@@ -3,7 +3,7 @@ import { TBookingEntityWithPopulatedService, TBookingEntityWithPopulatedServiceF
 import { IServiceEntity } from "@entities/models/service.entity";
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import {  IBookingRepository } from "@entities/repositoryInterfaces/booking/booking.repository.interface";
-import { bookingModel } from "@frameworks/database/Mongodb/models/booking.model";
+import { bookingModel } from "@frameworks/database/mongodb/models/booking.model";
 import { BookingDTO } from "@shared/dtos/booking.dto";
 import { FilterQuery,  Types } from "mongoose";
 import { injectable } from "tsyringe";

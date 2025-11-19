@@ -6,8 +6,8 @@ import { IServiceEntity } from "@entities/models/service.entity";
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { EditableServiceFields } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
-import { bookingModel } from "@frameworks/database/Mongodb/models/booking.model";
-import { serviceModel } from "@frameworks/database/Mongodb/models/service.model";
+import { bookingModel } from "@frameworks/database/mongodb/models/booking.model";
+import { serviceModel } from "@frameworks/database/mongodb/models/service.model";
 import { FilterQuery } from "mongoose";
 
 

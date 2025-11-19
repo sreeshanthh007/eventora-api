@@ -2,7 +2,7 @@ import { IEventEntity } from "@entities/models/event.entity";
 import { TEventEntityWithVendorPopulated } from "@entities/models/populated-types/event-populated.type";
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
-import { EventModel } from "@frameworks/database/Mongodb/models/event.model";
+import { EventModel } from "@frameworks/database/mongodb/models/event.model";
 import { IUpdateEventDTO } from "@shared/dtos/event.dto";
 import mongoose, { FilterQuery, ObjectId, PipelineStage } from "mongoose";
 
