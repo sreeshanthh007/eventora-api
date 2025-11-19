@@ -4,8 +4,6 @@ import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.in
 import { CustomError } from "@entities/utils/custom.error";
 import {  HTTP_STATUS } from "@shared/constants";
 import { RRule, Weekday } from "rrule";
-
-
 import { inject, injectable } from "tsyringe";
 
 
@@ -88,6 +86,19 @@ export class SlotGeneratorService implements ISlotGeneratorService{
             }
             current.setMinutes(current.getMinutes()+duration)
         }
+
+        const now = new Date()
+        if(givenDate.toDateString() === now.toDateString()){
+            return slots.filter(slot => {
+                const [starStr] = slot.split(" - ")
+                const [h,m] = starStr.split(":").map(Number)
+
+                const slotStart = new Date(date)
+
+                slotStart.setHours(h,m,0,0)
+                return slotStart > now
+            }
+        )}
         return slots
     }
 

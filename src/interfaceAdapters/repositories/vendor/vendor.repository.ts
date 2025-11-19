@@ -1,16 +1,16 @@
 import { injectable } from "tsyringe";
 import {
   VendorModel,
-} from "@frameworks/database/Mongodb/models/vendor.model";
+} from "@frameworks/database/mongodb/models/vendor.model";
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import mongoose, { FilterQuery, ObjectId } from "mongoose";
 import { VendorAnalyticsDashboardResponseDTO } from "@shared/dtos/vendor-analytics.dto";
 import { getDateRange } from "@shared/utils/get-date-range.helper";
-import { bookingModel } from "@frameworks/database/Mongodb/models/booking.model";
-import { EventModel } from "@frameworks/database/Mongodb/models/event.model";
-import { ratingModel } from "@frameworks/database/Mongodb/models/rating.model";
-import { walletModel } from "@frameworks/database/Mongodb/models/wallet.model";
+import { bookingModel } from "@frameworks/database/mongodb/models/booking.model";
+import { EventModel } from "@frameworks/database/mongodb/models/event.model";
+import { ratingModel } from "@frameworks/database/mongodb/models/rating.model";
+import { walletModel } from "@frameworks/database/mongodb/models/wallet.model";
 
 
 

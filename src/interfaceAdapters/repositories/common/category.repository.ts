@@ -1,7 +1,7 @@
 
 import { ICategoryEnity } from "@entities/models/category.entity";
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
-import { categoryModel } from "@frameworks/database/Mongodb/models/category.model";
+import { categoryModel } from "@frameworks/database/mongodb/models/category.model";
 import { FilterQuery } from "mongoose";
 import { injectable } from "tsyringe";
 

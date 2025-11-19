@@ -2,12 +2,12 @@
   "name": "eventora-api",
   "version": "1.0.0",
   "description": "A Event Booking platform where peoples can book events and services",
-  "main": "app.js",
+  "main": "node dist/app.js",
   "scripts": {
     "build": "tsc",
     "dev": "npm run lint && nodemon --watch src --ext ts --exec ts-node -r tsconfig-paths/register src/app.ts",
     "lint": "eslint . --ext .ts",
-    "start": "nodemon -r tsconfig-paths/register dist/app.js",
+   "start": "node -r module-alias/register dist/app.js",
     "watch": "tsc -w",
     "con": "concurrently \"tsc --watch\" \"nodemon -r tsconfig-paths/register dist/app.js\""
   },
@@ -82,6 +82,8 @@
   "@frameworks": "dist/frameworks",
   "@shared": "dist/shared",
   "@mappers": "dist/interfaceAdapters/mappers",
-  "@middlewares": "dist/interfaceAdapters/middlewares"
-}
+  "@middlewares": "dist/interfaceAdapters/middlewares",
+  "@websockets": "dist/interfaceAdapters/websockets"
+},
+"_moduleDirectories": ["dist"]
 }

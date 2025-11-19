@@ -12,6 +12,7 @@ export const logger = winston.createLogger({
     json()
   ),
   defaultMeta: { service: "EVENTORA" },
+  exitOnError: false, 
   transports: [
     new winston.transports.Console({
       format: combine(colorize(), simple()),
@@ -34,7 +35,7 @@ export const logger = winston.createLogger({
       zippedArchive: true,
     }),
   ],
-  exceptionHandlers: [
+    exceptionHandlers: [
     new DailyRotateFile({
       filename: "logs/exceptions-%DATE%.log",
       datePattern: "YYYY-MM-DD",

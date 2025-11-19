@@ -1,6 +1,6 @@
 import { IMessageEntity } from "@entities/models/message.entity";
 import { IMessageRepository } from "@entities/repositoryInterfaces/chat/message.repository.interface";
-import { messageModel } from "@frameworks/database/Mongodb/models/message.model";
+import { messageModel } from "@frameworks/database/mongodb/models/message.model";
 import { injectable } from "tsyringe";
 
 @injectable()

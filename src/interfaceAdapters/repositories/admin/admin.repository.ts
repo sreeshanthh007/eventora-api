@@ -1,11 +1,11 @@
 import { IAdminEntity } from "@entities/models/admin.entity";
 import { IAdminRepository } from "@entities/repositoryInterfaces/admin/admin-repository-interface";
-import { AdminModel } from "@frameworks/database/Mongodb/models/admin.model";
-import { bookingModel } from "@frameworks/database/Mongodb/models/booking.model";
-import { categoryModel } from "@frameworks/database/Mongodb/models/category.model";
-import { ClientModel } from "@frameworks/database/Mongodb/models/client.model";
-import { VendorModel } from "@frameworks/database/Mongodb/models/vendor.model";
-import { walletModel } from "@frameworks/database/Mongodb/models/wallet.model";
+import { AdminModel } from "@frameworks/database/mongodb/models/admin.model";
+import { bookingModel } from "@frameworks/database/mongodb/models/booking.model";
+import { categoryModel } from "@frameworks/database/mongodb/models/category.model";
+import { ClientModel } from "@frameworks/database/mongodb/models/client.model";
+import { VendorModel } from "@frameworks/database/mongodb/models/vendor.model";
+import { walletModel } from "@frameworks/database/mongodb/models/wallet.model";
 import { AdminAnalyticsResponseDTO } from "@shared/dtos/admin-analytics.dto";
 import { getDateRange } from "@shared/utils/get-date-range.helper";
 import { injectable } from "tsyringe";

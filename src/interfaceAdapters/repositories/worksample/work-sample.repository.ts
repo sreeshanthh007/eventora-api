@@ -1,6 +1,6 @@
 import { IWorkSampleEntity } from "@entities/models/work-sample.entity";
 import { IWorkSampleRepository } from "@entities/repositoryInterfaces/vendor/worksample/work-sample.repository.interface";
-import { workSampleModel } from "@frameworks/database/Mongodb/models/workSample.model";
+import { workSampleModel } from "@frameworks/database/mongodb/models/workSample.model";
 import { TeditWorkSampleDTO } from "@shared/dtos/work-sample.dto";
 import { ObjectId } from 'mongodb'
 

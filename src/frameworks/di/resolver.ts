@@ -35,9 +35,9 @@ import { ServiceController } from "@controllers/vendor/service/service-controlle
 import { IEventBookingController } from "@entities/controllerInterfaces/client/eventBooking/event-booking-controller.interface";
 import { EventBookingController } from "@controllers/client/eventBooking/event-booking-controller";
 import { IChatSocketHandler } from "@entities/socketHandlerInterfaces/chat-socket.handle.interface";
-import { ChatSocketHandler } from "interfaceAdapters/websockets/handlers/chat.handler";
+import { ChatSocketHandler } from "@websockets/handlers/chat.handler";
 import { IClientRatingController } from "@entities/controllerInterfaces/client/rating/client-rating-controller.interface";
-import { ClientRatingCOntroller } from "@controllers/client/rating/client-rating-controller";
+import { ClientRatingController } from "@controllers/client/rating/client-rating-controller";
 import { ServiceNotificationCron } from "@frameworks/scheduler/serviceNotification.cron";
 import { ServiceAutoCompleteCron } from "@frameworks/scheduler/serviceAutoComplete.cron";
 import { IChatController } from "@entities/controllerInterfaces/chat/chat.controller.interface";
@@ -60,7 +60,7 @@ export const categoryController = container.resolve<ICategoryController>(Categor
 export const eventController = container.resolve<IEventController>(EventController)
 export const serviceController = container.resolve<IServiceController>(ServiceController);
 export const eventBookingController = container.resolve<IEventBookingController>(EventBookingController);
-export const clientRatingController = container.resolve<IClientRatingController>(ClientRatingCOntroller);
+export const clientRatingController = container.resolve<IClientRatingController>(ClientRatingController);
 export const chatController = container.resolve<IChatController>(ChatController)
 export const analyticsDashboardController = container.resolve<IAnalyticsDashboardController>(AnalyticsDashboardController)
 export const forgotOtpController = container.resolve(ForgotOtpController);

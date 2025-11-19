@@ -38,7 +38,7 @@ export class GetServiceDetailsUseCase implements IGetAllServiceDetailsUseCase{
             frequency:serviceExist.schedule.frequency,
             startDate:serviceExist.schedule.startDate,
             endDate: new Date(serviceExist.schedule.endDate),
-            startTime: serviceExist.schedule.startTime,
+            startTime: serviceExist.schedule.startTime, 
             endTime: serviceExist.schedule.endTime,
             duration: serviceExist.schedule.duration,
             workingDays: serviceExist.schedule.workingDays || [],

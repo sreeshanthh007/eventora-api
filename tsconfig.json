@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
@@ -24,9 +24,10 @@
   "@frameworks/*": ["frameworks/*"],
   "@shared/*": ["shared/*"],
   "@mappers/*": ["interfaceAdapters/mappers/*"],            
-  "@middlewares/*": ["interfaceAdapters/middlewares/*"]      
+  "@middlewares/*": ["interfaceAdapters/middlewares/*"],
+  "@websockets/*": ["interfaceAdapters/websockets/*"]   
 }
   },
-  "include": ["src/**/*.ts", "src/types.d.ts", "src/entities/useCaseInterfaces/client/clientupdatePassword.usecase.interface.ts"],
+ "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

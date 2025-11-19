@@ -1,5 +1,5 @@
 
-import { IOtpModel } from "@frameworks/database/Mongodb/models/otp.model";
+import { IOtpModel } from "@frameworks/database/mongodb/models/otp.model";
 
 
 export interface IOtpRepository{
