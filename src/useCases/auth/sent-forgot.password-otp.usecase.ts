@@ -20,7 +20,7 @@ export class sendForgotPasswordOtp implements ISendOtpUsecase {
         
         const otp = this._otpService.generateOTP()
 
-        console.log("otp sent for forgot password",otp)
+        
 
         const hashedOTP = await this._otpBcryptService.hash(otp)
 
