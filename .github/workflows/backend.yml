@@ -42,5 +42,8 @@ jobs:
         script: |
           cd ~/eventora-api
           docker compose pull
+          docker compose down
           docker compose up -d
           docker image prune -f
+        command_timeout: 45m
+        script_stop: false
