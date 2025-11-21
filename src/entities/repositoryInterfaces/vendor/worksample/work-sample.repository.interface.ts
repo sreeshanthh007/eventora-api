@@ -1,7 +1,7 @@
 import { IWorkSampleEntity } from "@entities/models/work-sample.entity";
 import { TeditWorkSampleDTO } from "@shared/dtos/work-sample.dto";
 
-console.log("worksample repso")
+
 export interface IWorkSampleRepository {
     save(data:IWorkSampleEntity,vendorId:string) : Promise<void>
 

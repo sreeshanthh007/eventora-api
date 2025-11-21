@@ -21,7 +21,7 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
 
     async register(user: UserDTO): Promise<IUserEntity| void > {
 
-        console.log("userr in register",user)
+     
         if(user.role=="client"){
             const existingCLient = await this._clientRepository.findByEmail(user.email);
             if(existingCLient){

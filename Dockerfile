@@ -30,4 +30,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["node", "-r", "tsconfig-paths/register", "dist/app.js"]
+CMD ["node", "dist/app.js"]

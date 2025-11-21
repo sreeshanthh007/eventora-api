@@ -17,7 +17,7 @@ export class ForgotVendorOTPController implements IForgotPasswordController {
     async handle(req: Request, res: Response): Promise<void> {
         
         const {email} = req.body
-        console.log("email inf forgotvendorotpcntroller",email)
+
         const exist = await this.vendorExistService.emailExist(email)
 
         if(!exist){

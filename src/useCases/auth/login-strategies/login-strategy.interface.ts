@@ -1,5 +1,4 @@
 
-// import { IUserEntity } from "@entities/models/user.entity";
 
 import { LoginResponseDTO, LoginUserDTO } from "@shared/dtos/user.dto";
 

@@ -93,7 +93,6 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction) : Pr
 
 
     } catch (error) {
-     
     console.log("token is invalid is worked",error);
     res
       .status(HTTP_STATUS.UNAUTHORIZED)
@@ -109,7 +108,6 @@ export const decodeToken = async(req:Request , res:Response , next:NextFunction)
        
 
         if(!token?.refresh_token){
-            console.log("no token for decode")
             res
             .status(HTTP_STATUS.UNAUTHORIZED)
             .json({message:ERROR_MESSAGES.UNAUTHORIZED_ACCESS})
@@ -151,7 +149,6 @@ export const authorizeRole = (allowedRoles:string[])=>{
         const user = (req as CustomRequest).user
     
         if(!user || !allowedRoles.includes(user.role)){
-            console.log("this role is not allowed")
             res.status(HTTP_STATUS.FORBIDDEN).json({message:ERROR_MESSAGES.NOT_ALLOWED,user:user ? user.role : ""})
             return
         }

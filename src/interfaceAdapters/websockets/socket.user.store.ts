@@ -13,7 +13,7 @@ export class SocketUserStore {
 
 	public addUser(userId: string, socketId: string) {
 		this.connectedUsers.set(userId, socketId);
-		console.log(this.connectedUsers)
+	
 	}
 
 	public removeUser(userId: string) {
@@ -21,7 +21,7 @@ export class SocketUserStore {
 	}
 
 	public getSocketId(userId: string): string | undefined {
-		console.log("get socket id",this.connectedUsers)
+	
 		return this.connectedUsers.get(userId);
 	}
 

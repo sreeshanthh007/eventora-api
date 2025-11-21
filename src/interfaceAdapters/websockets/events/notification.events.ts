@@ -14,7 +14,6 @@ export class NotificationEvents {
         this._socket.on("joinVendorRoom",(vendorId:string)=>{
         this._socket.join(`vendor_${vendorId}`)
         this._socketStore.addUser(vendorId, this._socket.id)
-        console.log(`Vendor_${vendorId} joined their room`);
         socketLogger.info(`vendor ${vendorId} joined their room`)
       });
     }

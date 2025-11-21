@@ -38,7 +38,7 @@ export class ScanAndVerifyAttendiesUseCase implements IScanAndVerifyAttendiesUse
 
         
         const mappedEvent = mapEventForverifyAttendiestoDTO(event)
-        console.log("mapped events from scanning",mappedEvent)
+
         return mappedEvent
        
     }
