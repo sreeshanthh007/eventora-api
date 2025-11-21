@@ -146,8 +146,7 @@ export class VendorController implements IVendorController{
     async scanAndVerifyAttendies(req: Request, res: Response): Promise<void> {
 
         const {vendorId,eventId} = req.body;
-        console.log("venrod id",vendorId)
-        console.log("event id",eventId)
+  
         if(!vendorId){
             res.status(HTTP_STATUS.BAD_REQUEST)
             .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS});

@@ -57,16 +57,15 @@
     }
 
     private configureRoutes(): void {
-      console.log("✅ Mounting /api/auth route...");
+ 
         this._app.use("/api_v1/auth", new AuthRoutes().router);
-      console.log("✅ Mounting /api/client route...");
+  
       this._app.use("/api_v1/_cl", new ClientRoutes().router);
       
       this._app.use("/api_v1/_ad", new AdminRotes().router);
       this._app.use("/api_v1/_ve", new VendorRoutes().router);
       this._app.use("/api",new CommonRoutes().router);
 
-      console.log("Routes mounted successfully")
     }
 
     private configureErrorHandlingMiddleware(): void {

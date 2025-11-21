@@ -26,7 +26,7 @@ export class EventController implements IEventController{
     async addEvent(req: Request, res: Response): Promise<void> {
 
         const eventData = req.body
-        console.log("event data",eventData)
+ 
         const vendorId = (req as CustomRequest).user.id
 
         const roundedData : IEventEntity ={

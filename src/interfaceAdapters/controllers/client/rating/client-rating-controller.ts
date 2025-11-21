@@ -77,10 +77,10 @@ export class ClientRatingController implements IClientRatingController{
 
         const {data} = req.body
 
-        console.log("req body is",data)
+
 
         const validatedData = EditratingValidateSchema.parse(data)
-        console.log("validated data is",validatedData)
+   
         await this._editRatingUseCase.execute(id,ratingId,validatedData)
 
         res.status(HTTP_STATUS.OK)

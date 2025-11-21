@@ -17,10 +17,9 @@ export class GetServicesProvidedByVendorsUseCase implements IGetServicesProvided
       
     const services = await this._serviceRepo.findServicesProvidedByVendors(vendorId)
 
-    console.log("service by vendors",services)
     if(services){
         const mappedServices = services.map(service => mapServiceForServiceDetailsSuggestion(service));
-        console.log("mapped serices are",mappedServices)
+      
         return mappedServices
     }
     return null

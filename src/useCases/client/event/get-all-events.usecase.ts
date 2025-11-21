@@ -18,7 +18,7 @@ export class GetAllEventsForClientsUseCase implements IGetAllEventsForClientsUse
        const events = await this._eventRepo.findEvents()
 
        const mappedEvents = toClientLandingPage(events)
-        console.log("mapped",mappedEvents)
+   
        return mappedEvents
     }
 }

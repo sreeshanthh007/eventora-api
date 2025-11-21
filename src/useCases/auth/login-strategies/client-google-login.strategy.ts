@@ -18,12 +18,12 @@ export class ClientGoogleLoginStrategy  implements ILoginStrategy {
     async login(user: LoginUserDTO): Promise<LoginResponseDTO> {
           const client  = await this.clientRepo.findByEmail(user.email)
 
-           if (!client) {
-      throw new CustomError(
-        ERROR_MESSAGES.EMAIL_NOT_FOUND,
-        HTTP_STATUS.NOT_FOUND
-      );
-    }
+          if (!client) {
+          throw new CustomError(
+            ERROR_MESSAGES.EMAIL_NOT_FOUND,
+            HTTP_STATUS.NOT_FOUND
+          );
+      }
 
     if (client.status !== "active") {
       throw new CustomError(
@@ -33,4 +33,4 @@ export class ClientGoogleLoginStrategy  implements ILoginStrategy {
     }
         return mapClientDetailsViaGoogleLogin(client)
     }
-}
+}  
