@@ -15,14 +15,12 @@ export class ClientGoogleLoginStrategy  implements ILoginStrategy {
         @inject("IClientRepository") private clientRepo : IClientRepository
     ){}
 
-    async login(user: LoginUserDTO): Promise<LoginResponseDTO> {
+    async login(user: LoginUserDTO): Promise<LoginResponseDTO | null> {
           const client  = await this.clientRepo.findByEmail(user.email)
 
           if (!client) {
-          throw new CustomError(
-            ERROR_MESSAGES.EMAIL_NOT_FOUND,
-            HTTP_STATUS.NOT_FOUND
-          );
+          return null
+          
       }
 
     if (client.status !== "active") {

@@ -44,4 +44,4 @@ export class ClientLoginStrategy implements ILoginStrategy {
       clientId: client.clientId!,
     };
   }
-    }
+}

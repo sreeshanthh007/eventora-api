@@ -79,6 +79,14 @@ export class AuthController implements IAuthController{
 
        const user =  await this._loginUserUseCase.execute(validatedData)
 
+
+       if (!user) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+            success: false,
+            message: ERROR_MESSAGES.INVALID_CREDENTIALS,
+        });
+        return;
+    }
         if(!user._id || !user.email || !user.role){
            res.status(HTTP_STATUS.BAD_REQUEST)
            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})

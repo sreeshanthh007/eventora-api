@@ -4,6 +4,6 @@ import { IUserEntity } from "@entities/models/user.entity";
 
 
 export interface IRegisterStrategy {
-  register(user: UserDTO): Promise<IUserEntity | void>;
+  register(user: UserDTO): Promise<IUserEntity>;
 }
 

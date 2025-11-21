@@ -24,7 +24,7 @@ export class LoginUseCase implements ILoginUserCase{
         }
     }
 
-    async execute(user: LoginUserDTO): Promise<LoginResponseDTO> {
+    async execute(user: LoginUserDTO): Promise<LoginResponseDTO | null> {
         const strategy = this._strategies[user.role]
 
         if(!strategy){
