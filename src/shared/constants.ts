@@ -85,6 +85,7 @@ export enum ERROR_MESSAGES  {
   ROUTE_NOT_FOUND= "Route not found.",
   PAYLAOD_NOT_FOUND= "Invalid or empty Payload",
   EMAIL_REQUIRED="Email is Required",
+  UNEXPECTED_NULL_USER="Unexpected null user",
   FOLDER_NOT_FOUND="Folder not Found",
   CATEGORY_ALREADY_EXISTS="Category already exist",
   ID_NOT_FOUND="ID not found",

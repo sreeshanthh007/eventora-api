@@ -64,8 +64,9 @@ export class GoogleuseCase implements IGoogleUseCase {
             throw new CustomError(ERROR_MESSAGES.EMAIL_REQUIRED,HTTP_STATUS.BAD_REQUEST)
         }
 
+       
         const existingUser = await loginStrategy.login({email,role})
-
+       
        if(role=="client"){
         
          if(!existingUser){
@@ -84,12 +85,14 @@ export class GoogleuseCase implements IGoogleUseCase {
             GOOGLE_LOGIN_SUCCESS_MESSAGE(name as string)
           )
 
-            if(!newUser){
-                throw new CustomError("",0)
-            }
             return {email,role,_id:newUser._id,name:newUser.name}
         }
        }
+
+       if (!existingUser) {
+        throw new CustomError(ERROR_MESSAGES.UNEXPECTED_NULL_USER, 500);
+        }
+
         return {email,role,_id:existingUser._id,name:existingUser.name || ""}
     }
 }

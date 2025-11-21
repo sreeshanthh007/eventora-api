@@ -20,7 +20,7 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
         @inject("IUUIDGeneratorService") private _generateUUID : IUUIDGeneratorService
     ){}
     
-    async register(user: UserDTO): Promise<IUserEntity | void> {
+    async register(user: UserDTO): Promise<IUserEntity> {
         if(user.role=="vendor"){
             const existingVendor = await this._vendorRepository.findByEmail(user.email)
 

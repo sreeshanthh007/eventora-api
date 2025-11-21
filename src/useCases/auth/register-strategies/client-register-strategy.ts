@@ -19,7 +19,7 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
         @inject("IUUIDGeneratorService") private _generateUUID : IUUIDGeneratorService
     ){}
 
-    async register(user: UserDTO): Promise<IUserEntity| void > {
+    async register(user: UserDTO): Promise<IUserEntity> {
 
      
         if(user.role=="client"){
