@@ -31,7 +31,7 @@ jobs:
       run: docker build -t ${{ secrets.DOCKER_USERNAME }}/eventora-api:v1 .
 
     - name: Push Image to Docker Hub
-      run: docker push -t ${{ secrets.DOCKER_USERNAME }}/eventora-api:v1 .
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/eventora-api:v1
 
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v1.0.0
