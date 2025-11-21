@@ -55,7 +55,7 @@ export class AdminController implements IAdminController{
         const response = await this._getAllCategoryUseCase.execute(Number(limit),search,Number(page))
 
         res.status(HTTP_STATUS.OK)
-        .json({success:true,message:"categories fetched successfully",categories:response.categories,total:response.total})
+        .json({success:true,message:SUCCESS_MESSAGES.CATEGORY_FETCHED_SUCCESS,categories:response.categories,total:response.total})
     }
 
 
