@@ -14,7 +14,7 @@
     "emitDecoratorMetadata": true,
 
 
-"baseUrl": ".",
+"baseUrl": "./src",
 "paths": {  
   "@entities/*": ["entities/*"],
   "@usecases/*": ["useCases/*"],
