@@ -59,7 +59,10 @@ export class EventBookingController implements IEventBookingController{
 
 
 async handleWebHook(req: Request, res: Response): Promise<void> {
+ 
+
   const sig = req.headers["stripe-signature"] as string;
+
   const event = stripe.webhooks.constructEvent(req.body, sig, config.stripe.webHookSecrect!);
 
   if (event.type === "payment_intent.succeeded") {

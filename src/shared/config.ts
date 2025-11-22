@@ -44,7 +44,7 @@ export const config = {
 
   stripe:{
     secretKey:process.env.STRIPE_SECRET_KEY,
-    webHookSecrect:process.env.STRIPE_WEBHOOK_SECRECT
+    webHookSecrect:process.env.STRIPE_WEBHOOK_SEC
   },
 
 
