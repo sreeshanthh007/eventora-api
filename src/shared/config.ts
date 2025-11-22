@@ -47,6 +47,12 @@ export const config = {
     webHookSecrect:process.env.STRIPE_WEBHOOK_SECRECT
   },
 
+
+
+
+
+
+  
 // ============FOR FIREBASE====================
   serviceAccount: {
     type: process.env.FIREBASE_TYPE,
