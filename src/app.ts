@@ -7,7 +7,9 @@ import { config } from "@shared/config";
 import { ExpressServer } from "@frameworks/http/server";
 import { MongoConnect } from "@frameworks/database/mongodb/mongoConnect";
 import { SocketServer } from "@websockets/socket-server";
+import dotenv from "dotenv";
 
+dotenv.config();
 const mongoConnect = new MongoConnect();
 
 
