@@ -18,7 +18,7 @@ export class GetClientWalletDetailsUseCase implements IGetClientWalletDetailsUse
    async execute(clientId: string, type: string, page: number, limit: number): Promise<PaginatedWalletDetails> {
        
         const walletdetails = await this._walletRepo.findWallet(clientId)
-
+        console.log("userid ",clientId)
         if(!walletdetails){
             throw new CustomError(ERROR_MESSAGES.WALLET_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }

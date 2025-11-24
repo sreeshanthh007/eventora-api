@@ -4,6 +4,6 @@ import { randomUUID } from "crypto";
 
 export class UUIDGeneratorService implements IUUIDGeneratorService{
     generate(): string {
-        return randomUUID()
+        return `EVT-${randomUUID()}`;
     }
 }
