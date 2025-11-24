@@ -22,7 +22,7 @@ export class WalletRepository implements IWalletRepository{
        
         let filter : FilterQuery<IWalletEntity> = {}
 
-        switch (type) {
+    switch (type) {
     case "credit":
       filter = { "transactions.paymentStatus": "credit" };
       break;

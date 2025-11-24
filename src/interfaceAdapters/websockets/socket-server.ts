@@ -1,6 +1,6 @@
 import { config } from "@shared/config";
 import { Server as Httpserver } from "http";
-import { SocketService } from "interfaceAdapters/services/socket/socket.service";
+import { SocketService } from "@services/socket/socket.service";
 import { Server, Socket } from "socket.io";
 import { NotificationEvents } from "./events/notification.events";
 import { ChatEvents } from "./events/chat-events";
