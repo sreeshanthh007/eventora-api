@@ -456,7 +456,7 @@ export class ClientController implements IClientController {
       }
   
       const response = await this._getClientWalletDetailsUseCase.execute(id,type,Number(page),Number(limit))
-
+ 
       res.status(HTTP_STATUS.OK)
       .json({success:true,message:SUCCESS_MESSAGES.WALLET_FETCHED_SUCCESS,wallet:response})
   }

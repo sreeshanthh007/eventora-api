@@ -8,7 +8,7 @@
   import { AuthRoutes } from "../../frameworks/routes/auth/auth.route";
   import { ClientRoutes } from "@frameworks/routes/client/client.route";
   import { config } from "@shared/config";
-  import { errorMiddleware, eventBookingController, serviceAutoCompleteCron, serviceNotificationCron } from "@frameworks/di/resolver";
+  import { errorMiddleware, eventBookingController, expiredSlotsCron, serviceAutoCompleteCron, serviceNotificationCron } from "@frameworks/di/resolver";
   import { AdminRotes } from "@frameworks/routes/admin/admin.route";
   import { VendorRoutes } from "@frameworks/routes/vendor/vendor.route";
   import { CommonRoutes } from "@frameworks/routes/common/commonRoutes";
@@ -53,7 +53,6 @@
       this._app.use(express.urlencoded({extended:true}))
       this._app.use(cookieParser())
       this._app.use(morgan("dev"))
-
     }
 
     private configureRoutes(): void {
@@ -75,6 +74,7 @@
     private configureCronJobs() : void{
       serviceNotificationCron.start()
       serviceAutoCompleteCron.start()
+      expiredSlotsCron.start()
     }
 
     public getApp(): Application {

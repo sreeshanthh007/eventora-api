@@ -3,7 +3,7 @@ import { IEmailService } from "@entities/serviceInterfaces/email-service-interfa
 import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
 import { ISendEmailUseCase } from "@entities/useCaseInterfaces/auth/send-email-usercase.interface";
 import { CustomError } from "@entities/utils/custom.error";
-import { HTTP_STATUS , ERROR_MESSAGES } from "@shared/constants";
+import { HTTP_STATUS , ERROR_MESSAGES, OTP_EMAIL_SUBJECT } from "@shared/constants";
 import { IUserExistenceService } from "@entities/serviceInterfaces/user-existence-service.interface";
 import { IOtpCacheService } from "@entities/serviceInterfaces/otp-cache-service.interface";
 import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
@@ -41,7 +41,7 @@ export class SendEmailUseCase implements ISendEmailUseCase {
         
         await this._emailService.sendEmail(
             email,
-            "EVENTORA - verify your Email",
+            OTP_EMAIL_SUBJECT,
             otp
         );
     }

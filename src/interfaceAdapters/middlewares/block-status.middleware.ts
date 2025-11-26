@@ -85,9 +85,8 @@ export class  BlockedStatusMiddleware {
             }
             next()
         } catch (error) {
-            console.log("error in block status middleware",error);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-            .json({success:false,message:ERROR_MESSAGES.SERVER_ERROR});
+            .json({success:false,message:ERROR_MESSAGES.SERVER_ERROR,error});
             return
         }
     }

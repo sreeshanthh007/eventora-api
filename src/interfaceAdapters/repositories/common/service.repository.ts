@@ -209,4 +209,11 @@ export class ServiceRepository implements IServiceRepository{
     { $inc: { "slots.$.bookedCount": 1 } }
   );
   }
+
+
+  async findExpiredSlots(currentDate: Date): Promise<IServiceEntity[] | null> {
+      return await serviceModel.find({
+        "schedule.endDate": { $lt: currentDate },
+      })
+  }
 }

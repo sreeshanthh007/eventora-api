@@ -28,6 +28,7 @@ export interface IServiceRepository {
 
   findByIdAndUpdateBookedCount(serviceId:string,startDateTime:Date,endDateTime:Date) : Promise<void>
 
+  findExpiredSlots(currentDate:Date) : Promise<IServiceEntity[] | null>
 
 
 } 

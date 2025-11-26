@@ -123,7 +123,9 @@ SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is
   INVALIID_TICKET_TYPE="Invalid Ticket Type",
   USER_ALREADY_BOOKED="You are already booked this slot one time !",
   CANNOT_CANCEL_SERVICE="This service cannot be cancelled if it is already ongoing, completed, or previously cancelled.",
-  CANNOT_CANCEL_TICKET="This Ticket cannot be cancelled if it is already failed, completed, or previously cancelled.",
+  CANNOT_CANCEL_SERVICE_FAILED_PAYMENT="This service cannot be cancelled as the payment has failed.",
+  CANNOT_CANCEL_TICKET="This Ticket cannot be cancelled if it is already failed",
+  CANNOT_CANCEL_TICKET_USED="This Ticket cannot be cancelled as it is already used or refunded",
   WORK_SAMPLE_NOT_EXIST="Worksample of this Vendor is not provided",
   RATING_NOT_FOUND="Rating not found",
   RATING_ALREDY_ADDED="you can't add multiple Ratings",
@@ -166,12 +168,20 @@ export const FCM_NOTIFICATION_MESSAGE={
     title:(vendorName:string)=>`Hey Be Ready ${vendorName}`,
     body:(clientName:string)=>`Only 15 minutes left to begin the service for client: ${clientName}. Get ready to take action!`
 
-  }
+  },
 
+  SEND_EXPIRED_SLOTS_NOTIFICATION:{
+    title:"slots are expired !",
+    body:"Some of your service slots have expired. Please review and update your schedule accordingly."
+  }
 }
 
 
+
+
 export const   EVENT_STATUS_ERROR = (currentStatus:string,newStatus:string) => `cannot change from ${currentStatus} to ${newStatus}`
+
+export const OTP_EMAIL_SUBJECT = "EVENTORA - verify your Email";
 
 export const VERIFICATION_MAIL_CONTENT = (otp: string) => `
   <div style="font-family: Arial, sans-serif; color: #333;">

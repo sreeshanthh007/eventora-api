@@ -52,7 +52,7 @@ const isBlacklisted = async(token:string) :Promise<boolean> =>{
   
     
     const result = await RedisClient.get(token)
-    console.log("is token blacklisted",result)
+   
     
     return result!==null
 }
@@ -93,10 +93,9 @@ export const verifyAuth = async(req:Request,res:Response,next:NextFunction) : Pr
 
 
     } catch (error) {
-    console.log("token is invalid is worked",error);
     res
       .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: ERROR_MESSAGES.INVALID_TOKEN,statuscode:HTTP_STATUS.UNAUTHORIZED});
+      .json({ message: ERROR_MESSAGES.INVALID_TOKEN,statuscode:HTTP_STATUS.UNAUTHORIZED,error});
     return;
     }
 }
