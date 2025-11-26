@@ -18,16 +18,21 @@ export class GetClientWalletDetailsUseCase implements IGetClientWalletDetailsUse
    async execute(clientId: string, type: string, page: number, limit: number): Promise<PaginatedWalletDetails> {
        
         const walletdetails = await this._walletRepo.findWallet(clientId)
-        console.log("userid ",clientId)
+     
+
         if(!walletdetails){
             throw new CustomError(ERROR_MESSAGES.WALLET_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
+
         
         const validPageNumber = Math.max(1,page || 1);
 
         const skip = (validPageNumber-1)*limit
 
+       
         const {wallet,total} = await this._walletRepo.findWalletDetailsByUserId(clientId,type,skip,limit)
+
+        console.log("wallet",wallet)
 
         if(!wallet) {
             throw new CustomError(ERROR_MESSAGES.WALLET_NOT_FOUND,HTTP_STATUS.NOT_FOUND)

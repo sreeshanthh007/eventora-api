@@ -33,9 +33,9 @@ export class ServiceNotificationCron  {
 
         const now = new Date()
 
-        const fifteenMinutesLater = new Date(now.getTime() + 15 * 60 * 1000);
+        const fiveMinutesLater = new Date(now.getTime() + 5 * 60 * 1000);
 
-        const bookings = await this._bookingRepo.findBookingsWithStatusPending(now,fifteenMinutesLater);
+        const bookings = await this._bookingRepo.findBookingsWithStatusPending(now,fiveMinutesLater);
 
         if(!bookings?.length) return ;
 

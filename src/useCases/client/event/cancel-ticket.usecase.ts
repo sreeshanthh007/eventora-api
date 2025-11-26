@@ -26,9 +26,15 @@ export class CancelTicketUseCase implements ICancelTicketUseCase{
             throw new CustomError(ERROR_MESSAGES.TICKET_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
 
-        if(ticketExist.paymentStatus=="failed" || ticketExist.paymentStatus=="successfull"){
+        if(ticketExist.paymentStatus=="failed"){
             throw new CustomError(ERROR_MESSAGES.CANNOT_CANCEL_TICKET,HTTP_STATUS.BAD_REQUEST)
         }
+
+        if(ticketExist.ticketStatus=="refunded" || ticketExist.ticketStatus=="used"){
+            throw new CustomError(ERROR_MESSAGES.CANNOT_CANCEL_TICKET_USED,HTTP_STATUS.BAD_REQUEST)
+        }
+
+
         
         const eventByVendor = await this._eventRepo.findHostIdFromEvents(eventId)
 

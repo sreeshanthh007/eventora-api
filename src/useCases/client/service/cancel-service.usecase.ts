@@ -38,11 +38,15 @@ export class CancelServiceUseCase implements ICancelServiceUseCase{
         throw new CustomError(ERROR_MESSAGES.CANNOT_CANCEL_SERVICE,HTTP_STATUS.BAD_REQUEST)
        }
 
+       if(bookedService.paymentStatus=="failed"){
+        throw new CustomError(ERROR_MESSAGES.CANNOT_CANCEL_SERVICE_FAILED_PAYMENT,HTTP_STATUS.BAD_REQUEST)
+       }
+
        await this.bookingRepo.updateBookingStatus(bookingId,"cancelled");
        
        const amountForClient = bookedService.amount * 0.20
        const amountForVendor = bookedService.amount * 0.80
-
+ 
        const transactionForClient = createTransaction("Refund","service",serviceId,amountForClient,"credit")
        const transactionForVendor = createTransaction("partialRefund","service",serviceId,amountForVendor,"credit")
 

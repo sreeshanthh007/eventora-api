@@ -44,6 +44,7 @@ import { IChatController } from "@entities/controllerInterfaces/chat/chat.contro
 import { ChatController } from "@controllers/chat/chat-controller";
 import { IAnalyticsDashboardController } from "@entities/controllerInterfaces/dashboard/dashboard-controller.interface";
 import { AnalyticsDashboardController } from "@controllers/dashboard/analytics-dashboard.controller";
+import { SlotExpirationCron } from "@frameworks/scheduler/SlotExpiration.cron";
 
 
 
@@ -94,7 +95,9 @@ export const errorMiddleware =
 
   export const serviceNotificationCron  = container.resolve<ServiceNotificationCron>(ServiceNotificationCron)
 
-  export const serviceAutoCompleteCron = container.resolve<ServiceAutoCompleteCron>(ServiceAutoCompleteCron)
+  export const serviceAutoCompleteCron = container.resolve<ServiceAutoCompleteCron>(ServiceAutoCompleteCron);
+
+  export const expiredSlotsCron = container.resolve<SlotExpirationCron>(SlotExpirationCron);
 
   export const chatSocketHandler = 
   container.resolve<IChatSocketHandler>(ChatSocketHandler)

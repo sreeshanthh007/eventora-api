@@ -5,13 +5,18 @@ import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { LoginResponseDTO, LoginUserDTO } from "@shared/dtos/user.dto";
 import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
+import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
+import { WalletDTO } from "@shared/dtos/wallet.dto";
+import { IUUIDGeneratorService } from "@entities/serviceInterfaces/generate-random-uuid.interface";
 
 
 @injectable()
 export class AdminLoginStrategy implements ILoginStrategy {
     constructor(
         @inject("IPasswordBcryptService") private _passwordBcryptService : IBcryptService,
-        @inject("IAdminRepository") private _adminRepository : IAdminRepository
+        @inject("IAdminRepository") private _adminRepository : IAdminRepository,
+        @inject("IWalletRepository") private _walletRepository : IWalletRepository,
+        @inject("IUUIDGeneratorService") private _generateUUID : IUUIDGeneratorService
     ){}
 
 
@@ -27,6 +32,21 @@ export class AdminLoginStrategy implements ILoginStrategy {
       if (!isPasswordMatch) {
         throw new CustomError(ERROR_MESSAGES.INVALID_CREDENTIALS, HTTP_STATUS.BAD_REQUEST);
       }
+    }
+
+
+    const isAdminWalletExist = await this._walletRepository.findWallet(admin._id.toString())
+   
+    if(!isAdminWalletExist){
+      const walletId = this._generateUUID.generate()
+       const walletDetails : WalletDTO = {
+        balance:0,
+        userId:admin._id.toString(),
+        userType:"admin",
+        walletId:walletId
+       }
+
+      await this._walletRepository.createWallet(walletDetails)
     }
 
     return {

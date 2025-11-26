@@ -34,13 +34,13 @@ export class WalletRepository implements IWalletRepository{
   }
 
   const pipeline: PipelineStage[] = [
-    { $match: { userId } },
+    { $match: { userId: userId } },
 
-    { $unwind: { path: "$transactions"} },
+    { $unwind: { path: "$transactions" , preserveNullAndEmptyArrays: true} },
 
-    { $match: filter },
+    { $match: filter  },
 
-    { $sort: { "transactions.createdAt": -1 } },
+    { $sort: { "transactions.date": -1 } },
 
     { $skip: skip },
 
@@ -56,12 +56,18 @@ export class WalletRepository implements IWalletRepository{
     }
   ];
 
+
+
+
   const countPipeline: PipelineStage[] = [
-    { $match: { userId } },
-     { $unwind: { path: "$transactions"} },
+    { $match: { userId: userId } },
+     { $unwind: { path: "$transactions" , preserveNullAndEmptyArrays:true} },
     { $match: filter },
     { $count: "total" }
   ];
+
+
+
 
   const [walletResult, totalResult] = await Promise.all([
     walletModel.aggregate(pipeline),

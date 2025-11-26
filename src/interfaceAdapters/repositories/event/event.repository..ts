@@ -19,7 +19,12 @@ export class EventRepository implements IEventRepository{
     }
 
     async findEvents(): Promise<IEventEntity[]> {
-        return await EventModel.find({isActive:true})
+        const today = new Date();
+        today.setHours(0, 0, 0, 0)
+        return await EventModel.find({
+          isActive:true,
+          "eventSchedule.date": { $gte: today }
+        })
     }
 
 
