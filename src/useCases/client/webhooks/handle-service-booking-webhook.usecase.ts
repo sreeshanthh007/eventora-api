@@ -45,37 +45,38 @@ export class HandleServiceBookingWebhookUseCase implements IHandleServiceBooking
             }
             
         
-        const bookingId = this._generateUUID.generate()
+        const selectedDateStr = bookingData.selectedDate; 
+        const [startTimeStr, endTimeStr] = bookingData.selectedSlotTime.split(' - ');
 
-        
-        const startDate = new Date(bookingData.selectedDate)
+        const [year, month, day] = selectedDateStr.split('-').map(Number);
+        const [startHour, startMinute] = startTimeStr.split(':').map(Number);
+        const [endHour, endMinute] = endTimeStr.split(':').map(Number);
 
-        const [slotStartStr, slotEndStr] = bookingData.selectedSlotTime.split(' - '); 
-     
-        
-        const slotStart = new Date(startDate);
-        const [startHour, startMinute] = slotStartStr.split(':').map(Number);
-        slotStart.setHours(startHour, startMinute, 0, 0);
+        // Create proper UTC dates – this ensures time is EXACTLY what user selected
+        const slotStartTime = new Date(Date.UTC(year, month - 1, day, startHour, startMinute, 0, 0));
+        const slotEndTime = new Date(Date.UTC(year, month - 1, day, endHour, endMinute, 0, 0));
+        const bookingDateOnly = new Date(Date.UTC(year, month - 1, day)); // Midnight UTC of selected day
 
-        const slotEnd = new Date(startDate);
-        const [endHour, endMinute] = slotEndStr.split(':').map(Number);
-        slotEnd.setHours(endHour, endMinute, 0, 0);
+        // === 5. Generate Booking ID ===
+        const bookingId = this._generateUUID.generate();
+
+        // === 6. Create Booking DTO ===
         const booking = mapToBookingDTO({
-            bookingId:bookingId,
-            clientId:clientId,
-            vendorId:vendorId,
-            serviceId:serviceId,
-            currency:currency,
-            amount:amount,
-            startDate:startDate,
-            slotStartTime:slotStart,
-            slotEndTime:slotEnd,
-            email:bookingData.email,
-            name:bookingData.name,
-            phone:bookingData.phone,
-            paymentIntentId:paymentIntentId,
-            status:"pending",
-            paymentStatus:"successfull"
+            bookingId,
+            clientId,
+            vendorId,
+            serviceId,
+            currency,
+            amount,
+            startDate: bookingDateOnly,
+            slotStartTime,    // Now correct UTC time
+            slotEndTime,      // Now correct UTC time
+            email: bookingData.email,
+            name: bookingData.name,
+            phone: bookingData.phone,
+            paymentIntentId,
+            status: "pending",
+            paymentStatus: "successfull"
         });
 
 
