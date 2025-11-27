@@ -16,7 +16,9 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class HandleServiceBookingWebhookUseCase implements IHandleServiceBookingWebhookUseCase{
-    
+    private   convertISTToUTC(dateStr: string, timeStr: string) {
+    return new Date(`${dateStr}T${timeStr}:00+05:30`).toISOString();
+  }
     constructor(
         @inject("IServiceRepository") private _serviceRepo : IServiceRepository,
         @inject("IWalletRepository") private _walletRepo : IWalletRepository,
@@ -43,26 +45,18 @@ export class HandleServiceBookingWebhookUseCase implements IHandleServiceBooking
             if(serviceExist.status=="blocked"){
                 throw new CustomError(ERROR_MESSAGES.SERVICE_BOOKING_BLOCKED_ERROR,HTTP_STATUS.BAD_REQUEST)
             }
-
-         
             
         
         const bookingId = this._generateUUID.generate()
 
         
-        const startDate = new Date(bookingData.selectedDate)
+          const { selectedDate, selectedSlotTime } = bookingData;
+        const [slotStartStr, slotEndStr] = selectedSlotTime.split(" - ");
 
-        const [slotStartStr, slotEndStr] = bookingData.selectedSlotTime.split(' - '); 
-     
+        const slotStartUTC = this.convertISTToUTC(selectedDate, slotStartStr);
+        const slotEndUTC = this.convertISTToUTC(selectedDate, slotEndStr);
         
-        const slotStart = new Date(startDate);
-        const [startHour, startMinute] = slotStartStr.split(':').map(Number);
-        slotStart.setHours(startHour, startMinute, 0, 0);
 
-        const slotEnd = new Date(startDate);
-        const [endHour, endMinute] = slotEndStr.split(':').map(Number);
-        slotEnd.setHours(endHour, endMinute, 0, 0);
-        
         const booking = mapToBookingDTO({
             bookingId:bookingId,
             clientId:clientId,
@@ -70,9 +64,9 @@ export class HandleServiceBookingWebhookUseCase implements IHandleServiceBooking
             serviceId:serviceId,
             currency:currency,
             amount:amount,
-            startDate:startDate,
-            slotStartTime:slotStart,
-            slotEndTime:slotEnd,
+            startDate:selectedDate,
+            slotStartTime:slotStartUTC,
+            slotEndTime:slotEndUTC,
             email:bookingData.email,
             name:bookingData.name,
             phone:bookingData.phone,
