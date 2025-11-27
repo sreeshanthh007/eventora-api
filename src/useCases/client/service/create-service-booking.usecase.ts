@@ -25,7 +25,7 @@ export class CreateServiceBookingUseCase implements ICreateServiceBookingUseCase
         }
 
         const paymentIntent = await this._serviceStripeService.createPaymentIntent(bookingType,amount,currency,vendorId,serviceId,clientId,bookingData);
-        await this._lockService.releaseServiceLock(serviceId,bookingData.selectedDate,bookingData.selectedSlotTime,clientId)
+
 
         return paymentIntent
  }

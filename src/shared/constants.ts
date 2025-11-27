@@ -120,6 +120,7 @@ SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is
   SLOT_CAPACITY_EXCEEDED="The selected slot has reached its maximum capacity",
   SLOT_NOT_FOUND="Slot not found",
   EVENT_NOT_FOUND="Event not found",
+  DUPLICATE_BOOKING_ERROR="You have already booked this service. Duplicate bookings are not allowed.",
   INVALIID_TICKET_TYPE="Invalid Ticket Type",
   USER_ALREADY_BOOKED="You are already booked this slot one time !",
   CANNOT_CANCEL_SERVICE="This service cannot be cancelled if it is already ongoing, completed, or previously cancelled.",
