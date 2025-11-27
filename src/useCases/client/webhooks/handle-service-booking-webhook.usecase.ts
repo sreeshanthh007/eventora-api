@@ -11,95 +11,108 @@ import { mapToBookingDTO } from "@mappers/BookingMapper";
 import { createTransaction } from "@mappers/WalletMapper";
 import { ERROR_MESSAGES, FCM_NOTIFICATION_MESSAGE, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
-
-
+import { toZonedTime } from 'date-fns-tz';
 
 @injectable()
-export class HandleServiceBookingWebhookUseCase implements IHandleServiceBookingWebhookUseCase{
-    
+export class HandleServiceBookingWebhookUseCase implements IHandleServiceBookingWebhookUseCase {
+    private readonly TIMEZONE = "Asia/Kolkata";
+
     constructor(
-        @inject("IServiceRepository") private _serviceRepo : IServiceRepository,
-        @inject("IWalletRepository") private _walletRepo : IWalletRepository,
-        @inject("IClientRepository") private _clientRepo : IClientRepository,
-        @inject("IBookingRepository") private _bookingRepo : IBookingRepository,
-        @inject("IRedisLockService") private _lockService : ILockService,
-        @inject("INotificationService") private _notificationService : INotificationService,
-        @inject("IUUIDGeneratorService") private _generateUUID : IUUIDGeneratorService
-    ){}
+        @inject("IServiceRepository") private _serviceRepo: IServiceRepository,
+        @inject("IWalletRepository") private _walletRepo: IWalletRepository,
+        @inject("IClientRepository") private _clientRepo: IClientRepository,
+        @inject("IBookingRepository") private _bookingRepo: IBookingRepository,
+        @inject("IRedisLockService") private _lockService: ILockService,
+        @inject("INotificationService") private _notificationService: INotificationService,
+        @inject("IUUIDGeneratorService") private _generateUUID: IUUIDGeneratorService
+    ) { }
 
+    async execute(
+        vendorId: string,
+        serviceId: string, 
+        clientId: string, 
+        currency: string, 
+        bookingData: { selectedDate: string; selectedSlotTime: string; name: string; email: string; phone: string; }, 
+        amount: number, 
+        paymentIntentId: string
+    ): Promise<void> {
+        const serviceExist = await this._serviceRepo.findById(serviceId);
+        const userExist = await this._clientRepo.findById(clientId);
 
-   async execute(vendorId:string,serviceId: string, clientId: string, currency: string, bookingData: { selectedDate: string; selectedSlotTime: string; name: string; email: string; phone: string; }, amount: number, paymentIntentId: string): Promise<void> {
-       
-            const serviceExist = await this._serviceRepo.findById(serviceId)
-
-            const userExist = await this._clientRepo.findById(clientId)
-
-           
-
-            if(!serviceExist){
-            throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.NOT_FOUND)
-            }
-            
-            if(serviceExist.status=="blocked"){
-                throw new CustomError(ERROR_MESSAGES.SERVICE_BOOKING_BLOCKED_ERROR,HTTP_STATUS.BAD_REQUEST)
-            }
-            
+        if (!serviceExist) {
+            throw new CustomError(ERROR_MESSAGES.NOT_FOUND, HTTP_STATUS.NOT_FOUND);
+        }
         
-        const bookingId = this._generateUUID.generate()
+        if (serviceExist.status == "blocked") {
+            throw new CustomError(ERROR_MESSAGES.SERVICE_BOOKING_BLOCKED_ERROR, HTTP_STATUS.BAD_REQUEST);
+        }
 
+        const bookingId = this._generateUUID.generate();
+
+   
+        const [startTimeStr, endTimeStr] = bookingData.selectedSlotTime.split(' - ');
         
-        const startDate = new Date(bookingData.selectedDate)
 
-        const [slotStartStr, slotEndStr] = bookingData.selectedSlotTime.split(' - '); 
+        const startDateTimeIST = `${bookingData.selectedDate}T${startTimeStr}:00`;
+        const endDateTimeIST = `${bookingData.selectedDate}T${endTimeStr}:00`;
+        
+
+        const slotStartTime = toZonedTime(new Date(startDateTimeIST), this.TIMEZONE);
+        const slotEndTime = toZonedTime(new Date(endDateTimeIST), this.TIMEZONE);
      
-        
-        const slotStart = new Date(startDate);
-        const [startHour, startMinute] = slotStartStr.split(':').map(Number);
-        slotStart.setHours(startHour, startMinute, 0, 0);
+        const startDate = toZonedTime(
+            new Date(`${bookingData.selectedDate}T${startTimeStr}:00`),
+            this.TIMEZONE
+        );
 
-        const slotEnd = new Date(startDate);
-        const [endHour, endMinute] = slotEndStr.split(':').map(Number);
-        slotEnd.setHours(endHour, endMinute, 0, 0);
-        const booking = mapToBookingDTO({
-            bookingId:bookingId,
-            clientId:clientId,
-            vendorId:vendorId,
-            serviceId:serviceId,
-            currency:currency,
-            amount:amount,
-            startDate:startDate,
-            slotStartTime:slotStart,
-            slotEndTime:slotEnd,
-            email:bookingData.email,
-            name:bookingData.name,
-            phone:bookingData.phone,
-            paymentIntentId:paymentIntentId,
-            status:"pending",
-            paymentStatus:"successfull"
+         console.log("NEW TIMEZONE CODE RUNNING:", {
+        selectedDate: bookingData.selectedDate,
+        selectedSlotTime: bookingData.selectedSlotTime,
+        slotStartTime_IST: startTimeStr,
+        slotStartTime_UTC: slotStartTime.toISOString()
         });
 
+        const booking = mapToBookingDTO({
+            bookingId: bookingId,
+            clientId: clientId,
+            vendorId: vendorId,
+            serviceId: serviceId,
+            currency: currency,
+            amount: amount,
+            startDate: startDate,
+            slotStartTime: slotStartTime,  
+            slotEndTime: slotEndTime,       
+            email: bookingData.email,
+            name: bookingData.name,
+            phone: bookingData.phone,
+            paymentIntentId: paymentIntentId,
+            status: "pending",
+            paymentStatus: "successfull"
+        });
 
-        const transaction  = createTransaction("serviceBooking","service",serviceId,amount,"credit")
-        
+       
 
-    
-   
-        await this._bookingRepo.createBooking(booking)
-        await this._walletRepo.findWalletByUserTypeAndUpdate("admin",transaction,amount)
+        const transaction = createTransaction("serviceBooking", "service", serviceId, amount, "credit");
 
-        await this._lockService.releaseServiceLock(serviceId,bookingData.selectedDate,bookingData.selectedSlotTime,clientId)
+        await this._bookingRepo.createBooking(booking);
+        await this._walletRepo.findWalletByUserTypeAndUpdate("admin", transaction, amount);
 
-        if(userExist?.fcmToken){
+        await this._lockService.releaseServiceLock(
+            serviceId, 
+            bookingData.selectedDate, 
+            bookingData.selectedSlotTime, 
+            clientId
+        );
+
+        if (userExist?.fcmToken) {
             this._notificationService.sendNotification(
                 clientId,
-            userExist.fcmToken,
-            {
-                title:FCM_NOTIFICATION_MESSAGE.SERVICE_BOOKING_SUCCESS.title,
-                body:FCM_NOTIFICATION_MESSAGE.SERVICE_BOOKING_SUCCESS.body
-            }
-        )
+                userExist.fcmToken,
+                {
+                    title: FCM_NOTIFICATION_MESSAGE.SERVICE_BOOKING_SUCCESS.title,
+                    body: FCM_NOTIFICATION_MESSAGE.SERVICE_BOOKING_SUCCESS.body
+                }
+            );
+        }
     }
-
-
-   }
 }
