@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "npm run lint && nodemon --watch src --ext ts --exec ts-node -r tsconfig-paths/register src/app.ts",
     "lint": "eslint . --ext .ts",
-   "start": "node -r module-alias/register dist/app.js",
+    "start": "node -r module-alias/register dist/app.js",
     "watch": "tsc -w",
     "con": "concurrently \"tsc --watch\" \"nodemon -r tsconfig-paths/register dist/app.js\""
   },
@@ -73,17 +73,19 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.39.1"
   },
-"_moduleAliases": {
-  "@entities": "dist/entities",
-  "@usecases": "dist/useCases",
-  "@controllers": "dist/interfaceAdapters/controllers",
-  "@repos": "dist/interfaceAdapters/repositories",
-  "@services": "dist/interfaceAdapters/services",
-  "@frameworks": "dist/frameworks",
-  "@shared": "dist/shared",
-  "@mappers": "dist/interfaceAdapters/mappers",
-  "@middlewares": "dist/interfaceAdapters/middlewares",
-  "@websockets": "dist/interfaceAdapters/websockets"
-},
-"_moduleDirectories": ["dist"]
+  "_moduleAliases": {
+    "@entities": "dist/entities",
+    "@usecases": "dist/useCases",
+    "@controllers": "dist/interfaceAdapters/controllers",
+    "@repos": "dist/interfaceAdapters/repositories",
+    "@services": "dist/interfaceAdapters/services",
+    "@frameworks": "dist/frameworks",
+    "@shared": "dist/shared",
+    "@mappers": "dist/interfaceAdapters/mappers",
+    "@middlewares": "dist/interfaceAdapters/middlewares",
+    "@websockets": "dist/interfaceAdapters/websockets"
+  },
+  "_moduleDirectories": [
+    "dist"
+  ]
 }
