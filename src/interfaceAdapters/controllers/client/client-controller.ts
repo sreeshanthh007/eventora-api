@@ -329,7 +329,7 @@ export class ClientController implements IClientController {
   async bookService(req: Request, res: Response): Promise<void> {
   
       const {serviceId,bookingData,amount,currency,vendorId} : ServiceBookingCreationDTO =  req.body
-
+    console.log("items in booke service",serviceId,bookingData,amount,currency,vendorId);
       const {id} = (req as CustomRequest).user
  
       if(!id){

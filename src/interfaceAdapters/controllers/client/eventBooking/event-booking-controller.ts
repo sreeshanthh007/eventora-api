@@ -91,6 +91,7 @@ async handleWebHook(req: Request, res: Response): Promise<void> {
         const parsedBookingData = JSON.parse(bookingDataStr);
      
         const totalAmount = paymentIntent.amount / 100;
+        
         await this._HandleServiceBookingWebhookUseCase.execute(vendorId, serviceId, clientId, currency, parsedBookingData, totalAmount, paymentIntent.id);
       }
     }
