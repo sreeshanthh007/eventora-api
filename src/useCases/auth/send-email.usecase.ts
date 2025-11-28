@@ -31,7 +31,7 @@ export class SendEmailUseCase implements ISendEmailUseCase {
         }
         const otp = this._OTPService.generateOTP()
         
-        console.log("otp sent",otp)
+      
         
         const hashedOTP = await this._otpBcryptService.hash(otp);
 
