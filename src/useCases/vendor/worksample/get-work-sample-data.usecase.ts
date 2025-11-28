@@ -19,7 +19,7 @@ export class GetWorkSampleDataUseCase implements IGetworkSampleDataUseCase{
         
         const data = await this._workSampleRepo.getWorkSampleData(vendorId)
 
-        console.log("Work sample data:", data);
+ 
         if(!data){
             throw new CustomError(ERROR_MESSAGES.NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
