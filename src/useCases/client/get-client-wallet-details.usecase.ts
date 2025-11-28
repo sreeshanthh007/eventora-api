@@ -32,14 +32,14 @@ export class GetClientWalletDetailsUseCase implements IGetClientWalletDetailsUse
        
         const {wallet,total} = await this._walletRepo.findWalletDetailsByUserId(clientId,type,skip,limit)
 
-        console.log("wallet",wallet)
+  
 
         if(!wallet) {
             throw new CustomError(ERROR_MESSAGES.WALLET_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
         const mappedData = mapWalletDetailstoDTO(wallet)
         return {
-            total,
+            total : Math.ceil(total/limit),
             walletDetails:mappedData
         }
 

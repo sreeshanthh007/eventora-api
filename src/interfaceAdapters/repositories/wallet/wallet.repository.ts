@@ -18,69 +18,69 @@ export class WalletRepository implements IWalletRepository{
    }
 
 
-   async findWalletDetailsByUserId(userId: string, type:string,skip: number, limit: number): Promise<{ wallet: IWalletEntity | null; total: number; }> {
+async findWalletDetailsByUserId(userId: string, type: string, skip: number, limit: number): Promise<{ wallet: IWalletEntity | null; total: number; }> {
        
-        let filter : FilterQuery<IWalletEntity> = {}
-
+    let filter: FilterQuery<IWalletEntity> = {}
+    
     switch (type) {
-    case "credit":
-      filter = { "transactions.paymentStatus": "credit" };
-      break;
-    case "debit":
-      filter = { "transactions.paymentStatus": "debit" };
-      break;
-    default:
-      filter = {};
-  }
-
-  const pipeline: PipelineStage[] = [
-    { $match: { userId: userId } },
-
-    { $unwind: { path: "$transactions" , preserveNullAndEmptyArrays: true} },
-
-    { $match: filter  },
-
-    { $sort: { "transactions.date": -1 } },
-
-    { $skip: skip },
-
-    { $limit: limit },
-
-    {
-      $group: {
-        _id: "$_id",
-        userId: { $first: "$userId" },
-        balance: { $first: "$balance" },
-        transactions: { $push: "$transactions" }
-      }
+        case "credit":
+            filter = { "transactions.paymentStatus": "credit" };
+            break;
+        case "debit":
+            filter = { "transactions.paymentStatus": "debit" };
+            break;
+        default:
+            filter = {};
     }
-  ];
-
-
-
-
-  const countPipeline: PipelineStage[] = [
-    { $match: { userId: userId } },
-     { $unwind: { path: "$transactions" , preserveNullAndEmptyArrays:true} },
-    { $match: filter },
-    { $count: "total" }
-  ];
-
-
-
-
-  const [walletResult, totalResult] = await Promise.all([
-    walletModel.aggregate(pipeline),
-    walletModel.aggregate(countPipeline),
-  ]);
-
-
-  
-
-  const wallet = walletResult.length ? walletResult[0] : null;
-  const total = totalResult.length ? totalResult[0].total : 0;
-
-return { wallet, total };
+    
+    const pipeline: PipelineStage[] = [
+        { $match: { userId: userId } },
+        { $unwind: { path: "$transactions", preserveNullAndEmptyArrays: true } },
+        { $match: filter },
+        { $sort: { "transactions.date": -1 } },
+        { $skip: skip },
+        { $limit: limit },
+        {
+            $group: {
+                _id: "$_id",
+                userId: { $first: "$userId" },
+                balance: { $first: "$balance" },
+                transactions: { $push: "$transactions" }
+            }
+        }
+    ];
+    
+    const countPipeline: PipelineStage[] = [
+        { $match: { userId: userId } },
+        { $unwind: { path: "$transactions", preserveNullAndEmptyArrays: true } },
+        { $match: filter },
+        { $count: "total" }
+    ];
+    
+    const [walletResult, totalResult] = await Promise.all([
+        walletModel.aggregate(pipeline),
+        walletModel.aggregate(countPipeline),
+    ]);
+    
+   
+    if (walletResult.length === 0) {
+        const basicWallet = await walletModel.findOne({ userId: userId });
+        if (basicWallet) {
+            return { 
+                wallet: {
+                    ...basicWallet.toObject(),
+                    transactions: []
+                } as IWalletEntity, 
+                total: 0 
+            };
+        }
+        return { wallet: null, total: 0 };
+    }
+    
+    const wallet = walletResult.length ? walletResult[0] : null;
+    const total = totalResult.length ? totalResult[0].total : 0;
+    
+    return { wallet, total };
 }
 
   async findWalletByUserTypeAndUpdate(userType: string, transaction: TransactionDTO, amount: number): Promise<void> {

@@ -36,7 +36,7 @@ export class GetAdminWalletDetailsUseCase implements IGetAdminWalletDetailsUseCa
 
         return {
             walletDetails:mappedWalletDetails,
-            total
+            total : Math.ceil(total/limit),
         }
     }
 }

@@ -383,7 +383,7 @@ export class ClientController implements IClientController {
 
     const {
             page = "1",
-            limit = "6",
+            limit = "2",
             search=""
         }  = req.query as {
             page?:string,

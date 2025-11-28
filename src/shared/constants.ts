@@ -101,6 +101,7 @@ export enum ERROR_MESSAGES  {
 EVENT_BOOKING_BLOCKED_ERROR="Unable to proceed with booking as this event is currently restricted by the provider.",
   TICKET_LOCKED_ERROR="Ticket already locked by another user",
   SERVICE_SLOT_LOCKED_ERROR="Selected service slot is on Hold",
+  SLOT_GENERATION_PROGRESSION_ERROR="Slot generation is already in progress. Please try again later.",
 SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is currently restricted by the vendor.",
   SERVICE_BOOKING_ERROR="Cannot book service for past dates",
   SERVICE_STARTED_COMPLETED_ERROR="Service already started or Completed",

@@ -73,8 +73,8 @@ export class TicketRepository implements ITicketRepository{
 
 
   async findTicketsByIdAndVerifyTicket(ticketId: string): Promise<void> {
-      
-    await ticketModel.updateOne({ticketId:ticketId},{isCheckedIn:true,ticketStatus:"used"});
+      const now  = new Date();
+    await ticketModel.updateOne({ticketId:ticketId},{isCheckedIn:true,ticketStatus:"used",checkInHistory:[...[{checkedInAt:now}]]});
   }
 
 
