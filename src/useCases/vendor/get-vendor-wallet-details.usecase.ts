@@ -35,7 +35,7 @@ export class GetVendorWalletDetailsUseCase implements IGetVendorWalletDetailsUse
         }
         const mappedData = mapWalletDetailstoDTO(wallet)
         return {
-            total,
+            total: Math.ceil(total/limit),
             walletDetails:mappedData
         }
 
