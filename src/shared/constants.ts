@@ -139,6 +139,13 @@ SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is
   
 };
 
+export const ROLE_MAP: Record<string, string> = {
+  "_cl": "client",
+  "_ad": "admin",
+  "_ve": "vendor"
+};
+
+
 
 
 export const DIRECT_CHAT_EVENTS={
@@ -179,6 +186,20 @@ export const FCM_NOTIFICATION_MESSAGE={
 }
 
 
+
+export const REDIS_TTL = {
+  OTP: 5 * 60, 
+ BLOCK_STATUS:3600 
+}
+
+export const REDIS_KEYS = {
+   USER_STATUS: (role: string, id: string) => `user_status:${role}:${id}`,
+   LOCK_EVENT:(prefix:string,eventId:string,ticketType:string) => `${prefix}${eventId}:ticketType:${ticketType}`,
+   LOCK_SERVICE_SLOT:(prefix:string,serviceId:string,startDate:string,endDate:string) => `${prefix}${serviceId}:${startDate}:${endDate}`,
+   LOCK_SERVICE:(prefix:string,serviceId:string,selectedDate:string,selectedSlotTime:string,clientId:string) => `${prefix}${serviceId}:${selectedDate}:${selectedSlotTime}:${clientId}`,
+   RELEASE_EVENT_LOCK:(prefix:string,eventId:string,ticketType:string) => `${prefix}${eventId}:ticketType:${ticketType}`,
+   RELEASE_SERVICE_LOCK:(prefix:string,serviceId:string,selectedDate:string,selectedSlotTime:string,clientId:string) => `${prefix}${serviceId}:${selectedDate}:${selectedSlotTime}:${clientId}`,
+}
 
 
 export const   EVENT_STATUS_ERROR = (currentStatus:string,newStatus:string) => `cannot change from ${currentStatus} to ${newStatus}`

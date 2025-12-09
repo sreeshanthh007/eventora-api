@@ -1,7 +1,7 @@
 import { Request , Response , NextFunction } from "express";
 import { jwtService } from "interfaceAdapters/services/jwt/jwtService";
 import { JwtPayload } from "jsonwebtoken";
-import { ERROR_MESSAGES , HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES , HTTP_STATUS, ROLE_MAP } from "@shared/constants";
 import { RedisClient } from "@frameworks/cache/redis.client";
 
 const tokenService = new jwtService()
@@ -22,17 +22,12 @@ export interface CustomRequest extends Request{
 
 
 
-const roleMap: Record<string, string> = {
-  "_cl": "client",
-  "_ad": "admin",
-  "_ve": "vendor"
-};
 
 const extractToken = (req: Request): { access_token: string; refresh_token: string } | null => {
 
      const basePath = req.baseUrl.split("/");
     
-    const userType = roleMap[basePath[2]]
+    const userType = ROLE_MAP[basePath[2]]
 
 
    

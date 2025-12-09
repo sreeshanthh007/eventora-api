@@ -1,7 +1,7 @@
 import { IClientRepository } from "@entities/repositoryInterfaces/client/client-repository.interface";
 import { IuserToggleStatusUseCase } from "@entities/useCaseInterfaces/admin/handle-user-toggle-status.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS, REDIS_TTL } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 import { RedisClient  } from "@frameworks/cache/redis.client";
 
@@ -36,7 +36,7 @@ import { RedisClient  } from "@frameworks/cache/redis.client";
 
             if(newsStatus=="blocked"){
                 await RedisClient.set(`user_status:client:${userId}`,newsStatus,{
-                    EX:3600
+                    EX:REDIS_TTL.BLOCK_STATUS
                 });
             }else if(newsStatus=="active"){
             await RedisClient.del(`user_status:client:${userId}`)

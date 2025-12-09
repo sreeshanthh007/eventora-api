@@ -5,7 +5,7 @@ import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.
 import { IUUIDGeneratorService } from "@entities/serviceInterfaces/generate-random-uuid.interface";
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { IQrCodeService } from "@entities/serviceInterfaces/qr-code-service.interface";
-import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { ILockService } from "@entities/serviceInterfaces/lock-service.interface";
 import { IHandleEventWebHookUseCase} from "@entities/useCaseInterfaces/client/event/event-webhook-handle.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { createTransaction } from "@mappers/WalletMapper";

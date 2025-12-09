@@ -1,6 +1,6 @@
 import { ISlotGenerationData, ISlotGeneratorService } from "@entities/serviceInterfaces/slot-generator.service.interface";
 import { SlotGenerationResponse } from "@shared/dtos/slot-generator.dto";
-import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { ILockService } from "@entities/serviceInterfaces/lock-service.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import {  HTTP_STATUS } from "@shared/constants";
 import { RRule, Weekday } from "rrule";

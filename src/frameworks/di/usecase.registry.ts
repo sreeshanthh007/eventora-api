@@ -131,7 +131,7 @@ import { IGetEventDetailsUseCase } from "@entities/useCaseInterfaces/client/even
 import { GetEventDetailsUseCase } from "@usecases/client/event/get-event-details.usercase";
 import { IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/event/get-all-events-with-filters.usercase.interface";
 import { GetAllEventsWithFilterUseCase } from "@usecases/client/event/get-all-events-with-filter.usecase";
-import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { ILockService } from "@entities/serviceInterfaces/lock-service.interface";
 import { RedisLockService } from "@services/common/redis-lock-service";
 import { StripeService } from "@services/stripe/stripe-service";
 import { IQrCodeService } from "@entities/serviceInterfaces/qr-code-service.interface";

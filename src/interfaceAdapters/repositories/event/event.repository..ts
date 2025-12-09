@@ -43,10 +43,11 @@ export class EventRepository implements IEventRepository{
 
 
     async findfilteredEvents(filters: { search?: string; location?: string; sort?: string; lat?: number; lng?: number; }, skip: number, limit: number): Promise<{ events: IEventEntity[] | []; total: number; }> {
-        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0)
         const {search,location,sort,lat,lng} = filters
 
-        const filter : FilterQuery<IEventEntity> = {isActive:true}
+        const filter : FilterQuery<IEventEntity> = {isActive:true,"eventSchedule.date":{$gte:today}}
 
         if(search){
             filter.$or=[

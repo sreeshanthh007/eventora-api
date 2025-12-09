@@ -4,7 +4,7 @@ import { IRevokeRefreshTokenUseCase } from "@entities/useCaseInterfaces/auth/rev
 import { inject, injectable } from "tsyringe";
 import { CustomRequest } from "./auth.middleware";
 import { NextFunction, Response } from "express";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS, REDIS_KEYS, REDIS_TTL } from "@shared/constants";
 import { RedisClient } from "@frameworks/cache/redis.client";
 import { clearAuthCookie } from "@shared/utils/cookie-helper";
 import { IBlacklistTokenUseCase } from "@entities/useCaseInterfaces/auth/blackList-token-interface";
@@ -34,7 +34,8 @@ export class  BlockedStatusMiddleware {
             const {id,role} = req.user
             
 
-            const cacheKey = `user_status:${role}:${id}`
+            const cacheKey = REDIS_KEYS.USER_STATUS(role,id)
+            
             let status : string | null | undefined  = await RedisClient.get(cacheKey)
         
             
@@ -66,7 +67,7 @@ export class  BlockedStatusMiddleware {
                 }
 
                 await RedisClient.set(cacheKey,status ?? "null",{
-                    EX:3600
+                    EX:REDIS_TTL.BLOCK_STATUS
                 });
             }
 

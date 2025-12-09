@@ -1,9 +1,10 @@
 
 
 
-import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { ILockService } from "@entities/serviceInterfaces/lock-service.interface";
 import { injectable } from "tsyringe";
 import { RedisClient } from "@frameworks/cache/redis.client";
+import { REDIS_KEYS } from "@shared/constants";
 
 @injectable()
 export class RedisLockService implements ILockService{
@@ -14,7 +15,8 @@ export class RedisLockService implements ILockService{
     
     async acquireEventLock(eventId: string, ticketType: string, userId: string, ttl: number): Promise<boolean> {
         
-        const key = `${this._prefix}${eventId}:ticketType:${ticketType}`
+        const key = REDIS_KEYS.LOCK_EVENT(this._prefix,eventId,ticketType)
+
 
         const result = await RedisClient.set(
             key,
@@ -34,7 +36,7 @@ export class RedisLockService implements ILockService{
 
     async acquireServiceSlotLock(serviceId:string,startDate:string,endDate:string,ttl:number) : Promise<boolean>{
 
-        const key =  `${this._seviceSlotPrefix}${serviceId}:${startDate}:${endDate}`;
+        const key =  REDIS_KEYS.LOCK_SERVICE_SLOT(this._seviceSlotPrefix,serviceId,startDate,endDate)
 
         const result = await RedisClient.set(
             key,
@@ -47,7 +49,8 @@ export class RedisLockService implements ILockService{
     }
 
     async acquireServiceLock(serviceId: string, selectedDate: string, selectedSlotTime: string, clientId: string, ttl: number): Promise<boolean> {
-        const key = `${this._sevicePrefix}${serviceId}:${selectedDate}:${selectedSlotTime}:${clientId}`;
+
+        const key = REDIS_KEYS.LOCK_SERVICE(this._sevicePrefix,serviceId,selectedDate,selectedSlotTime,clientId)
 
         const result = await RedisClient.set(
             key,
@@ -60,7 +63,7 @@ export class RedisLockService implements ILockService{
 
     async releaseServiceLock(serviceId: string, selectedDate: string, selectedSlotTime: string, clientId: string): Promise<void> {
         
-        const key = `${this._sevicePrefix}${serviceId}:${selectedDate}:${selectedSlotTime}:${clientId}`;
+        const key = REDIS_KEYS.RELEASE_SERVICE_LOCK(this._sevicePrefix,serviceId,selectedDate,selectedSlotTime,clientId)
 
         const currentValue = await RedisClient.get(key)
 
@@ -72,7 +75,7 @@ export class RedisLockService implements ILockService{
 
     async releaseEventLock(eventId: string, ticketType: string, userId: string): Promise<void> {
         
-        const key = `${this._prefix}${eventId}:ticketType:${ticketType}`
+        const key = REDIS_KEYS.RELEASE_EVENT_LOCK(this._prefix,eventId,ticketType);
 
         const currentValue = await RedisClient.get(key);
 
