@@ -3,7 +3,7 @@ import { ITicketRepository } from "@entities/repositoryInterfaces/ticket/ticket-
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
 import { IUUIDGeneratorService } from "@entities/serviceInterfaces/generate-random-uuid.interface";
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
-import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { ILockService } from "@entities/serviceInterfaces/lock-service.interface";
 import { ITicketPurchaseDTO } from "@shared/dtos/ticket.dto";
 
 import { IHandleEventPaymentFailedUseCase } from "@entities/useCaseInterfaces/client/event/handle-event-payment-failed.usecase.interface";

@@ -4,7 +4,7 @@ import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/servic
 import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.repository.interface";
 import { IUUIDGeneratorService } from "@entities/serviceInterfaces/generate-random-uuid.interface";
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
-import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { ILockService } from "@entities/serviceInterfaces/lock-service.interface";
 import { IHandleServiceBookingWebhookUseCase } from "@entities/useCaseInterfaces/client/service/handle-service-booking-webhook.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { mapToBookingDTO } from "@mappers/BookingMapper";

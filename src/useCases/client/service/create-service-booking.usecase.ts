@@ -1,5 +1,5 @@
 import { IServicebookingStripeService } from "@entities/serviceInterfaces/service-booking-stripe.service";
-import { ILockService } from "@entities/serviceInterfaces/ticket-lock-service.interface";
+import { ILockService } from "@entities/serviceInterfaces/lock-service.interface";
 import { ICreateServiceBookingUseCase } from "@entities/useCaseInterfaces/client/service/create-service-booking-usercase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
