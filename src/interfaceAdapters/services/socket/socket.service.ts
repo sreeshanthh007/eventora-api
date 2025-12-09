@@ -1,6 +1,6 @@
 
 import { CustomError } from "@entities/utils/custom.error";
-import { HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { Server } from "socket.io";
 
 
@@ -15,7 +15,7 @@ export class SocketService{
 
     public static getIO(): Server {
         if(!this._io){
-            throw new CustomError("socket.io is not yet set",HTTP_STATUS.INTERNAL_SERVER_ERROR)
+            throw new CustomError(ERROR_MESSAGES.SOCKET_NOT_FOUND,HTTP_STATUS.INTERNAL_SERVER_ERROR)
         }
 
         return this._io

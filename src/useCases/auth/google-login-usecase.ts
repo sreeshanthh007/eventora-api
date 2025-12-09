@@ -4,7 +4,7 @@ import { IRegisterStrategy } from "./register-strategies/register-strategy.inter
 import { ILoginStrategy } from "./login-strategies/login-strategy.interface";
 import { OAuth2Client } from "google-auth-library";;
 import { CustomError } from "@entities/utils/custom.error";
-import { ERROR_MESSAGES, GOOGLE_LOGIN_SUCCESS_MESSAGE, HTTP_STATUS, TRole } from "@shared/constants";
+import { ERROR_MESSAGES, GOOGLE_LOGIN_SUCCESS_MESSAGE, HTTP_STATUS, SENT_EMAIL_SUBJECT, TRole } from "@shared/constants";
 import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
 import { UserResponseDTO } from "@shared/dtos/user.dto";
 
@@ -81,7 +81,7 @@ export class GoogleuseCase implements IGoogleUseCase {
 
           await this.emailService.sendEmail(
             email,
-            "🎉 Welcome to Eventora – You're All Set!",
+            SENT_EMAIL_SUBJECT.GOOGLE_LOGIN,
             GOOGLE_LOGIN_SUCCESS_MESSAGE(name as string)
           )
 

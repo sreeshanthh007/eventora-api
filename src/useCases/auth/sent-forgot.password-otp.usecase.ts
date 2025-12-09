@@ -4,6 +4,7 @@ import { IOTPService } from "@entities/serviceInterfaces/otp-service.interface";
 import { IEmailService } from "@entities/serviceInterfaces/email-service-interface";
 import { IOtpCacheService } from "@entities/serviceInterfaces/otp-cache-service.interface";
 import { IBcryptService } from "@entities/serviceInterfaces/bcrypt-service.interface";
+import { REDIS_TTL } from "@shared/constants";
 
 
 @injectable()
@@ -24,7 +25,7 @@ export class sendForgotPasswordOtp implements ISendOtpUsecase {
 
         const hashedOTP = await this._otpBcryptService.hash(otp)
 
-        await this._otpCacheService.set(email,hashedOTP,300)
+        await this._otpCacheService.set(email,hashedOTP,REDIS_TTL.OTP)
         
        
 

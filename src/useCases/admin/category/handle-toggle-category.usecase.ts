@@ -1,7 +1,7 @@
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
 import { IHandleToggleCategoryUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-category.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
-import { HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 
 
@@ -19,7 +19,7 @@ export class HandleToggleCategoryUseCase implements IHandleToggleCategoryUseCase
 
         if(!categoryExist){
             throw new CustomError(
-                "category didnt exist",
+                ERROR_MESSAGES.CATEGORY_NOT_FOUND,
                 HTTP_STATUS.NOT_FOUND
             )
         }

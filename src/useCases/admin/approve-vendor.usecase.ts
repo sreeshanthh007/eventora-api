@@ -2,7 +2,7 @@ import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { IApproveVendorUseCase } from "@entities/useCaseInterfaces/admin/approve-vendor.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, FCM_NOTIFICATION_MESSAGE, HTTP_STATUS } from "@shared/constants";
 import { SocketService } from "@services/socket/socket.service";
 import { inject, injectable } from "tsyringe";
 import { vendorStatus } from "@shared/constants";
@@ -37,8 +37,8 @@ import { vendorStatus } from "@shared/constants";
                     vendorId,
                     vendorExist.fcmToken,
                     {
-                        title:"Account Approved",
-                        body:"Your vendor account has been approved by admin 🎉"
+                        title:FCM_NOTIFICATION_MESSAGE.VENDOR_APPROVED.title,
+                        body:FCM_NOTIFICATION_MESSAGE.VENDOR_APPROVED.body
                     }
                 )
             }

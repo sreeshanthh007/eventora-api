@@ -2,7 +2,7 @@ import { ISlotGenerationData, ISlotGeneratorService } from "@entities/serviceInt
 import { SlotGenerationResponse } from "@shared/dtos/slot-generator.dto";
 import { ILockService } from "@entities/serviceInterfaces/lock-service.interface";
 import { CustomError } from "@entities/utils/custom.error";
-import {  HTTP_STATUS } from "@shared/constants";
+import {  ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { RRule, Weekday } from "rrule";
 import { inject, injectable } from "tsyringe";
 
@@ -27,7 +27,7 @@ export class SlotGeneratorService implements ISlotGeneratorService{
                 return RRule.YEARLY
             case "ONCE" :
                 return RRule.DAILY
-            default: throw new CustomError("Invalid frequency",HTTP_STATUS.BAD_REQUEST);
+            default: throw new CustomError(ERROR_MESSAGES.INVALID_FREQUENCY,HTTP_STATUS.BAD_REQUEST);
         }
     }
 
@@ -44,7 +44,7 @@ export class SlotGeneratorService implements ISlotGeneratorService{
             case 4: return RRule.TH;
             case 5: return RRule.FR;
             case 6: return RRule.SA;
-            default: throw new CustomError("Invalid week day", HTTP_STATUS.BAD_REQUEST);
+            default: throw new CustomError(ERROR_MESSAGES.INVALID_WEEKDAY, HTTP_STATUS.BAD_REQUEST);
         }
     })
 }

@@ -2,7 +2,7 @@ import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-
 import { INotificationService } from "@entities/serviceInterfaces/notification.service.interface";
 import { IRejectVendorUseCase } from "@entities/useCaseInterfaces/admin/reject-vendor.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, FCM_NOTIFICATION_MESSAGE, HTTP_STATUS } from "@shared/constants";
 import { SocketService } from "@services/socket/socket.service";
 import { inject, injectable } from "tsyringe";
 import { vendorStatus } from "@shared/constants";
@@ -33,7 +33,7 @@ export class RejectVendorUseCase implements IRejectVendorUseCase{
             await this.notificationService.sendNotification(
                 vendorId,
                 isVendorExist.fcmToken,
-                {title:"Account Rejected",body:"Your account has been rejected"}
+                {title:FCM_NOTIFICATION_MESSAGE.VENDOR_REJECTED.title,body:FCM_NOTIFICATION_MESSAGE.VENDOR_REJECTED.body}
             )
         }
 

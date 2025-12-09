@@ -66,7 +66,7 @@ export class CLientRegisterStrategy implements IRegisterStrategy {
             return client
         }else{
             throw new CustomError(
-                "invalid role for client registeration",
+                ERROR_MESSAGES.INVALID_ROLE_FOR_CLIENT_REGISTERATION,
                 HTTP_STATUS.BAD_REQUEST
             )
         }

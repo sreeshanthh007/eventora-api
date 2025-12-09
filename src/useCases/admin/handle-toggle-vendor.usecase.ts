@@ -2,7 +2,7 @@ import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-
 import { IHandleToggleVendorUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle.vendor.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { RedisClient } from "@frameworks/cache/redis.client";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS, REDIS_TTL } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -35,7 +35,7 @@ export class HandleToggleVendorStatusUseCase implements IHandleToggleVendorUseCa
 
         await this.vendorRepository.findByIdAndUpdateStatus(vendorId,newStatus)
 
-         await RedisClient.set(`user_status:vendor:${vendorId}`, newStatus,{EX:3600});
+         await RedisClient.set(`user_status:vendor:${vendorId}`, newStatus,{EX:REDIS_TTL.OTP});
 
     }
 }
