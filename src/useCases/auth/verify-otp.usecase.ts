@@ -24,7 +24,7 @@ export class VerifyOTPUseCase implements IVerifyOtpUsecase{
        
 
         if(!isOTPValid){
-            throw new CustomError("Invalid OTP",HTTP_STATUS.BAD_REQUEST)
+            throw new CustomError(ERROR_MESSAGES.INVALID_OTP,HTTP_STATUS.BAD_REQUEST)
         }
         
        await this._otpCacheService.del(key)

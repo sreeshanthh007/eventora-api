@@ -69,12 +69,12 @@ export class StripeService  implements IStripeService {
         return paymentIntent;
     } catch (error: unknown) {
      if (error instanceof Error) {
-      console.error("Error creating PaymentIntent:", error.message);
+     
     throw new CustomError(error.message, HTTP_STATUS.BAD_REQUEST);
     }
 
-      console.error("Unknown error creating PaymentIntent:", error);
-      throw new CustomError("Unexpected error occurred", HTTP_STATUS.INTERNAL_SERVER_ERROR);
+      
+      throw new CustomError(ERROR_MESSAGES.SERVER_ERROR, HTTP_STATUS.INTERNAL_SERVER_ERROR);
     }
     }
   }

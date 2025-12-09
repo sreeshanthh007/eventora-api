@@ -5,7 +5,7 @@ import { IUUIDGeneratorService } from "@entities/serviceInterfaces/generate-rand
 import { IQrCodeService } from "@entities/serviceInterfaces/qr-code-service.interface";
 import { IHostNewEventUseCase } from "@entities/useCaseInterfaces/vendor/event/host-new-event.usecase";
 import { CustomError } from "@entities/utils/custom.error";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, ERROR_MESSAGES_WITH_REASONS, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 
 
@@ -31,7 +31,7 @@ export class HostNewEventUseCase implements IHostNewEventUseCase{
 
        if(vendor.vendorStatus=="pending" || vendor.vendorStatus=="rejected"){
             throw new CustomError(
-            `Cannot add event because vendor status is: ${vendor.vendorStatus}`,
+            ERROR_MESSAGES_WITH_REASONS.CANNOT_ADD_EVENT(vendor.vendorStatus),
              HTTP_STATUS.BAD_REQUEST
          );
        }

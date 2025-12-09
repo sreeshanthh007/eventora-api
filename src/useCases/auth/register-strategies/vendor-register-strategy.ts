@@ -67,7 +67,7 @@ export class VendorRegisterStrategy implements IRegisterStrategy {
                  return vendor
         }else{
             throw new CustomError(
-                "Invalid role for vendor request",
+                ERROR_MESSAGES.INVALID_ROLE_FOR_VENDOR_REGISTERATION,
                 HTTP_STATUS.BAD_REQUEST
             )
         }

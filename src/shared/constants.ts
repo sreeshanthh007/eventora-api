@@ -74,6 +74,7 @@ export enum ERROR_MESSAGES  {
   REQUEST_NOT_FOUND= "Request Not Found",
   INVALID_TOKEN= "Authentication error: Invalid token",
   INVALID_CREDENTIALS= "Invalid credentials provided.",
+  INVALID_OTP="Invalid OTP",
   USER_NOT_FOUND= "User not found.",
   UNAUTHORIZED_ACCESS= "Unauthorized access",
   FORBIDDEN=
@@ -82,11 +83,14 @@ export enum ERROR_MESSAGES  {
   VALIDATION_ERROR= "Validation error occurred.",
   UNAUTH_NO_USER_FOUND= "Unauthorized: No user found in request",
   INVALID_ROLE= "Invalid user role",
+  INVALID_ROLE_FOR_CLIENT_REGISTERATION="Invalid Role for Client Registeration",
+  INVALID_ROLE_FOR_VENDOR_REGISTERATION="Invalid Role for Vendor Registeration",
   ROUTE_NOT_FOUND= "Route not found.",
   PAYLAOD_NOT_FOUND= "Invalid or empty Payload",
   EMAIL_REQUIRED="Email is Required",
   UNEXPECTED_NULL_USER="Unexpected null user",
   FOLDER_NOT_FOUND="Folder not Found",
+  CATEGORY_NOT_FOUND="Category not found",
   CATEGORY_ALREADY_EXISTS="Category already exist",
   ID_NOT_FOUND="ID not found",
   MISSING_PARAMETERS="Some details are missing",
@@ -123,6 +127,8 @@ SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is
   EVENT_NOT_FOUND="Event not found",
   DUPLICATE_BOOKING_ERROR="You have already booked this service. Duplicate bookings are not allowed.",
   INVALIID_TICKET_TYPE="Invalid Ticket Type",
+  INVALID_FREQUENCY="Invalid Frequency",
+  INVALID_WEEKDAY="Invalid Week Day",
   USER_ALREADY_BOOKED="You are already booked this slot one time !",
   CANNOT_CANCEL_SERVICE="This service cannot be cancelled if it is already ongoing, completed, or previously cancelled.",
   CANNOT_CANCEL_SERVICE_FAILED_PAYMENT="This service cannot be cancelled as the payment has failed.",
@@ -135,9 +141,15 @@ SERVICE_BOOKING_BLOCKED_ERROR="Unable to complete the booking as this service is
   RATING_BEFORE_BOOKING="You need to book this service before reviewing.",
   RATING_AFTER_COMPLETED="You can only review after completing the service.",
   INVALID_RATING_SUBMISSION="Unable to submit the review as no changes have been detected. Please make modifications before attempting to post again",
+  SOCKET_NOT_FOUND="Socket is not set Yet",
   CHAT_NOT_FOUND="Chat not found"
   
 };
+
+export const ERROR_MESSAGES_WITH_REASONS = {
+ CANNOT_ADD_SERVICE:(vendorStatus:string)=>`cannot add Service due to vendor Status :${vendorStatus}`,
+ CANNOT_ADD_EVENT:(vendorStatus:string)=>`cannto add Event due to vendor status : ${vendorStatus}`
+}
 
 export const ROLE_MAP: Record<string, string> = {
   "_cl": "client",
@@ -157,6 +169,15 @@ export const DIRECT_CHAT_EVENTS={
 
 
 export const FCM_NOTIFICATION_MESSAGE={
+  VENDOR_APPROVED:{
+    title:"Account Approved",
+    body:"Your vendor account has been approved by admin 🎉"
+  },
+  VENDOR_REJECTED:{
+    title:"Account Rejected",
+    body:"Your account has been rejected"
+  },
+
   EVENT_BOOKING_SUCCESS:{
   title:"🎉 Your event is confirmed!",
   body:"Thanks for booking with us — we’ve received your request and will follow up shortly with all the details. Keep an eye on your gmail!",
@@ -176,7 +197,6 @@ export const FCM_NOTIFICATION_MESSAGE={
   SEND_UPCOMING_SERVICE_NOTIFICATION:{
     title:(vendorName:string)=>`Hey Be Ready ${vendorName}`,
     body:(clientName:string)=>`Only 15 minutes left to begin the service for client: ${clientName}. Get ready to take action!`
-
   },
 
   SEND_EXPIRED_SLOTS_NOTIFICATION:{
@@ -188,7 +208,7 @@ export const FCM_NOTIFICATION_MESSAGE={
 
 
 export const REDIS_TTL = {
-  OTP: 5 * 60, 
+  OTP: 300, 
  BLOCK_STATUS:3600 
 }
 
@@ -234,3 +254,7 @@ export const GOOGLE_LOGIN_SUCCESS_MESSAGE = (name: string) => `
     <p style="margin-top: 40px;">Cheers,<br>The Eventora Team</p>
   </div>
 `;
+
+export const SENT_EMAIL_SUBJECT = {
+  GOOGLE_LOGIN:"🎉 Welcome to Eventora – You're All Set!"
+}

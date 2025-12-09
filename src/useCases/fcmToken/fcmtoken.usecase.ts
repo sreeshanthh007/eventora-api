@@ -31,7 +31,7 @@ export class FcmTokenUseCase implements IFcmTokenUseCase{
             throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
 
-         await repository?.findByIdandSaveFcmToken(userId,fcmToken)
+         await repository!.findByIdandSaveFcmToken(userId,fcmToken)
          
     }   
 }
