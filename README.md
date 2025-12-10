@@ -93,6 +93,6 @@ src/
 ├─ interfaceAdapters/ # repositories, services
 ├─ frameworks/        # express, mongodb, redis, sockets
 ├─ shared/            # utils & constants
-└─ index.ts           # entry point
+└─ app.ts           # entry point
 ```
 
