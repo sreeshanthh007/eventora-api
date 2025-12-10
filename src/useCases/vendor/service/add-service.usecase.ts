@@ -3,7 +3,7 @@ import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/servic
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { IAddServiceUseCase } from "@entities/useCaseInterfaces/vendor/service/add-service.interface.usecase";
 import { CustomError } from "@entities/utils/custom.error";
-import { ERROR_MESSAGES, ERROR_MESSAGES_WITH_REASONS, HTTP_STATUS } from "@shared/constants";
+import {  ERROR_MESSAGES_WITH_REASONS, HTTP_STATUS } from "@shared/constants";
 import { CreateServiceDTO } from "@shared/dtos/service.dto";
 import { inject, injectable } from "tsyringe";
 
