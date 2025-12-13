@@ -74,7 +74,17 @@ export class ClientRepository implements IClientRepository{
         )
     }
 
-        async findPaginatedClients(filter:FilterQuery<IClientEntity>,skip:number,limit:number):Promise<{user:IClientEntity[] | []; total:number}> {
+        async findPaginatedClients(search:string,skip:number,limit:number):Promise<{user:IClientEntity[] | []; total:number}> {
+          
+          const filter : FilterQuery<IClientEntity> = {}
+          
+          if(search){
+            filter.$or = [
+              { name: { $regex: search, $options: "i" } },
+              { email: {$regex:search,$options:"i"} }
+            ]
+          }
+          
             const [user,total] = await Promise.all([
                 ClientModel.find(filter).sort({createdAt:-1}).skip(skip).limit(limit),
                 ClientModel.countDocuments(filter)

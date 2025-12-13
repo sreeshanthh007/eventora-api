@@ -1,9 +1,9 @@
-import { IVendorEntity } from "@entities/models/vendor.entity";
+
 import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-repository.interface";
 import { IGetRequestedVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-requested-vendors.usecase.interfaces";
 import { toRequestedVendorTableDTO} from "@mappers/VendorMapper";
+import { PAGINATION } from "@shared/constants";
 import { PaginatedVendors } from "interfaceAdapters/models/PaginatedVendors";
-import { FilterQuery } from "mongoose";
 import { inject, injectable } from "tsyringe";
 
 
@@ -16,20 +16,22 @@ export class GetRequestedVendorsUseCase implements IGetRequestedVendorsUseCase{
 
     async execute(limit: number, searchTerm: string, current: number): Promise<PaginatedVendors> {
         
-        const filter : FilterQuery<IVendorEntity>={}
+      
+      const safePage = Math.max(
+        PAGINATION.PAGE,
+        current || PAGINATION.PAGE
+      );
+      
+      const safeLimit = Math.min(
+        PAGINATION.MAX_LIMIT,
+        Math.max(1, limit || PAGINATION.LIMIT)
+      );
+      
         
-        if(searchTerm){
-            filter.$or=[
-                {name:{$regex:searchTerm,$options:"i"}},
-                {email:{$regex:searchTerm,$options:"i"}}
-            ]
-        };
-
-        const validPageNumber = Math.max(1,current || 1)
-        const skip = (validPageNumber - 1) * limit 
+        const skip = (safePage - 1) * safeLimit 
 
 
-        const {vendors,total} = await this.vendorRepo.findPaginatedVendorByStatus(filter,skip,limit)
+        const {vendors,total} = await this.vendorRepo.findPaginatedVendorByStatus(searchTerm,skip,limit)
 
          const response = {
             vendors : vendors.map(toRequestedVendorTableDTO),

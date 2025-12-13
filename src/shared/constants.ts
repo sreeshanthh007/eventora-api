@@ -221,6 +221,13 @@ export const REDIS_KEYS = {
    RELEASE_SERVICE_LOCK:(prefix:string,serviceId:string,selectedDate:string,selectedSlotTime:string,clientId:string) => `${prefix}${serviceId}:${selectedDate}:${selectedSlotTime}:${clientId}`,
 }
 
+export const PAGINATION = {
+  BOOKED_EVENT_PAGINATION : {PAGE:1,LIMIT:2,MAX_LIMIT:5},
+  PAGE: 1,
+  LIMIT: 6,
+  MAX_LIMIT: 10,
+};
+
 
 export const   EVENT_STATUS_ERROR = (currentStatus:string,newStatus:string) => `cannot change from ${currentStatus} to ${newStatus}`
 

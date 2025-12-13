@@ -1,9 +1,10 @@
-import { ICategoryEnity } from "@entities/models/category.entity";
+
 import { ICategoryRepository } from "@entities/repositoryInterfaces/admin/category.interface";
 import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase.interface";
 import { toCategoryListResponse } from "@mappers/CategoryMapper";
+import { PAGINATION } from "@shared/constants";
 import { PaginatedCategory } from "interfaceAdapters/models/paginatedCategory";
-import { FilterQuery } from "mongoose";
+
 import { inject, injectable } from "tsyringe";
 
 
@@ -16,19 +17,22 @@ export class GetAllCategoryUseCase implements IGetAllCatgoryUseCase{
     ){}
 
    async execute(limit: number, searchTerm: string, current: number): Promise<PaginatedCategory> {
-    const filter: FilterQuery<ICategoryEnity> = {};
+   
+     
+     const safePage = Math.max(
+       PAGINATION.PAGE,
+       current || PAGINATION.PAGE
+     )
+     
+     const safeLimit = Math.min(
+       PAGINATION.MAX_LIMIT,
+       Math.max(1, limit || PAGINATION.LIMIT)
+     );
+     
+   
+    const skip = (safePage - 1) * safeLimit;
 
-    if (searchTerm) {
-        filter.$or = [
-            { title: { $regex: searchTerm, $options: "i" } },
-            { categoryId: { $regex: searchTerm, $options: "i" } }
-        ];
-    }
-
-    const validPageNumber = Math.max(1, current || 1);
-    const skip = (validPageNumber - 1) * limit;
-
-    const { categories, total } = await this.categoryRepo.findPaginatedCategory(filter, skip, limit);
+    const { categories, total } = await this.categoryRepo.findPaginatedCategory(searchTerm, skip, limit);
 
     const response = {
         categories: toCategoryListResponse(categories),

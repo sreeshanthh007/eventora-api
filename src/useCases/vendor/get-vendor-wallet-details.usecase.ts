@@ -2,7 +2,7 @@ import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.
 import { IGetVendorWalletDetailsUseCase } from "@entities/useCaseInterfaces/vendor/get-vendor-wallet-details.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { mapWalletDetailstoDTO } from "@mappers/WalletMapper";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS, PAGINATION } from "@shared/constants";
 import { PaginatedWalletDetails } from "interfaceAdapters/models/paginatedWalletDetails";
 import { inject, injectable } from "tsyringe";
 
@@ -22,10 +22,19 @@ export class GetVendorWalletDetailsUseCase implements IGetVendorWalletDetailsUse
         if(!walletdetails){
             throw new CustomError(ERROR_MESSAGES.WALLET_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
+        
+        const safePage = Math.max(
+          PAGINATION.PAGE,
+          page || PAGINATION.PAGE
+        )
+        
+        const safeLimit = Math.min(
+          PAGINATION.MAX_LIMIT,
+          Math.max(1, limit || PAGINATION.LIMIT)
+        );
+        
 
-        const validPageNumber = Math.max(1,page || 1)
-
-        const skip = (validPageNumber-1)*limit
+        const skip = (safePage-1)*safeLimit
 
 
         const {wallet,total} = await this._walletRepo.findWalletDetailsByUserId(vendorId,type,skip,limit);

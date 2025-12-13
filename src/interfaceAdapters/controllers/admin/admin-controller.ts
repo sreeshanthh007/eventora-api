@@ -72,7 +72,7 @@ export class AdminController implements IAdminController{
         const {
             type="all"
             ,page="1",
-            limit="5"
+            limit="6"
         } = req.query as {
             type:string,
             page:string,

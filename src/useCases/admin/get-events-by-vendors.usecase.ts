@@ -1,6 +1,7 @@
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
 import { IGetEventsByVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-events-by-vendors.usecase.interface";
 import { mapEventsByVendorsToDTO } from "@mappers/EventMapper";
+import { PAGINATION } from "@shared/constants";
 import { PaginatedEventsByVendors } from "interfaceAdapters/models/paginatedEvents";
 import { inject, injectable } from "tsyringe";
 
@@ -16,9 +17,20 @@ export class GetEventsByVendorsUseCase implements IGetEventsByVendorsUseCase{
 
     async execute(page: number, limit: number, search: string,filterBy:string): Promise<PaginatedEventsByVendors> {
            
-            const validPageNumber = Math.max(1,page || 1)
+      
+          const safePage = Math.max(
+            PAGINATION.PAGE,
+            page || PAGINATION.PAGE
+          );
+      
+        const safeLimit = Math.min(
+          PAGINATION.MAX_LIMIT,
+          Math.max(1, limit || PAGINATION.LIMIT)
+        );
+      
+          
 
-            const skip = (validPageNumber-1)*limit
+            const skip = (safePage-1)*safeLimit
 
             const {events,total} = await this._eventRepo.findEventsHostedByVendorsForAdmin(skip,limit,search,filterBy)
 

@@ -3,7 +3,7 @@ import { IClientRepository } from "@entities/repositoryInterfaces/client/client-
 import { IGetClientBookedServicesUseCase } from "@entities/useCaseInterfaces/client/service/client-get-booked-service.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { mapBookingstoClientBookedService } from "@mappers/BookingMapper";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { ERROR_MESSAGES, HTTP_STATUS, PAGINATION } from "@shared/constants";
 import { PaginatedClientBookingDTO } from "interfaceAdapters/models/paginatedBooking";
 import { inject, injectable } from "tsyringe";
 
@@ -26,10 +26,19 @@ export class GetClientBookedServicesUseCase implements IGetClientBookedServicesU
             throw new CustomError(ERROR_MESSAGES.USER_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
         }
 
+        const safePage = Math.max(
+          PAGINATION.PAGE,
+          page || PAGINATION.PAGE
+        )
+        
+        const safeLimit = Math.min(
+          PAGINATION.MAX_LIMIT,
+          Math.max(1, limit || PAGINATION.LIMIT)
+        );
+        
+       
 
-        const validPageNumber = Math.max(1,page || 1)
-
-        const skip  = (validPageNumber-1)*limit
+        const skip  = (safePage-1)*safeLimit
 
         const {bookings,total} = await this._bookingRepo.findBookedServicesForClient(clientId,skip,limit,search);
 

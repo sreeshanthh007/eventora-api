@@ -115,7 +115,14 @@ export class ServiceRepository implements IServiceRepository{
       )
   }
 
-  async getAllServices(filter: FilterQuery<IServiceEntity>, skip: number, limit: number): Promise<{ services: IServiceEntity[] | []; total: number; }> {
+  async getAllServices(search:string, skip: number, limit: number,vendorId:string): Promise<{ services: IServiceEntity[] | []; total: number; }> {
+    const filter : FilterQuery<IServiceEntity> = {vendorId:vendorId}
+    
+    if(search){
+      filter.$or = [
+        {serviceTitle:{$regex:search,$options:"i"}}
+      ]
+    }
       const [services,total] = await Promise.all([
         serviceModel.find(filter).sort({createdAt:-1}).skip(skip).limit(limit),
         serviceModel.countDocuments(filter)

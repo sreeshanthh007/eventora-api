@@ -1,7 +1,7 @@
 
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import { VendorAnalyticsDashboardResponseDTO } from "@shared/dtos/vendor-analytics.dto";
-import { FilterQuery, ObjectId } from "mongoose";
+import {  ObjectId } from "mongoose";
 
 
 export interface IVendorRepository{
@@ -21,9 +21,9 @@ export interface IVendorRepository{
 
      findByIdandSaveFcmToken(id:string,fcmtoken:string) :Promise<void>
 
-    findPaginatedClients(filter:FilterQuery<IVendorEntity>,skip:number,limit:number) : Promise<{user:IVendorEntity[] | []; total:number}>
+    findPaginatedVendors(search:string,skip:number,limit:number) : Promise<{user:IVendorEntity[] | []; total:number}>
     
-    findPaginatedVendorByStatus(filter:FilterQuery<IVendorEntity>,skip:number,limit:number) :  Promise<{vendors:IVendorEntity[] | []; total:number}>
+    findPaginatedVendorByStatus(search:string,skip:number,limit:number) :  Promise<{vendors:IVendorEntity[] | []; total:number}>
 
      findByIdAndUpdateProfileImage(userId:string,profileImage:string) : Promise<void>
 
