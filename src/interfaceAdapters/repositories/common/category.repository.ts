@@ -24,7 +24,17 @@ export class CategoryRepository implements ICategoryRepository{
     return await categoryModel.create(category)
    }
 
-    async findPaginatedCategory(filter:FilterQuery<ICategoryEnity>,skip:number,limit:number) : Promise<{categories:ICategoryEnity[] | []; total:number}>{
+    async findPaginatedCategory(search:string,skip:number,limit:number) : Promise<{categories:ICategoryEnity[] | []; total:number}>{
+      
+        const filter : FilterQuery<ICategoryEnity> = {}
+        
+          if(search){
+            filter.$or = [
+              {title:{$regex:search,$options:"i"}},
+              {categoryId:{$regex:search,$options:"i"}}
+            ]
+          }
+          
         const [categories,total] = await Promise.all([
             categoryModel.find(filter).sort({createdAt:-1}).skip(skip).limit(limit),
             categoryModel.countDocuments(filter),

@@ -1,6 +1,7 @@
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
 import { IGetAllServiceWithFilterUseCase, ServiceFilters } from "@entities/useCaseInterfaces/client/service/get-all-service-with-filter.usecase.interface";
 import { mapServiceforClientPage } from "@mappers/serviceMapper";
+import { PAGINATION } from "@shared/constants";
 import { PaginatedServicesForClient } from "interfaceAdapters/models/paginatedService";
 import { inject, injectable } from "tsyringe";
 
@@ -18,10 +19,18 @@ export class GetAllServicesWithFilterUseCase implements IGetAllServiceWithFilter
         const {page,limit,search,sort,categoryId} =serviceFilters
 
 
+        const safePage = Math.max(
+          PAGINATION.PAGE,
+          page || PAGINATION.PAGE
+        )
+        
+        const safeLimit = Math.min(
+          PAGINATION.MAX_LIMIT,
+          Math.max(1, limit || PAGINATION.LIMIT)
+        );
+        
 
-        const validPageNumber = Math.max(1,page || 1)
-
-        const skip = (validPageNumber - 1)*limit
+        const skip = (safePage - 1)*safeLimit
 
         const {services,total} = await this._serviceRepo.findFIlteredSevices(
             {search,sort,categoryId},

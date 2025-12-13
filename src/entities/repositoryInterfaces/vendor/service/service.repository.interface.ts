@@ -2,7 +2,6 @@
 import { TBookingEntityWithPopulatedBookingDetailsForAdmin, TServiceEntityWithPopulatedVendorForClient } from "@entities/models/populated-types/service-populated.type";
 import { IServiceEntity } from "@entities/models/service.entity";
 import { type EditableServiceFields } from "@entities/useCaseInterfaces/vendor/service/edit-service.interface.usecase";
-import { FilterQuery } from "mongoose";
 
 
 export interface IServiceRepository {
@@ -15,7 +14,7 @@ export interface IServiceRepository {
 
   findByIdAndUpdate(id: string, data: EditableServiceFields): Promise<void>;
 
-  getAllServices(filter:FilterQuery<IServiceEntity>,skip:number,limit:number) : Promise<{services:IServiceEntity[] | [];  total:number}>
+  getAllServices(search:string,skip:number,limit:number,vendorId:string) : Promise<{services:IServiceEntity[] | [];  total:number}>
 
 
   getServiceBookingsofVendors(skip:number,limit:number,search:string,filterType:string) : Promise<{bookings:TBookingEntityWithPopulatedBookingDetailsForAdmin[] | []; total:number}>

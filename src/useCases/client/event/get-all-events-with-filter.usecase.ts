@@ -1,6 +1,7 @@
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
 import { EventFilters, IGetAllEventsWithFilterUseCase } from "@entities/useCaseInterfaces/client/event/get-all-events-with-filters.usercase.interface";
 import { mapEventsToClientEventPage } from "@mappers/EventMapper";
+import { PAGINATION } from "@shared/constants";
 import { paginatedEventsForClient } from "interfaceAdapters/models/paginatedEvents";
 import { inject, injectable } from "tsyringe";
 
@@ -15,10 +16,19 @@ export class GetAllEventsWithFilterUseCase implements IGetAllEventsWithFilterUse
     async execute(EventFilters: EventFilters): Promise<paginatedEventsForClient> {
         
         const {limit,page,search,location,sort,lat,lng} = EventFilters
+        
+        const safePage = Math.max(
+          PAGINATION.PAGE,
+          page || PAGINATION.PAGE
+        )
+        
+        const safeLimit = Math.min(
+          PAGINATION.MAX_LIMIT,
+          Math.max(1, limit || PAGINATION.LIMIT)
+        );
+       
 
-        const validPageNumber = Math.max(1,page || 1)
-
-        const skip = (validPageNumber-1)*limit
+        const skip = (safePage-1)*safeLimit
 
         const {events,total} = await this._eventRepo.findfilteredEvents(
             {search,location,sort,lat,lng},

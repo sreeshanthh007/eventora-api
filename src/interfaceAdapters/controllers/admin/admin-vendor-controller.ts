@@ -63,7 +63,7 @@ export class AdminVendorController implements IAdminVendorController {
 
   async getAllVendors(req: Request, res: Response): Promise<void> {
     const {
-      limit = "10",
+      limit = "6",
       page = "1",
       search = "",
     } = req.query as {

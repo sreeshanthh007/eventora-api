@@ -3,8 +3,8 @@ import { IVendorRepository } from "@entities/repositoryInterfaces/vendor/vendor-
 import { IGetAllVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-all-vendors.usecase.interface";
 import { PaginatedUsers } from "interfaceAdapters/models/paginatedUsers";
 import { mapClientAndVendorEntityToTableRow } from "@mappers/ClientMapper";
-import { FilterQuery } from "mongoose";
-import { IVendorEntity } from "@entities/models/vendor.entity";
+import { PAGINATION } from "@shared/constants";
+
 
 
 @injectable()
@@ -15,22 +15,24 @@ export class GetAllVendorUseCase implements IGetAllVendorsUseCase{
 
     async  execute(limit: number, searchTerm: string, current: number): Promise<PaginatedUsers>  {
 
-         const filter : FilterQuery<IVendorEntity> = {};
-         
-            if (searchTerm) {
-
-            filter.$or = [
-        { name: { $regex: searchTerm, $options: "i" } },
-        { email: { $regex: searchTerm, $options: "i" } },
-      ];
-    }
-
-    const validPageNumber = Math.max(1, current || 1);
-      const skip = (validPageNumber - 1) * limit;
+       
+      const safePage = Math.max(
+        PAGINATION.PAGE,
+        current || PAGINATION.PAGE
+      )
+      
+      const safeLimit = Math.min(
+        PAGINATION.MAX_LIMIT,
+        Math.max(1,limit || PAGINATION.LIMIT)
+      )
+      
+      
+    
+      const skip = (safePage - 1) * safeLimit;
    
 
-      const { user, total } = await this.vendorRepository.findPaginatedClients(
-        filter,
+      const { user, total } = await this.vendorRepository.findPaginatedVendors(
+        searchTerm,
         skip,
         limit
       );

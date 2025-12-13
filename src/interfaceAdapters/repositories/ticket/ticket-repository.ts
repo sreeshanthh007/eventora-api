@@ -19,9 +19,17 @@ export class TicketRepository implements ITicketRepository{
         return await ticketModel.findOne({ticketId:ticketId});
     }
 
-    async findTicketsByClientId(filter: FilterQuery<TTicketEntityWithEventPopulated>, clientId: string, skip: number, limit: number): Promise<{ tickets: TTicketEntityWithEventPopulated[] | []; total: number; }> {
+    async findTicketsByClientId(search:string, clientId: string, skip: number, limit: number): Promise<{ tickets: TTicketEntityWithEventPopulated[] | []; total: number; }> {
+      
+      const filter : FilterQuery<TTicketEntityWithEventPopulated> = {}
+      
       filter.paymentStatus = { $in: ["failed", "successfull"] };
-
+      
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { ticketId: { $regex: search, $options: "i" } }
+      ];
+      
        const [bookedEvents, total] = await Promise.all([
     ticketModel
       .find({ ...filter, clientId })

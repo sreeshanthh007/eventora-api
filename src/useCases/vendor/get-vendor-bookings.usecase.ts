@@ -1,6 +1,7 @@
 import { IBookingRepository } from "@entities/repositoryInterfaces/booking/booking.repository.interface";
 import { IGetVendorBookingUseCase } from "@entities/useCaseInterfaces/vendor/get-vendor-booking.usecase.interface";
 import { mapBookingstoVendorBookedServices } from "@mappers/BookingMapper";
+import { PAGINATION } from "@shared/constants";
 
 import { PaginatedVendorBookingsDTO } from "interfaceAdapters/models/paginatedBooking";
 import { inject, injectable } from "tsyringe";
@@ -15,9 +16,20 @@ export class GetVendorBookingsUseCase implements IGetVendorBookingUseCase{
     async execute(vendorId:string,page: number, limit: number, search?: string): Promise<PaginatedVendorBookingsDTO> {
         
         
-        const validPageNumber = Math.max(1,page || 1)
+      const safePage = Math.max(
+        PAGINATION.PAGE,
+        page || PAGINATION.PAGE
+      )
+      
+      const safeLimit = Math.min(
+        PAGINATION.MAX_LIMIT,
+        Math.max(1, limit || PAGINATION.LIMIT)
+      );
+      
+      
+        
 
-        const skip = (validPageNumber - 1)*limit
+        const skip = (safePage - 1)*safeLimit
 
         
         const {bookings,total} = await this._bookingRepo.findBookedServices(vendorId,skip,limit,search)

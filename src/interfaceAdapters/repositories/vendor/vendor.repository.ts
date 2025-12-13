@@ -60,11 +60,20 @@ export class VendorRepository implements IVendorRepository {
     });
   }
 
-  async findPaginatedClients(
-    filter: FilterQuery<IVendorEntity>,
+  async findPaginatedVendors(
+    search:string,
     skip: number,
     limit: number
   ): Promise<{ user: IVendorEntity[] | []; total: number }> {
+    
+    const filter: FilterQuery<IVendorEntity> = {}
+    
+    if(search){
+      filter.$or = [
+        { name: {$regex:search,$options:"i"} },
+        { email: {$regex:search,$options:"i"} }
+      ]
+    }
     const [user, total] = await Promise.all([
       VendorModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
       VendorModel.countDocuments(filter),
@@ -76,7 +85,17 @@ export class VendorRepository implements IVendorRepository {
     };
   }
 
-  async findPaginatedVendorByStatus( filter: FilterQuery<IVendorEntity>, skip: number, limit: number): Promise<{ vendors: IVendorEntity[] | []; total: number; }> {
+  async findPaginatedVendorByStatus( search:string, skip: number, limit: number): Promise<{ vendors: IVendorEntity[] | []; total: number; }> {
+    
+    const filter: FilterQuery<IVendorEntity> = {}
+    
+    if(search){
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } }
+      ];
+      
+    }
       const [vendors,total] = await Promise.all([
         VendorModel.find(filter)
         .sort({createdAt:-1})

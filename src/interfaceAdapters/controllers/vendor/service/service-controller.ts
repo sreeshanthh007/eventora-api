@@ -79,7 +79,7 @@ export class ServiceController implements IServiceController {
   async getAllService(req: Request, res: Response): Promise<void> {
     const {
       page = "1",
-      limit = "2",
+      limit = "6",
       search = "",
     } = req.query as {
       page?: string;

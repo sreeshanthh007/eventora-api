@@ -3,8 +3,9 @@ import { IClientRepository } from "@entities/repositoryInterfaces/client/client-
 import { IGetAllUsersUseCase } from "@entities/useCaseInterfaces/admin/get-all-users.usecase.interface";
 import { PaginatedUsers } from "interfaceAdapters/models/paginatedUsers";
 import { mapClientAndVendorEntityToTableRow } from "@mappers/ClientMapper";
-import { FilterQuery } from "mongoose";
-import { IClientEntity } from "@entities/models/client.entity";
+import { PAGINATION } from "@shared/constants";
+
+
 @injectable()
 export class getAllUsersUseCase implements IGetAllUsersUseCase{
     constructor(
@@ -13,21 +14,24 @@ export class getAllUsersUseCase implements IGetAllUsersUseCase{
 
     async  execute(limit: number, searchTerm: string, current: number): Promise<PaginatedUsers>  {
 
-         const filter: FilterQuery<IClientEntity> = {};
+     
+    
+      const safePage = Math.max(
+        PAGINATION.PAGE,
+        current || PAGINATION.PAGE
+      )
       
-            if (searchTerm) {
-      filter.$or = [
-        { name: { $regex: searchTerm, $options: "i" } },
-        { email: { $regex: searchTerm, $options: "i" } },
-      ];
-    }
-
-    const validPageNumber = Math.max(1, current || 1);
-      const skip = (validPageNumber - 1) * limit;
+      const safeLimit = Math.min(
+        PAGINATION.MAX_LIMIT,
+        Math.max(1,limit || PAGINATION.LIMIT)
+      )
+      
+    
+      const skip = (safePage - 1) * safeLimit;
    
 
       const { user, total } = await this.clientRepository.findPaginatedClients(
-        filter,
+        searchTerm,
         skip,
         limit
       );
