@@ -10,4 +10,5 @@ export interface ITicketRepository {
     findPaginatedTicketDetails(eventId:string,skip:number,limit:number,search:string) : Promise<{tickets:ITicketEntity[] | []; total:number}>
     findTicketsByIdAndVerifyTicket(ticketId:string) : Promise<void>
     findTicketByIdAndCancel(ticketId:string) : Promise<void>
+    
 }

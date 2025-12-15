@@ -97,6 +97,7 @@ import { IGetAllEventsUseCase } from "@entities/useCaseInterfaces/vendor/event/g
 import { GetAllEventsUseCase } from "@usecases/vendor/event/get-all-events.usecase";
 import { IToggleStatusUseCase } from "@entities/useCaseInterfaces/vendor/event/toggleStatus.usecase.interface";
 import { ToggleStatusUseCase } from "@usecases/vendor/event/toggle-status.usecase";
+import { HandleToggleEventByAdminUseCase } from "@usecases/admin/handle-toggle-event-admin.usecase";
 import { IGetAllUsersDetailsUseCase } from "@entities/useCaseInterfaces/get-all-users.interface.usecase";
 import { GetAllUsersDetailsUseCase } from "@usecases/common/get-all-users.usecase";
 import { IUpdateProfileImageUseCase } from "@entities/useCaseInterfaces/client/updateProfileImage.usecase.interface";
@@ -237,6 +238,7 @@ import { IGetEventsByVendorsUseCase } from "@entities/useCaseInterfaces/admin/ge
 import { GetEventsByVendorsUseCase } from "@usecases/admin/get-events-by-vendors.usecase";
 import { IGetSeviceBookingsOfVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-service-bookings-of-vendors.usecase.interface";
 import { GetServiceBookingsofVendorsUseCase } from "@usecases/admin/get-service-booking-of-vendors.usecase";
+import { IHandleToggleEventByAdminUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-event.interface";
 
 
 
@@ -457,7 +459,11 @@ export class UseCaseRegistry {
         useClass: HandleToggleCategoryUseCase,
       }
     );
-
+    
+    container.register<IHandleToggleEventByAdminUseCase>("IHandleToggleEventByAdminUseCase", {
+      useClass: HandleToggleEventByAdminUseCase
+    });
+    
     container.register<IForgotUpdatePasswordUseCase>(
       "IForgotUpdatePasswordUseCase",
       {

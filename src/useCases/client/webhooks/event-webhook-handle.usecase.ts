@@ -9,7 +9,7 @@ import { ILockService } from "@entities/serviceInterfaces/lock-service.interface
 import { IHandleEventWebHookUseCase} from "@entities/useCaseInterfaces/client/event/event-webhook-handle.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { createTransaction } from "@mappers/WalletMapper";
-import { ERROR_MESSAGES, FCM_NOTIFICATION_MESSAGE, HTTP_STATUS } from "@shared/constants";
+import { COMMISSIONS, ERROR_MESSAGES, FCM_NOTIFICATION_MESSAGE, HTTP_STATUS } from "@shared/constants";
 import { ITicketPurchaseDTO, TicketDTO } from "@shared/dtos/ticket.dto";
 import { inject, injectable } from "tsyringe";
 
@@ -89,8 +89,10 @@ export class EventWebHookHandleUseCase implements IHandleEventWebHookUseCase{
                     title:eventExist.title
                 })
 
-                const commisionForAdmin = ticket.pricePerTicket * 0.25
-                const commissionForVendor = ticket.pricePerTicket * 0.75
+                const commisionForAdmin = COMMISSIONS.EVENT_COMMISSION_FOR_ADMIN(ticket.pricePerTicket)
+                
+                const commissionForVendor = COMMISSIONS.EVENT_COMMISSION_FOR_VENDOR(ticket.pricePerTicket)
+                
                 const adminTransaction = createTransaction("ticketBooking","Event",ticketId,commisionForAdmin,"credit");
                 const vendorTransaction = createTransaction("ticketBooking","Event",ticketId,commissionForVendor,"credit");
 
