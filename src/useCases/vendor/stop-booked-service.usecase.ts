@@ -3,7 +3,7 @@ import { IWalletRepository } from "@entities/repositoryInterfaces/wallet/wallet.
 import { IStopBookedServiceUseCase } from "@entities/useCaseInterfaces/vendor/stop-booked-service.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { createTransaction } from "@mappers/WalletMapper";
-import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
+import { COMMISSIONS, ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 
 
@@ -35,7 +35,7 @@ export class StopBookedServiceUseCase implements IStopBookedServiceUseCase{
 
         await this._bookingRepo.updateBookingStatus(bookingId,"completed");
 
-        const amountforVendor = booking.amount * 0.80
+        const amountforVendor = COMMISSIONS.SERVICE_COMMISSION_FOR_VENDOR(booking.amount)
    
         const transactionForVendor = createTransaction("serviceBooking","service",bookingId,amountforVendor,"credit");
 

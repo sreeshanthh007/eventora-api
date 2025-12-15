@@ -4,6 +4,7 @@ import { IGetAdminWalletDetailsUseCase } from "@entities/useCaseInterfaces/admin
 import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase.interface";
 import { IGetEventsByVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-events-by-vendors.usecase.interface";
 import { IGetSeviceBookingsOfVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-service-bookings-of-vendors.usecase.interface";
+import { IHandleToggleEventByAdminUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-event.interface";
 import { IGetAllNotificationUseCase } from "@entities/useCaseInterfaces/get-all-notification.usecase.interface";
 import { CustomRequest } from "@middlewares/auth.middleware";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
@@ -22,6 +23,7 @@ export class AdminController implements IAdminController{
         @inject("IGetAdminWalletDetailsUseCase") private _getAdminWalletDetailsUseCase : IGetAdminWalletDetailsUseCase,
         @inject("IGetEventsByVendorsUseCase") private _getEventsByVendorsUseCase : IGetEventsByVendorsUseCase,
         @inject("IGetServiceBookingsofVendorsUseCase") private _getServiceBookingsofVendorsUseCase : IGetSeviceBookingsOfVendorsUseCase,
+        @inject("IHandleToggleEventByAdminUseCase") private _handleToggleEventByAdminUseCase : IHandleToggleEventByAdminUseCase,
         @inject("IGetAllNotificationUseCase") private _getAdminNotificationUseCase : IGetAllNotificationUseCase,
     ){}
 
@@ -142,6 +144,26 @@ export class AdminController implements IAdminController{
 
         res.status(HTTP_STATUS.OK)
         .json({success:true,response})
+    }
+    
+    
+    async handleToggleEvent(req: Request, res: Response): Promise<void> {
+        
+        const {eventId} = req.params
+        const {isActive} = req.body
+        
+        const {id} = (req as CustomRequest).user
+        
+        if(!id || !eventId){
+          res.status(HTTP_STATUS.BAD_REQUEST)
+            .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+          return
+        }
+        
+        await this._handleToggleEventByAdminUseCase.execute(eventId,isActive)
+        
+        res.status(HTTP_STATUS.OK)
+          .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
     }
    
 }

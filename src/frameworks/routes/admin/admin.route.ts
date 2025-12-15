@@ -127,6 +127,13 @@ export class AdminRotes extends BaseRouter{
             authorizeRole(["admin"]),
             asyncHandler(adminController.getEventsByVendors.bind(adminController))
         );
+        
+        this.router.patch(
+          "/toggle-event/:eventId",
+          verifyAuth,
+          authorizeRole(["admin"]),
+          asyncHandler(adminController.handleToggleEvent.bind(adminController))
+        );
 
         this.router.get(
             "/booked-services-vendors",

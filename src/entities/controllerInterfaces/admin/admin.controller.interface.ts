@@ -8,4 +8,5 @@ export interface IAdminController {
     getEventsByVendors(req:Request,res:Response) : Promise<void>
     getBookedServicesofVendors(req:Request,res:Response) : Promise<void>
     getAdminNotifications(req:Request,res:Response) : Promise<void>
+    handleToggleEvent(req:Request,res:Response) : Promise<void>
 }

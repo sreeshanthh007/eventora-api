@@ -157,6 +157,12 @@ export const ROLE_MAP: Record<string, string> = {
   "_ve": "vendor"
 };
 
+export const COMMISSIONS = {
+  EVENT_COMMISSION_FOR_ADMIN:(ticketPrice:number)=>ticketPrice * 0.25,
+  SERVICE_COMMISSION_FOR_VENDOR:(BookingAmount:number)=>BookingAmount * 0.80,
+  EVENT_COMMISSION_FOR_VENDOR:(ticketPrice:number)=>ticketPrice * 0.75
+}
+
 
 
 
