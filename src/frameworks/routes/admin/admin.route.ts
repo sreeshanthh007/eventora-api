@@ -132,8 +132,23 @@ export class AdminRotes extends BaseRouter{
           "/toggle-event/:eventId",
           verifyAuth,
           authorizeRole(["admin"]),
-          asyncHandler(adminController.handleToggleEvent.bind(adminController))
+          asyncHandler(adminController.handleToggleEventByVendors.bind(adminController))
         );
+        
+        this.router.get(
+          "/services-by-vendors",
+          verifyAuth,
+          authorizeRole(["admin"]),
+          asyncHandler(adminController.getAllServicesofVendors.bind(adminController))
+        );
+        
+        this.router.patch(
+          "/toggle-service/:serviceId",
+          verifyAuth,
+          authorizeRole(["admin"]),
+          asyncHandler(adminController.handleToggleServiceByVendors.bind(adminController))
+        );
+        
 
         this.router.get(
             "/booked-services-vendors",

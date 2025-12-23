@@ -202,6 +202,7 @@ export function mapEventsByVendorsToDTO(
       : event.tickets?.reduce((sum, t) => sum + t.totalTickets, 0) ?? 0;
 
   return {
+    id:event._id!.toString(),
     title: event.title,
     image: event.Images?.[0] || "",
     eventLocation: event.eventLocation,
@@ -216,7 +217,7 @@ export function mapEventsByVendorsToDTO(
     totalTickets,
     pricePerTicket,
     status: event.status,
-
+    isActive:event.isActive!,
     hostId: {
       name: event.hostId.name,
       profilePicture: event.hostId.profilePicture,

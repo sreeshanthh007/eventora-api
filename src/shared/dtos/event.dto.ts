@@ -139,6 +139,7 @@ export interface IEventVerifyAttendiesDTO {
 }
 
 export interface IEventsByVendorsDTO {
+   id:string
    title:string
    image:string
    eventLocation:string
@@ -154,6 +155,7 @@ export interface IEventsByVendorsDTO {
   //   pricePerTicket: number;
   // }[];
     status:string
+    isActive:boolean
   hostId:{
     name:string
     profilePicture:string

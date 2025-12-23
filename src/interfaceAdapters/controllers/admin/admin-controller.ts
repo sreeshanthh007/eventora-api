@@ -2,9 +2,11 @@ import { IAdminController } from "@entities/controllerInterfaces/admin/admin.con
 import { IEditCategoryUseCase } from "@entities/useCaseInterfaces/admin/edit-category.usecase.interface";
 import { IGetAdminWalletDetailsUseCase } from "@entities/useCaseInterfaces/admin/get-admin-wallet-details.usecase.interface";
 import { IGetAllCatgoryUseCase } from "@entities/useCaseInterfaces/admin/get-all-category.usecase.interface";
+import { IGetAllServicesofVendorsForAdminUseCase } from "@entities/useCaseInterfaces/admin/get-all-service-vendors-admin.usecase.interface";
 import { IGetEventsByVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-events-by-vendors.usecase.interface";
 import { IGetSeviceBookingsOfVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-service-bookings-of-vendors.usecase.interface";
-import { IHandleToggleEventByAdminUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-event.interface";
+import { IHandleToggleEventByAdminUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-event.usecase.interface";
+import { IHandleToggleServiceByVendorsUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-service-vendors.usecase.interface";
 import { IGetAllNotificationUseCase } from "@entities/useCaseInterfaces/get-all-notification.usecase.interface";
 import { CustomRequest } from "@middlewares/auth.middleware";
 import { ERROR_MESSAGES, HTTP_STATUS, SUCCESS_MESSAGES } from "@shared/constants";
@@ -24,6 +26,8 @@ export class AdminController implements IAdminController{
         @inject("IGetEventsByVendorsUseCase") private _getEventsByVendorsUseCase : IGetEventsByVendorsUseCase,
         @inject("IGetServiceBookingsofVendorsUseCase") private _getServiceBookingsofVendorsUseCase : IGetSeviceBookingsOfVendorsUseCase,
         @inject("IHandleToggleEventByAdminUseCase") private _handleToggleEventByAdminUseCase : IHandleToggleEventByAdminUseCase,
+        @inject("IHandleToggleServiceByVendorsUseCase") private _handleToggleServiceByVendorsUseCase : IHandleToggleServiceByVendorsUseCase,
+        @inject("IGetAllServicesofVendorsForAdminUseCase") private _getAllServicesofVendorsForAdminUseCase : IGetAllServicesofVendorsForAdminUseCase,
         @inject("IGetAllNotificationUseCase") private _getAdminNotificationUseCase : IGetAllNotificationUseCase,
     ){}
 
@@ -147,7 +151,7 @@ export class AdminController implements IAdminController{
     }
     
     
-    async handleToggleEvent(req: Request, res: Response): Promise<void> {
+    async handleToggleEventByVendors(req: Request, res: Response): Promise<void> {
         
         const {eventId} = req.params
         const {isActive} = req.body
@@ -164,6 +168,62 @@ export class AdminController implements IAdminController{
         
         res.status(HTTP_STATUS.OK)
           .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS})
+    }
+    
+    
+    async getAllServicesofVendors(req: Request, res: Response): Promise<void> {
+        
+      const {
+        page="1",
+        limit="6",
+        search,
+        filterBy
+      } = req.query as {
+        page:string,
+        limit:string,
+        search:string,
+        filterBy:string
+      }
+      
+      const {id} = (req as CustomRequest).user
+      
+      if(!id){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+          .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS})
+      }
+      
+      const response = await this._getAllServicesofVendorsForAdminUseCase.execute(Number(page),Number(limit),search,filterBy)
+      
+      
+      res.status(HTTP_STATUS.OK)
+        .json({success:true,message:response})
+    }
+    
+    async handleToggleServiceByVendors(req: Request, res: Response): Promise<void> {
+        
+      const {id} = (req as CustomRequest).user
+      
+      const {serviceId} = req.params
+      
+      const {status} = req.body
+      
+      if(!serviceId || !id){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+          .json({success:false,mesage:ERROR_MESSAGES.MISSING_PARAMETERS});
+        return 
+      }
+      
+      if(!["active","blocked"].includes(status)){
+        res.status(HTTP_STATUS.BAD_REQUEST)
+          .json({success:false,message:ERROR_MESSAGES.MISSING_PARAMETERS});
+        return 
+      }
+      
+      await this._handleToggleServiceByVendorsUseCase.execute(serviceId);
+      
+      res.status(HTTP_STATUS.OK)
+        .json({success:true,message:SUCCESS_MESSAGES.UPDATE_SUCCESS});
+      return
     }
    
 }

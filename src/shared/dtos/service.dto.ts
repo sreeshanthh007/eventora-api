@@ -8,6 +8,18 @@ export interface ServiceTableDTO{
     status?:string
     serviceDuration:number
 }
+export interface ServiceTableDTOForAdmin{
+    _id?:string
+    serviceTitle:string
+    serviceDescription:string
+    servicePrice:number
+    status?:string
+    vendorId:{
+      name:string,
+      email:string,
+      profilePicture:string
+    }
+}
 
 
 export interface PaginatedServiceDTO{

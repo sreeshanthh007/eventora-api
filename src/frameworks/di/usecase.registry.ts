@@ -238,7 +238,11 @@ import { IGetEventsByVendorsUseCase } from "@entities/useCaseInterfaces/admin/ge
 import { GetEventsByVendorsUseCase } from "@usecases/admin/get-events-by-vendors.usecase";
 import { IGetSeviceBookingsOfVendorsUseCase } from "@entities/useCaseInterfaces/admin/get-service-bookings-of-vendors.usecase.interface";
 import { GetServiceBookingsofVendorsUseCase } from "@usecases/admin/get-service-booking-of-vendors.usecase";
-import { IHandleToggleEventByAdminUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-event.interface";
+import { IHandleToggleEventByAdminUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-event.usecase.interface";
+import { IGetAllServicesofVendorsForAdminUseCase } from "@entities/useCaseInterfaces/admin/get-all-service-vendors-admin.usecase.interface";
+import { GetAllServicesofVendorsForAdminUseCase } from "@usecases/admin/get-all-service-vendors.usecase";
+import { IHandleToggleServiceByVendorsUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-service-vendors.usecase.interface";
+import {  HandleToggleServiceByVendorsUseCase } from "@usecases/admin/handle-toggle-service-vendor.usecase";
 
 
 
@@ -642,6 +646,15 @@ export class UseCaseRegistry {
 
     container.register<IGetServicesProvidedByVendorsUseCase>("IGetServicesProvidedByVendorsUseCase",{
       useClass:GetServicesProvidedByVendorsUseCase
+    });
+    
+    
+    container.register<IGetAllServicesofVendorsForAdminUseCase>("IGetAllServicesofVendorsForAdminUseCase",{
+      useClass:GetAllServicesofVendorsForAdminUseCase
+    });
+    
+    container.register<IHandleToggleServiceByVendorsUseCase>("IHandleToggleServiceByVendorsUseCase",{
+      useClass:HandleToggleServiceByVendorsUseCase
     });
 
     container.register<ICancelServiceUseCase>("ICancelServiceUseCase",{

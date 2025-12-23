@@ -48,3 +48,10 @@ export type TServiceEntityWithPopulatedVendorForClient = Omit<IServiceEntity,"ve
         profilePicture?:string
     }
 }
+export type TServiceEntityWithPopulatedVendorForAdmin = Omit<IServiceEntity,"vendorId"> & {
+    vendorId:{
+        name?:string
+        email?:string
+        profilePicture?:string
+    }
+}

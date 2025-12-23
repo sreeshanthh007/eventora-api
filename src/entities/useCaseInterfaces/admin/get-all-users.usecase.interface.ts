@@ -1,4 +1,4 @@
-// import { IClientEntity } from "@entities/models/client.entity";
+
 import { PaginatedUsers } from "interfaceAdapters/models/paginatedUsers"
 
 export interface IGetAllUsersUseCase {

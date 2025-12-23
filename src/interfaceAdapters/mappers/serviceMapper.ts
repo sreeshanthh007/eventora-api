@@ -1,9 +1,9 @@
 
 
-import { TServiceEntityWithPopulatedVendorForClient } from "@entities/models/populated-types/service-populated.type";
+import { TServiceEntityWithPopulatedVendorForAdmin, TServiceEntityWithPopulatedVendorForClient } from "@entities/models/populated-types/service-populated.type";
 import { IServiceEntity } from "@entities/models/service.entity";
 import { SlotGenerationResponse } from "@shared/dtos/slot-generator.dto";
-import { PaginatedServiceDTO, PaginatedServicesProvidedByVendorsDTO, ServiceTableDTO } from "@shared/dtos/service.dto";
+import { PaginatedServiceDTO, PaginatedServicesProvidedByVendorsDTO, ServiceTableDTO, ServiceTableDTOForAdmin } from "@shared/dtos/service.dto";
 
 
 export interface IServiceResponse {
@@ -40,6 +40,22 @@ export function mapServiceToTableResponse(service: IServiceEntity) : ServiceTabl
     serviceDuration: service.serviceDuration,
     status:service.status,
     serviceDescription:service.serviceDescription,
+
+  }
+}
+export function mapServiceToTableResponseForAdmin(service: TServiceEntityWithPopulatedVendorForAdmin) : ServiceTableDTOForAdmin {
+  return {
+    _id: service._id?.toString(),
+    serviceTitle: service.serviceTitle,
+    servicePrice: service.servicePrice,
+    status:service.status,
+    serviceDescription:service.serviceDescription,
+
+    vendorId:{
+      name:service.vendorId.name!,
+      email:service.vendorId.email!,
+      profilePicture:service.vendorId.profilePicture!
+    }
 
   }
 }

@@ -1,7 +1,7 @@
 
 import { IBookingEntity } from "@entities/models/booking.entity";
 import { IClientEntity } from "@entities/models/client.entity";
-import { TBookingEntityWithPopulatedBookingDetailsForAdmin, TServiceEntityWithPopulatedVendorForClient } from "@entities/models/populated-types/service-populated.type";
+import { TBookingEntityWithPopulatedBookingDetailsForAdmin, TServiceEntityWithPopulatedVendorForAdmin, TServiceEntityWithPopulatedVendorForClient } from "@entities/models/populated-types/service-populated.type";
 import { IServiceEntity } from "@entities/models/service.entity";
 import { IVendorEntity } from "@entities/models/vendor.entity";
 import { IServiceRepository } from "@entities/repositoryInterfaces/vendor/service/service.repository.interface";
@@ -47,7 +47,42 @@ export class ServiceRepository implements IServiceRepository{
 
     return mappedService
   } 
-
+  
+  
+  async findServicesofVendorsForAdmin(skip: number, limit: number, search: string,filterBy:string): Promise<{ services: TServiceEntityWithPopulatedVendorForAdmin[] | []; total: number; }> {
+      
+      const filter : FilterQuery<IServiceEntity> = {}
+      
+      if(search){
+        filter.$or = [
+          {serviceTitle:{$regex:search,$options:"i"}}
+        ]
+      }
+      
+      if(filterBy){
+        filter.status = filterBy
+      }
+      
+      const [servcices,total] = await Promise.all([
+        serviceModel
+          .find(filter)
+          .populate<{vendorId:IVendorEntity}>({
+            path:"vendorId",
+            select:"name email profilePicture"
+          })
+          .sort({createdAt:-1})
+          .skip(skip)
+          .limit(limit)
+          .lean(),
+        
+          serviceModel.countDocuments(filter)
+      ]);
+      
+      return {
+        services:servcices,
+        total:total
+      }
+  }
 
 
   async getServiceBookingsofVendors(skip: number, limit: number, search: string, filterType: string): Promise<{ bookings: TBookingEntityWithPopulatedBookingDetailsForAdmin[] | []; total: number; }> {
@@ -115,9 +150,14 @@ export class ServiceRepository implements IServiceRepository{
       )
   }
 
-  async getAllServices(search:string, skip: number, limit: number,vendorId:string): Promise<{ services: IServiceEntity[] | []; total: number; }> {
-    const filter : FilterQuery<IServiceEntity> = {vendorId:vendorId}
+  async getAllServices(search:string, skip: number, limit: number,vendorId?:string): Promise<{ services: IServiceEntity[] | []; total: number; }> {
+    const filter : FilterQuery<IServiceEntity> = {}
     
+    if(vendorId){
+      filter.vendorId = vendorId
+    }
+    
+   
     if(search){
       filter.$or = [
         {serviceTitle:{$regex:search,$options:"i"}}
