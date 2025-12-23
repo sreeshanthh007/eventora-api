@@ -1,5 +1,5 @@
 import { IEventRepository } from "@entities/repositoryInterfaces/vendor/event/event.repository.interface";
-import { IHandleToggleEventByAdminUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-event.interface";
+import { IHandleToggleEventByAdminUseCase } from "@entities/useCaseInterfaces/admin/handle-toggle-event.usecase.interface";
 import { CustomError } from "@entities/utils/custom.error";
 import { ERROR_MESSAGES, HTTP_STATUS } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
@@ -21,8 +21,6 @@ export class HandleToggleEventByAdminUseCase implements IHandleToggleEventByAdmi
       throw new CustomError(ERROR_MESSAGES.EVENT_NOT_FOUND,HTTP_STATUS.NOT_FOUND)
     }
     
-    await this._eventRepo.findByIdAndToggleStatus(eventId,isActive)
-    
-    
+    await this._eventRepo.findByIdAndToggleStatus(eventId,isActive) 
   }
 }
